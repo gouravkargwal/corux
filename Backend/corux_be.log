@@ -1,0 +1,245 @@
+2024-03-27 13:47:32,540 - INFO - calculateResult.py:115 - going in get result
+2024-03-27 13:48:08,048 - INFO - calculateResult.py:115 - going in get result
+2024-03-27 13:50:21,869 - INFO - calculateResult.py:115 - going in get result
+2024-03-27 14:02:29,269 - INFO - calculateResult.py:116 - going in get result
+2024-03-27 14:02:29,270 - INFO - calculateResult.py:119 - 123
+2024-03-27 14:07:23,846 - INFO - calculateResult.py:116 - going in get result
+2024-03-27 14:07:23,847 - INFO - calculateResult.py:119 - 123
+2024-03-27 14:07:24,134 - INFO - calculateResult.py:145 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:07:24,134 - INFO - calculateResult.py:146 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:07:24,146 - ERROR - calculateResult.py:111 - 'total_bet_amount'
+2024-03-27 14:10:43,563 - INFO - calculateResult.py:116 - going in get result
+2024-03-27 14:10:43,564 - INFO - calculateResult.py:119 - 123
+2024-03-27 14:10:43,750 - INFO - calculateResult.py:145 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:10:43,750 - INFO - calculateResult.py:146 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:10:43,752 - ERROR - calculateResult.py:111 - 'total_bet_amount'
+2024-03-27 14:10:43,753 - ERROR - calculateResult.py:273 - too many values to unpack (expected 2)
+2024-03-27 14:11:09,736 - INFO - calculateResult.py:116 - going in get result
+2024-03-27 14:11:09,737 - INFO - calculateResult.py:119 - 123
+2024-03-27 14:11:09,932 - INFO - calculateResult.py:145 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:11:09,932 - INFO - calculateResult.py:146 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:11:09,932 - ERROR - calculateResult.py:111 - 'total_bet_amount'
+2024-03-27 14:11:09,933 - ERROR - calculateResult.py:273 - too many values to unpack (expected 2)
+2024-03-27 14:11:24,487 - INFO - calculateResult.py:116 - going in get result
+2024-03-27 14:11:24,488 - INFO - calculateResult.py:119 - 123
+2024-03-27 14:11:24,652 - INFO - calculateResult.py:145 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:11:24,652 - INFO - calculateResult.py:146 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:11:24,652 - ERROR - calculateResult.py:111 - 'total_bet_amount'
+2024-03-27 14:11:24,653 - ERROR - calculateResult.py:273 - too many values to unpack (expected 2)
+2024-03-27 14:12:49,741 - INFO - calculateResult.py:117 - going in get result
+2024-03-27 14:12:49,741 - INFO - calculateResult.py:120 - 123
+2024-03-27 14:12:49,897 - INFO - calculateResult.py:146 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:12:49,898 - INFO - calculateResult.py:147 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:12:49,898 - INFO - calculateResult.py:24 - in determine winner
+2024-03-27 14:12:49,898 - ERROR - calculateResult.py:112 - 'total_bet_amount'
+2024-03-27 14:12:49,898 - ERROR - calculateResult.py:274 - too many values to unpack (expected 2)
+2024-03-27 14:13:35,503 - INFO - calculateResult.py:118 - going in get result
+2024-03-27 14:13:35,505 - INFO - calculateResult.py:121 - 123
+2024-03-27 14:13:35,771 - INFO - calculateResult.py:147 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:13:35,772 - INFO - calculateResult.py:148 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:13:35,772 - INFO - calculateResult.py:24 - in determine winner
+2024-03-27 14:13:35,772 - INFO - calculateResult.py:25 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:13:35,772 - ERROR - calculateResult.py:113 - 'total_bet_amount'
+2024-03-27 14:13:35,773 - ERROR - calculateResult.py:275 - too many values to unpack (expected 2)
+2024-03-27 14:29:35,099 - INFO - calculateResult.py:81 - going in get result
+2024-03-27 14:29:35,100 - INFO - calculateResult.py:84 - 123
+2024-03-27 14:29:35,247 - INFO - calculateResult.py:110 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:29:35,247 - INFO - calculateResult.py:111 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:29:35,247 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:29:35,247 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:29:35,247 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:29:35,294 - ERROR - calculateResult.py:238 - 'int' object has no attribute 'period'
+2024-03-27 14:32:14,131 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:32:14,131 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:32:14,365 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:32:14,367 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:32:14,371 - ERROR - calculateResult.py:240 - 'int' object has no attribute 'period'
+2024-03-27 14:39:17,829 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:39:17,830 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:39:18,016 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:39:18,017 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:39:18,052 - ERROR - calculateResult.py:240 - 'int' object has no attribute 'period'
+2024-03-27 14:39:44,087 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:39:44,088 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:39:44,319 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:39:44,319 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:39:44,320 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:39:44,320 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:39:44,320 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:39:44,320 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:39:44,320 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:39:44,338 - ERROR - calculateResult.py:240 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '1231515' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 1231515}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:41:49,374 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:41:49,375 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:41:49,522 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:41:49,523 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:41:49,556 - ERROR - calculateResult.py:240 - '0'
+2024-03-27 14:44:01,642 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:44:01,643 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:44:01,764 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:44:01,777 - ERROR - calculateResult.py:243 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '12315156' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 12315156}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:45:24,029 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:45:24,029 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:45:24,150 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:45:24,157 - ERROR - calculateResult.py:245 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '12315156' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 12315156}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:45:51,021 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:45:51,022 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:45:51,132 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:45:51,140 - ERROR - calculateResult.py:247 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '12315156' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 12315156}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:46:34,608 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:46:34,608 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:46:34,793 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:46:34,794 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:46:34,795 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:46:34,796 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:46:34,849 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x000001FE9A85B8B0>
+2024-03-27 14:46:34,851 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x000001FE9A841FA0>
+2024-03-27 14:46:34,875 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x000001FE9A883EE0>, <models.user.Bet_Number object at 0x000001FE9A883E80>, <models.user.Bet_Number object at 0x000001FE9A883FA0>, <models.user.Bet_Number object at 0x000001FE9A88F040>, <models.user.Bet_Number object at 0x000001FE9A88F0A0>, <models.user.Bet_Number object at 0x000001FE9A88F130>, <models.user.Bet_Number object at 0x000001FE9A88F1C0>, <models.user.Bet_Number object at 0x000001FE9A88F250>, <models.user.Bet_Number object at 0x000001FE9A88F2E0>]
+2024-03-27 14:46:34,888 - ERROR - calculateResult.py:247 - '0'
+2024-03-27 14:54:19,726 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:54:19,727 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:54:19,865 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:54:19,866 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:54:19,866 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:54:19,876 - ERROR - calculateResult.py:248 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '1231516' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 1231516}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:54:56,135 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:54:56,137 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:54:56,256 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:54:56,256 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:54:56,256 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:54:56,257 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:54:56,265 - ERROR - calculateResult.py:250 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '1231516' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 1231516}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:57:15,752 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:57:15,753 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:15,862 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:15,868 - ERROR - calculateResult.py:252 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '1231516' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 1231516}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:57:37,865 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:57:37,865 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:57:38,012 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:38,013 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:38,013 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:38,013 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:38,022 - ERROR - calculateResult.py:253 - (pymysql.err.IntegrityError) (1062, "Duplicate entry '1231516' for key 'result.period'")
+[SQL: INSERT INTO result (color_who_won, number_who_won, period) VALUES (%(color_who_won)s, %(number_who_won)s, %(period)s)]
+[parameters: {'color_who_won': '[]', 'number_who_won': [0], 'period': 1231516}]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+2024-03-27 14:57:52,823 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 14:57:52,824 - INFO - calculateResult.py:86 - 123
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 14:57:52,937 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 14:57:52,949 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x000002A22513B8B0>
+2024-03-27 14:57:52,949 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x000002A225120FA0>
+2024-03-27 14:57:52,957 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x000002A225160EE0>, <models.user.Bet_Number object at 0x000002A225160E80>, <models.user.Bet_Number object at 0x000002A225160FD0>, <models.user.Bet_Number object at 0x000002A22516E040>, <models.user.Bet_Number object at 0x000002A22516E0A0>, <models.user.Bet_Number object at 0x000002A22516E130>, <models.user.Bet_Number object at 0x000002A22516E1C0>, <models.user.Bet_Number object at 0x000002A22516E250>, <models.user.Bet_Number object at 0x000002A22516E2E0>]
+2024-03-27 14:57:52,961 - ERROR - calculateResult.py:253 - '0'
+2024-03-27 15:07:34,898 - INFO - calculateResult.py:83 - going in get result
+2024-03-27 15:07:34,912 - INFO - calculateResult.py:86 - 123
+2024-03-27 15:07:35,091 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-03-27 15:07:35,091 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700')}
+2024-03-27 15:07:35,093 - INFO - calculateResult.py:22 - In determine winner
+2024-03-27 15:07:35,093 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 0: 0, 1: 0, 3: 0, 5: 0, 7: 0}
+2024-03-27 15:07:35,093 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-03-27 15:07:35,093 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 15:07:35,093 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 15:07:35,094 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-03-27 15:07:35,094 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-03-27 15:07:35,138 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x00000160A481DDF0>
+2024-03-27 15:07:35,138 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x00000160A481D850>
+2024-03-27 15:07:35,150 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x00000160A484F310>, <models.user.Bet_Number object at 0x00000160A484F2B0>, <models.user.Bet_Number object at 0x00000160A484F3D0>, <models.user.Bet_Number object at 0x00000160A484F430>, <models.user.Bet_Number object at 0x00000160A484F490>, <models.user.Bet_Number object at 0x00000160A484F520>, <models.user.Bet_Number object at 0x00000160A484F5B0>, <models.user.Bet_Number object at 0x00000160A484F640>, <models.user.Bet_Number object at 0x00000160A484F6D0>]
+2024-03-27 15:07:35,155 - ERROR - calculateResult.py:253 - '0'
+2024-03-27 15:07:35,155 - ERROR - main.py:110 - 

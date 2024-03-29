@@ -1,0 +1,60 @@
+#input_box {
+    padding: 16px 25px 8px 25px !important;
+}
+
+#input_box .MuiInputBase-root.MuiInput-root::after {
+    border-bottom: 2px solid #22457b !important;
+}
+
+.MuiInput-input:hover {
+    border-color: #22457b !important;
+}
+
+.MuiInputBase-root.MuiInput-root {
+    font-size: 11px !important;
+}
+
+.MuiAutocomplete-listbox {
+    font-size: 12px !important;
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root {
+    font-size: 12px !important;
+    /* transform: translate(0, 3px) scale(0.75); */
+}
+
+.MuiInputLabel-shrink {
+    transform: translate(0, 3px) scale(0.75) !important;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root::before {
+    color: #000 !important;
+}
+
+.MuiInputLabel-standard.MuiInputLabel-shrink {
+    color: #22457b !important;
+    font-size: 13px !important;
+}
+
+.search_btn {
+    padding: 1px 22px !important;
+    margin-left: 16px !important;
+    font-size: 11px !important;
+    font-weight: 400 !important;
+    border-radius: 26px !important;
+    text-transform: capitalize !important;
+}
+
+.back_btn {
+    font-size: 11px !important;
+    text-transform: inherit !important;
+    padding: 0px !important;
+}
+
+.back_icon {
+    width: 14px !important;
+    height: 14px !important;
+    margin-right: 4px !important;
+}

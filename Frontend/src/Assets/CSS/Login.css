@@ -1,0 +1,185 @@
+/* #login {
+    margin-top: 48px !important;
+} */
+
+/* #login .side_img {
+    width: 100% !important;
+    min-height: calc(100vh - 40px) !important;
+} */
+
+#login .login_side_bg {
+    background-image: url(../Images/sideimg.png) !important;
+    background-position: center !important;
+    background-size: cover !important;
+    min-height: calc(100vh - 41px) !important;
+    width: 100% !important;
+}
+
+#login .login_info {
+    /* min-height: calc(100vh - 40px) !important;
+    text-align: center !important;
+    padding: 0px 60px !important; */
+    display: grid !important;
+    align-content: center !important;
+    /* height: calc(100vh - 149px) !important; */
+    text-align: center !important;
+    /* padding: 64px 60px 45px 60px !important; */
+    padding: 64px 60px 45px 60px !important;
+    overflow: auto !important;
+    height: calc(100vh - 194px) !important;
+    /* margin-top: 45px !important; */
+    margin-bottom: 0px !important;
+}
+
+#login .register.login_info {
+    height: calc(100vh - 178px) !important;
+    padding: 96px 60px 41px 60px !important;
+}
+
+/* .profile .login_info{
+    margin-top: 45px !important;
+} */
+
+#login .logo {
+    max-width: 210px !important;
+    min-width: 180px !important
+        /* margin-top: 100px !important; */
+}
+
+.input_field .MuiOutlinedInput-input {
+    padding: 14px 10px !important;
+    font-size: 12px !important;
+    background-color: #fff !important;
+    border-radius: 4px !important;
+}
+
+.input_field .MuiSvgIcon-root {
+    height: 15px !important;
+    width: 15px !important;
+}
+
+.input_field .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    outline: none !important;
+    border: 1px solid #00c1f3 !important;
+}
+
+h5 {
+    font-size: 18px !important;
+    font-weight: 500 !important;
+}
+
+h6 {
+    font-size: 11px !important;
+}
+
+#login .key_icon {
+    font-size: 16px !important;
+    margin-right: 8px !important;
+    margin-left: auto !important;
+}
+
+#login .login_btn {
+    padding: 9px 0px !important;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px !important;
+}
+
+.note {
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+}
+
+#modal .close_icon {
+    font-size: 18px !important;
+}
+
+#modal #modal-modal-title {
+    text-align: center !important;
+}
+
+#modal .modal_icon {
+    font-size: 70px !important;
+    color: #0191ca !important;
+    font-weight: 400 !important;
+}
+
+#modal .login_btn {
+    padding: 3px 18px !important;
+    text-transform: none !important;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+    font-size: 13px !important;
+}
+
+#login .MuiCheckbox-root {
+    padding: 0px !important;
+    color: #22457b !important;
+    box-shadow: none !important;
+    outline: none !important;
+    margin-right: 8px !important;
+}
+
+.checkbox .MuiFormControlLabel-root {
+    margin-left: 0px !important;
+}
+
+.checkbox .MuiFormControlLabel-root .MuiFormControlLabel-label {
+    font-size: 12px !important;
+}
+
+#login .MuiFormControlLabel-root {
+    margin-left: 0px !important;
+}
+
+@media (max-width:1300px) {
+    #history.main_content {
+        height: auto !important;
+    }
+}
+
+@media (max-width:899px) {
+    #login .register.login_info {
+        height: auto !important;
+    }
+}
+
+@media (max-width:767px) {
+    #login .login_side_bg {
+        display: none !important;
+    }
+
+    /* #login .login_info {
+        height: auto !important;
+    } */
+
+    /* #login .main_content{
+        height: auto !important;
+    } */
+}
+
+@media (max-width:470px) {
+    /* #login .login_info {
+        padding: 0px 25px !important;
+    } */
+
+    #login .login_info {
+        padding: 64px 40px 45px 40px !important;
+    }
+}
+
+@media (max-width:370px) {
+    #login .logo {
+        width: 150px !important;
+        /* margin-top: 25px !important; */
+    }
+
+    .note {
+        font-size: 12px !important;
+    }
+
+    #login #modal .modal_icon {
+        font-size: 50px !important;
+        color: #0191ca !important;
+        font-weight: 400 !important;
+    }
+
+}
