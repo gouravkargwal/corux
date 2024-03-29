@@ -5,13 +5,23 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { blue, grey } from "@mui/material/colors";
+import API from "../Api/ApiCall";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  registerUser,
+  selectAuthRegistrationData,
+} from "../Feature/Auth/authSlice";
+import { toast } from "react-toastify";
 
 export default function OtpVerify() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const otpRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [resendButtonDisabled, setResendButtonDisabled] = useState(true);
   const [timer, setTimer] = useState(120);
+  const registrationData = useSelector(selectAuthRegistrationData);
+
   useEffect(() => {
     // Start the countdown from 120 seconds
     setTimer(120);
@@ -48,29 +58,45 @@ export default function OtpVerify() {
   const otpValues = watch("otp");
   const allOtpFilled = otpValues.every((val) => val.length === 1);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      setLoading(true);
+      const combinedData = {
+        mobile_number: registrationData.mobileNumber,
+        otp: data,
+      };
+      console.log(combinedData);
+      const { status } = await API.verifyOtpAPI(combinedData);
+      if (status === 200) {
+        const userData = {
+          mobile_number: registrationData.mobileNumber,
+          username: registrationData.name,
+          password: registrationData.password,
+        };
+        dispatch(registerUser(userData, navigate));
+      }
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  // The event handler for input
   const handleInput = (e) => {
     const inputs = otpRef.current.querySelectorAll("input");
     const index = [...inputs].indexOf(e.target);
-
-    // Automatically move to the next input if there's a next one
     if (e.target.value && index < inputs.length - 1) {
       inputs[index + 1].focus();
     }
   };
 
-  // The event handler for key down actions
   const handleKeyDown = (e) => {
-    // Check for backspace
     if (e.key === "Backspace") {
       const inputs = otpRef.current.querySelectorAll("input");
       const index = [...inputs].indexOf(e.target);
-
-      // If the current input is empty and there's a previous input, move focus back
       if (e.target.value === "" && index > 0) {
         inputs[index - 1].focus();
       }
@@ -81,6 +107,15 @@ export default function OtpVerify() {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  };
+
+  const handleResendOtp = async () => {
+    try {
+      setResendButtonDisabled(true);
+      await API.signupAPI(registrationData);
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (
@@ -184,9 +219,7 @@ export default function OtpVerify() {
             <Typography sx={{ textAlign: "center", my: 2 }}>
               Didn't receive the OTP?{" "}
               <Typography
-                onClick={() => {
-                  navigate("/resend");
-                }}
+                onClick={handleResendOtp}
                 sx={{
                   cursor: resendButtonDisabled ? "default" : "pointer",
                   color: resendButtonDisabled ? grey[500] : blue[500],

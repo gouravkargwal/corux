@@ -7,9 +7,9 @@ const initialState = {
   loading: null,
   error: null,
   user: "user1",
+  registrationData: null,
 };
 
-// Async thunk for user login
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (data, { rejectWithValue }) => {
@@ -30,10 +30,10 @@ export const loginUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (data, { rejectWithValue }) => {
+  async ({ userData, navigate }, { rejectWithValue }) => {
     try {
-      const response = await API.signupAPI(data);
-      console.log(response);
+      const response = await API.signupAPI(userData);
+      navigate("/home");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -48,6 +48,9 @@ const authSlice = createSlice({
     logoutUser(state) {
       state.user = null;
       state.token = null;
+    },
+    setRegistrationData(state, action) {
+      state.registrationData = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,11 +85,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, setRegistrationData } = authSlice.actions;
 
 export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthToken = (state) => state.auth.token;
 export const selectAuthUser = (state) => state.auth.user;
+export const selectAuthRegistrationData = (state) =>
+  state.auth.registrationData;
 
 export default authSlice.reducer;

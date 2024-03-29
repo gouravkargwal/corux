@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Avatar,
   Box,
   Checkbox,
   Container,
-  CssBaseline,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   FormControlLabel,
   FormHelperText,
   Grid,
@@ -23,150 +19,66 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
 import LoadingButton from "../Components/UI/LoadingButton";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import API from "../Api/ApiCall";
-import { registerUser, selectAuthToken } from "../Feature/Auth/authSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { setRegistrationData } from "../Feature/Auth/authSlice";
+import { useNavigate } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { blue, green, grey, orange, purple } from "@mui/material/colors";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 export default function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector(selectAuthToken);
   const {
     register,
     handleSubmit,
-    reset,
     watch,
     formState: { errors, isDirty, isValid },
   } = useForm();
 
-  const {
-    register: registerOtp,
-    handleSubmit: handleOtpSubmit,
-    reset: resetOtpForm,
-    formState: { errors: otpErrors, isDirty: isDirtyOtp, isValid: isValidOtp },
-  } = useForm();
   const password = watch("password");
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
 
-  const [open, setOpen] = useState(false);
-  const handleClickOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [registrationData, setRegistrationData] = useState({});
   const [loadingBtn, setLoadingBtn] = useState(false);
 
   const onSubmitRegistration = async (data) => {
-    // try {
-    //   setLoadingBtn(true);
-    //   const dataToSend = {
-    //     mobile_number: data.mobileNumber,
-    //   };
-    //   setRegistrationData(data);
-    //   await API.checkUserAPI(dataToSend);
-    //   await API.sendOtpAPI(dataToSend);
-    //   setOpen(true);
-    // } catch (error) {
-    //   setLoadingBtn(false);
-    //   if (error.response) {
-    //     if (error.response.status === 403) {
-    //       toast.error(error.response.data.detail);
-    //       navigate("/");
-    //       return;
-    //     } else {
-    //       return toast.error(error.message);
-    //     }
-    //   } else if (error.request) {
-    //     return toast.error("No response received");
-    //   } else {
-    //     return toast.error(error.message);
-    //   }
-    // } finally {
-    //   setLoadingBtn(false);
-    // }
-    navigate("/otp-verify");
-  };
-
-  const onSubmitOtp = async (otpData) => {
     try {
-      const combinedData = {
-        mobile_number: registrationData.mobileNumber,
-        otp: otpData.otp,
+      setLoadingBtn(true);
+      const dataToSend = {
+        mobile_number: data.mobileNumber,
       };
-      console.log(combinedData);
-      const { status } = await API.verifyOtpAPI(combinedData);
-      if (status === 200) {
-        const userData = {
-          mobile_number: registrationData.mobileNumber,
-          username: registrationData.name,
-          password: registrationData.password,
-        };
-        dispatch(registerUser(userData));
-        if (token) {
-          navigate("/home");
+      dispatch(setRegistrationData(data));
+      await API.checkUserAPI(dataToSend);
+      await API.sendOtpAPI(dataToSend);
+      navigate("/otp-verify");
+    } catch (error) {
+      setLoadingBtn(false);
+      if (error.response) {
+        if (error.response.status === 403) {
+          toast.error(error.response.data.detail);
+          navigate("/");
+          return;
+        } else {
+          return toast.error(error.message);
         }
+      } else if (error.request) {
+        return toast.error("No response received");
+      } else {
+        return toast.error(error.message);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
     } finally {
-      resetOtpForm();
-      reset();
-      setOpen(false);
-    }
-  };
-
-  const [resendButtonDisabled, setResendButtonDisabled] = useState(true);
-
-  useEffect(() => {
-    if (open) {
-      const timer = setTimeout(() => {
-        setResendButtonDisabled(false);
-      }, 120000); // 120,000 milliseconds = 2 minutes
-
-      return () => clearTimeout(timer); // Cleanup the timer on component unmount
-    }
-  }, [open]); // Dependency array - this effect runs when 'open' changes
-
-  const handleResendOtp = async () => {
-    try {
-      setResendButtonDisabled(true); // Disable the button again once clicked
-      await API.signupAPI(registrationData);
-      // You might want to restart the timer here as well
-    } catch (error) {
-      toast.error(error.message);
+      setLoadingBtn(false);
     }
   };
 
   return (
     <Box height="100vh">
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -447,56 +359,7 @@ export default function Register() {
             </Grid>
           </Box>
         </Box>
-        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
-
-      {/* OTP Verification Dialog */}
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Enter OTP</DialogTitle>
-        <form onSubmit={handleOtpSubmit(onSubmitOtp)}>
-          <DialogContent>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="otp"
-              label="OTP"
-              type="text"
-              fullWidth
-              variant="outlined"
-              {...registerOtp("otp", {
-                required: "OTP is required",
-                pattern: {
-                  value: /^\d{4}$/,
-                  message: "OTP must be a 4-digit number",
-                },
-              })}
-            />
-            {otpErrors.otp && (
-              <Typography color="error">{otpErrors.otp.message}</Typography>
-            )}
-          </DialogContent>
-          <LoadingButton
-            variant="contained"
-            fullWidth
-            disabled={!(isValidOtp && isDirtyOtp)}
-            type="submit"
-          >
-            Submit
-          </LoadingButton>
-          <Box mt={2} textAlign="center">
-            <Typography
-              variant="h6"
-              onClick={handleResendOtp}
-              style={{
-                cursor: resendButtonDisabled ? "default" : "pointer",
-                color: resendButtonDisabled ? "grey" : "blue",
-              }}
-            >
-              Resend Otp
-            </Typography>
-          </Box>
-        </form>
-      </Dialog>
     </Box>
   );
 }

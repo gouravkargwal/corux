@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Box,
-  Grid,
   IconButton,
   InputAdornment,
   TextField,
@@ -17,26 +16,9 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { loginUser, selectAuthLoading } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { blue, green, grey, orange, pink, purple } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
+import { blue, grey, orange, purple } from "@mui/material/colors";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 export default function Login() {
   const navigate = useNavigate();
   const {
@@ -65,7 +47,15 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 2, p: 2, borderRadius: 5, bgcolor: "white",border:"1px solid grey" }}>
+          <Avatar
+            sx={{
+              m: 2,
+              p: 2,
+              borderRadius: 5,
+              bgcolor: "white",
+              border: "1px solid grey",
+            }}
+          >
             <LockOutlinedIcon sx={{ color: "black" }} />
           </Avatar>
           <Typography variant="h5" fontSize="600">
