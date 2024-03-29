@@ -10,6 +10,7 @@ import {
   DialogContent,
   DialogTitle,
   FormControlLabel,
+  FormHelperText,
   Grid,
   IconButton,
   InputAdornment,
@@ -27,6 +28,7 @@ import API from "../Api/ApiCall";
 import { registerUser, selectAuthToken } from "../Feature/Auth/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import { blue, green, grey, orange, purple } from "@mui/material/colors";
 
 function Copyright(props) {
   return (
@@ -77,33 +79,34 @@ export default function Register() {
   const [loadingBtn, setLoadingBtn] = useState(false);
 
   const onSubmitRegistration = async (data) => {
-    try {
-      setLoadingBtn(true);
-      const dataToSend = {
-        mobile_number: data.mobileNumber,
-      };
-      setRegistrationData(data);
-      await API.checkUserAPI(dataToSend);
-      await API.sendOtpAPI(dataToSend);
-      setOpen(true);
-    } catch (error) {
-      setLoadingBtn(false);
-      if (error.response) {
-        if (error.response.status === 403) {
-          toast.error(error.response.data.detail);
-          navigate("/");
-          return;
-        } else {
-          return toast.error(error.message);
-        }
-      } else if (error.request) {
-        return toast.error("No response received");
-      } else {
-        return toast.error(error.message);
-      }
-    } finally {
-      setLoadingBtn(false);
-    }
+    // try {
+    //   setLoadingBtn(true);
+    //   const dataToSend = {
+    //     mobile_number: data.mobileNumber,
+    //   };
+    //   setRegistrationData(data);
+    //   await API.checkUserAPI(dataToSend);
+    //   await API.sendOtpAPI(dataToSend);
+    //   setOpen(true);
+    // } catch (error) {
+    //   setLoadingBtn(false);
+    //   if (error.response) {
+    //     if (error.response.status === 403) {
+    //       toast.error(error.response.data.detail);
+    //       navigate("/");
+    //       return;
+    //     } else {
+    //       return toast.error(error.message);
+    //     }
+    //   } else if (error.request) {
+    //     return toast.error("No response received");
+    //   } else {
+    //     return toast.error(error.message);
+    //   }
+    // } finally {
+    //   setLoadingBtn(false);
+    // }
+    navigate("/otp-verify");
   };
 
   const onSubmitOtp = async (otpData) => {
@@ -158,7 +161,7 @@ export default function Register() {
   };
 
   return (
-    <>
+    <Box height="100vh">
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -169,35 +172,61 @@ export default function Register() {
             alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+          <Avatar
+            sx={{
+              m: 2,
+              p: 2,
+              borderRadius: 5,
+              bgcolor: "white",
+              border: "1px solid grey",
+            }}
+          >
+            <LockOutlinedIcon sx={{ color: "black" }} />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
+          <Typography variant="h5" fontSize="600">
+            Register Now
+          </Typography>
+          <Typography variant="caption" fontSize="600" color={grey[500]}>
+            Please enter details to continue
           </Typography>
           <Box
             component="form"
             noValidate
             onSubmit={handleSubmit(onSubmitRegistration)}
-            sx={{ mt: 3 }}
+            sx={{ mt: 1 }}
           >
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   fullWidth
+                  sx={{ borderColor: grey[500] }}
                   placeholder="Name"
                   {...register("name", { required: "Name is required" })}
                   error={!!errors.name}
-                  helperText={errors.name?.message}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PersonOutlineIcon />
+                        <Avatar
+                          sx={{
+                            bgcolor: green[500],
+                          }}
+                        >
+                          <PersonOutlineIcon sx={{ color: "text.white" }} />
+                        </Avatar>
                       </InputAdornment>
                     ),
                   }}
                 />
+                <FormHelperText
+                  error={!!errors.name}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.name?.message : " "}
+                </FormHelperText>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -212,22 +241,39 @@ export default function Register() {
                     },
                   })}
                   placeholder="Mobile Number"
+                  sx={{ borderColor: grey[500] }}
                   error={!!errors.mobileNumber}
-                  helperText={errors.mobileNumber?.message}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <PhoneAndroidOutlinedIcon />
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
+                        >
+                          <PhoneAndroidOutlinedIcon
+                            sx={{ color: "text.white" }}
+                          />
+                        </Avatar>
                       </InputAdornment>
                     ),
                   }}
                 />
+                <FormHelperText
+                  error={!!errors.mobileNumber}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.mobileNumber?.message : " "}
+                </FormHelperText>
               </Grid>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   type={showPassword ? "text" : "password"}
-                  className="input_field"
+                  sx={{ borderColor: grey[500] }}
                   fullWidth
                   {...register("password", {
                     required: "Password is required",
@@ -238,33 +284,56 @@ export default function Register() {
                   })}
                   placeholder="Password"
                   error={!!errors.password}
-                  helperText={errors.password?.message}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockOutlinedIcon />
+                        <Avatar
+                          sx={{
+                            bgcolor: orange[500],
+                          }}
+                        >
+                          <LockOutlinedIcon sx={{ color: "text.white" }} />
+                        </Avatar>
                       </InputAdornment>
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? (
+                              <VisibilityOff sx={{ color: "text.white" }} />
+                            ) : (
+                              <Visibility sx={{ color: "text.white" }} />
+                            )}
+                          </IconButton>
+                        </Avatar>
                       </InputAdornment>
                     ),
                   }}
                 />
               </Grid>
+              <FormHelperText
+                error={!!errors.password}
+                sx={{
+                  visibility: errors ? "visible" : "hidden",
+                  height: "10px",
+                }}
+              >
+                {errors ? errors?.password?.message : " "}
+              </FormHelperText>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
                   type={showPassword ? "text" : "password"}
-                  className="input_field"
+                  sx={{ borderColor: grey[500] }}
                   fullWidth
                   {...register("confirmPassword", {
                     validate: (value) =>
@@ -272,27 +341,50 @@ export default function Register() {
                   })}
                   placeholder="Confirm Password"
                   error={!!errors.confirmPassword}
-                  helperText={errors.confirmPassword?.message}
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <LockOutlinedIcon />
+                        <Avatar
+                          sx={{
+                            bgcolor: orange[500],
+                          }}
+                        >
+                          <LockOutlinedIcon sx={{ color: "text.white" }} />
+                        </Avatar>
                       </InputAdornment>
                     ),
                     endAdornment: (
                       <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={handleClickShowPassword}
-                          onMouseDown={handleMouseDownPassword}
-                          edge="end"
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
                         >
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? (
+                              <VisibilityOff sx={{ color: "text.white" }} />
+                            ) : (
+                              <Visibility sx={{ color: "text.white" }} />
+                            )}
+                          </IconButton>
+                        </Avatar>
                       </InputAdornment>
                     ),
                   }}
                 />
+                <FormHelperText
+                  error={!!errors.confirmPassword}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.confirmPassword?.message : " "}
+                </FormHelperText>
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
@@ -307,9 +399,15 @@ export default function Register() {
                   label="I agree to all statements included in the terms & conditions"
                 />
                 {errors.agreeToTerms && (
-                  <Typography variant="caption" color="error">
-                    {errors.agreeToTerms.message}
-                  </Typography>
+                  <FormHelperText
+                    error={!!errors.agreeToTerms}
+                    sx={{
+                      visibility: errors ? "visible" : "hidden",
+                      height: "10px",
+                    }}
+                  >
+                    {errors ? errors?.agreeToTerms?.message : " "}
+                  </FormHelperText>
                 )}
               </Grid>
               <LoadingButton
@@ -318,20 +416,38 @@ export default function Register() {
                 fullWidth
                 disabled={!(isValid && isDirty)}
                 loading={loadingBtn}
+                sx={{
+                  bgcolor: blue[500],
+                  borderRadius: 10,
+                  padding: [2, 0],
+                  my: 2,
+                }}
               >
                 Register
               </LoadingButton>
-              <Grid container justifyContent="flex-end">
+              <Grid container justifyContent="center">
                 <Grid item>
-                  <Link href="/" variant="body2">
-                    Already have an account? Sign in
-                  </Link>
+                  <Typography sx={{ textAlign: "center", m: 1 }}>
+                    Already have an account?{" "}
+                    <Typography
+                      onClick={() => {
+                        navigate("/");
+                      }}
+                      sx={{
+                        color: blue[500],
+                        cursor: "pointer",
+                      }}
+                      component="span"
+                    >
+                      Login
+                    </Typography>
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
+        {/* <Copyright sx={{ mt: 5 }} /> */}
       </Container>
 
       {/* OTP Verification Dialog */}
@@ -381,6 +497,6 @@ export default function Register() {
           </Box>
         </form>
       </Dialog>
-    </>
+    </Box>
   );
 }

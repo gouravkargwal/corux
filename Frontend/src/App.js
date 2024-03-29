@@ -19,6 +19,7 @@ import Wallet from "./Pages/Wallet";
 import Recharge from "./Components/Wallet/Recharge";
 import Withdraw from "./Components/Wallet/Withdraw";
 import ProfileSettings from "./Pages/ProfileSettings";
+import OtpVerify from "./Pages/OtpVerify";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="forgot_password" element={<ForgotPassword />} />
           <Route path="register" element={<Register />} />
+          <Route path="otp-verify" element={<OtpVerify />} />
         </Route>
         <Route path="/home" element={<UserLayout />}>
           <Route index element={<HomePage />} />
