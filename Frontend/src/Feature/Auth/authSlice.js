@@ -30,8 +30,10 @@ export const loginUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async ({ userData, navigate }, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
+      const { userData, navigate } = payload;
+      console.log(userData);
       const response = await API.signupAPI(userData);
       navigate("/home");
       return response.data;

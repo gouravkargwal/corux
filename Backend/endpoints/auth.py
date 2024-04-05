@@ -97,7 +97,7 @@ async def verify_otp(
                 status_code=400, detail="Don not found OTP on server!!Try Again"
             )
 
-        if (datetime.now() - timedelta(minutes=3)) > otp_found.time:
+        if (datetime.now() - timedelta(minutes=60)) > otp_found.time:
             raise HTTPException(status_code=400, detail="OTP Expired!! Try Again")
 
         if user_otp_detail.otp != otp_found.otp:

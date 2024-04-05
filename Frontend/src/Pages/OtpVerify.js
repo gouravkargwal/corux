@@ -60,11 +60,12 @@ export default function OtpVerify() {
 
   const onSubmit = async (data) => {
     console.log(data);
+    const otp = (data?.otp).map(String).join("");
     try {
       setLoading(true);
       const combinedData = {
         mobile_number: registrationData.mobileNumber,
-        otp: data,
+        otp: otp,
       };
       console.log(combinedData);
       const { status } = await API.verifyOtpAPI(combinedData);
@@ -74,7 +75,8 @@ export default function OtpVerify() {
           username: registrationData.name,
           password: registrationData.password,
         };
-        dispatch(registerUser(userData, navigate));
+        console.log(userData);
+        dispatch(registerUser({ userData, navigate }));
       }
     } catch (error) {
       setLoading(false);

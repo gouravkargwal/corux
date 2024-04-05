@@ -27,6 +27,22 @@ def is_convertible_to_number(some_string):
         return int(some_string)
     except ValueError:
         return False
+    
+        
+@router.post("/get-profile/")
+async def get_profile(credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),db: Session = Depends(get_sql_db)):
+    try:
+        user = db.query(User).filter(User.mobile_number == credentials.mobile_number).first()
+        if not user:
+            raise HTTPException(status_code=404,detail="User Do not Exist")
+        
+        return {
+            "username" : user.username,
+            "mobile_number": user.mobile_number,
+            "balance": user.balance
+        }
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
 
 
 @router.post("/create-user/")
