@@ -1,8 +1,7 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
-  Button,
   FormHelperText,
   IconButton,
   InputAdornment,
@@ -17,12 +16,28 @@ import { Controller, useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getBalance,
+  selectBalanceMobile,
+  selectBalanceUsername,
+} from "../Feature/Balance/balanceSlice";
+import LoadingButton from "../Components/UI/LoadingButton";
+import API from "../Api/ApiCall";
+import { toast } from "react-toastify";
 
 export default function ProfileSettings() {
+  const dispatch = useDispatch();
+  const username = useSelector(selectBalanceUsername);
+  const mobile = useSelector(selectBalanceMobile);
+  useEffect(() => {
+    dispatch(getBalance());
+  }, [dispatch]);
+
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm({
     defaultValues: {
       password: "",
@@ -30,9 +45,9 @@ export default function ProfileSettings() {
     },
   });
 
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -41,14 +56,30 @@ export default function ProfileSettings() {
     setShowConfirmPassword(!showConfirmPassword);
   };
 
-  const onFormSubmit = (data) => {
-    console.log(data);
+  const onFormSubmit = async (data) => {
+    try {
+      const { password } = data;
+      setLoading(true);
+      await API.changePasswordAPI({ password });
+      toast.success("Password Changed Successful");
+    } catch (error) {
+      if (error.response) {
+        return toast.error(error.response?.data?.detail);
+      } else if (error.request) {
+        return toast.error("No response received");
+      } else {
+        return toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   };
 
   const validatePasswordsMatch = (confirmPassword) => {
     const { password } = control._formValues;
     return password === confirmPassword || "Passwords do not match";
   };
+
   return (
     <Box>
       <Box
@@ -63,7 +94,7 @@ export default function ProfileSettings() {
       >
         <Typography fontWeight="600">Profile Details</Typography>
         <Option
-          name="Gourav Kargwal"
+          name={username}
           icon={
             <Avatar
               sx={{
@@ -75,7 +106,7 @@ export default function ProfileSettings() {
           }
         />
         <Option
-          name="7023074548"
+          name={mobile}
           icon={
             <Avatar sx={{ bgcolor: purple[500] }}>
               <CallIcon sx={{ color: "text.white" }} />
@@ -192,9 +223,11 @@ export default function ProfileSettings() {
         >
           {errors ? errors?.confirmPassword?.message : " "}
         </FormHelperText>
-        <Button
+        <LoadingButton
           type="submit"
+          disabled={!(isValid && isDirty)}
           variant="contained"
+          loading={loading}
           fullWidth
           sx={{
             bgcolor: blue[500],
@@ -203,7 +236,7 @@ export default function ProfileSettings() {
           }}
         >
           Change Password
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

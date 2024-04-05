@@ -20,6 +20,8 @@ import Recharge from "./Components/Wallet/Recharge";
 import Withdraw from "./Components/Wallet/Withdraw";
 import ProfileSettings from "./Pages/ProfileSettings";
 import OtpVerify from "./Pages/OtpVerify";
+import Settings from "./Pages/Settings";
+import PrivateRoute from "./Routes/PrivateRoute";
 
 function App() {
   return (
@@ -37,12 +39,64 @@ function App() {
           <Route path="monty-hall" element={<MontyHall />} />
           <Route path="virtual-slot" element={<VirtualSlot />} />
           <Route path="promotion" element={<Promotion />} />
-          <Route path="profile" element={<Profile />} />
-          <Route path="profile-details" element={<ProfileSettings />} />
-          <Route path="bank" element={<Bank />} />
-          <Route path="wallet" element={<Wallet />} />
-          <Route path="recharge" element={<Recharge />} />
-          <Route path="withdraw" element={<Withdraw />} />
+          <Route path="profile">
+            <Route
+              index
+              element={
+                <PrivateRoute>
+                  <Profile />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="profile-details"
+              element={
+                <PrivateRoute>
+                  <ProfileSettings />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="bank"
+              element={
+                <PrivateRoute>
+                  <Bank />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="wallet"
+              element={
+                <PrivateRoute>
+                  <Wallet />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="recharge"
+              element={
+                <PrivateRoute>
+                  <Recharge />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="withdraw"
+              element={
+                <PrivateRoute>
+                  <Withdraw />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="settings"
+              element={
+                <PrivateRoute>
+                  <Settings />
+                </PrivateRoute>
+              }
+            />
+          </Route>
         </Route>
         <Route path="*" element={<h1>Page not found</h1>} />
       </Routes>

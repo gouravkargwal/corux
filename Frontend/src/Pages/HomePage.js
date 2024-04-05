@@ -1,18 +1,19 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import Hero from "../Components/Home/Hero";
 import { Link } from "react-router-dom";
 import Info from "../Components/Profile/Info";
 import { useSelector } from "react-redux";
-import { selectAuthUser } from "../Feature/Auth/authSlice";
+import { selectAuthToken } from "../Feature/Auth/authSlice";
 import GameCard from "../Components/Home/GameCard";
 
 function GridExample() {
-  const user = useSelector(selectAuthUser);
+  const token = useSelector(selectAuthToken);
+  console.log(token);
 
   return (
     <>
       <Hero />
-      {user && <Info />}
+      {token && <Info />}
       <Grid container spacing={2} p={3}>
         <Grid item xs={6}>
           <Link to="color-prediction">

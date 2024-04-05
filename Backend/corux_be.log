@@ -3012,3 +3012,51 @@
 2024-04-05 11:47:30,164 - INFO - calculateResult.py:156 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
 2024-04-05 11:47:30,223 - INFO - calculateResult.py:239 - []
 2024-04-05 11:47:30,225 - INFO - calculateResult.py:248 - []
+2024-04-05 13:15:02,254 - INFO - calculateResult.py:83 - going in get result
+2024-04-05 13:15:02,265 - INFO - calculateResult.py:86 - 123
+2024-04-05 13:15:02,560 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-04-05 13:15:02,560 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100')}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:22 - In determine winner
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100'), 0: 0, 1: 0, 7: 0}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 13:15:02,561 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 13:15:02,641 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x0000024D0222DE80>
+2024-04-05 13:15:02,641 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x0000024D0220AE50>
+2024-04-05 13:15:02,654 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x0000024D0223BC40>, <models.user.Bet_Number object at 0x0000024D0223BBE0>, <models.user.Bet_Number object at 0x0000024D0223BD00>, <models.user.Bet_Number object at 0x0000024D0223BD60>, <models.user.Bet_Number object at 0x0000024D0223BDC0>, <models.user.Bet_Number object at 0x0000024D0223BE50>, <models.user.Bet_Number object at 0x0000024D0223BEB0>, <models.user.Bet_Number object at 0x0000024D0223BF40>, <models.user.Bet_Number object at 0x0000024D0223BFD0>, <models.user.Bet_Number object at 0x0000024D022490A0>, <models.user.Bet_Number object at 0x0000024D02249130>]
+2024-04-05 13:15:02,662 - ERROR - calculateResult.py:253 - '0'
+2024-04-05 13:15:02,667 - ERROR - main.py:110 - 
+2024-04-05 13:25:14,468 - INFO - calculateResult.py:83 - going in get result
+2024-04-05 13:25:14,474 - INFO - calculateResult.py:86 - 123
+2024-04-05 13:25:14,600 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-04-05 13:25:14,600 - INFO - calculateResult.py:113 - {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100')}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:22 - In determine winner
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('110'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100'), 0: 0, 1: 0, 7: 0}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 13:25:14,601 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 13:25:14,669 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x000002285BD61DF0>
+2024-04-05 13:25:14,670 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x000002285BD61850>
+2024-04-05 13:25:14,694 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x000002285BD91310>, <models.user.Bet_Number object at 0x000002285BD912B0>, <models.user.Bet_Number object at 0x000002285BD913D0>, <models.user.Bet_Number object at 0x000002285BD91430>, <models.user.Bet_Number object at 0x000002285BD91490>, <models.user.Bet_Number object at 0x000002285BD91520>, <models.user.Bet_Number object at 0x000002285BD915B0>, <models.user.Bet_Number object at 0x000002285BD91640>, <models.user.Bet_Number object at 0x000002285BD916D0>, <models.user.Bet_Number object at 0x000002285BD91760>, <models.user.Bet_Number object at 0x000002285BD917F0>]
+2024-04-05 13:25:14,702 - ERROR - calculateResult.py:253 - '0'
+2024-04-05 13:25:14,702 - ERROR - main.py:110 - 
+2024-04-05 15:22:49,406 - INFO - calculateResult.py:83 - going in get result
+2024-04-05 15:22:49,407 - INFO - calculateResult.py:86 - 123
+2024-04-05 15:22:49,424 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-04-05 15:22:49,424 - INFO - calculateResult.py:113 - {2: Decimal('210'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100')}
+2024-04-05 15:22:49,424 - INFO - calculateResult.py:22 - In determine winner
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('210'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100'), 0: 0, 1: 0, 7: 0}
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-05 15:22:49,425 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-05 15:22:49,458 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x000001783DF6ED60>
+2024-04-05 15:22:49,459 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x000001783DF59EB0>
+2024-04-05 15:22:49,475 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x000001783DF76610>, <models.user.Bet_Number object at 0x000001783DF765B0>, <models.user.Bet_Number object at 0x000001783DF766A0>, <models.user.Bet_Number object at 0x000001783DF766D0>, <models.user.Bet_Number object at 0x000001783DF76700>, <models.user.Bet_Number object at 0x000001783DF765E0>, <models.user.Bet_Number object at 0x000001783DF76760>, <models.user.Bet_Number object at 0x000001783DF767C0>, <models.user.Bet_Number object at 0x000001783DF76820>, <models.user.Bet_Number object at 0x000001783DF76880>, <models.user.Bet_Number object at 0x000001783DF768E0>, <models.user.Bet_Number object at 0x000001783DF76940>]
+2024-04-05 15:22:49,481 - ERROR - calculateResult.py:253 - '0'
+2024-04-05 15:22:49,482 - ERROR - main.py:110 - 

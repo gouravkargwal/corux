@@ -1,25 +1,16 @@
 import {
   Box,
   Button,
-  Checkbox,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormControlLabel,
-  FormHelperText,
   Grid,
   IconButton,
-  InputAdornment,
   Tab,
   Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../../node_modules/ag-grid-community/styles/ag-grid.css";
 import "../../node_modules/ag-grid-community/styles/ag-theme-alpine.css";
 import { useForm } from "react-hook-form";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { selectAuthToken, selectAuthUser } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -34,7 +25,6 @@ import {
   setGameId,
   setTimer,
 } from "../Feature/ColorPrediction/colorPredictionSlice";
-import LoadingButton from "../Components/UI/LoadingButton";
 import {
   GreenButton,
   RedButton,
@@ -43,14 +33,17 @@ import {
 import theme from "../Theme/theme";
 import WinnerTable from "../Components/ColorPrediction/WinnerTable";
 import MyRecordTable from "../Components/ColorPrediction/MyRecordTable";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import socket from "../Util/socket";
 import ColorPredictionTimer from "../Components/ColorPrediction/ColorPredictionTimer";
 import _ from "lodash";
 import { toast } from "react-toastify";
+import NotListedLocationIcon from "@mui/icons-material/NotListedLocation";
+import { grey } from "@mui/material/colors";
+import GameRulesDialog from "../Components/ColorPrediction/GamesRulesDialogue";
+import AuthDialogue from "../Components/UI/AuthDialogue";
+import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
 
 const ColorPrediction = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector(selectAuthToken);
   const gameId = useSelector(selectGameId);
@@ -60,16 +53,17 @@ const ColorPrediction = () => {
   const error = useSelector(selectBetError);
   const bettingAllowed = useSelector(selectBettingAllowed);
 
-  const [colorBidDialog, setColorBidDialog] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [dialogType, setDialogType] = useState("");
   const [activeTab, setActiveTab] = useState(0);
-  const [loginDialog, setLoginDialog] = useState(false);
+  const [loginDialog, setLoginDialog] = useState(true);
+  const [rulesDialog, setRulesDialog] = useState(false);
+  const [colorBidDialog, setColorBidDialog] = useState(false);
 
   useEffect(() => {
     if (!socket.connected) {
-      socket.connect(); // Connect when the component mounts if not already connected
+      socket.connect();
     }
     socket.on("game_state", (data) => {
       if (data.error) {
@@ -114,6 +108,12 @@ const ColorPrediction = () => {
     setColorBidDialog(false);
   };
 
+  const handleOpenRulesDialog = () => {
+    setRulesDialog(true);
+  };
+  const handleCloseRulesDialog = () => {
+    setRulesDialog(false);
+  };
   const {
     register,
     handleSubmit,
@@ -213,134 +213,57 @@ const ColorPrediction = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={4}
-          sx={{ backgroundColor: theme.palette.background.main, boxShadow: 0 }}
-          margin={3}
-          borderRadius={1}
-          padding={2}
-          height="40vh"
-        >
-          <Grid item xs={12}>
+        <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
+          <Grid item xs={12} my={1}>
             <Tabs
               value={activeTab}
               onChange={handleTabChange}
               aria-label="simple tabs example"
+              variant="fullWidth"
+              visibleScrollbar={false}
             >
               <Tab label="Winner" />
               <Tab label="My Record" />
             </Tabs>
-            <Grid item xs={12}>
-              {activeTab === 0 && <WinnerTable />}
-              {activeTab === 1 && <MyRecordTable />}
-            </Grid>
+          </Grid>
+          <Grid item xs={12} my={1}>
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography variant="body1" fontWeight="500">
+                {activeTab === 0 ? "Winner" : "My Record"}
+              </Typography>
+              <Typography variant="body2" fontWeight="500" color={grey[500]}>
+                <IconButton onClick={handleOpenRulesDialog}>
+                  <NotListedLocationIcon />
+                </IconButton>
+                Rules
+              </Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12}>
+            {activeTab === 0 && <WinnerTable />}
+            {activeTab === 1 && <MyRecordTable />}
           </Grid>
         </Grid>
       </Grid>
 
-      <Dialog onClose={handleCloseBidDialog} open={colorBidDialog}>
-        <DialogTitle
-          component="div"
-          onClose={handleCloseBidDialog}
-          display="flex"
-          justifyContent="space-between"
-        >
-          <Typography
-            variant="h6"
-            sx={{
-              color: selectedColor
-                ? theme.palette.text[selectedColor]
-                : theme.palette.text.blue,
-            }}
-          >
-            {dialogType === "color"
-              ? `Join ${selectedColor}`
-              : `Select ${selectedNumber}`}
-          </Typography>
-          <IconButton onClick={handleCloseBidDialog} size="small">
-            <HighlightOffIcon />
-          </IconButton>
-        </DialogTitle>
+      <GameRulesDialog open={rulesDialog} onClose={handleCloseRulesDialog} />
 
-        <DialogContent>
-          <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-            <Box mt={3}>
-              <TextField
-                label="Amount"
-                variant="outlined"
-                fullWidth
-                size="small"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <CurrencyRupeeIcon color={theme.palette.button.green} />
-                    </InputAdornment>
-                  ),
-                }}
-                {...register("amount", {
-                  required: true,
-                  pattern: /^[0-9]+(\.[0-9]{1,2})?$/,
-                  min: {
-                    value: 10,
-                    message: "Amount should be at least 10.",
-                  },
-                })}
-                error={!!errors.amount}
-                helperText={
-                  errors.amount
-                    ? "Amount is required and should be a valid number."
-                    : ""
-                }
-              />
-            </Box>
+      <BettingDialogue
+        open={colorBidDialog}
+        onClose={handleCloseBidDialog}
+        handleSubmit={handleSubmit}
+        onSubmit={onSubmit}
+        register={register}
+        errors={errors}
+        loading={loading}
+        dialogType={dialogType}
+      />
 
-            <Box mt={3}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    {...register("termsAndConditions", { required: true })}
-                    size="small"
-                  />
-                }
-                label={
-                  <Typography variant="body2">
-                    I accept the terms and conditions
-                  </Typography>
-                }
-              />
-
-              {errors.termsAndConditions && (
-                <FormHelperText error>
-                  You must accept the terms and conditions.
-                </FormHelperText>
-              )}
-            </Box>
-
-            <Box mt={3} display="flex" justifyContent="flex-end" gap={2}>
-              <Button onClick={handleCloseBidDialog} variant="text">
-                Cancel
-              </Button>
-              <LoadingButton
-                type="submit"
-                loading={loading}
-                variant="contained"
-              >
-                Submit
-              </LoadingButton>
-            </Box>
-          </Box>
-        </DialogContent>
-      </Dialog>
-
-      <Dialog onClose={handleCloseLoginDialog} open={loginDialog}>
-        <DialogTitle>Login</DialogTitle>
-        <DialogContent>
-          <Button onClick={() => navigate("/login")}>Login</Button>
-          <Button onClick={() => navigate("/register")}>Register</Button>
-          <Button onClick={handleCloseLoginDialog}>Cancel</Button>
-        </DialogContent>
-      </Dialog>
+      <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
     </>
   );
 };

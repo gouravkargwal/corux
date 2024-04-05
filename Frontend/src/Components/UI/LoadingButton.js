@@ -4,19 +4,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 function LoadingButton({ loading, ...props }) {
   return (
-    <Button
-      {...props}
-      disabled={loading || props.disabled}
-      startIcon={
-        loading ? (
+    <>
+      {loading ? (
+        <Button {...props} disabled={loading || props.disabled}>
           <CircularProgress size={16} color="inherit" />
-        ) : (
-          <span style={{ width: 16, height: 16, display: "inline-block" }} />
-        )
-      }
-    >
-      {props.children}
-    </Button>
+        </Button>
+      ) : (
+        <Button {...props} disabled={loading || props.disabled}>
+          {props.children}
+        </Button>
+      )}
+    </>
   );
 }
 

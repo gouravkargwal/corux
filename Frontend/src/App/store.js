@@ -12,6 +12,7 @@ import {
 import authReducer from "../Feature/Auth/authSlice";
 import colorPredictionReducer from "../Feature/ColorPrediction/colorPredictionSlice";
 import snackbarReducer from "../Feature/Snackbar/snackbarSlice";
+import balanceReducer from "../Feature/Balance/balanceSlice";
 import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   auth: authReducer,
   colorPrediction: colorPredictionReducer,
   snackbar: snackbarReducer,
+  balance: balanceReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

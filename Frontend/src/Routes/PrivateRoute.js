@@ -1,23 +1,16 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { selectAuthToken } from "../Feature/Auth/authSlice";
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  const token = useSelector((state) => state.auth.token); // Accessing the token from your auth state
+const PrivateRoute = ({ children }) => {
+  const token = useSelector(selectAuthToken);
+  const location = useLocation();
 
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        token ? (
-          <Component {...props} />
-        ) : (
-          <Redirect
-            to={{ pathname: "/login", state: { from: props.location } }}
-          />
-        )
-      }
-    />
+  return token ? (
+    children
+  ) : (
+    <Navigate to="/home" replace state={{ from: location }} />
   );
 };
 

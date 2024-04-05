@@ -23,11 +23,21 @@ const resendOtpAPI = async (data) => {
   return axios.post(`${process.env.BASE_URL}/login`, data);
 };
 
+// Bet API
 const createBetAPI = async (data) => {
   return axiosInstance.post(`/user/create-bet`, data);
 };
 const resultColorBetAPI = async (data) => {
   return axiosInstance.post(`/user/result-out`, data);
+};
+
+// User API
+const getBalanceAPI = async (data) => {
+  return axiosInstance.post(`/user/get-profile`, data);
+};
+
+const changePasswordAPI = async (data) => {
+  return axiosInstance.patch(`/user/change-password`, data);
 };
 
 const API = {
@@ -39,6 +49,8 @@ const API = {
   resendOtpAPI,
   createBetAPI,
   resultColorBetAPI,
+  getBalanceAPI,
+  changePasswordAPI,
 };
 
 export default API;

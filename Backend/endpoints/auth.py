@@ -126,7 +126,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
         payload = {"mobile_number": user.mobile_number, "user_id": user.user_id}
 
         access_token = authhandler.encode_token(payload)
-        return {"status_code": 200, "access_token": access_token}
+        return {"status_code": 200, "access_token": access_token,"balance":user.balance,"mobile_number":user.mobile_number}
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
@@ -154,6 +154,6 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
         payload = {"mobile_number": new_user.mobile_number, "user_id": new_user.user_id}
 
         access_token = authhandler.encode_token(payload)
-        return {"status_code": 200, "access_token": access_token}
+        return {"status_code": 200, "access_token": access_token,"balance":new_user.balance,"mobile_number":new_user.mobile_number}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

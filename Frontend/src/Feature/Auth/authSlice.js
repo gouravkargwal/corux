@@ -6,7 +6,8 @@ const initialState = {
   token: null,
   loading: null,
   error: null,
-  user: "user1",
+  user: null,
+  balance: null,
   registrationData: null,
 };
 
@@ -47,9 +48,10 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logoutUser(state) {
+    logoutUser(state, action) {
       state.user = null;
       state.token = null;
+      state.balance = null;
     },
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
@@ -64,7 +66,8 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.access_token;
-        state.user = action.payload.user;
+        state.user = action.payload.mobile_number;
+        state.balance = action.payload.balance;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -77,8 +80,9 @@ const authSlice = createSlice({
       .addCase(registerUser.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.token = action.payload.token;
-        // state.user = action.payload.user;
+        state.token = action.payload.access_token;
+        state.user = action.payload.mobile_number;
+        state.balance = action.payload.balance;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -93,6 +97,7 @@ export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthToken = (state) => state.auth.token;
 export const selectAuthUser = (state) => state.auth.user;
+export const selectAuthBalance = (state) => state.auth.balance;
 export const selectAuthRegistrationData = (state) =>
   state.auth.registrationData;
 
