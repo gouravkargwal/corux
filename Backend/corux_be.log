@@ -3060,3 +3060,19 @@
 2024-04-05 15:22:49,475 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x000001783DF76610>, <models.user.Bet_Number object at 0x000001783DF765B0>, <models.user.Bet_Number object at 0x000001783DF766A0>, <models.user.Bet_Number object at 0x000001783DF766D0>, <models.user.Bet_Number object at 0x000001783DF76700>, <models.user.Bet_Number object at 0x000001783DF765E0>, <models.user.Bet_Number object at 0x000001783DF76760>, <models.user.Bet_Number object at 0x000001783DF767C0>, <models.user.Bet_Number object at 0x000001783DF76820>, <models.user.Bet_Number object at 0x000001783DF76880>, <models.user.Bet_Number object at 0x000001783DF768E0>, <models.user.Bet_Number object at 0x000001783DF76940>]
 2024-04-05 15:22:49,481 - ERROR - calculateResult.py:253 - '0'
 2024-04-05 15:22:49,482 - ERROR - main.py:110 - 
+2024-04-08 12:25:49,884 - INFO - calculateResult.py:83 - going in get result
+2024-04-08 12:25:49,896 - INFO - calculateResult.py:86 - 123
+2024-04-08 12:25:49,968 - INFO - calculateResult.py:112 - {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110')}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:113 - {2: Decimal('210'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100')}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:22 - In determine winner
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:24 - Result Number: {2: Decimal('210'), 4: Decimal('10'), 9: Decimal('56'), 8: Decimal('45'), 6: Decimal('700'), 3: Decimal('56'), 5: Decimal('100'), 0: 0, 1: 0, 7: 0}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:25 - Result Color: {'green': Decimal('410'), '0': Decimal('15'), 'violet': Decimal('110'), 'red': 0}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:73 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:74 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:155 - {'total_amount_won': 0.0, 'number_who_won': [0], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 1}
+2024-04-08 12:25:49,969 - INFO - calculateResult.py:156 - {'total_amount_won': inf, 'number_who_won': [], 'color_who_won': [], 'red': 0, 'green': 0, 'violet': 0, 'is_profit': 0}
+2024-04-08 12:25:50,017 - INFO - calculateResult.py:199 - <models.user.All_Time_Winner_Table object at 0x0000023CE0C41940>
+2024-04-08 12:25:50,017 - INFO - calculateResult.py:200 - <models.user.Winner_Table object at 0x0000023CE0C264F0>
+2024-04-08 12:25:50,043 - INFO - calculateResult.py:205 - [<models.user.Bet_Number object at 0x0000023CE0C67F70>, <models.user.Bet_Number object at 0x0000023CE0C67F10>, <models.user.Bet_Number object at 0x0000023CE0C73070>, <models.user.Bet_Number object at 0x0000023CE0C730D0>, <models.user.Bet_Number object at 0x0000023CE0C73130>, <models.user.Bet_Number object at 0x0000023CE0C731C0>, <models.user.Bet_Number object at 0x0000023CE0C73250>, <models.user.Bet_Number object at 0x0000023CE0C732E0>, <models.user.Bet_Number object at 0x0000023CE0C73370>, <models.user.Bet_Number object at 0x0000023CE0C73400>, <models.user.Bet_Number object at 0x0000023CE0C73490>, <models.user.Bet_Number object at 0x0000023CE0C73520>]
+2024-04-08 12:25:50,047 - ERROR - calculateResult.py:253 - '0'
+2024-04-08 12:25:50,047 - ERROR - main.py:110 - 

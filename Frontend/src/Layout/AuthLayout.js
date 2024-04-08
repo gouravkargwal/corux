@@ -6,7 +6,7 @@ const AuthLayout = () => {
   const token = useSelector(selectAuthToken);
   console.log(token);
 
-  return <>{token ? <Navigate to="/home" /> : <Outlet />}</>;
+  return <>{token ? <Navigate to="/app/home" /> : <Outlet />}</>;
 };
 
 export default AuthLayout;

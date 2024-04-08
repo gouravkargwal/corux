@@ -1,81 +1,84 @@
 import React, { useEffect, useState } from "react";
 import { Box, BottomNavigation, BottomNavigationAction } from "@mui/material";
-import "../Assets/CSS/Footer.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
-import { selectAuthToken } from "../Feature/Auth/authSlice";
 import { useSelector } from "react-redux";
+import { selectAuthToken } from "../Feature/Auth/authSlice";
+import AddCardIcon from "@mui/icons-material/AddCard";
+import LoginIcon from "@mui/icons-material/Login";
+
+const navigationPaths = [
+  { value: 0, path: "/app/home", label: "Home", icon: <HomeIcon /> },
+  {
+    value: 1,
+    path: "/app/promotion",
+    label: "Promotion",
+    condition: (token) => token,
+    icon: <LocalOfferIcon />,
+  },
+  {
+    value: 2,
+    path: "/app/profile/recharge",
+    label: "Recharge",
+    condition: (token) => token,
+    icon: <AddCardIcon />,
+  },
+  {
+    value: 3,
+    path: "/app/profile",
+    label: "Profile",
+    condition: (token) => token,
+    icon: <AccountCircleIcon />,
+  },
+  {
+    value: 4,
+    path: "/",
+    label: "Login",
+    condition: (token) => !token,
+    icon: <LoginIcon />,
+  },
+];
 
 export default function Footer() {
   const [value, setValue] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const token = useSelector(selectAuthToken);
+
   useEffect(() => {
-    // Adjust this logic based on your actual paths
-    if (location.pathname === "/home") {
-      setValue(0);
-    } else if (location.pathname.includes("/home/promotion")) {
-      setValue(1);
-    } else if (
-      location.pathname.includes("/home/profile") ||
-      location.pathname.includes("/")
-    ) {
-      setValue(token ? 2 : 3); // Assuming 3 is the value for login if not authenticated
-    } else {
-      setValue(0);
-    }
-  }, [location, token]);
+    const foundPath =
+      navigationPaths.find((path) => location.pathname.includes(path.path)) ||
+      navigationPaths[0];
+    setValue(foundPath.value);
+  }, [location]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-    switch (newValue) {
-      case 0:
-        navigate("/home");
-        break;
-      case 1:
-        navigate("/home/promotion");
-        break;
-      case 2:
-        if (token) {
-          navigate("/home/profile");
-        } else {
-          navigate("/");
-        }
-        break;
-      default:
-        navigate("/home");
-        break;
+    const pathInfo = navigationPaths.find((path) => path.value === newValue);
+    if (pathInfo && (!pathInfo.condition || pathInfo.condition(token))) {
+      navigate(pathInfo.path);
     }
   };
 
   return (
     <>
-      <Box>
-        <Box
-          sx={{ width: "100%", position: "fixed", bottom: 0, display: "block" }}
-        >
-          <BottomNavigation value={value} onChange={handleChange} showLabels>
-            <BottomNavigationAction label="Home" icon={<HomeIcon />} />
-            <BottomNavigationAction
-              label="Promotion"
-              icon={<LocalOfferIcon />}
-            />
-            {token ? (
-              <BottomNavigationAction
-                label="Profile"
-                icon={<AccountCircleIcon />}
-              />
-            ) : (
-              <BottomNavigationAction
-                label="Login"
-                icon={<AccountCircleIcon />}
-              />
-            )}
-          </BottomNavigation>
-        </Box>
+      <Box
+        sx={{ width: "100%", position: "fixed", bottom: 0, display: "block" }}
+      >
+        <BottomNavigation value={value} onChange={handleChange} showLabels>
+          {navigationPaths.map(
+            (path) =>
+              (!path.condition || path.condition(token)) && (
+                <BottomNavigationAction
+                  key={path.value}
+                  label={path.label}
+                  icon={path.icon}
+                />
+              )
+          )}
+        </BottomNavigation>
       </Box>
     </>
   );

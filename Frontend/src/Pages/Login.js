@@ -8,6 +8,7 @@ import {
   Typography,
   Avatar,
   Container,
+  Grid,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -39,7 +40,7 @@ export default function Login() {
 
   return (
     <Box height="100vh">
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <Box
           sx={{
             display: "flex",
@@ -70,127 +71,135 @@ export default function Login() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <TextField
-              fullWidth
-              margin="normal"
-              sx={{ borderColor: grey[500], my: 4 }}
-              variant="outlined"
-              placeholder="Mobile Number"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: purple[500],
-                      }}
-                    >
-                      <PhoneAndroidOutlinedIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
-              {...register("phone", {
-                required: "Mobile number is required",
-                pattern: {
-                  value: /^\+?([0-9]{1,3})?([0-9]{10})$/,
-                  message: "Invalid mobile number",
-                },
-              })}
-              error={!!errors.phone}
-              helperText={errors?.phone?.message}
-            />
-
-            <TextField
-              fullWidth
-              variant="outlined"
-              placeholder="Password"
-              sx={{ borderColor: grey[500] }}
-              type={showPassword ? "text" : "password"}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: orange[500],
-                      }}
-                    >
-                      <LockOutlinedIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <Avatar
-                      sx={{
-                        bgcolor: purple[500],
-                      }}
-                    >
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                      >
-                        {showPassword ? (
-                          <VisibilityOff sx={{ color: "text.white" }} />
-                        ) : (
-                          <Visibility sx={{ color: "text.white" }} />
-                        )}
-                      </IconButton>
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
-              {...register("password", {
-                required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must have at least 8 characters",
-                },
-              })}
-              error={!!errors.password}
-              helperText={errors?.password?.message}
-            />
-            <Typography
-              sx={{
-                textAlign: "right",
-                my: 1,
-                color: grey[500],
-                cursor: "pointer",
-              }}
-            >
-              Forgot password?
-            </Typography>
-            <LoadingButton
-              type="submit"
-              fullWidth
-              disabled={!(isValid && isDirty)}
-              loading={loading}
-              sx={{
-                bgcolor: blue[500],
-                borderRadius: 10,
-                padding: [2, 0],
-                my: 2,
-              }}
-              variant="contained"
-            >
-              Login
-            </LoadingButton>
-
-            <Typography sx={{ textAlign: "center", m: 1 }}>
-              Don't have an account?{" "}
-              <Typography
-                onClick={() => {
-                  navigate("/register");
-                }}
-                sx={{
-                  color: blue[500],
-                  cursor: "pointer",
-                }}
-                component="span"
-              >
-                Register
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  sx={{ borderColor: grey[500], my: 4 }}
+                  variant="outlined"
+                  placeholder="Mobile Number"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
+                        >
+                          <PhoneAndroidOutlinedIcon
+                            sx={{ color: "text.white" }}
+                          />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("phone", {
+                    required: "Mobile number is required",
+                    pattern: {
+                      value: /^\+?([0-9]{1,3})?([0-9]{10})$/,
+                      message: "Invalid mobile number",
+                    },
+                  })}
+                  error={!!errors.phone}
+                  helperText={errors?.phone?.message}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  placeholder="Password"
+                  sx={{ borderColor: grey[500] }}
+                  type={showPassword ? "text" : "password"}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: orange[500],
+                          }}
+                        >
+                          <LockOutlinedIcon sx={{ color: "text.white" }} />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
+                        >
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                          >
+                            {showPassword ? (
+                              <VisibilityOff sx={{ color: "text.white" }} />
+                            ) : (
+                              <Visibility sx={{ color: "text.white" }} />
+                            )}
+                          </IconButton>
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                  }}
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 8,
+                      message: "Password must have at least 8 characters",
+                    },
+                  })}
+                  error={!!errors.password}
+                  helperText={errors?.password?.message}
+                />
+                <Typography
+                  sx={{
+                    textAlign: "right",
+                    my: 1,
+                    color: grey[500],
+                    cursor: "pointer",
+                  }}
+                >
+                  Forgot password?
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <LoadingButton
+                  type="submit"
+                  fullWidth
+                  disabled={!(isValid && isDirty)}
+                  loading={loading}
+                  sx={{
+                    bgcolor: blue[500],
+                    borderRadius: 10,
+                    padding: [2, 0],
+                    my: 2,
+                  }}
+                  variant="contained"
+                >
+                  Login
+                </LoadingButton>
+              </Grid>
+              <Typography sx={{ textAlign: "center", m: 1 }}>
+                Don't have an account?{" "}
+                <Typography
+                  onClick={() => {
+                    navigate("/register");
+                  }}
+                  sx={{
+                    color: blue[500],
+                    cursor: "pointer",
+                  }}
+                  component="span"
+                >
+                  Register
+                </Typography>
               </Typography>
-            </Typography>
+            </Grid>
           </Box>
         </Box>
         {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}

@@ -96,7 +96,7 @@ const InfoWithButton = () => {
           variant="contained"
           fullWidth
           onClick={() => {
-            navigate("/home/recharge");
+            navigate("/app/profile/recharge");
           }}
         >
           Recharge
@@ -106,7 +106,7 @@ const InfoWithButton = () => {
           variant="contained"
           fullWidth
           onClick={() => {
-            navigate("/home/withdraw");
+            navigate("/app/profile/withdraw");
           }}
         >
           Withdraw

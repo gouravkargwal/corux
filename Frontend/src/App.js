@@ -33,12 +33,16 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="otp-verify" element={<OtpVerify />} />
         </Route>
-        <Route path="/home" element={<UserLayout />}>
-          <Route index element={<HomePage />} />
-          <Route path="color-prediction" element={<ColorPrediction />} />
-          <Route path="monty-hall" element={<MontyHall />} />
-          <Route path="virtual-slot" element={<VirtualSlot />} />
-          <Route path="promotion" element={<Promotion />} />
+        <Route path="/app" element={<UserLayout />}>
+          <Route path="home">
+            <Route index element={<HomePage />} />
+            <Route path="color-prediction" element={<ColorPrediction />} />
+            <Route path="monty-hall" element={<MontyHall />} />
+            <Route path="virtual-slot" element={<VirtualSlot />} />
+          </Route>
+          <Route path="promotion">
+            <Route index element={<Promotion />} />
+          </Route>
           <Route path="profile">
             <Route
               index

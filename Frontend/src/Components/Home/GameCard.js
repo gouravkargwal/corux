@@ -11,7 +11,8 @@ export default function GameCard({ title, time }) {
   return (
     <Card
       sx={{
-        maxWidth: 280,
+        width: "100%",
+        maxWidth: 350,
         border: "none",
         borderTopLeftRadius: 5,
         borderTopRightRadius: 5,

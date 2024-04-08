@@ -42,6 +42,7 @@ import { grey } from "@mui/material/colors";
 import GameRulesDialog from "../Components/ColorPrediction/GamesRulesDialogue";
 import AuthDialogue from "../Components/UI/AuthDialogue";
 import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
+import InfoWithButton from "../Components/Wallet/InfoWithButton";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const ColorPrediction = () => {
   const [selectedNumber, setSelectedNumber] = useState(null);
   const [dialogType, setDialogType] = useState("");
   const [activeTab, setActiveTab] = useState(0);
-  const [loginDialog, setLoginDialog] = useState(true);
+  const [loginDialog, setLoginDialog] = useState(false);
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
 
@@ -149,6 +150,7 @@ const ColorPrediction = () => {
   return (
     <>
       <Grid container direction="column">
+        <InfoWithButton />
         <Grid
           item
           xs={4}

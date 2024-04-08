@@ -12,6 +12,8 @@ import {
   InputAdornment,
   TextField,
   Typography,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
@@ -27,6 +29,8 @@ import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { blue, green, grey, orange, purple } from "@mui/material/colors";
 
 export default function Register() {
+  const theme = useTheme();
+  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -76,12 +80,13 @@ export default function Register() {
 
   return (
     <Box height="100vh">
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="sm">
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            px: isXsScreen ? 2 : 3,
           }}
         >
           <Avatar
@@ -108,7 +113,7 @@ export default function Register() {
             sx={{ mt: 1 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12}>
                 <TextField
                   autoComplete="given-name"
                   fullWidth
@@ -330,7 +335,7 @@ export default function Register() {
                 loading={loadingBtn}
                 sx={{
                   bgcolor: blue[500],
-                  borderRadius: 10,
+                  borderRadius: isXsScreen ? 5 : 10,
                   padding: [2, 0],
                   my: 2,
                 }}
