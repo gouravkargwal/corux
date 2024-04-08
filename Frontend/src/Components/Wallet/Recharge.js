@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -14,22 +14,52 @@ import {
 } from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { blue, green, grey } from "@mui/material/colors";
+import API from "../../Api/ApiCall";
+import LoadingButton from "../UI/LoadingButton";
 
+const paymentGateways = ["Stripe", "Cashfree", "Paytm", "PayU"];
+const predefinedValues = [100, 200, 500, 1000];
 const Recharge = () => {
-  const predefinedValues = [10, 50, 100, 500];
+  const [selectedGateway, setSelectedGateway] = useState(null);
+  const [loading, setLoading] = useState(null);
   const {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm({
     defaultValues: {
       amount: "",
     },
   });
 
-  const onFormSubmit = (data) => {
-    console.log(data);
+  const onFormSubmit = async (data) => {
+    try {
+      setLoading(true);
+      console.log(data);
+
+      // Shuffle the array of payment gateways
+      const shuffledGateways = paymentGateways
+        .filter((gateway) => gateway !== selectedGateway)
+        .sort(() => 0.5 - Math.random());
+
+      // Select the first gateway from the shuffled array
+      const newSelectedGateway = shuffledGateways[0];
+
+      if (newSelectedGateway === "Cashfree") {
+        const { status } = await API.cashfreeAPI(data);
+      }
+
+      // Update the state with the new selected gateway
+      setSelectedGateway(newSelectedGateway);
+
+      // Here you can proceed with the submission process and handle the payment through the selected gateway
+      console.log("Selected Payment Gateway:", newSelectedGateway);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -109,10 +139,11 @@ const Recharge = () => {
             </Button>
           ))}
         </Box>
-        <Button
+        <LoadingButton
           type="submit"
           variant="contained"
           fullWidth
+          loading={loading}
           sx={{
             bgcolor: blue[500],
             borderRadius: 10,
@@ -120,7 +151,7 @@ const Recharge = () => {
           }}
         >
           Recharge
-        </Button>
+        </LoadingButton>
       </Box>
     </Box>
   );

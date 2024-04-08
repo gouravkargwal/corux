@@ -40,6 +40,12 @@ const changePasswordAPI = async (data) => {
   return axiosInstance.patch(`/user/change-password`, data);
 };
 
+// Add Money API
+
+const cashfreeAPI = async (data) => {
+  return axiosInstance.patch(`/user/cashreeapi`, data);
+};
+
 const API = {
   signinAPI,
   signupAPI,
@@ -51,6 +57,7 @@ const API = {
   resultColorBetAPI,
   getBalanceAPI,
   changePasswordAPI,
+  cashfreeAPI,
 };
 
 export default API;
