@@ -7,7 +7,7 @@ import { Box, CardActionArea } from "@mui/material";
 import AvTimerIcon from "@mui/icons-material/AvTimer";
 import { blue, lightBlue } from "@mui/material/colors";
 
-export default function GameCard({ title, time }) {
+export default function GameCard({ title, time, img }) {
   return (
     <Card
       sx={{
@@ -22,9 +22,10 @@ export default function GameCard({ title, time }) {
       <CardActionArea>
         <CardMedia
           component="img"
-          height="120"
-          image="/static/images/cards/contemplative-reptile.jpg"
-          alt="green iguana"
+          height="260"
+          image={img}
+          alt={title}
+          sx={{ objectFit: "fill" }}
         />
         <CardContent sx={{ m: 0, p: 0 }}>
           <Typography gutterBottom variant="body1" textAlign="center">

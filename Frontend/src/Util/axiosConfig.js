@@ -5,12 +5,22 @@ import {
   setRefreshing,
 } from "../Feature/Auth/authSlice";
 import axiosInstance from "./axiosInstance";
+import axiosRefreshInstance from "./axiosRefreshInstance";
+
+let refreshSubscribers = [];
+
+const addRefreshTokenSubscriber = (callback) => {
+  refreshSubscribers.push(callback);
+};
+
+const onRrefreshed = (token) => {
+  refreshSubscribers.forEach((callback) => callback(token));
+};
 
 const refreshToken = async () => {
-  const refreshTokenOld = store.getState().auth.refreshToken;
-  console.log(refreshTokenOld);
   try {
-    const response = await axiosInstance.post(
+    const refreshTokenOld = store.getState().auth.refreshToken;
+    const response = await axiosRefreshInstance.post(
       "auth/refresh-token",
       {},
       {
@@ -19,24 +29,27 @@ const refreshToken = async () => {
         },
       }
     );
-    console.log(response, "Response from refresh api");
-    const { access_token: accessToken, refresh_token: refreshToken } =
+    const { access_token: accessToken, refresh_token: refreshTokenNew } =
       response.data;
-
-    // Here, you'd update the store or context with the new access token
-    store.dispatch(setNewTokens({ accessToken, refreshToken }));
-    return accessToken; // Return the new access token
+    store.dispatch(
+      setNewTokens({ accessToken, refreshToken: refreshTokenNew })
+    );
+    store.dispatch(setRefreshing(false)); // Reset refreshing flag after successful refresh
+    onRrefreshed(accessToken); // Notify subscribers with the new token
+    refreshSubscribers = []; // Clear subscribers after notifying
+    return accessToken;
   } catch (error) {
     store.dispatch(logoutUser());
+    store.dispatch(setRefreshing(false)); // Ensure to reset the refreshing flag even on failure
+    onRrefreshed(null); // Notify subscribers that no new token is available
     window.location.assign("/");
-    throw error;
+    return null;
   }
 };
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = store.getState().auth.token;
-    console.log(token, "From axios config");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }
@@ -47,19 +60,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-let refreshSubscribers = [];
-
-// Function to add subscribers which are waiting for token refresh
-const addRefreshTokenSubscriber = (subscriber) => {
-  refreshSubscribers.push(subscriber);
-};
-
-// Function to notify all subscribers that token has been refreshed
-const onRrefreshed = (token) => {
-  refreshSubscribers.map((callback) => callback(token));
-};
-
-// Response interceptor to handle 403 errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -67,45 +67,45 @@ axiosInstance.interceptors.response.use(
       config,
       response: { status },
     } = error;
-    const originalRequest = config;
     const isRefreshing = store.getState().auth.isRefreshing;
-
-    // Check if we got a 403 and we haven't already retried the request
-    if (status === 401 && !originalRequest._retry) {
+    if (
+      status === 401 &&
+      !config._retry &&
+      !config.url.includes("refresh-token")
+    ) {
       if (!isRefreshing) {
-        setRefreshing(true);
-        originalRequest._retry = true;
-
-        try {
-          const newToken = await refreshToken(); // Attempt to refresh token
-          setRefreshing(false);
-
-          // Update axios header and store with new token
-          axiosInstance.defaults.headers.common[
-            "Authorization"
-          ] = `Bearer ${newToken}`;
-
-          onRrefreshed(newToken); // Notify subscribers
-
-          refreshSubscribers = []; // Reset the subscribers array
-
-          return axiosInstance(originalRequest); // Retry the original request with new token
-        } catch (refreshError) {
-          setRefreshing(false);
-          refreshSubscribers = [];
-          return Promise.reject(refreshError); // If token refresh fails, reject the promise
+        store.dispatch(setRefreshing(true));
+        const newToken = await refreshToken();
+        if (newToken) {
+          config.headers["Authorization"] = `Bearer ${newToken}`;
+          store.dispatch(setRefreshing(false));
+          return axiosInstance(config);
+        } else {
+          config._retry = true;
+          store.dispatch(logoutUser());
+          store.dispatch(setRefreshing(false));
+          window.location.assign("/");
+          return Promise.reject(error);
         }
       } else {
-        // If token is already refreshing, return a promise that resolves once the token is refreshed
-        return new Promise((resolve) => {
+        console.log("Inside other refreshing block");
+        return new Promise((resolve, reject) => {
           addRefreshTokenSubscriber((token) => {
-            originalRequest.headers["Authorization"] = "Bearer " + token;
-            resolve(axiosInstance(originalRequest));
+            if (token) {
+              console.log("TOken exists");
+              config.headers["Authorization"] = `Bearer ${token}`;
+              resolve(axiosInstance(config));
+            } else {
+              store.dispatch(logoutUser());
+              store.dispatch(setRefreshing(false)); // It's crucial to reset this flag here as well.
+              window.location.assign("/");
+              reject(new Error("Token refresh failed, user is logged out."));
+            }
           });
         });
       }
     }
-
+    // For errors other than 401, just return the error
     return Promise.reject(error);
   }
 );

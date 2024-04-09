@@ -15,11 +15,13 @@ import snackbarReducer from "../Feature/Snackbar/snackbarSlice";
 import balanceReducer from "../Feature/Balance/balanceSlice";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
+import authTransform from "../Util/authTransform";
 
 const persistConfig = {
   key: "root",
   storage,
   whitelist: ["auth"],
+  transform: [authTransform],
 };
 
 const rootReducer = combineReducers({

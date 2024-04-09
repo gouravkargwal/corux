@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
-import { logoutUser } from "../Auth/authSlice";
 
 const initialState = {
   loading: null,
@@ -21,8 +20,6 @@ export const createBet = createAsyncThunk(
     } catch (error) {
       if (error.response) {
         return rejectWithValue(error.response?.data?.detail);
-      } else if (error.response.status === 401) {
-        return dispatch(logoutUser());
       } else if (error.request) {
         return rejectWithValue("No response received");
       } else {
@@ -57,7 +54,7 @@ const colorPredictionSlice = createSlice({
       .addCase(createBet.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        toast.success(action.payload.message)
+        toast.success(action.payload.message);
       })
       .addCase(createBet.rejected, (state, action) => {
         state.loading = false;
