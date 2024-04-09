@@ -17,10 +17,8 @@ import { blue, green, grey } from "@mui/material/colors";
 import API from "../../Api/ApiCall";
 import LoadingButton from "../UI/LoadingButton";
 
-const paymentGateways = ["Stripe", "Cashfree", "Paytm", "PayU"];
 const predefinedValues = [100, 200, 500, 1000];
 const Recharge = () => {
-  const [selectedGateway, setSelectedGateway] = useState(null);
   const [loading, setLoading] = useState(null);
   const {
     control,
@@ -37,24 +35,6 @@ const Recharge = () => {
     try {
       setLoading(true);
       console.log(data);
-
-      // Shuffle the array of payment gateways
-      const shuffledGateways = paymentGateways
-        .filter((gateway) => gateway !== selectedGateway)
-        .sort(() => 0.5 - Math.random());
-
-      // Select the first gateway from the shuffled array
-      const newSelectedGateway = shuffledGateways[0];
-
-      if (newSelectedGateway === "Cashfree") {
-        const { status } = await API.cashfreeAPI(data);
-      }
-
-      // Update the state with the new selected gateway
-      setSelectedGateway(newSelectedGateway);
-
-      // Here you can proceed with the submission process and handle the payment through the selected gateway
-      console.log("Selected Payment Gateway:", newSelectedGateway);
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,6 +48,8 @@ const Recharge = () => {
       <Typography marginLeft={3} fontWeight="600">
         Select Amount
       </Typography>
+     
+      ;
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}

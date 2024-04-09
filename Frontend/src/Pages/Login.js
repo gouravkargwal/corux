@@ -202,6 +202,10 @@ export default function Login() {
             </Grid>
           </Box>
         </Box>
+        <a href="upi://pay?pa=gouravkargwalhdfc@ybl&pn=Gourav%20Kargwal&am=100&cu=INR">
+          Pay Gourav Kargwal
+        </a>
+
         {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
       </Container>
     </Box>

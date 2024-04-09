@@ -39,7 +39,7 @@ result_calculated = False
 
 
 def generate_game_id():
-    now = datetime.utcnow()  # Using UTC to avoid timezone confusion
+    now = datetime.now()  # Using UTC to avoid timezone confusion
     game_id = now.strftime("%Y%m%d%H%M%S")  # Formatting the date and time
     return game_id
 

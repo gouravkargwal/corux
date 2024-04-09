@@ -13,7 +13,7 @@ database_user = os.getenv("DATABASE_USER", "root")
 database_password = os.getenv("DATABASE_PASSWORD", "admin@123").replace("@", "%40")
 database_host = os.getenv("DATABASE_HOST", "127.0.0.1")
 database_port = os.getenv("DATABASE_PORT", "3306")
-database_name = os.getenv("DATABASE_NAME", "corux")
+database_name = os.getenv("DATABASE_NAME", "corux2")
 
 connection_url = f"{database_engine}://{database_user}:{database_password}@{database_host}:{database_port}/{database_name}"
 
