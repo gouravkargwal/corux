@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  fastapi-app:
+    build: Backend\Dockerfile
+    ports:
+      - "8000:8000"
+    environment: 
+      - DATABASE_ENGINE=${DATABASE_ENGINE}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
+      - DATABASE_NAME=${DATABASE_NAME}
+    volumes:
+      - Backend
+
+  react-app:
+    build: Frontend\Dockerfile
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://fastapi-app:8000
+    volumes:
+      - Frontend
+    depends_on:
+      - fastapi-app
