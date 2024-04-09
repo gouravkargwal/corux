@@ -23,7 +23,7 @@ authhandler = JWTAuth()
 
 def generate_random_string(length):
     alphabet = string.ascii_letters + string.digits
-    return ''.join(secrets.choice(alphabet) for _ in range(length))
+    return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
 @router.post("/check-mobile-number/")
@@ -37,8 +37,7 @@ async def check_mobile_number(
             .first()
         )
         if user:
-            raise HTTPException(
-                status_code=403, detail="Mobile Number Already In Use")
+            raise HTTPException(status_code=403, detail="Mobile Number Already In Use")
 
         return {"status_code": 200, "message": "Mobile Number not registered"}
     except Exception as e:
@@ -106,12 +105,10 @@ async def verify_otp(
             )
 
         if (datetime.now() - timedelta(minutes=60)) > otp_found.time:
-            raise HTTPException(
-                status_code=400, detail="OTP Expired!! Try Again")
+            raise HTTPException(status_code=400, detail="OTP Expired!! Try Again")
 
         if user_otp_detail.otp != otp_found.otp:
-            raise HTTPException(
-                status_code=400, detail="Wrong OTP!! Try Again")
+            raise HTTPException(status_code=400, detail="Wrong OTP!! Try Again")
 
         return {"status_code": 200, "message": "OTP verified Successfully"}
 
@@ -131,16 +128,20 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
             raise HTTPException(status_code=400, detail="Do not Found User")
 
         if not verify_password(user_detail.password, user.password):
-            raise HTTPException(
-                status_code=400, detail="Wrong Password!! Try Again")
+            raise HTTPException(status_code=400, detail="Wrong Password!! Try Again")
 
-        payload = {"mobile_number": user.mobile_number,
-                   "user_id": user.user_id}
+        payload = {"mobile_number": user.mobile_number, "user_id": user.user_id}
 
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
 
-        return {"status_code": 200, "refresh_token": refresh_token, "access_token": access_token, "balance": user.balance, "mobile_number": user.mobile_number}
+        return {
+            "status_code": 200,
+            "refresh_token": refresh_token,
+            "access_token": access_token,
+            "balance": user.balance,
+            "mobile_number": user.mobile_number,
+        }
 
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
@@ -151,12 +152,12 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
             user = (
-                db.query(User).filter(User.mobile_number ==
-                                      user_info.mobile_number).first()
+                db.query(User)
+                .filter(User.mobile_number == user_info.mobile_number)
+                .first()
             )
             if user:
-                raise HTTPException(
-                    status_code=400, detail="User Already Exist!!")
+                raise HTTPException(status_code=400, detail="User Already Exist!!")
 
             new_user = User(
                 mobile_number=user_info.mobile_number,
@@ -167,37 +168,45 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             db.add(new_user)
 
             if user_info.refer_code:
-                user_refered_by_level1 = db.query(Referral_table).filter(
-                    Referral_table.referral_code_to == user_info.refer_code).first()
+                user_refered_by_level1 = (
+                    db.query(Referral_table)
+                    .filter(Referral_table.referral_code_to == user_info.refer_code)
+                    .first()
+                )
 
                 if not user_refered_by_level1:
-                    raise HTTPException(
-                        status_code=400, detail="Wrong Referral Code")
+                    raise HTTPException(status_code=400, detail="Wrong Referral Code")
                 if user_refered_by_level1:
                     new_refer_entry = Referral_table(
-                        mobile_number = user_refered_by_level1.mobile_number,
-                        referral_code_to = user_refered_by_level1.referral_code_to,
-                        level_1_refer = user_info.mobile_number
+                        mobile_number=user_refered_by_level1.mobile_number,
+                        referral_code_to=user_refered_by_level1.referral_code_to,
+                        level_1_refer=user_info.mobile_number,
                     )
 
                     db.add(new_refer_entry)
-                    user_refered_by_level2 = db.query(Referral_table).filter(
-                        Referral_table.referral_code_to == user_refered_by_level1.referral_code_from).first()
+                    user_refered_by_level2 = (
+                        db.query(Referral_table)
+                        .filter(
+                            Referral_table.referral_code_to
+                            == user_refered_by_level1.referral_code_from
+                        )
+                        .first()
+                    )
 
                     if user_refered_by_level2:
                         new_refer_entry_2 = Referral_table(
-                            mobile_number = user_refered_by_level2.mobile_number,
-                            referral_code_to = user_refered_by_level2.referral_code_to,
-                            referral_code_from = user_refered_by_level2.referral_code_from,
-                            level_2_refer = user_info.mobile_number
+                            mobile_number=user_refered_by_level2.mobile_number,
+                            referral_code_to=user_refered_by_level2.referral_code_to,
+                            referral_code_from=user_refered_by_level2.referral_code_from,
+                            level_2_refer=user_info.mobile_number,
                         )
-                        
+
                         db.add(new_refer_entry_2)
 
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
                     referral_code_from=user_info.refer_code,
-                    referral_code_to=generate_random_string(10)
+                    referral_code_to=generate_random_string(10),
                 )
 
                 db.add(new_user_refer_entry)
@@ -205,17 +214,22 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             else:
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
-                    referral_code_to=generate_random_string(10)
+                    referral_code_to=generate_random_string(10),
                 )
 
                 db.add(new_user_refer_entry)
         db.commit()
-        payload = {"mobile_number": new_user.mobile_number,
-                   "user_id": new_user.user_id}
+        payload = {"mobile_number": new_user.mobile_number, "user_id": new_user.user_id}
 
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
-        return {"status_code": 200, "refresh_token": refresh_token, "access_token": access_token, "balance": new_user.balance, "mobile_number": new_user.mobile_number}
+        return {
+            "status_code": 200,
+            "refresh_token": refresh_token,
+            "access_token": access_token,
+            "balance": new_user.balance,
+            "mobile_number": new_user.mobile_number,
+        }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 

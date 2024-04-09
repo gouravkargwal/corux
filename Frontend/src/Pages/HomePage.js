@@ -1,4 +1,4 @@
-import { Grid, Box } from "@mui/material";
+import { Grid } from "@mui/material";
 import Hero from "../Components/Home/Hero";
 import { Link } from "react-router-dom";
 import Info from "../Components/Profile/Info";
@@ -8,7 +8,6 @@ import GameCard from "../Components/Home/GameCard";
 
 function GridExample() {
   const token = useSelector(selectAuthToken);
-  console.log(token);
 
   return (
     <>

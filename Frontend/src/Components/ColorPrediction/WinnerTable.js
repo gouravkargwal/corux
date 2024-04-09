@@ -47,7 +47,7 @@ const WinnerTable = () => {
   };
 
   return (
-    <Box class="ag-theme-quartz" style={{ height: "100%", width: "100%" }}>
+    <Box className="ag-theme-quartz" style={{ height: "100%", width: "100%" }}>
       <AgGridReact
         columnDefs={columnDefs}
         rowData={rowData}

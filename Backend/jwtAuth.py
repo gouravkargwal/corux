@@ -10,7 +10,7 @@ security = HTTPBearer()
 
 class JWTAuth:
     secret_key = "lkksjuihsvucdubdnk"
-    algorithm = 'HS256'
+    algorithm = "HS256"
 
     def encode_token(self, payload):
         asof = datetime.now()
@@ -18,7 +18,7 @@ class JWTAuth:
             {
                 "scope": "access_token",
                 "iat": asof.timestamp(),
-                "exp": (asof + timedelta(minutes=30)).timestamp(),
+                "exp": (asof + timedelta(seconds=30)).timestamp(),
             }
         )
         return jwt.encode(
@@ -29,9 +29,7 @@ class JWTAuth:
 
     def decode_token(self, token):
         try:
-            payload = jwt.decode(
-                token, self.secret_key, algorithms=[self.algorithm]
-            )
+            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
             if payload["scope"] == "access_token":
                 return payload
             raise HTTPException(
@@ -49,7 +47,7 @@ class JWTAuth:
             {
                 "scope": "refresh_token",
                 "iat": asof.timestamp(),
-                "exp": (asof + timedelta(minutes=30)).timestamp(),
+                "exp": (asof + timedelta(minutes=60)).timestamp(),
             }
         )
         return jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
@@ -57,10 +55,10 @@ class JWTAuth:
     def refresh_token(self, refresh_token):
         try:
             if not refresh_token:
-                raise HTTPException(
-                    status_code=401, detail="Refresh token is missing")
-            payload = jwt.decode(refresh_token, self.secret_key,
-                                 algorithms=[self.algorithm])
+                raise HTTPException(status_code=401, detail="Refresh token is missing")
+            payload = jwt.decode(
+                refresh_token, self.secret_key, algorithms=[self.algorithm]
+            )
 
             if payload["scope"] == "refresh_token":
                 # Separate update to payload
@@ -69,18 +67,15 @@ class JWTAuth:
 
                 # Separate update to payload
                 payload.update({"scope": "access_token"})
-                new_token = self.encode_refresh_token(payload)
+                new_token = self.encode_token(payload)
 
                 return new_token, new_refresh_token
-            raise HTTPException(
-                status_code=401, detail="Invalid scope for token")
+            raise HTTPException(status_code=401, detail="Invalid scope for token")
         except jwt.ExpiredSignatureError:
-            raise HTTPException(
-                status_code=401, detail="Refresh token expired")
+            raise HTTPException(status_code=401, detail="Refresh token expired")
         except jwt.JWTError as err:
             print("JWT Error:", err)
-            raise HTTPException(
-                status_code=401, detail="Invalid refresh token")
+            raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 
 async def authenticate_user(
@@ -88,7 +83,6 @@ async def authenticate_user(
 ) -> JWTPayload:
     auth_handler = JWTAuth()
     payload = auth_handler.decode_token(credentials.credentials)
-    return JWTPayload(**{
-        "mobile_number": payload["mobile_number"],
-        "user_id": payload["user_id"]
-    })
+    return JWTPayload(
+        **{"mobile_number": payload["mobile_number"], "user_id": payload["user_id"]}
+    )

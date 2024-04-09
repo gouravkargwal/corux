@@ -5,6 +5,9 @@ import axiosInstance from "../Util/axiosInstance";
 const signinAPI = async (data) => {
   return axiosInstance.post(`/auth/login`, data);
 };
+const refreshTokenAPI = async (data) => {
+  return axiosInstance.post(`/auth/refresh-token`, data);
+};
 
 // Register User API Call
 const signupAPI = async (data) => {
@@ -33,7 +36,7 @@ const resultColorBetAPI = async (data) => {
 
 // User API
 const getBalanceAPI = async (data) => {
-  return axiosInstance.post(`/user/get-profile`, data);
+  return axiosInstance.get(`/user/get-profile`, data);
 };
 
 const changePasswordAPI = async (data) => {
@@ -48,6 +51,7 @@ const cashfreeAPI = async (data) => {
 
 const API = {
   signinAPI,
+  refreshTokenAPI,
   signupAPI,
   sendOtpAPI,
   checkUserAPI,

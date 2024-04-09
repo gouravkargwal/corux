@@ -9,6 +9,8 @@ const initialState = {
   user: null,
   balance: null,
   registrationData: null,
+  refreshToken: null,
+  isRefreshing: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -51,10 +53,18 @@ const authSlice = createSlice({
     logoutUser(state, action) {
       state.user = null;
       state.token = null;
+      state.refreshToken = null;
       state.balance = null;
     },
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
+    },
+    setNewTokens(state, action) {
+      state.token = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
+    setRefreshing(state, action) {
+      state.isRefreshing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -66,6 +76,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.access_token;
+        state.refreshToken = action.payload.refresh_token;
         state.user = action.payload.mobile_number;
         state.balance = action.payload.balance;
       })
@@ -81,6 +92,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.token = action.payload.access_token;
+        state.refreshToken = action.payload.refresh_token;
         state.user = action.payload.mobile_number;
         state.balance = action.payload.balance;
       })
@@ -91,11 +103,14 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutUser, setRegistrationData } = authSlice.actions;
+export const { logoutUser, setRegistrationData, setNewTokens, setRefreshing } =
+  authSlice.actions;
 
 export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthToken = (state) => state.auth.token;
+export const selectAuthRefreshToken = (state) => state.auth.refreshToken;
+export const selectAuthIsRefreshing = (state) => state.auth.isRefreshing;
 export const selectAuthUser = (state) => state.auth.user;
 export const selectAuthBalance = (state) => state.auth.balance;
 export const selectAuthRegistrationData = (state) =>
