@@ -101,7 +101,7 @@ class Result(Base):
 
     result_id = Column(Integer, primary_key=True,
                        index=True, autoincrement=True)
-    game_id = Column(String(14), unique=False, nullable=False)
+    game_id = Column(String(14), unique=True, nullable=False)
     color_who_won = Column(JSON, unique=False, nullable=False, default=[])
     number_who_won = Column(Integer, unique=False, nullable=False)
 
