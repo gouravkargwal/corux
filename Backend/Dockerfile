@@ -1,20 +1,24 @@
-# Use an official Python runtime as a parent image
-FROM python:3.9-slim as build
+# Use the official Python 3.8 slim image as the base image
+FROM python:3.8-slim
 
-# Set environment varibles
+# Prevent Python from writing pyc files to disc
 ENV PYTHONDONTWRITEBYTECODE 1
+# Prevent Python from buffering stdout and stderr
 ENV PYTHONUNBUFFERED 1
 
-# Set work directory
-WORKDIR /code
+# Set the working directory in the Docker container
+WORKDIR /Backend
 
-# Install dependencies
-COPY requirements.txt /code/
+# First, copy only the requirements.txt file to take advantage of Docker's cache
+# This will prevent re-installing all packages every time any source file changes
+COPY requirements.txt .
+
+# Upgrade pip and install required Python packages
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Copy project
-COPY . /code/
+# Now copy the rest of your application's code to the container
+COPY . .
 
-# Run Gunicorn with Uvicorn workers
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "-c", "/code/gunicorn_conf.py", "main:app"]
+# Command to run the Uvicorn server
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

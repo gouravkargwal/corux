@@ -1,8 +1,8 @@
 # Step 1: Build the React application
-FROM node:16-alpine as build
+FROM node:16-slim as build
 
 # Set the working directory in the Docker container
-WORKDIR /app
+WORKDIR /Frontend
 
 # Copy the package.json and package-lock.json (or yarn.lock) files
 COPY package*.json ./
@@ -20,14 +20,16 @@ RUN npm run build
 FROM nginx:stable-alpine as production
 
 # Copy the built app from the previous stage
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /Frontend/build /usr/share/nginx/html
 
-# Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Remove the default Nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Expose port 80 to the Docker host, so we can access it 
-# from the outside.
+# Copy a new configuration file
+COPY nginx/nginx.conf /etc/nginx/conf.d
+
+# Expose port 80
 EXPOSE 80
 
-# Start Nginx when the container has provisioned.
+# Start Nginx when the container has provisioned
 CMD ["nginx", "-g", "daemon off;"]
