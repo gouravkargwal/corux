@@ -1,5 +1,5 @@
 # Step 1: Build the React application
-FROM node:16-slim as build
+FROM node:18-slim as build
 
 # Set the working directory in the Docker container
 WORKDIR /Frontend

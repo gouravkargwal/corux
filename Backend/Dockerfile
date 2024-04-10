@@ -21,4 +21,4 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 # Command to run the Uvicorn server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["sh", "-c","gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --workers 2"]
