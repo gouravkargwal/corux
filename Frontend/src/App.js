@@ -16,12 +16,13 @@ import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Bank from "./Pages/Bank";
 import Wallet from "./Pages/Wallet";
-import Recharge from "./Components/Wallet/Recharge";
+import Recharge from "./Components/Wallet/Recharge/Recharge";
 import Withdraw from "./Components/Wallet/Withdraw";
 import ProfileSettings from "./Pages/ProfileSettings";
 import OtpVerify from "./Pages/OtpVerify";
 import Settings from "./Pages/Settings";
 import PrivateRoute from "./Routes/PrivateRoute";
+import ManualAddMoney from "./Components/Wallet/Recharge/ManualAddMoney";
 
 function App() {
   return (
@@ -76,6 +77,24 @@ function App() {
                 </PrivateRoute>
               }
             />
+            <Route path="recharge">
+              <Route
+                index
+                element={
+                  <PrivateRoute>
+                    <Recharge />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="add-money/:amount"
+                element={
+                  <PrivateRoute>
+                    <ManualAddMoney />
+                  </PrivateRoute>
+                }
+              />
+            </Route>
             <Route
               path="recharge"
               element={

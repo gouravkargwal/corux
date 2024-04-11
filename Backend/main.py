@@ -54,7 +54,7 @@ async def startup():
 
 async def start_game():
     global start_time, game_id, result_calculated
-    start_time = datetime.utcnow()
+    start_time = datetime.now()
     game_id = generate_game_id()
     result_calculated = False
     return {"message": "Game started!", "game_id": game_id}
@@ -68,7 +68,7 @@ async def notify_timer():
             if start_time is None:
                 await sio_manager.emit("game_state", {"error": "Game not started"})
             else:
-                now = datetime.utcnow()
+                now = datetime.now()
                 elapsed_time = now - start_time
                 remaining_time = game_duration - elapsed_time
 

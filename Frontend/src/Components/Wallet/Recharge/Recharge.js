@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
-import Info from "../Profile/Info";
+import Info from "../../Profile/Info";
 import {
   Avatar,
   Chip,
@@ -14,17 +14,21 @@ import {
 } from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { blue, green, grey } from "@mui/material/colors";
-import API from "../../Api/ApiCall";
-import LoadingButton from "../UI/LoadingButton";
+import LoadingButton from "../../UI/LoadingButton";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setAddAmount } from "../../../Feature/Payment/paymentSlice";
 
 const predefinedValues = [100, 200, 500, 1000];
 const Recharge = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(null);
   const {
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       amount: "",
@@ -35,6 +39,7 @@ const Recharge = () => {
     try {
       setLoading(true);
       console.log(data);
+      navigate(`add-money/${data.amount}`);
     } catch (error) {
       console.log(error);
     } finally {
@@ -48,8 +53,6 @@ const Recharge = () => {
       <Typography marginLeft={3} fontWeight="600">
         Select Amount
       </Typography>
-     
-      ;
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}

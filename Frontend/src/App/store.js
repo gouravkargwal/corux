@@ -16,6 +16,7 @@ import balanceReducer from "../Feature/Balance/balanceSlice";
 import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import authTransform from "../Util/authTransform";
+import paymentReducer from "../Feature/Payment/paymentSlice";
 
 const persistConfig = {
   key: "root",
@@ -29,6 +30,7 @@ const rootReducer = combineReducers({
   colorPrediction: colorPredictionReducer,
   snackbar: snackbarReducer,
   balance: balanceReducer,
+  payment: paymentReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

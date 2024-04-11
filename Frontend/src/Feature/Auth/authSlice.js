@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
+import { persistor } from "../../App/store";
 
 const initialState = {
   token: null,
@@ -56,6 +57,7 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.balance = null;
       state.isRefreshing = false;
+      persistor.purge();
     },
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
