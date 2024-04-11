@@ -229,6 +229,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
+            "referral_code": new_refer_entry.referral_code_to
         }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)

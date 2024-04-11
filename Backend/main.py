@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from endpoints.auth import router as Authrouter
 from endpoints.user import router as Userrouter
+from endpoints.result import router as Resultrouter
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, WebSocket
 from fastapi.responses import JSONResponse
@@ -25,7 +26,7 @@ app.add_middleware(
 
 app.include_router(Authrouter, tags=["Auth"], prefix="/auth")
 app.include_router(Userrouter, tags=["User"], prefix="/user")
-
+app.include_router(Resultrouter,tags=["Result"],prefix="/result")
 
 # Initialize Socket.IO manager
 sio_manager = SocketManager(app=app, path="/ws")

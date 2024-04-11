@@ -19,6 +19,7 @@ class Bet_Color(Base):
     bet_amount = Column(Integer, unique=False, nullable=True, default=0)
 
 
+
 class Bet_Number(Base):
     __tablename__ = 'bet_number'
 
