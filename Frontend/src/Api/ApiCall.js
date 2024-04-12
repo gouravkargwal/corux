@@ -44,7 +44,7 @@ const changePasswordAPI = async (data) => {
 };
 
 const getReferDetailsAPI = async (data) => {
-  return axiosInstance.get(`/refer-page/`, data);
+  return axiosInstance.get(`/user/refer-page/`, data);
 };
 
 // Add Money API

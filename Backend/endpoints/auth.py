@@ -16,9 +16,12 @@ from models.user import Otp_Table, User, Referral_table
 from datetime import datetime, timedelta
 import string
 import secrets
+from utils.logger import setup_logger
 
 router = APIRouter()
 authhandler = JWTAuth()
+logger = setup_logger()
+
 
 
 def generate_random_string(length):
@@ -238,5 +241,9 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
 @router.post("/refresh-token/")
 async def generate_refresh_token(refresh_token: str = Header()):
     print(refresh_token)
-    new_token, new_refresh_token = authhandler.refresh_token(refresh_token)
-    return {"access_token": new_token, "refresh_token": new_refresh_token}
+    try:
+        new_token, new_refresh_token = authhandler.refresh_token(refresh_token)
+        return {"access_token": new_token, "refresh_token": new_refresh_token}
+    except Exception as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
