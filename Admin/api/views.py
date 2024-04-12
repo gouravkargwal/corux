@@ -1,8 +1,10 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from home.serializers import UserAdminSerializer, PaymentSerializer
-from home.models import UserAdminTable, PaymentTable
 from rest_framework.views import APIView
+from rest_framework import status
+from django.utils.timezone import now
+from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer
+from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable
 from home.custom_logging import adminlogger
 
 
@@ -22,8 +24,8 @@ class UserAdminView(APIView):
             })
         
         except Exception as e:
-            adminlogger.error("Error: ", str(e))
-            return Response({"status": 400, "message":"Something went wrong. Please try again later"})
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request):
         try:
@@ -41,8 +43,8 @@ class UserAdminView(APIView):
             return Response({'status': 200, "message": "success"})
         
         except Exception as e:
-            adminlogger.error("Error: ", str(e))
-            return Response({"status": 400, "message":"Something went wrong. Please try again later"})
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
         
 class withdraw(APIView):
     def get(self, request):
@@ -50,9 +52,9 @@ class withdraw(APIView):
             adminlogger.info("withdraw get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
-            totalCount = PaymentTable.objects.filter(IS_WITHDRAW=1).count()
-            payments = PaymentTable.objects.filter(IS_WITHDRAW=1)[start:start+length]
-            serializedpayments = PaymentSerializer(payments, many=True)
+            totalCount = PaymentWithdrawTable.objects.all().count()
+            payments = PaymentWithdrawTable.objects.all()[start:start+length]
+            serializedpayments = PaymentWithdrawSerializer(payments, many=True)
             return Response(
                 {
                     "data" : serializedpayments.data,
@@ -62,17 +64,18 @@ class withdraw(APIView):
             )
         
         except Exception as e:
-            adminlogger.error("Error: ", str(e))
-            return Response({"status": 400, "message":"Something went wrong. Please try again later"})
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
         
     def patch(self, request):
         try:
             adminlogger.info("withdraw patch")
-            data = request.data
+            data = request.data.copy()
             if not data.get('ID'):
                 return Response({"status": 400, "message":"ID is required"})
-            payment = PaymentTable.objects.get(ID=request.data.get('ID'))
-            serializedpayment = PaymentSerializer(payment, data=data, partial=True)
+            data["UPDATE_DATE"] = now()
+            payment = PaymentWithdrawTable.objects.get(ID=request.data.get('ID'))
+            serializedpayment = PaymentWithdrawSerializer(payment, data=data, partial=True)
             if serializedpayment.is_valid():
                 serializedpayment.save()
             else:
@@ -80,8 +83,8 @@ class withdraw(APIView):
             return Response({'status': 200, "message": "success"})
         
         except Exception as e:
-            adminlogger.error("Error: ", str(e))
-            return Response({"status": 400, "message":"Something went wrong. Please try again later"})
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
 
     
 class deposit(APIView):
@@ -90,9 +93,9 @@ class deposit(APIView):
             adminlogger.info("deposit get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
-            totalCount = PaymentTable.objects.filter(IS_DEPOSIT=1).count()
-            payments = PaymentTable.objects.filter(IS_DEPOSIT=1)[start:start+length]
-            serializedpayments = PaymentSerializer(payments, many=True)
+            totalCount = PaymentDepositTable.objects.all().count()
+            payments = PaymentDepositTable.objects.all()[start:start+length]
+            serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
                     "data" : serializedpayments.data,
@@ -102,5 +105,24 @@ class deposit(APIView):
             )
         
         except Exception as e:
-            adminlogger.error("Error: ", str(e))
-            return Response({"status": 400, "message":"Something went wrong. Please try again later"})
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def patch(self, request):
+        try:
+            adminlogger.info("deposit patch")
+            data = request.data.copy()
+            if not data.get('ID'):
+                return Response({"status": 400, "message":"ID is required"})
+            payment = PaymentDepositTable.objects.get(ID=request.data.get('ID'))
+            data["UPDATE_DATE"] = now()
+            serializedpayment = PaymentDepositSerializer(payment, data=data, partial=True)
+            if serializedpayment.is_valid():
+                serializedpayment.save()
+            else:
+                return Response(serializedpayment.errors)
+            return Response({'status': 200, "message": "success"})
+        
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
