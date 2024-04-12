@@ -1,12 +1,17 @@
 from rest_framework import serializers
-from .models import UserAdminTable, PaymentTable
+from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable
 
 class UserAdminSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAdminTable
         fields = "__all__"
 
-class PaymentSerializer(serializers.ModelSerializer):
+class PaymentDepositSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PaymentTable
+        model = PaymentDepositTable
+        fields = "__all__"
+
+class PaymentWithdrawSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentWithdrawTable
         fields = "__all__"

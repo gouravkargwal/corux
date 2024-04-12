@@ -1,10 +1,11 @@
 {% with request.resolver_match.url_name as active_page %} <div id="header">
     <nav class="navbar navbar-expand-lg fixed-top navbar-light px-0">
         <div class="container-fluid"> 
-            <div class="logo-text"> 
+            <div class="logo-text">
+
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">  
                     <li class="nav-item"> 
-                        <a class="tokenLink nav-link{% if active_page == 'users' %} active{% endif %}" href="{% url 'users' %}">Admin</a> 
+                        <a class="tokenLink nav-link{% if active_page == 'users' %} active{% endif %} bl home-button" href="{% url 'users' %}"><i class="fa fa-home" aria-hidden="true"></i></a> 
                     </li>
                 </ul>
                 

@@ -24,21 +24,52 @@ class UserAdminTable(models.Model):
         db_table = "USER_ADMIN"
 
 
-class PaymentTable(models.Model):
+class PaymentDepositTable(models.Model):
 
     ID = models.AutoField(primary_key=True)
 
     MOBILE_NUMBER = models.CharField(max_length=15, null=False)
 
-    IS_DEPOSIT = models.BooleanField(default=False)
+    USER_UPI_ID = models.CharField(max_length=50, null=False)
 
-    IS_WITHDRAW = models.BooleanField(default=False)
+    ADMIN_UPI_ID = models.CharField(max_length=50, null=True, blank=True)
 
-    APPROVE_PAYMENT = models.BooleanField(default=False)
+    UTR = models.CharField(max_length=50, null=True, blank=True)
 
     CREATE_DATE = models.DateTimeField(auto_now_add=True)
 
     AMOUNT = models.FloatField(null=False)
 
+    APPROVE_DEPOSIT = models.BooleanField(default=False)
+
+    DENY_DEPOSIT = models.BooleanField(default=False)
+
+    UPDATE_DATE = models.DateTimeField(null=True, blank=True)
+
     class Meta:
-        db_table = "PAYMENT"
+        db_table = "DEPOSIT"
+
+class PaymentWithdrawTable(models.Model):
+
+    ID = models.AutoField(primary_key=True)
+
+    MOBILE_NUMBER = models.CharField(max_length=15, null=False)
+
+    UTR = models.CharField(max_length=50, null=True, blank=True)
+
+    USER_UPI_ID = models.CharField(max_length=50, null=False)
+
+    ADMIN_UPI_ID = models.CharField(max_length=50, null=True, blank=True)
+
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+
+    AMOUNT = models.FloatField(null=False)
+
+    APPROVE_WITHDRAW = models.BooleanField(default=False)
+
+    DENY_WITHDRAW = models.BooleanField(default=False)
+
+    UPDATE_DATE = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "WITHDRAW"

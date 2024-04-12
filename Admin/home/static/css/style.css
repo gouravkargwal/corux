@@ -282,6 +282,12 @@ hr {
     margin-left: 3px !important;
 }
 
+#header .fa-home {
+    color: #00b0f0 !important;
+    font-size: 22px !important;
+    margin-left: 3px !important;
+}
+
 #header .fa-bell {
     color: #1930ab !important;
     font-size: 18px !important;
@@ -1061,5 +1067,9 @@ button.close {
     text-align: center !important;
     padding: 0 0 !important;
     font-size: 12px !important;
-    width: 90px !important;
+    width: 80px !important;
+}
+
+.clickable.deposit, .clickable.deposit_deny{
+    width: 65px !important;
 }
