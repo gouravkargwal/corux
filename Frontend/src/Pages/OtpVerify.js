@@ -75,6 +75,9 @@ export default function OtpVerify() {
           username: registrationData.name,
           password: registrationData.password,
         };
+        if (registrationData.referCode) {
+          userData.refer_code = registrationData.referCode;
+        }
         console.log(userData);
         dispatch(registerUser({ userData, navigate }));
       }
@@ -176,7 +179,10 @@ export default function OtpVerify() {
                     {...field}
                     type="text"
                     sx={{ borderColor: grey[500] }}
-                    inputProps={{ maxLength: 1 }}
+                    inputProps={{
+                      maxLength: 1,
+                      style: { textAlign: "center" },
+                    }}
                     onInput={handleInput}
                     onKeyDown={handleKeyDown}
                   />

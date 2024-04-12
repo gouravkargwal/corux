@@ -122,5 +122,19 @@ class Referral_table(Base):
     
     user = relationship('User', back_populates='referral_table')
 
+
+class All_Referral_Winning(Base):
+    __tablename__ = "all_referral_winning"
+
+    id = Column(Integer,primary_key=True,unique=True,autoincrement=True)
+    mobile_number = Column(String(10), ForeignKey('user.mobile_number'))
+    game_id = Column(String(14), unique=True, nullable=False)
+    level_1_refer = Column(VARCHAR(256), unique=False,
+                           nullable=True, default="")
+    level_2_refer = Column(VARCHAR(256), unique=False,
+                           nullable=True, default="")
+    amount_won = Column(Integer, unique=False, nullable=True, default=0)
+    
+
 User.referral_table = relationship("Referral_table", back_populates="user")
 Base.metadata.create_all(bind=engine)

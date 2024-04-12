@@ -1,5 +1,5 @@
 from fastapi import APIRouter,HTTPException,Depends
-from models.user import Result,Winner_Table,Bet_Color,Bet_Number,All_Time_Winner_Table,User,Referral_table
+from models.user import Result,Winner_Table,Bet_Color,Bet_Number,All_Time_Winner_Table,User,Referral_table,All_Referral_Winning
 from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
 from sqlalchemy.orm import Session
@@ -274,21 +274,39 @@ async def get_result(result_detail: result_detail, db: Session = Depends(get_sql
                 balance=Winner_Table.amount_won + User.balance))
 
             for i in result_list:
-                user_refer_by_level1 = db.query(Referral_table).filter(Referral_table.level_1_refer == i["mobile_number"]).first()
+                if i["amount"]>0.0:
+                    user_refer_by_level1 = db.query(Referral_table).filter(Referral_table.level_1_refer == i["mobile_number"]).first()
 
-                if user_refer_by_level1:
-                    user = db.query(User).filter(User.mobile_number == user_refer_by_level1.mobile_number).first()
+                    if user_refer_by_level1:
+                        user = db.query(User).filter(User.mobile_number == user_refer_by_level1.mobile_number).first()
 
-                    if user:
-                        user.balance = user.balance + 0.0300*i["amount"]
+                        if user:
+                            user.balance = user.balance + 0.0300*i["amount"]
+                            refer_winner_entry = All_Referral_Winning(
+                                mobile_number = user.mobile_number,
+                                game_id = result_detail.game_id,
+                                amount_won = 0.0300*i["amount"],
+                                level_1_refer = i["mobile_number"]
+                            )
 
-                user_refer_by_level2 = db.query(Referral_table).filter(Referral_table.level_2_refer == i["mobile_number"]).first()
+                            db.add(refer_winner_entry)
 
-                if user_refer_by_level2:
-                    user = db.query(User).filter(User.mobile_number == user_refer_by_level2.mobile_number).first()
 
-                    if user:
-                        user.balance = user.balance + 0.010*i["amount"]
+                    user_refer_by_level2 = db.query(Referral_table).filter(Referral_table.level_2_refer == i["mobile_number"]).first()
+
+                    if user_refer_by_level2:
+                        user = db.query(User).filter(User.mobile_number == user_refer_by_level2.mobile_number).first()
+
+                        if user:
+                            user.balance = user.balance + 0.010*i["amount"]
+                            refer_winner_entry_2 = All_Referral_Winning(
+                                mobile_number = user.mobile_number,
+                                game_id = result_detail.game_id,
+                                amount_won = 0.0300*i["amount"],
+                                level_2_refer = i["mobile_number"]
+                            )
+
+                            db.add(refer_winner_entry_2)
 
         db.commit()
         return result_list

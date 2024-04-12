@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { Avatar, Box, Typography, Divider, Button } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -8,16 +8,35 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import PromotionOption from "../Components/Promotion.js/PromotionOption";
 import RedeemIcon from "@mui/icons-material/Redeem";
+import { useDispatch, useSelector } from "react-redux";
+import { selectBalanceReferCode } from "../Feature/Balance/balanceSlice";
+import {
+  getReferDetails,
+  selectReferData,
+  selectReferError,
+  selectReferLoading,
+} from "../Feature/Refer/referSlice";
 
 export default function Promotion() {
-  const handleCopy = async () => {
+  const dispatch = useDispatch();
+  const referCode = useSelector(selectBalanceReferCode);
+  const data = useSelector(selectReferData);
+  const loading = useSelector(selectReferLoading);
+  const error = useSelector(selectReferError);
+  const handleCopy = async (data) => {
     try {
-      await navigator.clipboard.writeText("Hello");
+      await navigator.clipboard.writeText(data);
       alert("Code copied to clipboard!");
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
   };
+
+  useEffect(() => {
+    dispatch(getReferDetails());
+  }, [dispatch]);
+
+  console.log(data);
 
   return (
     <Box>
@@ -110,12 +129,12 @@ export default function Promotion() {
             alignItems="center"
           >
             <Typography variant="h5" fontWeight="bold">
-              askdjl
+              {referCode ?? "-"}
             </Typography>
             <Button
               variant="outlined"
               startIcon={<ContentCopyIcon />}
-              onClick={handleCopy}
+              onClick={() => handleCopy(referCode)}
             >
               Copy Code
             </Button>

@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
-import { persistor } from "../../App/store";
 
 const initialState = {
   token: null,
@@ -11,7 +10,6 @@ const initialState = {
   balance: null,
   registrationData: null,
   refreshToken: null,
-  isRefreshing: false,
 };
 
 export const loginUser = createAsyncThunk(
@@ -39,7 +37,7 @@ export const registerUser = createAsyncThunk(
       const { userData, navigate } = payload;
       console.log(userData);
       const response = await API.signupAPI(userData);
-      navigate("/home");
+      navigate("/app/home");
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -56,8 +54,6 @@ const authSlice = createSlice({
       state.token = null;
       state.refreshToken = null;
       state.balance = null;
-      state.isRefreshing = false;
-      persistor.purge();
     },
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
@@ -65,9 +61,6 @@ const authSlice = createSlice({
     setNewTokens(state, action) {
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
-    },
-    setRefreshing(state, action) {
-      state.isRefreshing = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -106,14 +99,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutUser, setRegistrationData, setNewTokens, setRefreshing } =
+export const { logoutUser, setRegistrationData, setNewTokens } =
   authSlice.actions;
 
 export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthToken = (state) => state.auth.token;
 export const selectAuthRefreshToken = (state) => state.auth.refreshToken;
-export const selectAuthIsRefreshing = (state) => state.auth.isRefreshing;
 export const selectAuthUser = (state) => state.auth.user;
 export const selectAuthBalance = (state) => state.auth.balance;
 export const selectAuthRegistrationData = (state) =>

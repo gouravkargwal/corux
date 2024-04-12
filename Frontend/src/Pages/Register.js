@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   Avatar,
@@ -24,12 +24,14 @@ import LoadingButton from "../Components/UI/LoadingButton";
 import { useDispatch } from "react-redux";
 import API from "../Api/ApiCall";
 import { setRegistrationData } from "../Feature/Auth/authSlice";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { blue, green, grey, orange, purple } from "@mui/material/colors";
+import { blue, green, grey, orange, purple, red } from "@mui/material/colors";
+import RedeemIcon from "@mui/icons-material/Redeem";
 
 export default function Register() {
   const theme = useTheme();
+  let { referCode } = useParams();
   const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,9 +40,16 @@ export default function Register() {
     handleSubmit,
     watch,
     formState: { errors, isDirty, isValid },
+    setValue,
   } = useForm();
 
   const password = watch("password");
+
+  useEffect(() => {
+    if (referCode) {
+      setValue("referCode", referCode);
+    }
+  }, [referCode, setValue]);
 
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -236,16 +245,16 @@ export default function Register() {
                     ),
                   }}
                 />
+                <FormHelperText
+                  error={!!errors.password}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.password?.message : " "}
+                </FormHelperText>
               </Grid>
-              <FormHelperText
-                error={!!errors.password}
-                sx={{
-                  visibility: errors ? "visible" : "hidden",
-                  height: "10px",
-                }}
-              >
-                {errors ? errors?.password?.message : " "}
-              </FormHelperText>
               <Grid item xs={12}>
                 <TextField
                   variant="outlined"
@@ -301,6 +310,38 @@ export default function Register() {
                   }}
                 >
                   {errors ? errors?.confirmPassword?.message : " "}
+                </FormHelperText>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  fullWidth
+                  sx={{ borderColor: grey[500] }}
+                  placeholder="Refer Code (Optional)"
+                  {...register("referCode")}
+                  error={!!errors.referCode}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: red[500],
+                          }}
+                        >
+                          <RedeemIcon sx={{ color: "text.white" }} />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+                <FormHelperText
+                  error={!!errors.referCode}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.referCode?.message : " "}
                 </FormHelperText>
               </Grid>
               <Grid item xs={12}>

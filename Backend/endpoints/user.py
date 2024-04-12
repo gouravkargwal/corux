@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from sqlalchemy import text, delete, func, select
+from sqlalchemy import text, delete, func, select,or_
 from db_module.session import get_sql_db
 from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
@@ -12,7 +12,8 @@ from models.user import (
     All_Time_Winner_Table,
     User,
     Result,
-    Referral_table
+    Referral_table,
+    All_Referral_Winning
 )
 
 from schema.user import betdetails, user_info, password_detail, result_detail
@@ -46,11 +47,14 @@ async def get_profile(credentials: HTTPAuthorizationCredentials = Depends(authen
                                      credentials.mobile_number).first()
         if not user:
             raise HTTPException(status_code=404, detail="User Do not Exist")
+        
+        user_refer = db.query(Referral_table).filter(Referral_table.mobile_number == user.mobile_number).first()
 
         return {
             "username": user.username,
             "mobile_number": user.mobile_number,
-            "balance": user.balance
+            "balance": user.balance,
+            "refer_code": user_refer.referral_code_to
         }
     except ValidationError as e:
         # Handle validation errors and return a 422 response
@@ -232,16 +236,6 @@ async def create_bet(
 @router.get('/user-win/')
 async def get_winning_list(credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),db: Session = Depends(get_sql_db)):
     try:
-        # if not user_winning:
-        #     raise HTTPException(status_code=404,detail="No winning")
-        # return user_winning
-        # user_winning = db.query(All_Time_Winner_Table).filter(All_Time_Winner_Table.mobile_number == credentials.mobile_number).order_by(All_Time_Winner_Table.game_id.desc())
-        # print(user_winning)
-
-        # user_bet_color = db.query(Bet_Color).filter(Bet_Color.mobile_number == credentials.mobile_number).order_by(Bet_Color.game_id.desc())
-
-        # user_bet_number = db.query(Bet_Number).filter(Bet_Number.mobile_number == credentials.mobile_number).order_by(Bet_Number.game_id.desc())
-
         stmt = db.execute(text(
             "SELECT bet_color.mobile_number, bet_color.game_id, bet_color.bet_on, bet_color.bet_amount,all_time_winner_table.amount_won - bet_color.bet_amount as winning from corux2.bet_color bet_color left join corux2.all_time_winner_table all_time_winner_table on  all_time_winner_table.game_id = bet_color.game_id"
         ))
@@ -250,8 +244,44 @@ async def get_winning_list(credentials: HTTPAuthorizationCredentials = Depends(a
         ))
 
         result = [row._asdict() for row in stmt] + [row._asdict() for row in stmt2]
-        # results = stmt
-        # return "Hello"
         return result
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code,detail=e.detail)
+    
+
+
+@router.get("/refer-page/")
+async def refer_information(credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),db: Session = Depends(get_sql_db)):
+    try:
+        refer_result_1 = db.query(All_Referral_Winning).filter(All_Referral_Winning.mobile_number == credentials.mobile_number,All_Referral_Winning.level_1_refer != "",All_Referral_Winning.level_2_refer == "")
+
+        refer_result_2 = db.query(All_Referral_Winning).filter(All_Referral_Winning.mobile_number == credentials.mobile_number,All_Referral_Winning.level_1_refer == "",All_Referral_Winning.level_2_refer != "")
+
+        result_list_level1 = [row._asdict() for row in refer_result_1] 
+
+        result_list_level2 = [row._asdict() for row in refer_result_2]
+
+
+        refer_count = db.query(Referral_table).filter(or_(Referral_table.level_1_refer != "",Referral_table.level_2_refer !='')).filter(Referral_table.mobile_number==credentials.mobile_number)
+
+
+        total_winning = db.query(All_Referral_Winning.mobile_number,func.sum(All_Referral_Winning.amount_won.label('total_amount'))).group_by(All_Referral_Winning.mobile_number).filter(All_Referral_Winning == credentials.mobile_number)
+
+        amount_won = 0;
+        if total_winning:
+            amount_won = [row.total_amount for row in total_winning]
+
+        print(total_winning)
+
+        refer_code = db.query(Referral_table).filter(Referral_table.mobile_number == credentials.mobile_number).first()
+        
+        return {
+            "refer_result_level1":result_list_level1,
+            "refer_result_level2": result_list_level2,
+            "refer_count": refer_count,
+            "total_winning": amount_won,
+            "refer_code": refer_code.referral_code_to
+        }
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=404,detail="Cannot Fetch Refer Winning")

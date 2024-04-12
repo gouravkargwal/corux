@@ -1,5 +1,4 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./Util/axiosConfig";
 import Login from "./Pages/Login";
 import ForgotPassword from "./Pages/ForgotPassword";
 import Register from "./Pages/Register";
@@ -23,6 +22,7 @@ import OtpVerify from "./Pages/OtpVerify";
 import Settings from "./Pages/Settings";
 import PrivateRoute from "./Routes/PrivateRoute";
 import ManualAddMoney from "./Components/Wallet/Recharge/ManualAddMoney";
+import "./Util/axiosConfig";
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Login />} />
           <Route path="forgot_password" element={<ForgotPassword />} />
-          <Route path="register" element={<Register />} />
+          <Route path="register/:referCode?" element={<Register />} />
           <Route path="otp-verify" element={<OtpVerify />} />
         </Route>
         <Route path="/app" element={<UserLayout />}>
@@ -42,7 +42,14 @@ function App() {
             <Route path="virtual-slot" element={<VirtualSlot />} />
           </Route>
           <Route path="promotion">
-            <Route index element={<Promotion />} />
+            <Route
+              index
+              element={
+                <PrivateRoute>
+                  <Promotion />
+                </PrivateRoute>
+              }
+            />
           </Route>
           <Route path="profile">
             <Route

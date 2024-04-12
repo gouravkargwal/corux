@@ -43,6 +43,10 @@ const changePasswordAPI = async (data) => {
   return axiosInstance.patch(`/user/change-password`, data);
 };
 
+const getReferDetailsAPI = async (data) => {
+  return axiosInstance.get(`/refer-page/`, data);
+};
+
 // Add Money API
 
 const cashfreeAPI = async (data) => {
@@ -62,6 +66,7 @@ const API = {
   getBalanceAPI,
   changePasswordAPI,
   cashfreeAPI,
+  getReferDetailsAPI,
 };
 
 export default API;
