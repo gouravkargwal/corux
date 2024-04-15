@@ -1,12 +1,10 @@
-from sqlalchemy import Column, Integer, String, DateTime, VARCHAR, Boolean, JSON, ForeignKey, ARRAY
+from sqlalchemy import Column, Integer, String, DateTime, VARCHAR, Boolean, JSON, ForeignKey, ARRAY, Float
 from sqlalchemy.orm import relationship
 # from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy_utils import UUIDType
 from datetime import datetime
 from db_module.session import engine, Base
 import uuid
-import string
-import secrets
 
 
 class Bet_Color(Base):
@@ -135,6 +133,54 @@ class All_Referral_Winning(Base):
                            nullable=True, default="")
     amount_won = Column(Integer, unique=False, nullable=True, default=0)
     
+
+class Upi_Table(Base):
+    __tablename__ = "upi_table"
+
+    id = Column(Integer,primary_key=True,unique=True,index=True,autoincrement=True)
+    upi_id = Column(String(20),unique=True,nullable=False)
+    name = Column(String(20),unique=False,nullable=False,default="")
+    created_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+    updated_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+
+
+# class Transaction_Table(Base):
+#     __tablename__ = "transaction_table"
+
+#     id = Column(Integer,primary_key=True,unique=True,index=True,autoincrement=True)
+#     transaction_id = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
+#     utr = Column(Integer,unique=False,nullable=True)
+#     created_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+#     updated_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+class PaymentDepositTable(Base):
+    __tablename__ = 'DEPOSIT'
+
+    ID = Column(Integer, primary_key=True, autoincrement=True)
+    MOBILE_NUMBER = Column(String(10),unique=False, nullable=False)
+    # TRANSACTION_ID = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
+    ADMIN_UPI_ID = Column(String(50), nullable=True)
+    UTR = Column(String(50), nullable=True,unique=False)
+    CREATE_DATE = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+    AMOUNT = Column(Float, nullable=False)
+    APPROVE_DEPOSIT = Column(Boolean,nullable=False,unique=False, default=False)
+    DENY_DEPOSIT = Column(Boolean,nullable=False,unique=False, default=False)
+    # UPDATE_DATE = Column(DateTime,unique=False,nullable=False,onupdate=datetime.now())
+
+
+class PaymentWithdrawTable(Base):
+    __tablename__ = 'WITHDRAW'
+
+    ID = Column(Integer, primary_key=True, autoincrement=True)
+    MOBILE_NUMBER = Column(String(15), nullable=False)
+    TRANSACTION_ID = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
+    UTR = Column(String(50), nullable=True)
+    USER_UPI_ID = Column(String(50), nullable=False)
+    ADMIN_UPI_ID = Column(String(50), nullable=True)
+    CREATE_DATE = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+    AMOUNT = Column(Float, nullable=False,unique=False)
+    APPROVE_WITHDRAW = Column(Boolean, default=False)
+    DENY_WITHDRAW = Column(Boolean, default=False)
+    # UPDATE_DATE = Column(DateTime,unique=False,nullable=False,onupdate=datetime.now())
 
 User.referral_table = relationship("Referral_table", back_populates="user")
 Base.metadata.create_all(bind=engine)

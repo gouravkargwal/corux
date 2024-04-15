@@ -18,7 +18,7 @@ class JWTAuth:
             {
                 "scope": "access_token",
                 "iat": asof.timestamp(),
-                "exp": (asof + timedelta(seconds=10)).timestamp(),
+                "exp": (asof + timedelta(minutes=10)).timestamp(),
             }
         )
         return jwt.encode(

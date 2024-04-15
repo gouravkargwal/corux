@@ -44,3 +44,7 @@ class user_detail(BaseModel):
 
 class result_detail(BaseModel):
     game_id: str
+
+
+class amount_schema(BaseModel):
+    amount: float
