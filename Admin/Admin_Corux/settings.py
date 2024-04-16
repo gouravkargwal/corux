@@ -16,10 +16,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 import os
 from dotenv import load_dotenv
+from decouple import config
+
 
 load_dotenv()
 
-
+UPI_IDS = config("UPI_IDS")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

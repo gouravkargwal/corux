@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 import base64
 import os
-
-# Create your views here.
+from django.conf import settings
 from django.http import HttpResponse
 
 def login_view(request):
@@ -32,7 +31,14 @@ def users(request):
 @login_required
 def withdraw(request):
     nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
-    return render(request, 'withdraw.html', {'nonceValue': nonce})
+    try: 
+        upi_ids_string = settings.UPI_IDS
+        upi_ids_list = upi_ids_string.split(',')
+        upi_ids = [{'id': upi_id, 'name': upi_id} for upi_id in upi_ids_list]
+        return render(request, 'withdraw.html', {'upi_ids': upi_ids, 'nonceValue': nonce})
+    
+    except Exception as e:
+        return render(request, 'withdraw.html', {'nonceValue': nonce})
 
 @login_required
 def deposit(request):

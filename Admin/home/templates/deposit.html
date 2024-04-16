@@ -33,6 +33,7 @@
                                     <th class="sm dot">Mobile Number</th>
                                     <th class="md dot">Date of Creation</th>
                                     <th class="sm dot">Amount</th>
+                                    <th class="md dot">UTR</th>
                                     <th class="md dot">Deposit Status</th>
                                     <th class="md dot"></th>
                                     <th class="md dot">Action Date</th>
@@ -188,6 +189,11 @@
                 {
                     "data": "AMOUNT",
                     "className": "sm dot",
+                },
+                {
+                    "data": "UTR",
+                    "className": "md dot",
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
                     "data": "APPROVE_DEPOSIT",

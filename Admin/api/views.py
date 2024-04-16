@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer
 from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable
 from home.custom_logging import adminlogger
+from django.conf import settings
 
 
 class UserAdminView(APIView):

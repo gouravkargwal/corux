@@ -514,7 +514,7 @@ tr {
 }
 
 td {
-    font-size: 12px !important;
+    font-size: 16px !important;
     font-weight: 400 !important;
     color: #333F50 !important;
     padding: 3px 6px !important;
@@ -525,8 +525,8 @@ td {
 }
 
 .dataTable thead tr th {
-    font-size: 12px !important;
-    font-weight: 600 !important;
+    font-size: 16px !important;
+    font-weight: 550 !important;
     color: #1930ab !important;
     border-bottom: 1px solid #1930ab !important;
 }
@@ -1066,10 +1066,16 @@ button.close {
 .clickable{
     text-align: center !important;
     padding: 0 0 !important;
-    font-size: 12px !important;
-    width: 80px !important;
+    font-size: 14px !important;
+    width: 90px !important;
 }
-
+ 
 .clickable.deposit, .clickable.deposit_deny{
     width: 65px !important;
+}
+ 
+.custom-dropdown {
+    padding: 0.20rem 0.20rem !important;
+    font-size: 0.75rem !important; /* Smaller font size */
+    height: 25px;
 }

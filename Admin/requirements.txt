@@ -10,3 +10,4 @@ sqlparse==0.4.4
 typing-extensions==4.11.0
 tzdata==2024.1
 win32-setctime==1.1.0
+python-decouple==3.8

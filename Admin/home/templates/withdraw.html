@@ -34,6 +34,7 @@
                                     <th class="md dot">Date of Creation</th>
                                     <th class="sm dot">Amount</th>
                                     <th class="md dot">Withdraw Status</th>
+                                    <th class="md dot">Admin UPI ID</th>
                                     <th class="md dot"></th>
                                     <th class="md dot">Action Date</th>
                                 </tr>
@@ -89,7 +90,7 @@
             </div>
         </div>
     </div>
-</div> 
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
@@ -101,19 +102,19 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 <script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
 
-<script nonce="{{ nonceValue }}"> 
-    const loadingSpinner = document.getElementById('loading-spinner'); 
-    const overlay = document.getElementById('overlay'); 
+<script nonce="{{ nonceValue }}">
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const overlay = document.getElementById('overlay');
     window.addEventListener('unload', function (event) { hideOverlay(); }); 
 </script>
 <script nonce="{{ nonceValue }}"> $(document).ready(function () {
-        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content'); 
-        $.ajaxSetup({ 
-            beforeSend: function (xhr, settings) { 
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) { 
-                    xhr.setRequestHeader("X-CSRFToken", csrfToken); 
-                } 
-            } 
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", csrfToken);
+                }
+            }
         });
         const dataTable = $('#dashboard2').DataTable({
             scrollY: '58vh',
@@ -124,11 +125,11 @@
             "paging": true,
             "bPaginate": true,
             "pageLength": 25,
-            lengthMenu: [ [25], [25] ],
+            lengthMenu: [[25], [25]],
             "order": [],
             "columnDefs": [{ "orderable": false, "targets": "_all" },],
             "serverSide": true,
-            "processing": true, 
+            "processing": true,
             // "stateSave": true, 
             "ajax": {
                 "url": "/api/withdraw",
@@ -152,21 +153,21 @@
                     "data": "ID",
                     "className": "xs dot",
                 },
-                
+
                 {
                     "data": "MOBILE_NUMBER",
-                    "className": "sm dot", 
+                    "className": "sm dot",
                     "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
-                    "data": "CREATE_DATE", 
-                    "className": "md dot", 
+                    "data": "CREATE_DATE",
+                    "className": "md dot",
                     "render": function (data, type, row) {
                         if (type === 'display' || type === 'filter') {
                             if (data) {
-                                var date = new Date(data); 
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' }; 
-                                return date.toLocaleDateString('en-GB', options); 
+                                var date = new Date(data);
+                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                                return date.toLocaleDateString('en-GB', options);
                             } return '';
                         } return data;
                     }
@@ -181,6 +182,24 @@
                     "render": function (data, type, row) { return data ? "Approved" : "Yet to be approve"; }
                 },
                 {
+                    "data": "ADMIN_UPI_ID",
+                    "className": "md dot",
+                    "render": function (data, type, row) {
+                        if (row.APPROVE_WITHDRAW) {
+                            return data ? data : '-';
+                        } else {
+                            return `
+                                <select class="form-select custom-dropdown" data-id="${row.ID}">
+                                <option value="" disabled selected>Select UPI ID</option>
+                                {% for upi in upi_ids %}
+                                    <option value="{{ upi.id }}">{{ upi.name }}</option>
+                                {% endfor %}
+                                </select>
+                            `;
+                        }
+                    }
+                },
+                {
                     "data": "APPROVE_WITHDRAW",
                     "className": "sm dot",
                     "render": function (data, type, row) {
@@ -190,16 +209,16 @@
                             return `-`;
                         }
                     }
-                }, 
+                },
                 {
-                    "data": "UPDATE_DATE", 
-                    "className": "md dot", 
+                    "data": "UPDATE_DATE",
+                    "className": "md dot",
                     "render": function (data, type, row) {
                         if (type === 'display' || type === 'filter') {
                             if (data) {
-                                var date = new Date(data); 
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' }; 
-                                return date.toLocaleDateString('en-GB', options); 
+                                var date = new Date(data);
+                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
+                                return date.toLocaleDateString('en-GB', options);
                             } return '';
                         } return data;
                     }
@@ -223,23 +242,31 @@
 <script nonce="{{ nonceValue }}">
     $(document).on('click', '.withdraw', function (event) {
         var ctId1 = $(this).data('id');
+        var selectedUpiId = $(this).closest('tr').find('select').val();
+        if (!selectedUpiId){
+            $('#errorModalBody').text("Ohh bhai, UPI ID select krr phle");
+            $('#errorModal').modal('show');
+            return ;
+        }
         $('#approveModal').data('user-id', ctId1);
+        $('#approveModal').data('upi-id', selectedUpiId);
         $('#approveModal').modal('show');
     });
     $('#approveWithdraw').click(function () {
         var userId = $('#approveModal').data('user-id');
+        var upiId = $('#approveModal').data('upi-id');
         showOverlay()
         $.ajax({
             url: '/api/withdraw/',
             type: 'PATCH',
-            data: { ID: userId, APPROVE_WITHDRAW: 1},
+            data: { ID: userId, APPROVE_WITHDRAW: 1, ADMIN_UPI_ID: upiId },
             success: function (response) {
                 $('#dashboard2').DataTable().ajax.reload(function (json) {
-                    if (!json || !json.records || json.records.length === 0) {  
+                    if (!json || !json.records || json.records.length === 0) {
                         var table = $('#dashboard2').DataTable();
                         var pageInfo = table.page.info();
-                        if (pageInfo.page > 0) {  
-                            table.page('previous').draw('page'); 
+                        if (pageInfo.page > 0) {
+                            table.page('previous').draw('page');
                         }
                     }
                 }, false); // Stay on the current page after reload 
