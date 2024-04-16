@@ -75,7 +75,6 @@ async def start_game():
 
 async def notify_timer():
     try:
-        db = SessionLocal()
         global task_running,game_inprocess
         global game_id, start_time, result_calculated
 
@@ -105,7 +104,7 @@ async def notify_timer():
                     elapsed_time >= game_duration - timedelta(seconds=30)
                     and not result_calculated
                 ):
-                    winning_user_id = await get_result(game_id, db)
+                    winning_user_id = await get_result(game_id)
                     result_calculated = True
 
                 if elapsed_time >= game_duration and result_calculated:

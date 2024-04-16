@@ -154,7 +154,7 @@ def determine_winners(
         return "error in determine"
 
 
-def get_result(game_id):
+async def get_result(game_id):
     db = SessionLocal()
     try:
         with db.begin():
@@ -308,7 +308,8 @@ def get_result(game_id):
     except SQLAlchemyError as e:
         db.rollback()
         raise HTTPException(status_code=500, detail="Database error occurred")
+        # return True
     except HTTPException as e:
         db.rollback()
-        # logger.error(str(e))
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)

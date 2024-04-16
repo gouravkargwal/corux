@@ -113,9 +113,9 @@ async def winthdraw(
     db: Session = Depends(get_sql_db)
 ):
     try:
-        if withdraw_schema.amount == 0:
+        if withdraw_schema.amount == 100:
             raise HTTPException(
-                status_code=400, detail="Enter Amount More than 0")
+                status_code=400, detail="Enter Amount More than 100")
 
         user = db.query(User).filter(User.mobile_number ==
                                      credentials.mobile_number).first()
