@@ -1079,3 +1079,49 @@ button.close {
     font-size: 0.75rem !important; /* Smaller font size */
     height: 25px;
 }
+
+.xx {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+
+@media (max-width: 500px) {
+    .xx {
+        flex-direction: column;
+    }
+
+    .button {
+        margin-left:20px;
+        margin-right: 20px;
+    }
+}
+
+
+.button {
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.primary-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.primary-button:hover {
+    background-color: #0056b9;
+}
+
+.secondary-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+.secondary-button:hover {
+    background-color: #545b69;
+}

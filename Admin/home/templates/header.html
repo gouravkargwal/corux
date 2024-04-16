@@ -29,9 +29,10 @@
                             <a class="tokenLink nav-link{% if active_page == 'deposit' %} active{% endif %}"
                                 href="{% url 'deposit' %}">Deposit</a> 
                         </li> 
-                        <!-- <li class="nav-item"> <a class="nav-link bl" href="#"> <i class="fa fa-bell" aria-hidden="true"
-                                    class="bl"></i> </a> 
-                        </li> -->
+                        <li class="nav-item"> 
+                            <a class="tokenLink nav-link{% if active_page == 'gameControl' %} active{% endif %}"
+                                href="{% url 'gameControl' %}">Game</a> 
+                        </li>
                         <li class="nav-item">
                             <form action="/logout/" method="post"> {% csrf_token %} <button type="submit"
                                     class="nav-link bl logout-button tokenLink" title="Click to log out"> <i
