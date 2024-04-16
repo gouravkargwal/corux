@@ -15,7 +15,10 @@ class Bet_Color(Base):
     bet_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     bet_on = Column(VARCHAR(10), unique=False, nullable=True)
     bet_amount = Column(Integer, unique=False, nullable=True, default=0)
-
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class Bet_Number(Base):
@@ -26,6 +29,10 @@ class Bet_Number(Base):
     bet_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     bet_on = Column(Integer, unique=False, nullable=True)
     bet_amount = Column(Integer, unique=False, nullable=True, default=0)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class All_Time_Winner_Table(Base):
@@ -38,6 +45,10 @@ class All_Time_Winner_Table(Base):
     color = Column(String(10), unique=False, nullable=True, default='grey')
     number = Column(Integer, unique=False, nullable=True, default=-1)
     amount_won = Column(Integer, unique=False, nullable=True, default=0)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class Otp_Table(Base):
@@ -49,6 +60,10 @@ class Otp_Table(Base):
     count = Column(Integer, unique=False, nullable=True, default=1)
     time = Column(DateTime, unique=False,
                   nullable=False, default=datetime.now())
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class User(Base):
@@ -56,13 +71,15 @@ class User(Base):
 
     user_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     username = Column(String(30), unique=False, nullable=False)
-    mobile_number = Column(String(10), unique=True,nullable=False)
+    mobile_number = Column(String(10), unique=True, nullable=False)
     is_kyc = Column(Boolean, unique=False, nullable=False, default=False)
     is_blocked = Column(Boolean, unique=False, nullable=False, default=False)
     password = Column(String(200), unique=False, nullable=False)
-    create_date = Column(DateTime, unique=False,
+    CREATE_DATE = Column(DateTime, unique=False,
                          nullable=False, default=datetime.now())
     balance = Column(Integer, unique=False, nullable=False, default=0)
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class Account_Detail(Base):
@@ -76,6 +93,10 @@ class Account_Detail(Base):
     upi_id = Column(VARCHAR(25), unique=False, nullable=True)
     ifsc_code = Column(VARCHAR(20), unique=False, nullable=True)
     account_name = Column(VARCHAR(30), unique=False, nullable=False)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class Winner_Table(Base):
@@ -88,6 +109,10 @@ class Winner_Table(Base):
     color = Column(String(10), unique=False, nullable=True, default='grey')
     number = Column(Integer, unique=False, nullable=True, default=-1)
     amount_won = Column(Integer, unique=False, nullable=True, default=0)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
     user = relationship('User', back_populates='winner_table')
 
@@ -103,12 +128,17 @@ class Result(Base):
     game_id = Column(String(14), unique=True, nullable=False)
     color_who_won = Column(JSON, unique=False, nullable=False, default=[])
     number_who_won = Column(Integer, unique=False, nullable=False)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class Referral_table(Base):
     __tablename__ = "referral_table"
 
-    referaal_id = Column(Integer, index=True,primary_key=True, unique=True, autoincrement=True)
+    referaal_id = Column(Integer, index=True, primary_key=True,
+                         unique=True, autoincrement=True)
     mobile_number = Column(String(10), ForeignKey('user.mobile_number'))
     referral_code_to = Column(
         String(10), unique=False, nullable=False)
@@ -117,14 +147,18 @@ class Referral_table(Base):
                            nullable=True, default="")
     level_2_refer = Column(VARCHAR(256), unique=False,
                            nullable=True, default="")
-    
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
+
     user = relationship('User', back_populates='referral_table')
 
 
 class All_Referral_Winning(Base):
     __tablename__ = "all_referral_winning"
 
-    id = Column(Integer,primary_key=True,unique=True,autoincrement=True)
+    id = Column(Integer, primary_key=True, unique=True, autoincrement=True)
     mobile_number = Column(String(10), ForeignKey('user.mobile_number'))
     game_id = Column(String(14), unique=True, nullable=False)
     level_1_refer = Column(VARCHAR(256), unique=False,
@@ -132,39 +166,42 @@ class All_Referral_Winning(Base):
     level_2_refer = Column(VARCHAR(256), unique=False,
                            nullable=True, default="")
     amount_won = Column(Integer, unique=False, nullable=True, default=0)
-    
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
+
 
 class Upi_Table(Base):
     __tablename__ = "upi_table"
 
-    id = Column(Integer,primary_key=True,unique=True,index=True,autoincrement=True)
-    upi_id = Column(String(20),unique=True,nullable=False)
-    name = Column(String(20),unique=False,nullable=False,default="")
-    created_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
-    updated_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+    id = Column(Integer, primary_key=True, unique=True,
+                index=True, autoincrement=True)
+    upi_id = Column(String(20), unique=True, nullable=False)
+    name = Column(String(20), unique=False, nullable=False, default="")
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
-# class Transaction_Table(Base):
-#     __tablename__ = "transaction_table"
-
-#     id = Column(Integer,primary_key=True,unique=True,index=True,autoincrement=True)
-#     transaction_id = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
-#     utr = Column(Integer,unique=False,nullable=True)
-#     created_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
-#     updated_at = Column(DateTime,unique=False,nullable=False,default=datetime.now())
 class PaymentDepositTable(Base):
     __tablename__ = 'DEPOSIT'
 
     ID = Column(Integer, primary_key=True, autoincrement=True)
-    MOBILE_NUMBER = Column(String(10),unique=False, nullable=False)
-    # TRANSACTION_ID = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
+    MOBILE_NUMBER = Column(String(10), unique=False, nullable=False)
+    TRANSACTION_ID = Column(UUIDType(binary=False),
+                            unique=True, nullable=False, default=uuid.uuid4())
     ADMIN_UPI_ID = Column(String(50), nullable=True)
-    UTR = Column(String(50), nullable=True,unique=False)
-    CREATE_DATE = Column(DateTime,unique=False,nullable=False,default=datetime.now())
+    UTR = Column(String(50), nullable=True, unique=False)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
     AMOUNT = Column(Float, nullable=False)
-    APPROVE_DEPOSIT = Column(Boolean,nullable=False,unique=False, default=False)
-    DENY_DEPOSIT = Column(Boolean,nullable=False,unique=False, default=False)
-    # UPDATE_DATE = Column(DateTime,unique=False,nullable=False,onupdate=datetime.now())
+    APPROVE_DEPOSIT = Column(Boolean, nullable=False,
+                             unique=False, default=False)
+    DENY_DEPOSIT = Column(Boolean, nullable=False, unique=False, default=False)
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
 
 
 class PaymentWithdrawTable(Base):
@@ -172,15 +209,19 @@ class PaymentWithdrawTable(Base):
 
     ID = Column(Integer, primary_key=True, autoincrement=True)
     MOBILE_NUMBER = Column(String(15), nullable=False)
-    TRANSACTION_ID = Column(UUIDType(binary=False),unique=True,nullable=False,default=uuid.uuid4())
+    TRANSACTION_ID = Column(UUIDType(binary=False),
+                            unique=True, nullable=False, default=uuid.uuid4())
     UTR = Column(String(50), nullable=True)
     USER_UPI_ID = Column(String(50), nullable=False)
     ADMIN_UPI_ID = Column(String(50), nullable=True)
-    CREATE_DATE = Column(DateTime,unique=False,nullable=False,default=datetime.now())
-    AMOUNT = Column(Float, nullable=False,unique=False)
+    CREATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now())
+    AMOUNT = Column(Float, nullable=False, unique=False)
     APPROVE_WITHDRAW = Column(Boolean, default=False)
     DENY_WITHDRAW = Column(Boolean, default=False)
-    # UPDATE_DATE = Column(DateTime,unique=False,nullable=False,onupdate=datetime.now())
+    UPDATE_DATE = Column(DateTime, unique=False,
+                         nullable=False, default=datetime.now(), onupdate=datetime.now())
+
 
 User.referral_table = relationship("Referral_table", back_populates="user")
 Base.metadata.create_all(bind=engine)
