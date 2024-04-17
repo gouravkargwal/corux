@@ -48,3 +48,13 @@ class result_detail(BaseModel):
 
 class amount_schema(BaseModel):
     amount: float
+
+
+class withdraw_schema(BaseModel):
+    amount: float
+    user_upi: str
+
+
+class utr_schema(BaseModel):
+    transaction_id: str
+    utr: str
