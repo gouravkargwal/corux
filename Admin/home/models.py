@@ -73,3 +73,14 @@ class PaymentWithdrawTable(models.Model):
 
     class Meta:
         db_table = "WITHDRAW"
+
+class UpiTable(models.Model):
+
+    ID = models.AutoField(primary_key=True)
+
+    USER_NAME = models.CharField(max_length=30, null=False)
+
+    UPI_ID = models.CharField(max_length=50, null=False)
+
+    class Meta:
+        db_table = "ADMIN_UPI"

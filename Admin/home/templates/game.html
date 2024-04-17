@@ -57,13 +57,15 @@
 
 <script nonce="{{ nonceValue }}">
     $(document).ready(function () {
+        var fastapi = "{{ fastapi }}";
+        console.log(fastapi)
         $('.primary-button').click(function () {
             $.ajax({
-                url: '/start-game/',
+                url: fastapi +'/control/timer/start/',
                 type: 'POST',
                 success: function (response) {
-                    console.log('Game started successfully!', response);
-                    alert('Game started!');
+                    $('#errorModalBody').text('Game started!');
+                    $('#errorModal').modal('show');
                 },
                 error: function (error) {
                     $('#errorModalBody').text('Failed to start game!');
@@ -75,12 +77,12 @@
         
         $('.secondary-button').click(function () {
             $.ajax({
-                url: '/stop-game/',
+                url: fastapi + '/control/timer/stop/',
                 type: 'POST',
                 
                 success: function (response) {
-                    console.log('Game stopped successfully!', response);
-                    alert('Game stopped!');
+                    $('#errorModalBody').text('Game stopped!');
+                    $('#errorModal').modal('show');
                 },
                 error: function (xhr) {
                     console.log(xhr)
