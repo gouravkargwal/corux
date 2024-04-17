@@ -160,7 +160,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 .first()
             )
             if user:
-                raise HTTPException(status_code=400, detail="User Already Exist!!")
+                raise HTTPException(status_code=409, detail="User Already Exist. Please Login.")
 
             new_user = User(
                 mobile_number=user_info.mobile_number,

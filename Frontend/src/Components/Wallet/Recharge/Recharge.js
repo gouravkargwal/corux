@@ -16,14 +16,20 @@ import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { blue, green, grey } from "@mui/material/colors";
 import LoadingButton from "../../UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setAddAmount } from "../../../Feature/Payment/paymentSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  generateQr,
+  selectPaymentQrError,
+  selectPaymentQrLoading,
+  setAddAmount,
+} from "../../../Feature/Payment/paymentSlice";
 
 const predefinedValues = [100, 200, 500, 1000];
 const Recharge = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(null);
+  const qrLoading = useSelector(selectPaymentQrLoading);
+  const qrError = useSelector(selectPaymentQrError);
   const {
     control,
     handleSubmit,
@@ -37,13 +43,10 @@ const Recharge = () => {
 
   const onFormSubmit = async (data) => {
     try {
-      setLoading(true);
       console.log(data);
-      navigate(`add-money/${data.amount}`);
+      dispatch(generateQr({ amount: data.amount, navigate }));
     } catch (error) {
       console.log(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -128,7 +131,7 @@ const Recharge = () => {
           type="submit"
           variant="contained"
           fullWidth
-          loading={loading}
+          loading={qrLoading}
           sx={{
             bgcolor: blue[500],
             borderRadius: 10,
@@ -137,6 +140,12 @@ const Recharge = () => {
         >
           Recharge
         </LoadingButton>
+        <FormHelperText
+          error={!!qrError}
+          sx={{ visibility: qrError ? "visible" : "hidden", height: "20px" }}
+        >
+          {qrError ? qrError : " "}
+        </FormHelperText>
       </Box>
     </Box>
   );

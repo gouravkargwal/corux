@@ -1,41 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Info from "../Profile/Info";
-import {
-  Avatar,
-  FormHelperText,
-  InputAdornment,
-  Typography,
-} from "@mui/material";
+import { Avatar, FormHelperText, Grid, InputAdornment } from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { blue, green, grey } from "@mui/material/colors";
-import SelectableCard from "./SelectableCard";
+import { blue, green, grey, orange } from "@mui/material/colors";
+import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
+import API from "../../Api/ApiCall";
+import { toast } from "react-toastify";
+import LoadingButton from "../UI/LoadingButton";
+import RechargeSuccessDialogue from "../UI/RechargeSuccessDialogue";
+import { useNavigate } from "react-router-dom";
 
 const Withdraw = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty, isValid },
   } = useForm({
     defaultValues: {
       amount: "",
-      withdrawalMethod: "",
+      upi: "",
     },
   });
 
-  const onFormSubmit = (data) => {
-    console.log(data);
+  const upiRegex = /^[a-zA-Z0-9.+\-_]+@[a-zA-Z0-9\-_]+$/;
+
+  const onFormSubmit = async (data) => {
+    try {
+      setLoading(true);
+      await API.withdrawMoneyAPI({ amount: data.amount, user_upi: data.upi });
+      setOpen(true);
+    } catch (error) {
+      if (error.response) {
+        return toast.error(error.response?.data?.detail);
+      } else if (error.request) {
+        return toast.error("No response received");
+      } else {
+        return toast.error(error.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onClose = () => {
+    setOpen(false);
+    navigate("/app/profile/wallet");
   };
 
   return (
     <Box component="form" onSubmit={handleSubmit(onFormSubmit)}>
       <Info />
-      <Typography marginLeft={3} fontWeight="600">
-        Select Amount
-      </Typography>
       <Box
         sx={{ backgroundColor: "background.main", boxShadow: 0 }}
         margin={3}
@@ -43,50 +63,117 @@ const Withdraw = () => {
         borderRadius={1}
         padding={2}
       >
-        <Controller
-          name="amount"
-          control={control}
-          rules={{
-            required: "Amount is required",
-            validate: (value) => value > 0 || "Amount must be greater than 0",
-          }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ borderColor: grey[500] }}
-              error={!!errors.amount}
-              variant="outlined"
-              fullWidth
-              margin="normal"
-              type="number"
-              placeholder="Enter Amount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: green[500],
-                      }}
-                    >
-                      <CurrencyRupeeIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
+        <Grid container>
+          <Grid item xs={12}>
+            <Controller
+              name="amount"
+              control={control}
+              rules={{
+                required: "Amount is required",
+                validate: (value) =>
+                  value > 0 || "Amount must be greater than 0",
               }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  sx={{ borderColor: grey[500] }}
+                  error={!!errors.amount}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type="number"
+                  placeholder="Enter Amount"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: green[500],
+                          }}
+                        >
+                          <CurrencyRupeeIcon sx={{ color: "text.white" }} />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
             />
-          )}
-        />
-        <FormHelperText
-          error={!!errors.amount}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
-        >
-          {errors ? errors?.amount?.message : " "}
-        </FormHelperText>
+            <FormHelperText
+              error={!!errors.amount}
+              sx={{
+                visibility: errors ? "visible" : "hidden",
+                height: "20px",
+              }}
+            >
+              {errors ? errors?.amount?.message : " "}
+            </FormHelperText>
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="upi"
+              control={control}
+              rules={{
+                required: "UPI is required",
+                pattern: {
+                  value: upiRegex,
+                  message: "Invalid UPI format",
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  sx={{ borderColor: grey[500] }}
+                  error={!!errors.upi}
+                  variant="outlined"
+                  fullWidth
+                  margin="normal"
+                  type="text"
+                  placeholder="Enter UPI"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: orange[500],
+                          }}
+                        >
+                          <SensorOccupiedIcon sx={{ color: "text.white" }} />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+            />
+            <FormHelperText
+              error={!!errors.upi}
+              sx={{
+                visibility: errors ? "visible" : "hidden",
+                height: "20px",
+              }}
+            >
+              {errors ? errors?.upi?.message : " "}
+            </FormHelperText>
+          </Grid>
+          <Grid item xs={12}>
+            <LoadingButton
+              type="submit"
+              variant="contained"
+              disabled={!(isValid && isDirty)}
+              loading={loading}
+              fullWidth
+              sx={{ bgcolor: blue[500], borderRadius: 10, padding: [2, 0] }}
+            >
+              Withdraw
+            </LoadingButton>
+          </Grid>
+        </Grid>
       </Box>
-      <Typography marginLeft={3} fontWeight="600">
+      {/* <Typography marginLeft={3} fontWeight="600">
         Withdraw To
-      </Typography>
-      <Box
+        </Typography>
+        <Box
         sx={{ backgroundColor: "background.main", boxShadow: 0 }}
         margin={3}
         marginTop={1}
@@ -99,10 +186,7 @@ const Withdraw = () => {
           rules={{ required: "Please select a withdrawal method" }}
           render={({ field }) => (
             <SelectableCard
-              options={[
-                { id: 1, value: "Visa", label: "VISA" },
-                { id: 2, value: "bank", label: "HDFC" },
-              ]}
+              options={[{ id: 1, value: "upi", label: "UPI" }]}
               selectedValue={field.value}
               onChange={(value) => field.onChange(value)}
             />
@@ -122,7 +206,8 @@ const Withdraw = () => {
         >
           Withdraw
         </Button>
-      </Box>
+      </Box> */}
+      <RechargeSuccessDialogue open={open} onClose={onClose} />
     </Box>
   );
 };

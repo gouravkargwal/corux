@@ -8,20 +8,24 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import LoadingButton from "../../UI/LoadingButton";
 import { blue, grey, red } from "@mui/material/colors";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import IconButton from "@mui/material/IconButton";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
+import API from "../../../Api/ApiCall";
+import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
+import { toast } from "react-toastify";
 
 const ManualAddMoney = () => {
   let { amount } = useParams();
+  const qrData = useSelector(selectPaymentQrData);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(null);
-  const [showCopyConfirmation, setShowCopyConfirmation] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
   const {
     control,
     handleSubmit,
@@ -31,26 +35,30 @@ const ManualAddMoney = () => {
       utr: "",
     },
   });
-  const copyToClipboard = (text) => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setShowCopyConfirmation(true);
-        setTimeout(() => {
-          setShowCopyConfirmation(false);
-        }, 3000);
-      })
-      .catch((err) => {
-        console.error("Failed to copy: ", err);
-      });
+
+  const onClose = () => {
+    setOpen(false);
+    navigate("/app/profile/wallet");
   };
 
   const onFormSubmit = async (data) => {
     try {
       setLoading(true);
       console.log(data);
+      await API.saveUtrAPI({
+        transaction_id: qrData.transaction_id,
+        utr: data.utr,
+      });
+      setLoading(false);
+      setOpen(true);
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        return toast.error(error.response?.data?.detail);
+      } else if (error.request) {
+        return toast.error("No response received");
+      } else {
+        return toast.error(error.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -66,30 +74,9 @@ const ManualAddMoney = () => {
         borderRadius={1}
         padding={2}
       >
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography>UPI ID</Typography>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>gouravkargwal@oksbi</Typography>
-            <IconButton
-              onClick={() => copyToClipboard("Hello")}
-              aria-label="copy"
-            >
-              <ContentCopyIcon />
-            </IconButton>
-            {showCopyConfirmation ? (
-              <Typography variant="body2" color="success.main">
-                Copied!
-              </Typography>
-            ) : (
-              <Typography variant="body2" color="success.main"></Typography>
-            )}
-          </Box>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <img src={`data:image/png;base64,${qrData?.qr_code}`} alt="QR Code" />
         </Box>
-        <Typography>Amount {amount}</Typography>
       </Box>
       <Box
         component="form"
@@ -134,10 +121,10 @@ const ManualAddMoney = () => {
           )}
         />
         <FormHelperText
-          error={!!errors.amount}
+          error={!!errors.utr}
           sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
         >
-          {errors ? errors?.amount?.message : " "}
+          {errors ? errors?.utr?.message : " "}
         </FormHelperText>
         <LoadingButton
           type="submit"
@@ -153,6 +140,7 @@ const ManualAddMoney = () => {
           Submit
         </LoadingButton>
       </Box>
+      <RechargeSuccessDialogue open={open} onClose={onClose} amount={amount} />
     </Box>
   );
 };

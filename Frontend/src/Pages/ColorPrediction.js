@@ -43,6 +43,8 @@ import GameRulesDialog from "../Components/ColorPrediction/GamesRulesDialogue";
 import AuthDialogue from "../Components/UI/AuthDialogue";
 import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
 import InfoWithButton from "../Components/Wallet/InfoWithButton";
+import { getBalance } from "../Feature/Balance/balanceSlice";
+import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -61,6 +63,9 @@ const ColorPrediction = () => {
   const [loginDialog, setLoginDialog] = useState(false);
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
+
+  const [resultDialogue, setResultDialogue] = useState(false);
+  const [result, setResult] = useState(null);
 
   useEffect(() => {
     if (!socket.connected) {
@@ -82,11 +87,11 @@ const ColorPrediction = () => {
     socket.on("winner_notification", (data) => {
       console.log(data);
       if (data.user_list) {
-        const matchingUser = _.find(data.user_list, { user: user });
-        console.log(matchingUser);
+        const matchingUser = _.find(data.user_list, { mobile_number: user });
+        console.log(matchingUser, "Matching user");
         if (matchingUser) {
-          console.log(matchingUser);
-          toast.success(matchingUser.money);
+          setResult(matchingUser);
+          setResultDialogue(true);
         }
       }
     });
@@ -128,8 +133,10 @@ const ColorPrediction = () => {
         const betData = {
           bet_amount: data.amount,
           bet_on: selectedColor ? selectedColor : String(selectedNumber),
+          game_id: gameId,
         };
         dispatch(createBet(betData));
+        dispatch(getBalance());
       } else {
         setLoginDialog(true);
       }
@@ -263,9 +270,20 @@ const ColorPrediction = () => {
         errors={errors}
         loading={loading}
         dialogType={dialogType}
+        selectedColor={selectedColor}
+        selectedNumber={selectedNumber}
       />
 
       <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
+
+      <ResultDialogue
+        open={resultDialogue}
+        onClose={() => {
+          setResult(null);
+          setResultDialogue(false);
+        }}
+        data={result}
+      />
     </>
   );
 };

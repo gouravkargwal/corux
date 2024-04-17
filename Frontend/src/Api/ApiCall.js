@@ -53,6 +53,18 @@ const cashfreeAPI = async (data) => {
   return axiosInstance.patch(`/user/cashreeapi`, data);
 };
 
+const addMoneyAPI = async (data) => {
+  return axiosInstance.post(`/wallet/generate-qr`, data);
+};
+
+const saveUtrAPI = async (data) => {
+  return axiosInstance.patch(`/wallet/save-utr`, data);
+};
+
+const withdrawMoneyAPI = async (data) => {
+  return axiosInstance.post(`/wallet/withdraw`, data);
+};
+
 const API = {
   signinAPI,
   refreshTokenAPI,
@@ -67,6 +79,9 @@ const API = {
   changePasswordAPI,
   cashfreeAPI,
   getReferDetailsAPI,
+  addMoneyAPI,
+  saveUtrAPI,
+  withdrawMoneyAPI,
 };
 
 export default API;
