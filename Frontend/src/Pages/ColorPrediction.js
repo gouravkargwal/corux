@@ -85,13 +85,15 @@ const ColorPrediction = () => {
       }
     });
     socket.on("winner_notification", (data) => {
-      console.log(data);
       if (data.user_list) {
-        const matchingUser = _.find(data.user_list, { mobile_number: user });
-        console.log(matchingUser, "Matching user");
-        if (matchingUser) {
-          setResult(matchingUser);
+        const matchingUsers = _.filter(data.user_list, { mobile_number: user });
+        console.log(matchingUsers, "Matching user");
+        if (matchingUsers?.length > 0) {
+          setResult(matchingUsers);
           setResultDialogue(true);
+        } else {
+          setResult(null);
+          setResultDialogue(false);
         }
       }
     });

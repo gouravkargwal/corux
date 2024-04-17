@@ -3,6 +3,8 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  List,
+  ListItem,
   Typography,
 } from "@mui/material";
 import _ from "lodash";
@@ -21,15 +23,19 @@ const ResultDialogue = ({ open, onClose, data }) => {
       </DialogTitle>
 
       <DialogContent>
-        <ul>
+        <List>
           {_.map(data, (item) => {
-            <li>
-              {item.amount === 0
-                ? `You lost on ${item?.bet_on}`
-                : `You won on ${item?.bet_on}`}
-            </li>;
+            return (
+              <ListItem
+                primary={
+                  item.amount === 0
+                    ? `You lost on ${item?.bet_on}`
+                    : `You won on ${item?.bet_on}`
+                }
+              />
+            );
           })}
-        </ul>
+        </List>
       </DialogContent>
     </Dialog>
   );
