@@ -47,8 +47,12 @@ def deposit(request):
 
 @login_required
 def gameControl(request):
-    nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
-    return render(request, 'game.html', {'nonceValue': nonce})
+    try:
+        nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
+        fastapi = settings.FASTAPI_API
+        return render(request, 'game.html', {'nonceValue': nonce, 'fastapi': fastapi})
+    except Exception as e:
+        return render(request, 'game.html', {'nonceValue': nonce})
 
 def logout_view(request):
     logout(request)

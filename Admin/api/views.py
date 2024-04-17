@@ -3,14 +3,18 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import now
-from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer
-from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable
+from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer
+from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable
 from home.custom_logging import adminlogger
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from rest_framework.permissions import IsAuthenticated
+from django.db import transaction
 
 
 class UserAdminView(APIView):
     def get(self, request):
+        permission_classes = [IsAuthenticated]
         try:
             adminlogger.info("UserAdmin get")
             start = int(request.GET.get('start', 0))
@@ -29,6 +33,7 @@ class UserAdminView(APIView):
             return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
     
     def patch(self, request):
+        permission_classes = [IsAuthenticated]
         try:
             adminlogger.info("UserAdmin Patch")
             data = request.data
@@ -49,6 +54,7 @@ class UserAdminView(APIView):
         
 class withdraw(APIView):
     def get(self, request):
+        permission_classes = [IsAuthenticated]
         try:
             adminlogger.info("withdraw get")
             start = int(request.GET.get('start', 0))
@@ -69,19 +75,32 @@ class withdraw(APIView):
             return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
         
     def patch(self, request):
+        permission_classes = [IsAuthenticated]
         try:
-            adminlogger.info("withdraw patch")
-            data = request.data.copy()
-            if not data.get('ID'):
-                return Response({"status": 400, "message":"ID is required"})
-            data["UPDATE_DATE"] = now()
-            payment = PaymentWithdrawTable.objects.get(ID=request.data.get('ID'))
-            serializedpayment = PaymentWithdrawSerializer(payment, data=data, partial=True)
-            if serializedpayment.is_valid():
-                serializedpayment.save()
-            else:
-                return Response(serializedpayment.errors)
-            return Response({'status': 200, "message": "success"})
+            with transaction.atomic():
+                adminlogger.info("withdraw patch")
+                data = request.data.copy()
+                serializer = ValidationWithdrawApprovedSerializer(data=data)
+                if serializer.is_valid():
+                    pass
+                else:
+                    first_field = next(iter(serializer.errors))
+                    first_error = serializer.errors[first_field][0] 
+                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                data["UPDATE_DATE"] = now()
+                payment = PaymentWithdrawTable.objects.get(ID=request.data.get('ID'))
+                paymentGetSerializer = UpdateWithdrawSerializer(payment)
+                adminlogger.info(paymentGetSerializer.data)
+                user = UserAdminTable.objects.get(MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+                balance=user.BALANCE - paymentGetSerializer.data["AMOUNT"]
+                serializedUser = UserAdminSerializer(user, data={"BALANCE": balance}, partial=True)
+                serializedpayment = PaymentWithdrawSerializer(payment, data=data, partial=True)
+                if serializedpayment.is_valid() and serializedUser.is_valid():
+                    serializedpayment.save()
+                    serializedUser.save()
+                else:
+                    return Response(serializedpayment.errors)
+                return Response({'status': 200, "message": "success"})
         
         except Exception as e:
             adminlogger.error(f"Error: {str(e)}")
@@ -90,12 +109,15 @@ class withdraw(APIView):
     
 class deposit(APIView):
     def get(self, request):
+        permission_classes = [IsAuthenticated]
         try:
+            user = request.user
             adminlogger.info("deposit get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
-            totalCount = PaymentDepositTable.objects.all().count()
-            payments = PaymentDepositTable.objects.all()[start:start+length]
+            upiId = UpiTable.objects.filter(USER_NAME = user.username).first().UPI_ID
+            totalCount = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId).count()
+            payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId)[start:start+length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
@@ -110,19 +132,28 @@ class deposit(APIView):
             return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
         
     def patch(self, request):
+        permission_classes = [IsAuthenticated]
         try:
-            adminlogger.info("deposit patch")
-            data = request.data.copy()
-            if not data.get('ID'):
-                return Response({"status": 400, "message":"ID is required"})
-            payment = PaymentDepositTable.objects.get(ID=request.data.get('ID'))
-            data["UPDATE_DATE"] = now()
-            serializedpayment = PaymentDepositSerializer(payment, data=data, partial=True)
-            if serializedpayment.is_valid():
-                serializedpayment.save()
-            else:
-                return Response(serializedpayment.errors)
-            return Response({'status': 200, "message": "success"})
+            with transaction.atomic():
+                adminlogger.info("deposit patch")
+                data = request.data.copy()
+                if not data.get('ID'):
+                    return Response({"status": 400, "message":"ID is required"})
+                payment = PaymentDepositTable.objects.get(ID=request.data.get('ID'))
+                adminlogger.info(payment)
+                paymentGetSerializer = UpdateDepositSerializer(payment)
+                adminlogger.info(paymentGetSerializer.data)
+                user = UserAdminTable.objects.get(MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+                balance=user.BALANCE + paymentGetSerializer.data["AMOUNT"]
+                serializedUser = UserAdminSerializer(user, data={"BALANCE": balance}, partial=True)
+                data["UPDATE_DATE"] = now()
+                serializedpayment = PaymentDepositSerializer(payment, data=data, partial=True)
+                if serializedpayment.is_valid() and serializedUser.is_valid():
+                    serializedpayment.save()
+                    serializedUser.save()
+                else:
+                    return Response(serializedpayment.errors)
+                return Response({'status': 200, "message": "success"})
         
         except Exception as e:
             adminlogger.error(f"Error: {str(e)}")
