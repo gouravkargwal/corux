@@ -153,3 +153,12 @@
 [ 2024-04-18] [INFO] [views:59] withdraw get
 [ 2024-04-18] [INFO] [views:59] withdraw get
 [ 2024-04-18] [INFO] [views:59] withdraw get
+[ 2024-04-18] [INFO] [views:59] withdraw get
+[ 2024-04-18] [INFO] [views:59] withdraw get
+[ 2024-04-18] [INFO] [views:81] withdraw patch
+[ 2024-04-18] [INFO] [views:93] {'AMOUNT': 198.0, 'MOBILE_NUMBER': '9876543211'}
+[ 2024-04-18] [INFO] [views:59] withdraw get
+[ 2024-04-18] [INFO] [views:19] UserAdmin get
+[ 2024-04-18] [INFO] [views:59] withdraw get
+[ 2024-04-18] [INFO] [views:115] deposit get
+[ 2024-04-18] [INFO] [views:119] 
