@@ -133,13 +133,13 @@
         const dataTable = $('#dashboard2').DataTable({
             scrollY: '58vh',
             scrollCollapse: true,
-            "bFilter": false,
+            "bFilter": true,
             "scrollX": true,
             "bInfo": true,
             "paging": true,
             "bPaginate": true,
             "pageLength": 25,
-            lengthMenu: [ [25], [25] ],
+            "lengthMenu": [ [25], [25] ],
             "order": [],
             "columnDefs": [{ "orderable": false, "targets": "_all" },],
             "serverSide": true,
@@ -150,7 +150,7 @@
                 "type": "GET",
                 "data": function (data) {
                     delete data.columns;
-                    delete data.search;
+                    // delete data.search;
                     delete data.draw;
                 },
                 "error": function (xhr, error, thrown) {

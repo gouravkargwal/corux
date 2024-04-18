@@ -115,9 +115,15 @@ class deposit(APIView):
             adminlogger.info("deposit get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
+            searchValue = request.GET.get('search[value]', '')
+            adminlogger.info(searchValue)
             upiId = UpiTable.objects.filter(USER_NAME = user.username).first().UPI_ID
-            totalCount = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId).count()
-            payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId)[start:start+length]
+            if searchValue:
+                totalCount = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId, UTR__icontains=searchValue).count()
+                payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId, UTR__icontains=searchValue)[start:start+length]
+            else:
+                totalCount = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId).count()
+                payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId)[start:start+length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
