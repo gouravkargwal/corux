@@ -82,5 +82,9 @@ class UpiTable(models.Model):
 
     UPI_ID = models.CharField(max_length=50, null=False)
 
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
     class Meta:
         db_table = "ADMIN_UPI"

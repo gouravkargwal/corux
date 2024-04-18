@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable
+from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable
 
 class UserAdminSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,6 +25,11 @@ class UpdateWithdrawSerializer(serializers.ModelSerializer):
     class Meta:
         model = PaymentWithdrawTable
         fields = ['AMOUNT', 'MOBILE_NUMBER']
+
+class UpiIDSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UpiTable
+        fields = ['UPI_ID']
 
 class ValidationWithdrawApprovedSerializer(serializers.Serializer):
     ID = serializers.IntegerField(required=True, error_messages={'required': 'ID is required.', 'invalid': 'ID must be an integer', 'blank': 'ID can not be blank'})
