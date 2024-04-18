@@ -192,7 +192,7 @@
                                 <select class="form-select custom-dropdown" data-id="${row.ID}">
                                 <option value="" disabled selected>Select UPI ID</option>
                                 {% for upi in upi_ids %}
-                                    <option value="{{ upi.id }}">{{ upi.name }}</option>
+                                    <option value="{{ upi.UPI_ID }}">{{ upi.UPI_ID }}</option>
                                 {% endfor %}
                                 </select>
                             `;

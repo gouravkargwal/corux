@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from home.models import UpiTable
+from home.serializers import UpiIDSerializer
 import base64
 import os
 from django.conf import settings
@@ -32,10 +34,10 @@ def users(request):
 def withdraw(request):
     nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
     try: 
-        upi_ids_string = settings.UPI_IDS
-        upi_ids_list = upi_ids_string.split(',')
-        upi_ids = [{'id': upi_id, 'name': upi_id} for upi_id in upi_ids_list]
-        return render(request, 'withdraw.html', {'upi_ids': upi_ids, 'nonceValue': nonce})
+        upiIds = UpiTable.objects.all()
+        upiSerializer = UpiIDSerializer(upiIds, many=True)
+        print(upiSerializer.data)
+        return render(request, 'withdraw.html', {'upi_ids': upiSerializer.data, 'nonceValue': nonce})
     
     except Exception as e:
         return render(request, 'withdraw.html', {'nonceValue': nonce})
