@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException,Query
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from sqlalchemy import text, delete, func, select, or_
+from sqlalchemy import text, delete, func, select, or_ , and_
 from db_module.session import get_sql_db
 from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
@@ -259,23 +259,57 @@ async def create_bet(
 
 @router.get("/user-win/")
 async def get_winning_list(
+    page: int = Query(default=1, ge=1),
+    size: int = Query(default=10, gt=0),
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
     db: Session = Depends(get_sql_db),
 ):
     try:
-        stmt = db.execute(
-            text(
-                "SELECT bet_color.mobile_number, bet_color.game_id, bet_color.bet_on, bet_color.bet_amount,all_time_winner_table.amount_won - bet_color.bet_amount as winning from corux2.bet_color bet_color left join corux2.all_time_winner_table all_time_winner_table on  all_time_winner_table.game_id = bet_color.game_id"
+        if page < 1 or size <= 0:
+            raise HTTPException(
+                status_code=400, detail="Invalid page or size parameters"
             )
-        )
-        stmt2 = db.execute(
-            text(
-                "SELECT bet_number.mobile_number, bet_number.game_id, bet_number.bet_on, bet_number.bet_amount,all_time_winner_table.amount_won - bet_number.bet_amount as winning from corux2.bet_number bet_number left join corux2.all_time_winner_table all_time_winner_table on  all_time_winner_table.game_id = bet_number.game_id"
-            )
-        )
 
-        result = [row._asdict() for row in stmt] + [row._asdict() for row in stmt2]
-        return result
+        skip = (page - 1) * size
+
+        stmt = db.query(
+            Bet_Color.mobile_number,
+            Bet_Color.game_id,
+            Bet_Color.bet_on,
+            Bet_Color.bet_amount,
+            (All_Time_Winner_Table.amount_won).label('winning')
+        ).filter(
+            Bet_Color.mobile_number == credentials.mobile_number
+        ).outerjoin(
+            All_Time_Winner_Table,
+            and_(All_Time_Winner_Table.game_id == Bet_Color.game_id,
+            All_Time_Winner_Table.color == Bet_Color.bet_on)
+        ).distinct().all()
+
+        
+        stmt2 = db.query(
+            Bet_Number.mobile_number,
+            Bet_Number.game_id,
+            Bet_Number.bet_on,
+            Bet_Number.bet_amount,
+            (All_Time_Winner_Table.amount_won).label('winning')
+        ).filter(
+            Bet_Number.mobile_number == credentials.mobile_number
+        ).outerjoin(
+            All_Time_Winner_Table,
+            and_(All_Time_Winner_Table.game_id == Bet_Number.game_id,
+            All_Time_Winner_Table.number == Bet_Number.bet_on)
+        ).distinct().all()
+
+        result = [row._asdict() for row in stmt]  + [row._asdict() for row in stmt2]
+        
+        result_list = sorted(result, key=lambda x: x['game_id'], reverse=True)
+
+        bet_count = db.query(Bet_Color).filter(Bet_Color.mobile_number == credentials.mobile_number).count() + db.query(Bet_Number).filter(Bet_Number.mobile_number == credentials.mobile_number).count()
+        return {
+            "rows":result_list[skip:skip+size+1],
+            "totalRows":bet_count
+        }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 

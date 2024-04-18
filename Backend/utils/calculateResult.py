@@ -9,7 +9,7 @@ from models.user import (
     All_Time_Winner_Table,
     User,
     Result,
-    Referral_table
+    Referral_table,
 )
 from utils.logger import setup_logger
 from db_module.session import SessionLocal
@@ -23,9 +23,7 @@ router = APIRouter()
 logger = setup_logger()
 
 
-def determine_winners(
-    result_color, result_number, total_amount_bet
-):
+def determine_winners(result_color, result_number, total_amount_bet):
     try:
         winner_dict = {
             "total_amount_won": 1000000000,
@@ -63,8 +61,7 @@ def determine_winners(
             }
 
             total_amount_won = 0
-            minIndex = result_number["total_bet_amount"].nsmallest(
-                i + 1).index[-1]
+            minIndex = result_number["total_bet_amount"].nsmallest(i + 1).index[-1]
             min_number = result_number.loc[minIndex, "bet_on"]
 
             # winner_dict_form["number_who_won"] = []
@@ -73,7 +70,7 @@ def determine_winners(
             winner_dict_form["number_who_won"].append(min_number)
 
             total_amount_won = (
-                result_number["total_bet_amount"].iloc[minIndex] * 0.98 * 9
+                result_number["total_bet_amount"].iloc[minIndex] * 9
             )
             if min_number % 2 == 0:
                 if min_number != 0:
@@ -82,7 +79,6 @@ def determine_winners(
                         + result_color[result_color["bet_on"] == "red"][
                             "total_bet_amount"
                         ].iloc[0]
-                        * 0.98
                         * 2
                     )
                     winner_dict_form["red"] = 2
@@ -92,7 +88,6 @@ def determine_winners(
                         + result_color[result_color["bet_on"] == "red"][
                             "total_bet_amount"
                         ].iloc[0]
-                        * 0.98
                         * 1.5
                     )
                     winner_dict_form["red"] = 1.5
@@ -106,7 +101,6 @@ def determine_winners(
                         + result_color[result_color["bet_on"] == "green"][
                             "total_bet_amount"
                         ].iloc[0]
-                        * 0.98
                         * 2
                     )
                     winner_dict_form["green"] = 2
@@ -117,7 +111,6 @@ def determine_winners(
                         + result_color[result_color["bet_on"] == "green"][
                             "total_bet_amount"
                         ].iloc[0]
-                        * 0.98
                         * 1.5
                     )
                     winner_dict_form["green"] = 1.5
@@ -130,7 +123,6 @@ def determine_winners(
                     + result_color[result_color["bet_on"] == "violet"][
                         "total_bet_amount"
                     ].iloc[0]
-                    * 0.98
                     * 4.5
                 )
                 winner_dict_form["violet"] = 4.5
@@ -138,7 +130,7 @@ def determine_winners(
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
 
-            if winner_dict['total_amount_won'] > winner_dict_form['total_amount_won']:
+            if winner_dict["total_amount_won"] > winner_dict_form["total_amount_won"]:
                 winner_dict = winner_dict_form
 
             if total_amount_bet < total_amount_won:
@@ -172,10 +164,12 @@ async def get_result(game_id):
             result_color = [row._asdict() for row in result_color] or []
             result_number = [row._asdict() for row in result_number] or []
 
-            result_color = pd.DataFrame(result_color, columns=[
-                                        'bet_on', 'total_bet_amount'])
-            result_number = pd.DataFrame(result_number, columns=[
-                                         'bet_on', 'total_bet_amount'])
+            result_color = pd.DataFrame(
+                result_color, columns=["bet_on", "total_bet_amount"]
+            )
+            result_number = pd.DataFrame(
+                result_number, columns=["bet_on", "total_bet_amount"]
+            )
 
             for i in range(0, 10):
                 if result_number[result_number["bet_on"] == i].empty:
@@ -194,16 +188,14 @@ async def get_result(game_id):
             result_color["total_bet_amount"] = result_color["total_bet_amount"].astype(
                 float
             )
-            result_number["total_bet_amount"] = result_number["total_bet_amount"].astype(
-                float
-            )
+            result_number["total_bet_amount"] = result_number[
+                "total_bet_amount"
+            ].astype(float)
             # print(result_color.head)
             # print(result_number.head)
 
             winner_dict, minimum_loss_dict = determine_winners(
-                result_color,
-                result_number,
-                total_amount_bet
+                result_color, result_number, total_amount_bet
             )
             db.execute(delete(Winner_Table))
 
@@ -217,10 +209,12 @@ async def get_result(game_id):
 
             db.add(new_result)
             db.execute(delete(Winner_Table))
-            result_color = db.query(Bet_Color).filter(
-                Bet_Color.game_id == game_id).all()
-            result_number = db.query(Bet_Number).filter(
-                Bet_Number.game_id == game_id).all()
+            result_color = (
+                db.query(Bet_Color).filter(Bet_Color.game_id == game_id).all()
+            )
+            result_number = (
+                db.query(Bet_Number).filter(Bet_Number.game_id == game_id).all()
+            )
 
             result_list = []
 
@@ -249,52 +243,83 @@ async def get_result(game_id):
                 db.add(new_output)
 
             for row in result_number:
-                if row.bet_on == winner_dict['number_who_won']:
-                    result_list.append(
-                        {"mobile_number": row.mobile_number,
-                            "amount": row.bet_amount * 9}
-                    )
+                result_list.append(
+                    {
+                        "mobile_number": row.mobile_number,
+                        "amount": (
+                            row.bet_amount * 9
+                            if row.bet_on == winner_dict["number_who_won"]
+                            else 0
+                        ),
+                    }
+                )
+                new_output_winner = Winner_Table(
+                    game_id=game_id,
+                    mobile_number=row.mobile_number,
+                    number=row.bet_on,
+                    amount_won=(
+                        row.bet_amount * 9
+                        if row.bet_on == winner_dict["number_who_won"]
+                        else 0
+                    ),
+                )
 
-                    new_output_winner = Winner_Table(
-                        game_id=game_id,
-                        mobile_number=row.mobile_number,
-                        number=row.bet_on,
-                        amount_won=row.bet_amount * 9,
-                    )
+                new_output = All_Time_Winner_Table(
+                    game_id=game_id,
+                    mobile_number=row.mobile_number,
+                    number=row.bet_on,
+                    amount_won=(
+                        row.bet_amount * 9
+                        if row.bet_on == winner_dict["number_who_won"]
+                        else 0
+                    ),
+                )
 
-                    new_output = All_Time_Winner_Table(
-                        game_id=game_id,
-                        mobile_number=row.mobile_number,
-                        number=row.bet_on,
-                        amount_won=row.bet_amount * 9,
-                    )
+                db.add(new_output_winner)
+                db.add(new_output)
 
-                    db.add(new_output_winner)
-                    db.add(new_output)
-
-            db.execute(User.__table__.update().where(User.mobile_number == Winner_Table.mobile_number).values(
-                balance=Winner_Table.amount_won + User.balance))
+            db.execute(
+                User.__table__.update()
+                .where(User.mobile_number == Winner_Table.mobile_number)
+                .values(balance=Winner_Table.amount_won + User.balance)
+            )
 
             for i in result_list:
-                user_refer_by_level1 = db.query(Referral_table).filter(
-                    Referral_table.level_1_refer == i["mobile_number"]).first()
+                user_refer_by_level1 = (
+                    db.query(Referral_table)
+                    .filter(Referral_table.level_1_refer == i["mobile_number"])
+                    .first()
+                )
 
                 if user_refer_by_level1:
-                    user = db.query(User).filter(
-                        User.mobile_number == user_refer_by_level1.mobile_number).first()
+                    user = (
+                        db.query(User)
+                        .filter(
+                            User.mobile_number == user_refer_by_level1.mobile_number
+                        )
+                        .first()
+                    )
 
                     if user:
-                        user.balance = user.balance + 0.030*i["amount"]
+                        user.balance = user.balance + 0.030 * i["amount"]
 
-                user_refer_by_level2 = db.query(Referral_table).filter(
-                    Referral_table.level_2_refer == i["mobile_number"]).first()
+                user_refer_by_level2 = (
+                    db.query(Referral_table)
+                    .filter(Referral_table.level_2_refer == i["mobile_number"])
+                    .first()
+                )
 
                 if user_refer_by_level2:
-                    user = db.query(User).filter(
-                        User.mobile_number == user_refer_by_level2.mobile_number).first()
+                    user = (
+                        db.query(User)
+                        .filter(
+                            User.mobile_number == user_refer_by_level2.mobile_number
+                        )
+                        .first()
+                    )
 
                     if user:
-                        user.balance = user.balance + 0.015*i["amount"]
+                        user.balance = user.balance + 0.015 * i["amount"]
 
         db.commit()
         return result_list
@@ -302,7 +327,8 @@ async def get_result(game_id):
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]})
+                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+            )
         raise HTTPException(status_code=422, detail=error_messages)
     except SQLAlchemyError as e:
         db.rollback()
