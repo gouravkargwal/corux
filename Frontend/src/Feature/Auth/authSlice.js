@@ -40,7 +40,18 @@ export const registerUser = createAsyncThunk(
       navigate("/app/home");
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      console.log(error);
+      if (error.response) {
+        if (error.response.status === 409) {
+          payload.navigate("/");
+          return rejectWithValue(error.response?.data?.detail);
+        }
+        return rejectWithValue(error.response?.data?.detail);
+      } else if (error.request) {
+        return rejectWithValue("No response received");
+      } else {
+        return rejectWithValue(error.message);
+      }
     }
   }
 );
@@ -95,6 +106,7 @@ const authSlice = createSlice({
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        toast.error(action.payload);
       });
   },
 });

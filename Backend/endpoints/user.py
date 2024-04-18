@@ -35,7 +35,7 @@ def generate_random_string(length):
 def is_convertible_to_number(some_string):
     try:
         int(some_string)
-        return int(some_string)
+        return True
     except ValueError:
         return False
 
@@ -225,7 +225,7 @@ async def create_bet(
                 game_id=betdetails.game_id,
                 mobile_number=credentials.mobile_number,
                 bet_amount=betdetails.bet_amount,
-                bet_on=int(betdetails.bet_on),
+                bet_on=0 if betdetails.bet_on == "0" else int(betdetails.bet_on),
             )
 
             db.add(new_bet)

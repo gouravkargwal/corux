@@ -169,7 +169,6 @@ async def get_result(game_id):
                     f"SELECT bet_on,sum(bet_amount) As total_bet_amount FROM bet_number WHERE game_id = '{game_id}' GROUP BY bet_on"
                 )
             )
-
             result_color = [row._asdict() for row in result_color] or []
             result_number = [row._asdict() for row in result_number] or []
 

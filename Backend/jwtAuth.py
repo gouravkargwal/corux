@@ -18,7 +18,7 @@ class JWTAuth:
             {
                 "scope": "access_token",
                 "iat": asof.timestamp(),
-                "exp": (asof + timedelta(minutes=10)).timestamp(),
+                "exp": (asof + timedelta(hours=12)).timestamp(),
             }
         )
         return jwt.encode(
@@ -47,7 +47,7 @@ class JWTAuth:
             {
                 "scope": "refresh_token",
                 "iat": asof.timestamp(),
-                "exp": (asof + timedelta(minutes=1)).timestamp(),
+                "exp": (asof + timedelta(days=1)).timestamp(),
             }
         )
         return jwt.encode(payload, self.secret_key, algorithm=self.algorithm)
