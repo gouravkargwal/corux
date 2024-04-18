@@ -1,11 +1,19 @@
 import React from "react";
 import { Avatar, Box, Typography } from "@mui/material";
-import { green, grey, red } from "@mui/material/colors";
+import { green, grey, orange, red } from "@mui/material/colors";
 import PaymentsIcon from "@mui/icons-material/Payments";
+import moment from "moment";
 
-const Transaction = ({ type }) => {
+const Transaction = ({ type, amount, date, approved }) => {
+  const formattedDate = moment(date).format("DD MMMM YYYY");
   return (
-    <Box display="flex" justifyContent="space-between">
+    <Box
+      display="flex"
+      justifyContent="space-between"
+      sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+      borderRadius={1}
+      padding={2}
+    >
       <Box display="flex" gap={1}>
         <Avatar
           sx={{
@@ -20,22 +28,26 @@ const Transaction = ({ type }) => {
         <Box>
           <Typography variant="body2">UPI</Typography>
           <Typography color={grey[500]} variant="caption">
-            07 Oct 2023
+            {formattedDate}
           </Typography>
         </Box>
       </Box>
       <Box alignItems="flex-end" display="flex" flexDirection="column">
         <Typography
           variant="body2"
-          color={type === "debit" ? red[500] : green[500]}
+          color={
+            approved ? (type === "debit" ? red[500] : green[500]) : orange[700]
+          }
         >
-          $ 300
+          ₹ {amount ?? "-"}
         </Typography>
         <Typography
           variant="caption"
-          color={type === "debit" ? red[500] : green[500]}
+          color={
+            approved ? (type === "debit" ? red[500] : green[500]) : orange[700]
+          }
         >
-          Successful
+          {approved ? "Successful" : "Processing"}
         </Typography>
       </Box>
     </Box>

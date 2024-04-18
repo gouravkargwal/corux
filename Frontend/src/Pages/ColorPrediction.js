@@ -45,6 +45,7 @@ import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
 import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import { getBalance } from "../Feature/Balance/balanceSlice";
 import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
+import { getResultList } from "../Feature/Result/resultSlice";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -99,6 +100,12 @@ const ColorPrediction = () => {
     });
     return () => socket.disconnect();
   }, [dispatch]);
+
+  useEffect(() => {
+    if (timer === 0) {
+      dispatch(getResultList({ page: 1, size: 10 }));
+    }
+  }, [timer, dispatch]);
 
   const handleOpenBidDialog = (type, value) => {
     if (type === "color") {

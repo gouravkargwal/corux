@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends,Query
 from fastapi.responses import Response, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
@@ -184,13 +184,31 @@ async def winthdraw(
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
+@router.get("/recharge-transaction/")
+async def recharge_transaction(
+    limit: int = Query(10, gt=0), 
+    offset: int = Query(0, ge=0),
+    credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
+    db: Session = Depends(get_sql_db)
+):
+    recharge_trans = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentDepositTable.CREATE_DATE)).offset(offset).limit(limit)
 
-# @router.post("/upi")
-# async def add_upi(db: Session = Depends(get_sql_db)):
-#     new_upi = Upi_Table(
-#         upi_id="87r@ybz",
-#         name="B"
-#     )
+    if not recharge_trans:
+        return []
+    
+    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_DEPOSIT} for row in recharge_trans]
 
-#     db.add(new_upi)
-#     db.commit()
+@router.get("/withdraw-transaction/")
+async def withdraw_transaction(
+    limit: int = Query(10, gt=0), 
+    offset: int = Query(0, ge=0),
+    credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
+    db: Session = Depends(get_sql_db)
+):
+    withdraw_trans = db.query(PaymentWithdrawTable).filter(PaymentWithdrawTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentWithdrawTable.CREATE_DATE)).offset(offset).limit(limit)
+
+    if not withdraw_trans:
+        return []
+    
+    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_WITHDRAW,"upi":row.USER_UPI_ID} for row in withdraw_trans]
+

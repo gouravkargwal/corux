@@ -20,6 +20,7 @@ const Withdraw = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors, isDirty, isValid },
   } = useForm({
     defaultValues: {
@@ -45,6 +46,7 @@ const Withdraw = () => {
       }
     } finally {
       setLoading(false);
+      reset();
     }
   };
 

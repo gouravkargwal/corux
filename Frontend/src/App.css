@@ -2,8 +2,116 @@ a {
   text-decoration: none;
 }
 
-.ag-theme-quartz {
-  --ag-borders: none;
-  --ag-row-border-style: none;
-  --ag-row-border-raduis: 5px;
+/* ---------------------------------table--------------------------------- */
+.ag-header-cell-sortable .ag-header-cell-label {
+  color: black !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+}
+
+.ag-header-container {
+  background-color: white !important;
+}
+
+.ag-cell-label-container {
+  padding: 0px !important;
+}
+
+.ag-ltr .ag-cell {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-align: center !important; /* Center align cell values horizontally */
+  display: flex; /* Enable flexbox */
+  align-items: center; /* Vertically align content */
+}
+
+.ag-row:hover {
+  background-color: #f2f2f2 !important;
+}
+
+.ag-header-group-cell {
+  width: 30% !important;
+  height: 25px !important;
+  display: flex;
+  justify-content: center;
+  border-bottom: none !important;
+}
+
+.ag-theme-alpine .ag-row {
+  font-size: 11px !important;
+  color: #1e59a9 !important;
+  font-weight: 500 !important;
+}
+
+.ag-ltr .ag-header-group-cell-label.ag-sticky-label {
+  color: #1e59a9 !important;
+  font-size: 13px !important;
+  text-align: center !important;
+}
+
+[class^="ag-"],
+[class^="ag-"]:focus,
+[class^="ag-"]::after,
+[class^="ag-"]::before {
+  outline: none !important;
+  border: none !important;
+}
+
+.ag-row-even {
+  background-color: #f4f7fc !important;
+  border: none !important;
+}
+
+.ag-row-odd {
+  background-color: #fff !important;
+  background-color: var(--ag-odd-row-background-color, #fcfcfc);
+  border: none !important;
+}
+
+.ag-root-wrapper {
+  border-top: none !important;
+  border-bottom: none !important;
+  border-radius: 0px !important;
+}
+
+.ag-header.ag-header-allow-overflow .ag-header-row {
+  width: 100% !important;
+}
+
+.ag-ltr .ag-header-cell-resize {
+  right: -4px;
+  padding: 47px 0px !important;
+  top: -32px;
+  width: 6px;
+}
+
+.ag-cell-label-container {
+  padding-top: 0px !important;
+}
+
+.ag-header-row:not(.ag-header-row-column-group) {
+  border-bottom: none !important;
+}
+
+.ag-icon-asc,
+.ag-icon-desc {
+  color: #fff !important;
+}
+
+.sm_table .ag-header {
+  height: 0px !important;
+  min-height: 0px !important;
+}
+
+.sm_table .ag-column-first {
+  font-weight: 700 !important;
+}
+
+.sm_table .ag-column-last {
+  font-weight: 600 !important;
+}
+
+.ag-theme-quartz a {
+  text-decoration: underline !important;
 }

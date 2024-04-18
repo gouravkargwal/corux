@@ -65,6 +65,22 @@ const withdrawMoneyAPI = async (data) => {
   return axiosInstance.post(`/wallet/withdraw`, data);
 };
 
+const rechargeHistoryAPI = async () => {
+  return axiosInstance.get(`/wallet/recharge-transaction`);
+};
+
+const withdrawHistoryAPI = async () => {
+  return axiosInstance.get(`/wallet/withdraw-transaction`);
+};
+
+const resultListAPI = async (data) => {
+  return axiosInstance.get(`/result/result-list`, { params: data });
+};
+
+const userGameListAPI = async (data) => {
+  return axiosInstance.get(`/user/user-win`, { params: data });
+};
+
 const API = {
   signinAPI,
   refreshTokenAPI,
@@ -82,6 +98,10 @@ const API = {
   addMoneyAPI,
   saveUtrAPI,
   withdrawMoneyAPI,
+  resultListAPI,
+  userGameListAPI,
+  rechargeHistoryAPI,
+  withdrawHistoryAPI,
 };
 
 export default API;

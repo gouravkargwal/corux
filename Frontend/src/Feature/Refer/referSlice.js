@@ -41,7 +41,7 @@ const referSlice = createSlice({
       .addCase(getReferDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.error = null;
-        state.data = action.payload.detail;
+        state.data = action.payload;
       })
       .addCase(getReferDetails.rejected, (state, action) => {
         state.loading = false;

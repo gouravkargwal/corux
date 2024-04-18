@@ -17,6 +17,9 @@ import storage from "redux-persist/lib/storage";
 import logger from "redux-logger";
 import paymentReducer from "../Feature/Payment/paymentSlice";
 import referReducer from "../Feature/Refer/referSlice";
+import resultReducer from "../Feature/Result/resultSlice";
+import userReducer from "../Feature/User/userSlice";
+import walletReducer from "../Feature/Wallet/walletSlice";
 
 const persistConfig = {
   key: "root",
@@ -31,6 +34,9 @@ const rootReducer = combineReducers({
   balance: balanceReducer,
   payment: paymentReducer,
   refer: referReducer,
+  result: resultReducer,
+  user: userReducer,
+  wallet: walletReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

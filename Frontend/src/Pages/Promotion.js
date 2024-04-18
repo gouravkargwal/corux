@@ -1,8 +1,16 @@
-import React, { useEffect } from "react";
-import { Avatar, Box, Typography, Divider, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Avatar,
+  Box,
+  Typography,
+  Divider,
+  Button,
+  Grid,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import { green, deepPurple, blue, orange } from "@mui/material/colors";
+import { deepPurple, blue, orange } from "@mui/material/colors";
 import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
@@ -16,6 +24,8 @@ import {
   selectReferError,
   selectReferLoading,
 } from "../Feature/Refer/referSlice";
+import Level2Table from "../Components/Promotion.js/Level2Table";
+import Level1Table from "../Components/Promotion.js/Level1Table";
 
 export default function Promotion() {
   const dispatch = useDispatch();
@@ -23,6 +33,10 @@ export default function Promotion() {
   const data = useSelector(selectReferData);
   const loading = useSelector(selectReferLoading);
   const error = useSelector(selectReferError);
+  const [activeTab, setActiveTab] = useState(0);
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
   const handleCopy = async (data) => {
     try {
       await navigator.clipboard.writeText(data);
@@ -54,7 +68,7 @@ export default function Promotion() {
       >
         <PromotionOption
           name="Refer Bonus"
-          count="10"
+          count={data?.total_winning}
           icon={
             <Avatar
               sx={{
@@ -78,7 +92,7 @@ export default function Promotion() {
       >
         <PromotionOption
           name="Total Referals"
-          count="50"
+          count={data?.refer_count}
           icon={
             <Avatar sx={{ bgcolor: deepPurple[500], borderRadius: "5px" }}>
               <AccountCircleIcon sx={{ color: "text.white" }} />
@@ -112,9 +126,15 @@ export default function Promotion() {
               Refer Friends
             </Typography>
             <Typography color="text.grey" variant="body2">
-              askdjlasdj aslkdjlask djlaskdj laksjdlaksjdlasjdas jd asndkjasdn
-              asdaskdjaskljdlaskjd lasjdlasj dasj dkas jdlkasj dlkasj
-              dlkasjdlkasjdlkasjdlaksjdlasj ds
+              <Button
+                variant="outlined"
+                startIcon={<ContentCopyIcon />}
+                onClick={() =>
+                  handleCopy(`http://localhost:3000/register/${referCode}`)
+                }
+              >
+                Copy Link
+              </Button>
             </Typography>
           </Box>
         </Box>
@@ -141,7 +161,24 @@ export default function Promotion() {
           </Box>
         </Box>
       </Box>
-      <Box mt={2} display="flex" justifyContent="space-between" gap={2}></Box>
+      <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
+        <Grid item xs={12} my={1}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            aria-label="simple tabs example"
+            variant="fullWidth"
+            visibleScrollbar={false}
+          >
+            <Tab label="Level 1" />
+            <Tab label="Level 2" />
+          </Tabs>
+        </Grid>
+        <Grid item xs={12}>
+          {activeTab === 0 && <Level1Table data={data?.refer_result_level1} />}
+          {activeTab === 1 && <Level2Table data={data?.refer_result_level2} />}
+        </Grid>
+      </Grid>
     </Box>
   );
 }

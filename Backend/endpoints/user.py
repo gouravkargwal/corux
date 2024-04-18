@@ -310,8 +310,9 @@ async def refer_information(
                     Referral_table.level_2_refer != "",
                 )
             )
-            .filter(Referral_table.mobile_number == credentials.mobile_number)
+            .filter(Referral_table.mobile_number == credentials.mobile_number).count()
         )
+
 
         total_winning = (
             db.query(
@@ -319,14 +320,13 @@ async def refer_information(
                 func.sum(All_Referral_Winning.amount_won.label("total_amount")),
             )
             .group_by(All_Referral_Winning.mobile_number)
-            .filter(All_Referral_Winning == credentials.mobile_number)
-        )
+            .filter(All_Referral_Winning.mobile_number == credentials.mobile_number)
+        ) or None
 
         amount_won = 0
-        if total_winning:
-            amount_won = [row.total_amount for row in total_winning]
-
-        print(total_winning)
+        if total_winning is not None:
+            for row in total_winning:
+                amount = amount + row.total_amount
 
         refer_code = (
             db.query(Referral_table)

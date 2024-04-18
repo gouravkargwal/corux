@@ -48,7 +48,6 @@ export const generateQr = createAsyncThunk(
     }
   }
 );
-
 const paymentSlice = createSlice({
   name: "payment",
   initialState,
