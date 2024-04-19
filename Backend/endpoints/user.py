@@ -321,20 +321,22 @@ async def refer_information(
 ):
     try:
         refer_result_1 = db.query(All_Referral_Winning).filter(
-            All_Referral_Winning.mobile_number == credentials.mobile_number,
-            All_Referral_Winning.level_1_refer != "",
-            All_Referral_Winning.level_2_refer == "",
+            and_(All_Referral_Winning.mobile_number == credentials.mobile_number,
+                All_Referral_Winning.level_1_refer != ""
+            )
         )
 
+        # print([row._asdict() for row in refer_result_1])
+        # return;
         refer_result_2 = db.query(All_Referral_Winning).filter(
             All_Referral_Winning.mobile_number == credentials.mobile_number,
             All_Referral_Winning.level_1_refer == "",
             All_Referral_Winning.level_2_refer != "",
         )
 
-        result_list_level1 = [row._asdict() for row in refer_result_1]
+        result_list_level1 = [row.__dict__ for row in refer_result_1]
 
-        result_list_level2 = [row._asdict() for row in refer_result_2]
+        result_list_level2 = [row.__dict__ for row in refer_result_2]
 
         refer_count = (
             db.query(Referral_table)
@@ -355,13 +357,15 @@ async def refer_information(
             )
             .group_by(All_Referral_Winning.mobile_number)
             .filter(All_Referral_Winning.mobile_number == credentials.mobile_number)
-        ) or None
+        ).one_or_none()
 
+        print(total_winning)
         amount_won = 0
-        if total_winning is not None:
-            for row in total_winning:
-                amount = amount + row.total_amount
-
+        if total_winning:
+            amount_won = total_winning[1]
+            print(amount_won)
+            # return amount_won
+        
         refer_code = (
             db.query(Referral_table)
             .filter(Referral_table.mobile_number == credentials.mobile_number)

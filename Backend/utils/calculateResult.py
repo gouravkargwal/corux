@@ -10,6 +10,7 @@ from models.user import (
     User,
     Result,
     Referral_table,
+    All_Referral_Winning
 )
 from utils.logger import setup_logger
 from db_module.session import SessionLocal
@@ -223,6 +224,7 @@ async def get_result(game_id):
                     {
                         "mobile_number": row.mobile_number,
                         "amount": row.bet_amount * winner_dict[row.bet_on],
+                        "bet_on":row.bet_on
                     }
                 )
 
@@ -251,6 +253,7 @@ async def get_result(game_id):
                             if row.bet_on == winner_dict["number_who_won"]
                             else 0
                         ),
+                        "bet_on":row.bet_on,
                     }
                 )
                 new_output_winner = Winner_Table(
@@ -285,41 +288,58 @@ async def get_result(game_id):
             )
 
             for i in result_list:
-                user_refer_by_level1 = (
-                    db.query(Referral_table)
-                    .filter(Referral_table.level_1_refer == i["mobile_number"])
-                    .first()
-                )
-
-                if user_refer_by_level1:
-                    user = (
-                        db.query(User)
-                        .filter(
-                            User.mobile_number == user_refer_by_level1.mobile_number
-                        )
+                if i["amount"] > 0:
+                    user_refer_by_level1 = (
+                        db.query(Referral_table)
+                        .filter(Referral_table.level_1_refer == i["mobile_number"])
                         .first()
                     )
 
-                    if user:
-                        user.balance = user.balance + 0.030 * i["amount"]
-
-                user_refer_by_level2 = (
-                    db.query(Referral_table)
-                    .filter(Referral_table.level_2_refer == i["mobile_number"])
-                    .first()
-                )
-
-                if user_refer_by_level2:
-                    user = (
-                        db.query(User)
-                        .filter(
-                            User.mobile_number == user_refer_by_level2.mobile_number
+                    if user_refer_by_level1:
+                        user = (
+                            db.query(User)
+                            .filter(
+                                User.mobile_number == user_refer_by_level1.mobile_number
+                            )
+                            .first()
                         )
-                        .first()
-                    )
 
-                    if user:
-                        user.balance = user.balance + 0.015 * i["amount"]
+                        if user:
+                            user.balance = user.balance + 0.030 * i["amount"]
+                            new_refer_win = All_Referral_Winning(
+                                game_id =game_id,
+                                mobile_number = user.mobile_number,
+                                level_1_refer = i["mobile_number"],
+                                amount_won = 0.030*i["amount"]
+                            )
+
+                            db.add(new_refer_win)
+
+                        user_refer_by_level2 = (
+                            db.query(Referral_table)
+                            .filter(Referral_table.level_2_refer == i["mobile_number"])
+                            .first()
+                        )
+
+                        if user_refer_by_level2:
+                            user = (
+                                db.query(User)
+                                .filter(
+                                    User.mobile_number == user_refer_by_level2.mobile_number
+                                )
+                                .first()
+                            )
+
+                            if user:
+                                user.balance = user.balance + 0.015 * i["amount"]
+                                new_refer_win_2 = All_Referral_Winning(
+                                    game_id =game_id,
+                                    mobile_number = user.mobile_number,
+                                    level_2_refer = i["mobile_number"],
+                                    amount_won = 0.015*i["amount"]
+                                )
+
+                                db.add(new_refer_win_2)
 
         db.commit()
         return result_list

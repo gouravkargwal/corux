@@ -24,13 +24,14 @@ const ResultDialogue = ({ open, onClose, data }) => {
 
       <DialogContent>
         <List>
-          {_.map(data, (item) => {
+          {_.map(data, (item, index) => {
             return (
               <ListItem
+                key={index}
                 primary={
                   item.amount === 0
-                    ? `You lost on ${item?.bet_on}`
-                    : `You won on ${item?.bet_on}`
+                    ? `You lost ${item?.amount} on ${item?.bet_on}`
+                    : `You won ${item?.amount} on ${item?.bet_on}`
                 }
               />
             );
