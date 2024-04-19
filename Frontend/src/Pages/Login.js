@@ -27,9 +27,9 @@ export default function Login() {
     handleSubmit,
     formState: { errors, isDirty, isValid },
   } = useForm();
-  const [showPassword, setShowPassword] = useState(false);
   const loading = useSelector(selectAuthLoading);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();

@@ -56,13 +56,12 @@ const userSlice = createSlice({
       });
   },
 });
+export const { setUserCurrentPage } = userSlice.actions;
 
 export const selectUserLoading = (state) => state.user.loading;
 export const selectUserError = (state) => state.user.error;
 export const selectUserData = (state) => state.user.data;
 export const selectUserCurrentPage = (state) => state.user.currentPage;
 export const selectUserPage = (state) => state.user.page;
-
-export const { setUserGameCurrentPage } = userSlice.actions;
 
 export default userSlice.reducer;

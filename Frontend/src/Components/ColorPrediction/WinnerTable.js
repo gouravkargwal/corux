@@ -1,5 +1,5 @@
-import React, { memo, useEffect, useState, useCallback } from "react";
-import { Box, Container } from "@mui/material";
+import React, { memo, useEffect, useState } from "react";
+import { Box } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,10 +27,8 @@ const WinnerTable = () => {
   }
 
   useEffect(() => {
-    if (!data) {
-      dispatch(getResultList({ page: 1, size: 10 }));
-    }
-  }, []);
+    dispatch(getResultList({ page: 1, size: 10 }));
+  }, [dispatch]);
 
   const paginationHandler = (e, page) => {
     dispatch(setWinnerCurrentPage(page));

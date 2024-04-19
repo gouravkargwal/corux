@@ -14,16 +14,16 @@ const Level2Table = ({ data }) => {
   }
 
   const columnDefs = [
+    { headerName: "ID", field: "id" },
     {
       headerName: "Phone",
-      field: "phone",
-      maxWidth: 150,
+      field: "mobile_number",
       cellRenderer: ({ value }) => {
         const lastFourDigits = value.slice(-4);
         return <span>xxxxxx{lastFourDigits}</span>;
       },
     },
-    { headerName: "Commission", field: "winning", maxWidth: 100 },
+    { headerName: "Commission", field: "amount_won" },
   ];
 
   const getRowStyle = (params) => {

@@ -12,7 +12,7 @@ import {
   selectUserData,
   selectUserLoading,
   selectUserPage,
-  setUserGameCurrentPage,
+  setUserCurrentPage,
 } from "../../Feature/User/userSlice";
 
 const MyRecordTable = () => {
@@ -28,13 +28,11 @@ const MyRecordTable = () => {
   }
 
   useEffect(() => {
-    if (!data) {
-      dispatch(getUserGameList({ page: 1, size: 10 }));
-    }
+    dispatch(getUserGameList({ page: 1, size: 10 }));
   }, [dispatch]);
 
   const paginationHandler = (e, page) => {
-    dispatch(setUserGameCurrentPage(page));
+    dispatch(setUserCurrentPage(page));
     dispatch(getUserGameList({ page, size: 10 }));
   };
 

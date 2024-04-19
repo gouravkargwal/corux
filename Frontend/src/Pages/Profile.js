@@ -21,7 +21,6 @@ import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Link } from "react-router-dom";
 
-
 export default function ControlledAccordions() {
   return (
     <Box>
@@ -62,7 +61,7 @@ export default function ControlledAccordions() {
             }
           />
         </Link>
-        <Link to="/app/profile/bank">
+        {/* <Link to="/app/profile/bank">
           <Option
             name="Bank"
             icon={
@@ -71,7 +70,7 @@ export default function ControlledAccordions() {
               </Avatar>
             }
           />
-        </Link>
+        </Link> */}
         <Link to="/app/profile/withdraw">
           <Option
             name="Withdraw"
@@ -82,14 +81,16 @@ export default function ControlledAccordions() {
             }
           />
         </Link>
-        <Option
-          name="Refer & Earn"
-          icon={
-            <Avatar sx={{ bgcolor: "black" }}>
-              <GroupIcon sx={{ color: "text.white" }} />
-            </Avatar>
-          }
-        />
+        <Link to="/app/promotion/">
+          <Option
+            name="Refer & Earn"
+            icon={
+              <Avatar sx={{ bgcolor: "black" }}>
+                <GroupIcon sx={{ color: "text.white" }} />
+              </Avatar>
+            }
+          />
+        </Link>
       </Box>
       <Box
         sx={{ backgroundColor: "background.main", boxShadow: 0 }}

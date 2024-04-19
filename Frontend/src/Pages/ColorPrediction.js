@@ -46,6 +46,7 @@ import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import { getBalance } from "../Feature/Balance/balanceSlice";
 import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
 import { getResultList } from "../Feature/Result/resultSlice";
+import { getUserGameList } from "../Feature/User/userSlice";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -137,6 +138,10 @@ const ColorPrediction = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    if (timer < 30) {
+      toast.error("Betting is closed for this round.");
+      return;
+    }
     try {
       if (token) {
         const betData = {
@@ -146,6 +151,7 @@ const ColorPrediction = () => {
         };
         dispatch(createBet(betData));
         dispatch(getBalance());
+        dispatch(getUserGameList({ page: 1, size: 10 }));
       } else {
         setLoginDialog(true);
       }
@@ -162,6 +168,13 @@ const ColorPrediction = () => {
   const handleCloseLoginDialog = () => {
     setLoginDialog(false);
   };
+
+  useEffect(() => {
+    if (timer < 30 && colorBidDialog) {
+      setColorBidDialog(false);
+      toast.info("Betting is closed for this round.");
+    }
+  }, [timer, colorBidDialog]);
 
   return (
     <>
