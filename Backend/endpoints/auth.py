@@ -169,7 +169,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             )
 
             db.add(new_user)
-
+            refer_code = generate_random_string(10)
             if user_info.refer_code:
                 user_refered_by_level1 = (
                     db.query(Referral_table)
@@ -209,7 +209,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
                     referral_code_from=user_info.refer_code,
-                    referral_code_to=generate_random_string(10),
+                    referral_code_to=refer_code,
                 )
 
                 db.add(new_user_refer_entry)
@@ -217,7 +217,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             else:
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
-                    referral_code_to=generate_random_string(10),
+                    referral_code_to=refer_code,
                 )
 
                 db.add(new_user_refer_entry)
@@ -232,14 +232,14 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
-            "referral_code": new_refer_entry.referral_code_to
+            "referral_code": refer_code
         }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.post("/refresh-token/")
-async def generate_refresh_token(refresh_token: str = Header()):
+async def refer_codefresh_token(refresh_token: str = Header()):
     print(refresh_token)
     try:
         new_token, new_refresh_token = authhandler.refresh_token(refresh_token)

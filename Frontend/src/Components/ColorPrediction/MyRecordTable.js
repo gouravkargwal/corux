@@ -62,7 +62,6 @@ const MyRecordTable = () => {
               color = "-";
               break;
           }
-          displayValue = "-";
         }
         return (
           <Box
