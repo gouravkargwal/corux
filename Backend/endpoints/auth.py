@@ -9,7 +9,9 @@ from schema.user import (
     user_detail,
     user_info,
     mobile_number,
+    forgot_password_schema
 )
+
 from utils.verify import hash_password, verify_password
 from jwtAuth import JWTAuth
 from models.user import Otp_Table, User, Referral_table
@@ -238,6 +240,23 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
+@router.patch("/forget-password/")
+async def forgot_password(forgot_password:forgot_password_schema,db:Session = Depends(get_sql_db)):
+    try:
+        with db.begin():
+            user = db.query(User).filter(User.mobile_number == forgot_password.mobile_number).first()
+
+            if not user:
+                raise HTTPException(status_code=400, detail="Do not Found User")
+            
+            user.password = hash_password(forgot_password.password)
+
+        db.commit()
+        return {"status_code":200,"detail":"Successfully Changed Password"}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
+    
+    
 @router.post("/refresh-token/")
 async def refer_codefresh_token(refresh_token: str = Header()):
     print(refresh_token)

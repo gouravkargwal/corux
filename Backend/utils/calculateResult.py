@@ -134,16 +134,17 @@ def determine_winners(result_color, result_number, total_amount_bet):
             if winner_dict["total_amount_won"] > winner_dict_form["total_amount_won"]:
                 winner_dict = winner_dict_form
 
-            if total_amount_bet < total_amount_won:
-                winner_dict["is_profit"] = 1
-                break
-            else:
-                if minimum_loss_dict["total_amount_won"] > total_amount_won:
-                    minimum_loss_dict = winner_dict
+        
+            # if total_amount_bet < total_amount_won:
+            #     winner_dict["is_profit"] = 1
+            #     break
+            # else:
+            #     if minimum_loss_dict["total_amount_won"] > total_amount_won:
+            #         minimum_loss_dict = winner_dict
         return winner_dict, minimum_loss_dict
 
     except Exception as e:
-        # logger.error(str(e))
+        logger.error(str(e))
         return "error in determine"
 
 
@@ -200,8 +201,8 @@ async def get_result(game_id):
             )
             db.execute(delete(Winner_Table))
 
-            if winner_dict["is_profit"] != 1:
-                winner_dict = minimum_loss_dict
+            # if winner_dict["is_profit"] != 1:
+            #     winner_dict = minimum_loss_dict
             new_result = Result(
                 color_who_won=winner_dict["color_who_won"],
                 number_who_won=winner_dict["number_who_won"],

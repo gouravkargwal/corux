@@ -58,3 +58,7 @@ class withdraw_schema(BaseModel):
 class utr_schema(BaseModel):
     transaction_id: str
     utr: str
+
+class forgot_password_schema(BaseModel):
+    mobile_number: str
+    password: str

@@ -68,7 +68,7 @@ async def start_game():
     global start_time, game_id, result_calculated,game_inprocess
     start_time = datetime.now()
     game_id = generate_game_id()
-    game_in_progress = True
+    game_inprocess = True
     result_calculated = False
     return {"message": "Game started!", "game_id": game_id}
 
@@ -101,7 +101,7 @@ async def notify_timer():
                 )
 
                 if (
-                    elapsed_time >= game_duration - timedelta(seconds=30)
+                    elapsed_time >= game_duration - timedelta(seconds=28)
                     and not result_calculated
                 ):
                     winning_user_id = await get_result(game_id)
@@ -116,8 +116,8 @@ async def notify_timer():
                             "user_list": winning_user_id,
                         },
                     )
-                    await sio_manager.sleep(5)
                     game_inprocess = False
+                    await sio_manager.sleep(5)
                     await start_game()
 
             await sio_manager.sleep(1)
