@@ -1125,3 +1125,9 @@ button.close {
 .secondary-button:hover {
     background-color: #545b69;
 }
+
+#addNewEntry {
+    float: right; /* Aligns the button to the right */
+    margin-bottom: 10px; /* Provides a little space below the button */
+    font-size: 14px;
+}

@@ -31,6 +31,11 @@ class UpiIDSerializer(serializers.ModelSerializer):
         model = UpiTable
         fields = ['UPI_ID']
 
+class UpiTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UpiTable
+        fields = '__all__'
+
 class ValidationWithdrawApprovedSerializer(serializers.Serializer):
     ID = serializers.IntegerField(required=True, error_messages={'required': 'ID is required.', 'invalid': 'ID must be an integer', 'blank': 'ID can not be blank'})
     ADMIN_UPI_ID = serializers.CharField(required=True, max_length=255, error_messages={'required': 'ADMIN UPI ID is required', 'blank': 'ADMIN UPI ID can not be blank'})

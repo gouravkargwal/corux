@@ -21,7 +21,6 @@ from decouple import config
 
 load_dotenv()
 
-UPI_IDS = config("UPI_IDS")
 FASTAPI_API = config("FASTAPI_API")
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/

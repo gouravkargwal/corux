@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import now
-from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer
+from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer
 from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable
 from home.custom_logging import adminlogger
 from django.conf import settings
@@ -162,3 +162,57 @@ class deposit(APIView):
         except Exception as e:
             adminlogger.error(f"Error: {str(e)}")
             return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+        
+class upi(APIView):
+    def get(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            adminlogger.info("upi get")
+            start = int(request.GET.get('start', 0))
+            length = int(request.GET.get('length', start + 25))
+            totalCount = UpiTable.objects.all().count()
+            payments = UpiTable.objects.all()[start:start+length]
+            serializedpayments = UpiTableSerializer(payments, many=True)
+            return Response(
+                {
+                    "data" : serializedpayments.data,
+                    "recordsTotal": totalCount,
+                    "recordsFiltered": totalCount
+                }
+            )
+        
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def delete(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            with transaction.atomic():
+                adminlogger.info("upi patch")
+                data = request.data.copy()
+                if not data.get('ID'):
+                    return Response({"status": 400, "message":"ID is required"})
+                upiEntry = UpiTable.objects.get(ID=request.data.get('ID'))
+                upiEntry.delete()
+                return Response({'status': 200, "message": "success"})
+        
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+        
+    def post(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            with transaction.atomic():
+                adminlogger.info("upi post")
+                data = request.data.copy()
+                upiSerializer = UpiTableSerializer(data=data)
+                if upiSerializer.is_valid():
+                    upiSerializer.save()
+                return Response({'status': 200, "message": "success"})
+        
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message":"Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+

@@ -30,6 +30,10 @@
                                 href="{% url 'deposit' %}">Deposit</a> 
                         </li> 
                         <li class="nav-item"> 
+                            <a class="tokenLink nav-link{% if active_page == 'upi' %} active{% endif %}"
+                                href="{% url 'upi' %}">Upi</a> 
+                        </li>
+                        <li class="nav-item"> 
                             <a class="tokenLink nav-link{% if active_page == 'gameControl' %} active{% endif %}"
                                 href="{% url 'gameControl' %}">Game</a> 
                         </li>
