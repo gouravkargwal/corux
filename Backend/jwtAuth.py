@@ -3,15 +3,15 @@ from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from schema.user import JWTPayload
-import traceback
+import traceback,os
 
 security = HTTPBearer()
 
 
 class JWTAuth:
-    secret_key = "lkksjuihsvucdubdnk"
-    algorithm = "HS256"
-
+    secret_key = os.getenv('secret_key')
+    algorithm =  os.getenv('algorithm')
+    
     def encode_token(self, payload):
         asof = datetime.now()
         payload.update(
