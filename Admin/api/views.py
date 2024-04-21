@@ -149,7 +149,10 @@ class deposit(APIView):
                 paymentGetSerializer = UpdateDepositSerializer(payment)
                 adminlogger.info(paymentGetSerializer.data)
                 user = UserAdminTable.objects.get(MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
-                balance=user.BALANCE + paymentGetSerializer.data["AMOUNT"]
+                if data.get("APPROVE_DEPOSIT"):
+                    balance=user.BALANCE + paymentGetSerializer.data["AMOUNT"]
+                elif data.get("DENY_DEPOSIT"):
+                    balance=user.BALANCE
                 serializedUser = UserAdminSerializer(user, data={"BALANCE": balance}, partial=True)
                 serializedpayment = PaymentDepositSerializer(payment, data=data, partial=True)
                 if serializedpayment.is_valid() and serializedUser.is_valid():

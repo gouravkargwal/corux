@@ -2,57 +2,62 @@
 [ 2024-04-21] [INFO] [views:59] withdraw get
 [ 2024-04-21] [INFO] [views:114] deposit get
 [ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [ERROR] [views:136] Error: 'NoneType' object has no attribute 'UPI_ID'
 [ 2024-04-21] [INFO] [views:59] withdraw get
 [ 2024-04-21] [INFO] [views:114] deposit get
 [ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [ERROR] [views:136] Error: 'NoneType' object has no attribute 'UPI_ID'
+[ 2024-04-21] [INFO] [views:170] upi get
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [ERROR] [views:136] Error: 'NoneType' object has no attribute 'UPI_ID'
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (4)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '8875353053'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (8)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '9610539315'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (5)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '9610539315'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (9)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 200.0, 'MOBILE_NUMBER': '9610539315'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (10)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '9610539315'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
+[ 2024-04-21] [INFO] [views:143] deposit patch
+[ 2024-04-21] [INFO] [views:148] PaymentDepositTable object (11)
+[ 2024-04-21] [INFO] [views:150] {'AMOUNT': 10000000000000.0, 'MOBILE_NUMBER': '9610539315'}
+[ 2024-04-21] [INFO] [views:114] deposit get
+[ 2024-04-21] [INFO] [views:118] 
 [ 2024-04-21] [INFO] [views:59] withdraw get
-[ 2024-04-21] [INFO] [views:59] withdraw get
-[ 2024-04-21] [INFO] [views:81] withdraw patch
-[ 2024-04-21] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
-[ 2024-04-21] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
 [ 2024-04-21] [INFO] [views:19] UserAdmin get
 [ 2024-04-21] [INFO] [views:59] withdraw get
-[ 2024-04-21] [INFO] [views:19] UserAdmin get
 [ 2024-04-21] [INFO] [views:114] deposit get
 [ 2024-04-21] [INFO] [views:118] 
-[ 2024-04-21] [INFO] [views:114] deposit get
-[ 2024-04-21] [INFO] [views:118] 
-[ 2024-04-21] [INFO] [views:59] withdraw get
-[ 2024-04-21] [INFO] [views:81] withdraw patch
-[ 2024-04-21] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '9876543210'}
-[ 2024-04-21] [INFO] [views:59] withdraw get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:192] upi patch
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi patch
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:192] upi patch
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:208] upi post
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:170] upi get
-[ 2024-04-21] [INFO] [views:192] upi patch
-[ 2024-04-21] [INFO] [views:170] upi get
+[ 2024-04-21] [INFO] [views:173] upi get

@@ -58,7 +58,7 @@ async def generate_qr(
         transaction_id = uuid.uuid4()
         new_transaction_entry = PaymentDepositTable(
             MOBILE_NUMBER=credentials.mobile_number,
-            ADMIN_UPI_ID="abc@abc",
+            ADMIN_UPI_ID=upi_list[x],
             AMOUNT=amount.amount,
             TRANSACTION_ID=transaction_id,
         )
@@ -196,7 +196,7 @@ async def recharge_transaction(
     if not recharge_trans:
         return []
     
-    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_DEPOSIT} for row in recharge_trans]
+    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_DEPOSIT,"denied":row.DENY_DEPOSIT} for row in recharge_trans]
 
 @router.get("/withdraw-transaction/")
 async def withdraw_transaction(
@@ -212,3 +212,14 @@ async def withdraw_transaction(
     
     return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_WITHDRAW,"upi":row.USER_UPI_ID} for row in withdraw_trans]
 
+
+# @router.get("/upi_table")
+# async def upi_table(db:Session = Depends(get_sql_db)):
+#     newupi = Upi_Table(
+#         upi_id = "dev@ybl",
+#         name="dev"
+#     )
+
+#     db.add(newupi)
+#     db.commit()
+#     return "Hello"

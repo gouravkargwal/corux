@@ -65,17 +65,18 @@ async def startup():
 
 
 async def start_game():
-    global start_time, game_id, result_calculated, game_inprocess
+    global start_time, game_id, result_calculated, game_inprocess,game_finishing
     start_time = datetime.now()
     game_id = generate_game_id()
     game_inprocess = True
+    game_finishing = False
     result_calculated = False
     return {"message": "Game started!", "game_id": game_id}
 
 
 async def notify_timer():
     try:
-        global task_running, game_inprocess
+        global task_running, game_inprocess,game_finishing
         global game_id, start_time, result_calculated
 
         while task_running:
@@ -108,6 +109,7 @@ async def notify_timer():
                     result_calculated = True
 
                 if elapsed_time >= game_duration and result_calculated:
+                    game_finishing = True
                     await sio_manager.sleep(5)
                     await sio_manager.emit(
                         "winner_notification",
@@ -119,6 +121,7 @@ async def notify_timer():
                     game_inprocess = False
                     await sio_manager.sleep(5)
                     await start_game()
+                    game_finishing = False
 
             await sio_manager.sleep(1)
     except Exception as e:
@@ -146,13 +149,12 @@ async def start_timer():
 @app.post("/control/timer/stop")
 async def stop_timer():
     try:
-        global task_running, game_inprocess
+        global task_running, game_inprocess,game_finishing
         if task_running:
-            if game_inprocess:
-                # Wait for the game to complete
-                while game_inprocess:
-                    await asyncio.sleep(1)
+            while game_inprocess and not game_finishing:
+                await asyncio.sleep(1)
             task_running = False
+            game_inprocess= False
             return {"status": "Timer stopped"}
         else:
             logger.error("Error")
