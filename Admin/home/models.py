@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class UserAdminTable(models.Model):
@@ -7,7 +8,7 @@ class UserAdminTable(models.Model):
 
     USER_NAME = models.CharField(max_length=30, null=False)
 
-    MOBILE_NUMBER = models.CharField(max_length=15, null=False)
+    MOBILE_NUMBER = models.CharField(max_length=12, null=False)
 
     PASSWORD = models.CharField(max_length=200, null=False)
 
@@ -19,9 +20,11 @@ class UserAdminTable(models.Model):
 
     BALANCE = models.FloatField(default=0)
 
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
 
     class Meta:
-        db_table = "USER_ADMIN"
+        db_table = "USER"
 
 
 class PaymentDepositTable(models.Model):
@@ -30,7 +33,7 @@ class PaymentDepositTable(models.Model):
 
     MOBILE_NUMBER = models.CharField(max_length=15, null=False)
 
-    USER_UPI_ID = models.CharField(max_length=50, null=False)
+    TRANSACTION_ID = models.UUIDField(default=uuid.uuid4, editable=False)
 
     ADMIN_UPI_ID = models.CharField(max_length=50, null=True, blank=True)
 
@@ -44,7 +47,7 @@ class PaymentDepositTable(models.Model):
 
     DENY_DEPOSIT = models.BooleanField(default=False)
 
-    UPDATE_DATE = models.DateTimeField(null=True, blank=True)
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "DEPOSIT"
@@ -69,7 +72,7 @@ class PaymentWithdrawTable(models.Model):
 
     DENY_WITHDRAW = models.BooleanField(default=False)
 
-    UPDATE_DATE = models.DateTimeField(null=True, blank=True)
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = "WITHDRAW"
@@ -87,4 +90,4 @@ class UpiTable(models.Model):
     UPDATE_DATE = models.DateTimeField(auto_now=True)
 
     class Meta:
-        db_table = "ADMIN_UPI"
+        db_table = "UPI_TABLE"

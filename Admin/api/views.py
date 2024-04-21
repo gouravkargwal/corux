@@ -87,7 +87,6 @@ class withdraw(APIView):
                     first_field = next(iter(serializer.errors))
                     first_error = serializer.errors[first_field][0] 
                     return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
-                data["UPDATE_DATE"] = now()
                 payment = PaymentWithdrawTable.objects.get(ID=request.data.get('ID'))
                 paymentGetSerializer = UpdateWithdrawSerializer(payment)
                 adminlogger.info(paymentGetSerializer.data)
@@ -152,7 +151,6 @@ class deposit(APIView):
                 user = UserAdminTable.objects.get(MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
                 balance=user.BALANCE + paymentGetSerializer.data["AMOUNT"]
                 serializedUser = UserAdminSerializer(user, data={"BALANCE": balance}, partial=True)
-                data["UPDATE_DATE"] = now()
                 serializedpayment = PaymentDepositSerializer(payment, data=data, partial=True)
                 if serializedpayment.is_valid() and serializedUser.is_valid():
                     serializedpayment.save()
