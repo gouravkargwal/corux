@@ -180,8 +180,9 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                     .first()
                 )
 
-                if not user_refered_by_level1:
-                    raise HTTPException(status_code=400, detail="Wrong Referral Code")
+                # if not user_refered_by_level1:
+                #     pass
+                    # raise HTTPException(status_code=400, detail="Wrong Referral Code")
                 if user_refered_by_level1:
                     new_refer_entry = Referral_table(
                         mobile_number=user_refered_by_level1.mobile_number,
