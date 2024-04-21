@@ -73,6 +73,8 @@ const BettingDialogue = ({
               sx={{ borderColor: grey[500] }}
               error={!!errors.amount}
               variant="outlined"
+              autoFocus
+              autoComplete="off"
               fullWidth
               margin="normal"
               type="text"

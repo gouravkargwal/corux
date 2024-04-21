@@ -1,4 +1,4 @@
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI, HTTPException
 from endpoints.auth import router as Authrouter
 from endpoints.user import router as Userrouter
 from endpoints.result import router as Resultrouter
@@ -65,7 +65,7 @@ async def startup():
 
 
 async def start_game():
-    global start_time, game_id, result_calculated,game_inprocess
+    global start_time, game_id, result_calculated, game_inprocess
     start_time = datetime.now()
     game_id = generate_game_id()
     game_inprocess = True
@@ -75,7 +75,7 @@ async def start_game():
 
 async def notify_timer():
     try:
-        global task_running,game_inprocess
+        global task_running, game_inprocess
         global game_id, start_time, result_calculated
 
         while task_running:
@@ -128,7 +128,7 @@ async def notify_timer():
 @app.post("/control/timer/start")
 async def start_timer():
     try:
-        global task_running,game_inprocess
+        global task_running, game_inprocess
         game_inprocess = True
         task_running = False
         if not task_running:
@@ -140,14 +140,13 @@ async def start_timer():
             logger.error("Error1")
         raise HTTPException(status_code=400, detail="Timer already running")
     except Exception as e:
-        raise HTTPException(status_code=400,detail="Unable To Stop Timer")
-    
-    
+        raise HTTPException(status_code=400, detail="Unable To Stop Timer")
+
 
 @app.post("/control/timer/stop")
 async def stop_timer():
     try:
-        global task_running,game_inprocess
+        global task_running, game_inprocess
         if task_running:
             if game_inprocess:
                 # Wait for the game to complete
@@ -160,4 +159,4 @@ async def stop_timer():
             raise HTTPException(status_code=400, detail="Timer is not running")
     except Exception as e:
         logger.error("Error in Stop Timer")
-        raise HTTPException(status_code=400,detail="Unable To Stop Timer")
+        raise HTTPException(status_code=400, detail="Unable To Stop Timer")

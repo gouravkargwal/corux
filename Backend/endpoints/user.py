@@ -1,7 +1,7 @@
-from fastapi import APIRouter, Depends, HTTPException,Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from sqlalchemy import text, delete, func, select, or_ , and_
+from sqlalchemy import text, delete, func, select, or_, and_
 from db_module.session import get_sql_db
 from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
@@ -272,44 +272,59 @@ async def get_winning_list(
 
         skip = (page - 1) * size
 
-        stmt = db.query(
-            Bet_Color.mobile_number,
-            Bet_Color.game_id,
-            Bet_Color.bet_on,
-            Bet_Color.bet_amount,
-            (All_Time_Winner_Table.amount_won).label('winning')
-        ).filter(
-            Bet_Color.mobile_number == credentials.mobile_number
-        ).outerjoin(
-            All_Time_Winner_Table,
-            and_(All_Time_Winner_Table.game_id == Bet_Color.game_id,
-            All_Time_Winner_Table.color == Bet_Color.bet_on)
-        ).distinct().all()
+        stmt = (
+            db.query(
+                Bet_Color.mobile_number,
+                Bet_Color.game_id,
+                Bet_Color.bet_on,
+                Bet_Color.bet_amount,
+                (All_Time_Winner_Table.amount_won).label("winning"),
+            )
+            .filter(Bet_Color.mobile_number == credentials.mobile_number)
+            .outerjoin(
+                All_Time_Winner_Table,
+                and_(
+                    All_Time_Winner_Table.game_id == Bet_Color.game_id,
+                    All_Time_Winner_Table.color == Bet_Color.bet_on,
+                ),
+            )
+            .distinct()
+            .all()
+        )
 
-        
-        stmt2 = db.query(
-            Bet_Number.mobile_number,
-            Bet_Number.game_id,
-            Bet_Number.bet_on,
-            Bet_Number.bet_amount,
-            (All_Time_Winner_Table.amount_won).label('winning')
-        ).filter(
-            Bet_Number.mobile_number == credentials.mobile_number
-        ).outerjoin(
-            All_Time_Winner_Table,
-            and_(All_Time_Winner_Table.game_id == Bet_Number.game_id,
-            All_Time_Winner_Table.number == Bet_Number.bet_on)
-        ).distinct().all()
+        stmt2 = (
+            db.query(
+                Bet_Number.mobile_number,
+                Bet_Number.game_id,
+                Bet_Number.bet_on,
+                Bet_Number.bet_amount,
+                (All_Time_Winner_Table.amount_won).label("winning"),
+            )
+            .filter(Bet_Number.mobile_number == credentials.mobile_number)
+            .outerjoin(
+                All_Time_Winner_Table,
+                and_(
+                    All_Time_Winner_Table.game_id == Bet_Number.game_id,
+                    All_Time_Winner_Table.number == Bet_Number.bet_on,
+                ),
+            )
+            .distinct()
+            .all()
+        )
 
-        result = [row._asdict() for row in stmt]  + [row._asdict() for row in stmt2]
-        
-        result_list = sorted(result, key=lambda x: x['game_id'], reverse=True)
+        result = [row._asdict() for row in stmt] + [row._asdict() for row in stmt2]
 
-        bet_count = db.query(Bet_Color).filter(Bet_Color.mobile_number == credentials.mobile_number).count() + db.query(Bet_Number).filter(Bet_Number.mobile_number == credentials.mobile_number).count()
-        return {
-            "rows":result_list[skip:skip+size+1],
-            "totalRows":bet_count
-        }
+        result_list = sorted(result, key=lambda x: x["game_id"], reverse=True)
+
+        bet_count = (
+            db.query(Bet_Color)
+            .filter(Bet_Color.mobile_number == credentials.mobile_number)
+            .count()
+            + db.query(Bet_Number)
+            .filter(Bet_Number.mobile_number == credentials.mobile_number)
+            .count()
+        )
+        return {"rows": result_list[skip : skip + size + 1], "totalRows": bet_count}
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
@@ -321,8 +336,9 @@ async def refer_information(
 ):
     try:
         refer_result_1 = db.query(All_Referral_Winning).filter(
-            and_(All_Referral_Winning.mobile_number == credentials.mobile_number,
-                All_Referral_Winning.level_1_refer != ""
+            and_(
+                All_Referral_Winning.mobile_number == credentials.mobile_number,
+                All_Referral_Winning.level_1_refer != "",
             )
         )
 
@@ -346,9 +362,9 @@ async def refer_information(
                     Referral_table.level_2_refer != "",
                 )
             )
-            .filter(Referral_table.mobile_number == credentials.mobile_number).count()
+            .filter(Referral_table.mobile_number == credentials.mobile_number)
+            .count()
         )
-
 
         total_winning = (
             db.query(
@@ -365,7 +381,7 @@ async def refer_information(
             amount_won = total_winning[1]
             print(amount_won)
             # return amount_won
-        
+
         refer_code = (
             db.query(Referral_table)
             .filter(Referral_table.mobile_number == credentials.mobile_number)

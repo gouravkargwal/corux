@@ -372,7 +372,6 @@ export default function Register() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={!(isValid && isDirty)}
                 loading={loadingBtn}
                 sx={{
                   bgcolor: blue[500],

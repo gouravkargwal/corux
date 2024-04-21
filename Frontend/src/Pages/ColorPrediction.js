@@ -179,7 +179,7 @@ const ColorPrediction = () => {
   return (
     <>
       <Grid container direction="column">
-        <InfoWithButton />
+        {token && <InfoWithButton />}
         <Grid
           item
           xs={4}

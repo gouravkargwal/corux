@@ -13,7 +13,7 @@ class JWTPayload(BaseModel):
 
 class betdetails(BaseModel):
     bet_on: str
-    bet_amount: int
+    bet_amount: float
     game_id: str
 
 
@@ -58,6 +58,7 @@ class withdraw_schema(BaseModel):
 class utr_schema(BaseModel):
     transaction_id: str
     utr: str
+
 
 class forgot_password_schema(BaseModel):
     mobile_number: str

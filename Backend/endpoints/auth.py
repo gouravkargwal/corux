@@ -9,7 +9,7 @@ from schema.user import (
     user_detail,
     user_info,
     mobile_number,
-    forgot_password_schema
+    forgot_password_schema,
 )
 
 from utils.verify import hash_password, verify_password
@@ -23,7 +23,6 @@ from utils.logger import setup_logger
 router = APIRouter()
 authhandler = JWTAuth()
 logger = setup_logger()
-
 
 
 def generate_random_string(length):
@@ -162,7 +161,9 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 .first()
             )
             if user:
-                raise HTTPException(status_code=409, detail="User Already Exist. Please Login.")
+                raise HTTPException(
+                    status_code=409, detail="User Already Exist. Please Login."
+                )
 
             new_user = User(
                 mobile_number=user_info.mobile_number,
@@ -234,29 +235,35 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
-            "referral_code": refer_code
+            "referral_code": refer_code,
         }
     except HTTPException as e:
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.patch("/forget-password/")
-async def forgot_password(forgot_password:forgot_password_schema,db:Session = Depends(get_sql_db)):
+async def forgot_password(
+    forgot_password: forgot_password_schema, db: Session = Depends(get_sql_db)
+):
     try:
         with db.begin():
-            user = db.query(User).filter(User.mobile_number == forgot_password.mobile_number).first()
+            user = (
+                db.query(User)
+                .filter(User.mobile_number == forgot_password.mobile_number)
+                .first()
+            )
 
             if not user:
                 raise HTTPException(status_code=400, detail="Do not Found User")
-            
+
             user.password = hash_password(forgot_password.password)
 
         db.commit()
-        return {"status_code":200,"detail":"Successfully Changed Password"}
+        return {"status_code": 200, "detail": "Successfully Changed Password"}
     except HTTPException as e:
-        raise HTTPException(status_code=e.status_code,detail=e.detail)
-    
-    
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+
+
 @router.post("/refresh-token/")
 async def refer_codefresh_token(refresh_token: str = Header()):
     print(refresh_token)

@@ -22,17 +22,18 @@ function GridExample() {
           </Link>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Link to="monty-hall">
-            <GameCard title="Monty Hall" time="30sec" img={MontyHallImg} />
-          </Link>
+          {/* <Link to="monty-hall"> */}
+          {/* <GameCard title="Monty Hall" time="30sec" img={MontyHallImg} /> */}
+          <GameCard title="Coming Soon" time="30sec" />
+          {/* </Link> */}
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <Link to="virtual-slot">
-            <GameCard title="Monty Hall" time="2min" />
-          </Link>
+          {/* <Link to="virtual-slot"> */}
+          <GameCard title="Coming Soon" time="2min" />
+          {/* </Link> */}
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard title="Prob" time="1min" />
+          <GameCard title="Coming Soon" time="1min" />
         </Grid>
       </Grid>
     </>

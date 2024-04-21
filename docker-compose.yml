@@ -4,7 +4,6 @@ services:
   fastapi-app:
     build:
       context: ./Backend
-      dockerfile: Dockerfile.production
     ports:
       - "8000:8000"
     environment:
@@ -22,7 +21,6 @@ services:
   react-app:
     build:
       context: ./Frontend
-      dockerfile: Dockerfile.production
     ports:
       - "3000:80"
     environment:
@@ -35,7 +33,6 @@ services:
   django-app:
     build: 
       context: ./Admin
-      dockerfile: Dockerfile.production
     ports:
       - "8080:8080"
     environment:

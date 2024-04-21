@@ -50,8 +50,6 @@ export default function Promotion() {
     dispatch(getReferDetails());
   }, [dispatch]);
 
-  console.log(data);
-
   return (
     <Box>
       <Box borderColor="red">
