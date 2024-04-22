@@ -287,6 +287,9 @@ async def get_result(game_id):
 
             for i in result_list:
                 if i["amount"] > 0:
+                    user_win = db.query(User).filter(User.mobile_number == i["mobile_number"]).first()
+                    if user_win:
+                        user_win.balance = user_win.balance + i["amount"]
                     user_refer_by_level1 = (
                         db.query(Referral_table)
                         .filter(Referral_table.level_1_refer == i["mobile_number"])
