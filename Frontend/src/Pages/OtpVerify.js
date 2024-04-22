@@ -12,6 +12,7 @@ import {
   selectAuthRegistrationData,
 } from "../Feature/Auth/authSlice";
 import { toast } from "react-toastify";
+import AuthLogo from "../Components/UI/AuthLogo";
 
 export default function OtpVerify() {
   const navigate = useNavigate();
@@ -133,17 +134,7 @@ export default function OtpVerify() {
           }}
         >
           <Box justifyContent="center" display="flex">
-            <Avatar
-              sx={{
-                m: 2,
-                p: 2,
-                borderRadius: 5,
-                bgcolor: "white",
-                border: "1px solid grey",
-              }}
-            >
-              <LockOutlinedIcon sx={{ color: "black" }} />
-            </Avatar>
+            <AuthLogo />
           </Box>
           <Typography variant="h5" fontSize="600" textAlign="center">
             OTP Verification
@@ -154,7 +145,7 @@ export default function OtpVerify() {
             color={grey[500]}
             textAlign="center"
           >
-            Enter OTP sent to +91 7023074548
+            Enter OTP sent to +91{registrationData?.mobileNumber}
           </Typography>
           <Typography
             onClick={() => {

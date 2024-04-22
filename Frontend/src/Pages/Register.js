@@ -28,6 +28,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { blue, green, grey, orange, purple, red } from "@mui/material/colors";
 import RedeemIcon from "@mui/icons-material/Redeem";
+import AuthLogo from "../Components/UI/AuthLogo";
 
 export default function Register() {
   const theme = useTheme();
@@ -98,17 +99,7 @@ export default function Register() {
             px: isXsScreen ? 2 : 3,
           }}
         >
-          <Avatar
-            sx={{
-              m: 2,
-              p: 2,
-              borderRadius: 5,
-              bgcolor: "white",
-              border: "1px solid grey",
-            }}
-          >
-            <LockOutlinedIcon sx={{ color: "black" }} />
-          </Avatar>
+          <AuthLogo />
           <Typography variant="h5" fontSize="600">
             Register Now
           </Typography>
@@ -162,7 +153,7 @@ export default function Register() {
                   {...register("mobileNumber", {
                     required: "Mobile number is required",
                     pattern: {
-                      value: /^[0-9]+$/,
+                      value: /^[1-9][0-9]{9}$/,
                       message: "Invalid mobile number",
                     },
                   })}
@@ -183,6 +174,9 @@ export default function Register() {
                         </Avatar>
                       </InputAdornment>
                     ),
+                    inputProps: {
+                      maxLength: 10, // Limit input to 10 characters
+                    },
                   }}
                 />
                 <FormHelperText
