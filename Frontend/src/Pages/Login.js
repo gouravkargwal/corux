@@ -9,6 +9,7 @@ import {
   Avatar,
   Container,
   Grid,
+  FormHelperText,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -19,6 +20,8 @@ import { loginUser, selectAuthLoading } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { blue, grey, orange, purple } from "@mui/material/colors";
+import LOGO from "../Assets/Images/Logo.webp";
+import AuthLogo from "../Components/UI/AuthLogo";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -48,17 +51,7 @@ export default function Login() {
             alignItems: "center",
           }}
         >
-          <Avatar
-            sx={{
-              m: 2,
-              p: 2,
-              borderRadius: 5,
-              bgcolor: "white",
-              border: "1px solid grey",
-            }}
-          >
-            <LockOutlinedIcon sx={{ color: "black" }} />
-          </Avatar>
+          <AuthLogo />
           <Typography variant="h5" fontSize="600">
             Login Now
           </Typography>
@@ -76,7 +69,7 @@ export default function Login() {
                 <TextField
                   fullWidth
                   margin="normal"
-                  sx={{ borderColor: grey[500], my: 4 }}
+                  sx={{ borderColor: grey[500] }}
                   variant="outlined"
                   placeholder="Mobile Number"
                   InputProps={{
@@ -93,17 +86,28 @@ export default function Login() {
                         </Avatar>
                       </InputAdornment>
                     ),
+                    inputProps: {
+                      maxLength: 10, // Limit input to 10 characters
+                    },
                   }}
                   {...register("phone", {
                     required: "Mobile number is required",
                     pattern: {
-                      value: /^\+?([0-9]{1,3})?([0-9]{10})$/,
+                      value: /^[1-9][0-9]{9}$/,
                       message: "Invalid mobile number",
                     },
                   })}
                   error={!!errors.phone}
-                  helperText={errors?.phone?.message}
                 />
+                <FormHelperText
+                  error={!!errors.phone}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.phone?.message : " "}
+                </FormHelperText>
               </Grid>
               <Grid item xs={12}>
                 <TextField
@@ -154,8 +158,16 @@ export default function Login() {
                     },
                   })}
                   error={!!errors.password}
-                  helperText={errors?.password?.message}
                 />
+                <FormHelperText
+                  error={!!errors.password}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.password?.message : " "}
+                </FormHelperText>
                 <Typography
                   sx={{
                     textAlign: "right",
@@ -171,7 +183,6 @@ export default function Login() {
                 <LoadingButton
                   type="submit"
                   fullWidth
-                  disabled={!(isValid && isDirty)}
                   loading={loading}
                   sx={{
                     bgcolor: blue[500],

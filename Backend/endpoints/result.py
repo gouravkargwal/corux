@@ -39,7 +39,7 @@ async def get_result_list(
         skip = (page - 1) * size
         result_list = (
             db.query(Result)
-            .order_by(desc(Result.CREATE_DATE))
+            .order_by(Result.CREATE_DATE)
             .offset(skip)
             .limit(size)
             .all()
