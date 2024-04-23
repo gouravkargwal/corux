@@ -26,14 +26,16 @@ logger = setup_logger()
 
 def determine_winners(result_color, result_number, total_amount_bet):
     try:
+        flag = 0
         winner_dict = {
-            "total_amount_won": 1000000000,
+            "total_amount_won": 0,
             "number_who_won": [],
             "color_who_won": [],
             "red": 0,
             "green": 0,
             "violet": 0,
             "is_profit": 0,
+            "profit_ratio":0
         }
 
         minimum_loss_dict = {
@@ -44,6 +46,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
             "green": 0,
             "violet": 0,
             "is_profit": 0,
+            "profit_ratio":0
         }
 
         # Generate a shuffled list from 0 to 9
@@ -59,6 +62,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
                 "green": 0,
                 "violet": 0,
                 "is_profit": 0,
+                "profit_ratio":0
             }
 
             total_amount_won = 0
@@ -129,8 +133,24 @@ def determine_winners(result_color, result_number, total_amount_bet):
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
 
-            if winner_dict["total_amount_won"] > winner_dict_form["total_amount_won"]:
+            if total_amount_bet == 0:
+                return winner_dict_form,minimum_loss_dict
+            
+            winner_dict_form["profit_ratio"] = (total_amount_bet - total_amount_won)/total_amount_bet
+            
+
+            if flag is None:
                 winner_dict = winner_dict_form
+                flag = 1
+
+            elif winner_dict_form["profit_ratio"] > winner_dict["profit_ratio"] and winner_dict["profit_ratio"] < 0.1:
+                winner_dict = winner_dict_form
+
+            elif winner_dict_form["profit_ratio"] < winner_dict["profit_ratio"] and winner_dict_form["profit_ratio"] >= 0.1:
+                winner_dict = winner_dict_form
+            
+            else:
+                pass
 
             # if total_amount_bet < total_amount_won:
             #     winner_dict["is_profit"] = 1
@@ -246,11 +266,11 @@ async def get_result(game_id):
                 result_list.append(
                     {
                         "mobile_number": row.mobile_number,
-                        "amount": (
+                        "amount": 
                             row.bet_amount * 9
-                            if row.bet_on == winner_dict["number_who_won"]
+                            if row.bet_on in winner_dict["number_who_won"]
                             else 0
-                        ),
+                        ,
                         "bet_on": row.bet_on,
                     }
                 )
@@ -260,7 +280,7 @@ async def get_result(game_id):
                     number=row.bet_on,
                     amount_won=(
                         row.bet_amount * 9
-                        if row.bet_on == winner_dict["number_who_won"]
+                        if row.bet_on in winner_dict["number_who_won"]
                         else 0
                     ),
                 )
@@ -271,7 +291,7 @@ async def get_result(game_id):
                     number=row.bet_on,
                     amount_won=(
                         row.bet_amount * 9
-                        if row.bet_on == winner_dict["number_who_won"]
+                        if row.bet_on in winner_dict["number_who_won"]
                         else 0
                     ),
                 )
@@ -287,6 +307,9 @@ async def get_result(game_id):
 
             for i in result_list:
                 if i["amount"] > 0:
+                    user_win = db.query(User).filter(User.mobile_number == i["mobile_number"]).first()
+                    if user_win:
+                        user_win.balance = user_win.balance + i["amount"]
                     user_refer_by_level1 = (
                         db.query(Referral_table)
                         .filter(Referral_table.level_1_refer == i["mobile_number"])
@@ -341,6 +364,7 @@ async def get_result(game_id):
                                 db.add(new_refer_win_2)
 
         db.commit()
+        print(result_list)
         return result_list
     except ValidationError as e:
         error_messages = []

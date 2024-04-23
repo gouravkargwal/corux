@@ -15,7 +15,7 @@ from sqlalchemy.orm import Session
 from db_module.session import get_sql_db
 from utils.logger import setup_logger
 from schema.user import result_detail
-from sqlalchemy import text, delete, func, select, desc
+from sqlalchemy import text, delete, func, select, desc,asc
 import pandas as pd
 from typing import Optional
 

@@ -38,8 +38,8 @@ sio_manager = SocketManager(app=app, path="/ws")
 # Initialize your game variables
 game_id = None
 start_time = None
-game_duration = timedelta(minutes=1.5)
-betting_duration = timedelta(minutes=1)
+game_duration = timedelta(minutes=3)
+betting_duration = timedelta(minutes=2.5)
 result_calculated = False
 
 
