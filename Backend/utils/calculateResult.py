@@ -132,6 +132,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
 
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
+            winner_dict_form["profit_ratio"] = total_amount_won/total_amount_bet
 
             if total_amount_bet == 0:
                 return winner_dict_form,minimum_loss_dict
@@ -152,12 +153,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
             else:
                 pass
 
-            # if total_amount_bet < total_amount_won:
-            #     winner_dict["is_profit"] = 1
-            #     break
-            # else:
-            #     if minimum_loss_dict["total_amount_won"] > total_amount_won:
-            #         minimum_loss_dict = winner_dict
+            
         return winner_dict, minimum_loss_dict
 
     except Exception as e:
@@ -254,6 +250,7 @@ async def get_result(game_id):
                 )
                 new_output = All_Time_Winner_Table(
                     game_id=game_id,
+                    bet_id = row.bet_id,
                     mobile_number=row.mobile_number,
                     color=row.bet_on,
                     amount_won=row.bet_amount * winner_dict[row.bet_on],
@@ -287,6 +284,7 @@ async def get_result(game_id):
 
                 new_output = All_Time_Winner_Table(
                     game_id=game_id,
+                    bet_id = row.bet_id,
                     mobile_number=row.mobile_number,
                     number=row.bet_on,
                     amount_won=(

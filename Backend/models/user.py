@@ -87,6 +87,7 @@ class All_Time_Winner_Table(Base):
     result_id = Column(
         Integer, primary_key=True, index=True, autoincrement=True, name="RESULT_ID"
     )
+    bet_id = Column(Integer,unique=True,nullable=False)
     mobile_number = Column(
         String(12), unique=False, nullable=False, name="MOBILE_NUMBER"
     )

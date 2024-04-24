@@ -276,8 +276,10 @@ async def get_winning_list(
             db.query(
                 Bet_Color.mobile_number,
                 Bet_Color.game_id,
+                Bet_Color.bet_id,
                 Bet_Color.bet_on,
                 Bet_Color.bet_amount,
+                Bet_Color.CREATE_DATE,
                 (All_Time_Winner_Table.amount_won).label("winning"),
             )
             .filter(Bet_Color.mobile_number == credentials.mobile_number)
@@ -286,6 +288,7 @@ async def get_winning_list(
                 and_(
                     All_Time_Winner_Table.game_id == Bet_Color.game_id,
                     All_Time_Winner_Table.color == Bet_Color.bet_on,
+                    All_Time_Winner_Table.bet_id == Bet_Color.bet_id
                 ),
             )
             .distinct()
@@ -295,9 +298,11 @@ async def get_winning_list(
         stmt2 = (
             db.query(
                 Bet_Number.mobile_number,
+                Bet_Number.bet_id,
                 Bet_Number.game_id,
                 Bet_Number.bet_on,
                 Bet_Number.bet_amount,
+                Bet_Number.CREATE_DATE,
                 (All_Time_Winner_Table.amount_won).label("winning"),
             )
             .filter(Bet_Number.mobile_number == credentials.mobile_number)
@@ -306,6 +311,7 @@ async def get_winning_list(
                 and_(
                     All_Time_Winner_Table.game_id == Bet_Number.game_id,
                     All_Time_Winner_Table.number == Bet_Number.bet_on,
+                    All_Time_Winner_Table.bet_id == Bet_Number.bet_id
                 ),
             )
             .distinct()
@@ -313,8 +319,8 @@ async def get_winning_list(
         )
 
         result = [row._asdict() for row in stmt] + [row._asdict() for row in stmt2]
-
-        result_list = sorted(result, key=lambda x: x["game_id"], reverse=True)
+        result_list = sorted(result, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
+        # result_list = sorted(result_list,key=lambda x: x["CREATE_DATE"])
 
         bet_count = (
             db.query(Bet_Color)

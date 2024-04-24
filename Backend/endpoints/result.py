@@ -39,7 +39,7 @@ async def get_result_list(
         skip = (page - 1) * size
         result_list = (
             db.query(Result)
-            .order_by(Result.CREATE_DATE)
+            .order_by(desc(Result.game_id))
             .offset(skip)
             .limit(size)
             .all()

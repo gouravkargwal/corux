@@ -212,14 +212,3 @@ async def withdraw_transaction(
     
     return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_WITHDRAW,"upi":row.USER_UPI_ID} for row in withdraw_trans]
 
-
-# @router.get("/upi_table")
-# async def upi_table(db:Session = Depends(get_sql_db)):
-#     newupi = Upi_Table(
-#         upi_id = "dev@ybl",
-#         name="dev"
-#     )
-
-#     db.add(newupi)
-#     db.commit()
-#     return "Hello"
