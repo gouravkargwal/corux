@@ -38,7 +38,6 @@ export default function ProfileNavbar() {
     handleClose();
   };
 
-  console.log(token, "Token");
 
   // Generate menu items based on the token status
   const menuItems = token
