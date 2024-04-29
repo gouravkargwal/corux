@@ -10,6 +10,7 @@ const initialState = {
   balance: null,
   registrationData: null,
   refreshToken: null,
+  forgotPhone: null,
 };
 
 export const loginUser = createAsyncThunk(
@@ -69,6 +70,9 @@ const authSlice = createSlice({
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
     },
+    setForgotPhoneData(state, action) {
+      state.forgotPhone = action.payload;
+    },
     setNewTokens(state, action) {
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
@@ -111,8 +115,12 @@ const authSlice = createSlice({
   },
 });
 
-export const { logoutUser, setRegistrationData, setNewTokens } =
-  authSlice.actions;
+export const {
+  logoutUser,
+  setRegistrationData,
+  setNewTokens,
+  setForgotPhoneData,
+} = authSlice.actions;
 
 export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
@@ -122,5 +130,6 @@ export const selectAuthUser = (state) => state.auth.user;
 export const selectAuthBalance = (state) => state.auth.balance;
 export const selectAuthRegistrationData = (state) =>
   state.auth.registrationData;
+export const selectAuthForgotPhoneData = (state) => state.auth.forgotPhone;
 
 export default authSlice.reducer;

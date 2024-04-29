@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Box, TextField, Typography, Avatar, Container } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { blue, grey } from "@mui/material/colors";
@@ -10,18 +9,23 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   registerUser,
   selectAuthRegistrationData,
+  selectAuthForgotPhoneData,
 } from "../Feature/Auth/authSlice";
 import { toast } from "react-toastify";
 import AuthLogo from "../Components/UI/AuthLogo";
+import { useLocation } from "react-router-dom/dist/umd/react-router-dom.development";
 
 export default function OtpVerify() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { context } = location.state || {};
   const otpRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [resendButtonDisabled, setResendButtonDisabled] = useState(true);
   const [timer, setTimer] = useState(120);
   const registrationData = useSelector(selectAuthRegistrationData);
+  const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
   useEffect(() => {
     // Start the countdown from 120 seconds
@@ -64,23 +68,35 @@ export default function OtpVerify() {
     const otp = (data?.otp).map(String).join("");
     try {
       setLoading(true);
+      let mobile_number =
+        context === "forgot"
+          ? forgotPhoneNumber.mobile_number
+          : registrationData.mobileNumber;
       const combinedData = {
-        mobile_number: registrationData.mobileNumber,
+        mobile_number: mobile_number,
         otp: otp,
       };
-      console.log(combinedData);
       const { status } = await API.verifyOtpAPI(combinedData);
       if (status === 200) {
-        const userData = {
-          mobile_number: registrationData.mobileNumber,
-          username: registrationData.name,
-          password: registrationData.password,
-        };
-        if (registrationData.referCode) {
-          userData.refer_code = registrationData.referCode;
+        if (context === "forgot") {
+          dispatch({
+            mobile_number: forgotPhoneNumber.mobileNumber,
+            otpVerified: true,
+          });
+          navigate("/reset-password", {
+            state: { mobileNumber: forgotPhoneNumber },
+          });
+        } else {
+          const userData = {
+            mobile_number: registrationData.mobileNumber,
+            username: registrationData.name,
+            password: registrationData.password,
+          };
+          if (registrationData.referCode) {
+            userData.refer_code = registrationData.referCode;
+          }
+          dispatch(registerUser({ userData, navigate }));
         }
-        console.log(userData);
-        dispatch(registerUser({ userData, navigate }));
       }
     } catch (error) {
       setLoading(false);
@@ -149,7 +165,9 @@ export default function OtpVerify() {
           </Typography>
           <Typography
             onClick={() => {
-              navigate("/register");
+              context === "forgot"
+                ? navigate("/forgot-password")
+                : navigate("/register");
             }}
             sx={{
               color: blue[500],

@@ -1,198 +1,172 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import {
   Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  FormHelperText,
-  Grid,
   InputAdornment,
-  Modal,
   TextField,
   Typography,
+  Avatar,
+  Container,
+  Grid,
+  FormHelperText,
 } from "@mui/material";
 import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import { useForm } from "react-hook-form";
+import LoadingButton from "../Components/UI/LoadingButton";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { blue, grey, purple } from "@mui/material/colors";
+import AuthLogo from "../Components/UI/AuthLogo";
 import API from "../Api/ApiCall";
+import { setForgotPhoneData } from "../Feature/Auth/authSlice";
+import { toast } from "react-toastify";
 
 export default function ForgotPassword() {
-  const [combinedData, setCombinedData] = useState("");
-  const [showOtpDialog, setShowOtpDialog] = useState(false);
-  const [showResetModal, setShowResetModal] = useState(false);
-
-  // Separate useForm instances for each form
+  const navigate = useNavigate();
   const {
-    register: registerMobile,
-    handleSubmit: handleSubmitMobile,
-    formState: { errors: mobileErrors },
-    reset: resetMobile,
+    register,
+    handleSubmit,
+    formState: { errors, isDirty, isValid },
   } = useForm();
+  const dispatch = useDispatch();
 
-  const {
-    register: registerOtp,
-    handleSubmit: handleSubmitOtp,
-    formState: { errors: otpErrors },
-    reset: resetOtp,
-  } = useForm();
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
-  const {
-    register: registerReset,
-    handleSubmit: handleSubmitReset,
-    watch,
-    formState: { errors: resetErrors },
-    reset: resetPassword,
-  } = useForm();
-  const newPassword = watch("newPassword");
-
-  const onSubmitMobile = async (data) => {
+  const onSubmitForgot = async (data) => {
     try {
-      console.log("Mobile data:", data);
-      await API.resetPassword(data);
-      setShowOtpDialog(true);
-    } catch (error) {}
-  };
-
-  const onVerifyOtp = async (data) => {
-    try {
-      console.log("OTP data:", data);
-      setCombinedData({ ...combinedData, data });
-      await API.resetPasswordVerifyOtp({ ...combinedData, data });
-      setShowOtpDialog(false);
-      setShowResetModal(true);
-    } catch (error) {}
-  };
-
-  const onResetPassword = async (data) => {
-    try {
-      console.log("Reset Password data:", data);
-      setCombinedData({ ...combinedData, data });
-      await API.resetPasswordChangePassword({ ...combinedData, data });
-      setShowResetModal(false);
-      resetPassword();
-      resetOtp();
-      resetMobile();
-    } catch (error) {}
+      setLoadingBtn(true);
+      const dataToSend = {
+        mobile_number: data.phone,
+      };
+      dispatch(setForgotPhoneData({ mobile_number: data, otpVerified: false }));
+      console.log(dataToSend);
+      await API.checkUserAPI(dataToSend);
+      await API.sendOtpAPI(dataToSend);
+      navigate("/otp-verify", { state: { context: "forgot" } });
+    } catch (error) {
+      setLoadingBtn(false);
+      if (error.response) {
+        if (error.response.status === 403) {
+          toast.error(error.response.data.detail);
+          navigate("/");
+          return;
+        } else {
+          return toast.error(error.message);
+        }
+      } else if (error.request) {
+        return toast.error("No response received");
+      } else {
+        return toast.error(error.message);
+      }
+    } finally {
+      setLoadingBtn(false);
+    }
   };
 
   return (
-    <>
-      <Box id="login" className="main_content">
-        {/* Mobile number submission form */}
-        <Grid container spacing={0}>
-          <Grid item lg={4} md={4} sm={12} xs={12}>
-            <Box className="login_info">
-              <form onSubmit={handleSubmitMobile(onSubmitMobile)}>
-                <Box mt={3}>
-                  <TextField
-                    fullWidth
-                    id="phone"
-                    name="phone"
-                    variant="outlined"
-                    className="input_field"
-                    placeholder="Mobile Number"
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <PhoneAndroidOutlinedIcon />
-                        </InputAdornment>
-                      ),
-                    }}
-                    {...registerMobile("phone", {
-                      required: "Mobile number is required",
-                      pattern: {
-                        value: /^\+?([0-9]{1,3})?([0-9]{10})$/,
-                        message: "Invalid mobile number",
-                      },
-                    })}
-                    error={!!mobileErrors.phone}
-                  />
-                  {mobileErrors.phone && (
-                    <FormHelperText error={true}>
-                      {mobileErrors.phone.message}
-                    </FormHelperText>
-                  )}
-                </Box>
-                <Box mt={2}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    className="login_btn"
-                    fullWidth
-                  >
-                    Send
-                  </Button>
-                </Box>
-              </form>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* OTP Verification Dialog */}
-      <Dialog open={showOtpDialog} onClose={() => setShowOtpDialog(false)}>
-        <Box component="form" onSubmit={handleSubmitOtp(onVerifyOtp)}>
-          <DialogTitle>Verify OTP</DialogTitle>
-          <DialogContent>
-            <TextField
-              {...registerOtp("otp", { required: "OTP is required" })}
-              error={!!otpErrors.otp}
-              helperText={otpErrors.otp?.message}
-              placeholder="Enter OTP"
-              fullWidth
-            />
-            <Button type="submit">Verify</Button>
-          </DialogContent>
-        </Box>
-      </Dialog>
-
-      {/* Password Reset Modal */}
-      <Modal open={showResetModal} onClose={() => setShowResetModal(false)}>
+    <Box height="100vh">
+      <Container component="main" maxWidth="sm">
         <Box
-          component="form"
-          onSubmit={handleSubmitReset(onResetPassword)}
           sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            width: 400,
-            bgcolor: "background.paper",
-            boxShadow: 24,
-            p: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Typography variant="h6">Reset Password</Typography>
-          <TextField
-            {...registerReset("newPassword", {
-              required: "New Password is required",
-              minLength: {
-                value: 8,
-                message: "Password must be at least 8 characters long",
-              },
-            })}
-            error={!!resetErrors.newPassword}
-            helperText={resetErrors.newPassword?.message}
-            placeholder="New Password"
-            type="password"
-            fullWidth
-          />
-          <TextField
-            {...registerReset("confirmNewPassword", {
-              validate: (value) =>
-                value === newPassword || "The passwords do not match",
-            })}
-            error={!!resetErrors.confirmNewPassword}
-            helperText={resetErrors.confirmNewPassword?.message}
-            placeholder="Confirm New Password"
-            type="password"
-            fullWidth
-          />
-          <Button type="submit" sx={{ mt: 2 }}>
-            Reset Password
-          </Button>
+          <AuthLogo />
+          <Typography variant="h5" fontSize="600">
+            Forgot Password
+          </Typography>
+          <Typography variant="caption" fontSize="600" color={grey[500]}>
+            Please enter your phone number
+          </Typography>
+          <Box
+            component="form"
+            onSubmit={handleSubmit(onSubmitForgot)}
+            noValidate
+            sx={{ mt: 1 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  sx={{ borderColor: grey[500] }}
+                  variant="outlined"
+                  placeholder="Mobile Number"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Avatar
+                          sx={{
+                            bgcolor: purple[500],
+                          }}
+                        >
+                          <PhoneAndroidOutlinedIcon
+                            sx={{ color: "text.white" }}
+                          />
+                        </Avatar>
+                      </InputAdornment>
+                    ),
+                    inputProps: {
+                      maxLength: 10, // Limit input to 10 characters
+                    },
+                  }}
+                  {...register("phone", {
+                    required: "Mobile number is required",
+                    pattern: {
+                      value: /^[1-9][0-9]{9}$/,
+                      message: "Invalid mobile number",
+                    },
+                  })}
+                  error={!!errors.phone}
+                />
+                <FormHelperText
+                  error={!!errors.phone}
+                  sx={{
+                    visibility: errors ? "visible" : "hidden",
+                    height: "10px",
+                  }}
+                >
+                  {errors ? errors?.phone?.message : " "}
+                </FormHelperText>
+              </Grid>
+              <Grid item xs={12}>
+                <LoadingButton
+                  type="submit"
+                  fullWidth
+                  loading={loadingBtn}
+                  sx={{
+                    bgcolor: blue[500],
+                    borderRadius: 10,
+                    padding: [2, 0],
+                    my: 2,
+                  }}
+                  variant="contained"
+                  disabled={!isDirty || !isValid}
+                >
+                  Send Otp
+                </LoadingButton>
+              </Grid>
+              <Typography sx={{ textAlign: "center", m: 1 }}>
+                Don't have an account?{" "}
+                <Typography
+                  onClick={() => {
+                    navigate("/register");
+                  }}
+                  sx={{
+                    color: blue[500],
+                    cursor: "pointer",
+                  }}
+                  component="span"
+                >
+                  Register
+                </Typography>
+              </Typography>
+            </Grid>
+          </Box>
         </Box>
-      </Modal>
-    </>
+        {/* <Copyright sx={{ mt: 8, mb: 4 }} /> */}
+      </Container>
+    </Box>
   );
 }

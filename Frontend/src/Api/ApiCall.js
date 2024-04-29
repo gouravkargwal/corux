@@ -8,6 +8,9 @@ const signinAPI = async (data) => {
 const refreshTokenAPI = async (data) => {
   return axiosInstance.post(`/auth/refresh-token`, data);
 };
+const forgotPasswordAPI = async (data) => {
+  return axiosInstance.patch(`/auth/forgot-password`, data);
+};
 
 // Register User API Call
 const signupAPI = async (data) => {
@@ -102,6 +105,7 @@ const API = {
   userGameListAPI,
   rechargeHistoryAPI,
   withdrawHistoryAPI,
+  forgotPasswordAPI,
 };
 
 export default API;

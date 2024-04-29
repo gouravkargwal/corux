@@ -175,6 +175,9 @@ export default function Login() {
                     color: grey[500],
                     cursor: "pointer",
                   }}
+                  onClick={() => {
+                    navigate("/forgot-password");
+                  }}
                 >
                   Forgot password?
                 </Typography>

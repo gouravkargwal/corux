@@ -23,6 +23,7 @@ import Settings from "./Pages/Settings";
 import PrivateRoute from "./Routes/PrivateRoute";
 import ManualAddMoney from "./Components/Wallet/Recharge/ManualAddMoney";
 import "./Util/axiosConfig";
+import ResetPassword from "./Pages/ResetPassword";
 
 function App() {
   return (
@@ -30,7 +31,8 @@ function App() {
       <Routes>
         <Route path="/" element={<AuthLayout />}>
           <Route index element={<Login />} />
-          <Route path="forgot_password" element={<ForgotPassword />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
           <Route path="register/:referCode?" element={<Register />} />
           <Route path="otp-verify" element={<OtpVerify />} />
         </Route>
