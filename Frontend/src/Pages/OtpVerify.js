@@ -10,6 +10,7 @@ import {
   registerUser,
   selectAuthRegistrationData,
   selectAuthForgotPhoneData,
+  setForgotPhoneData,
 } from "../Feature/Auth/authSlice";
 import { toast } from "react-toastify";
 import AuthLogo from "../Components/UI/AuthLogo";
@@ -26,6 +27,8 @@ export default function OtpVerify() {
   const [timer, setTimer] = useState(120);
   const registrationData = useSelector(selectAuthRegistrationData);
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
+
+  console.log(forgotPhoneNumber);
 
   useEffect(() => {
     // Start the countdown from 120 seconds
@@ -76,27 +79,26 @@ export default function OtpVerify() {
         mobile_number: mobile_number,
         otp: otp,
       };
+      console.log(combinedData);
       const { status } = await API.verifyOtpAPI(combinedData);
-      if (status === 200) {
-        if (context === "forgot") {
-          dispatch({
-            mobile_number: forgotPhoneNumber.mobileNumber,
+      if (status === 200 && context === "forgot") {
+        dispatch(
+          setForgotPhoneData({
+            mobileNumber: forgotPhoneNumber.mobile_number,
             otpVerified: true,
-          });
-          navigate("/reset-password", {
-            state: { mobileNumber: forgotPhoneNumber },
-          });
-        } else {
-          const userData = {
-            mobile_number: registrationData.mobileNumber,
-            username: registrationData.name,
-            password: registrationData.password,
-          };
-          if (registrationData.referCode) {
-            userData.refer_code = registrationData.referCode;
-          }
-          dispatch(registerUser({ userData, navigate }));
+          })
+        );
+        return navigate("/reset-password");
+      } else {
+        const userData = {
+          mobile_number: registrationData.mobileNumber,
+          username: registrationData.name,
+          password: registrationData.password,
+        };
+        if (registrationData.referCode) {
+          userData.refer_code = registrationData.referCode;
         }
+        dispatch(registerUser({ userData, navigate }));
       }
     } catch (error) {
       setLoading(false);
@@ -161,7 +163,12 @@ export default function OtpVerify() {
             color={grey[500]}
             textAlign="center"
           >
-            Enter OTP sent to +91{registrationData?.mobileNumber}
+            Enter OTP sent to +91
+            {context === "forgot" ? (
+              <span>{forgotPhoneNumber?.mobile_number}</span>
+            ) : (
+              <span>{registrationData?.mobileNumber}</span>
+            )}
           </Typography>
           <Typography
             onClick={() => {

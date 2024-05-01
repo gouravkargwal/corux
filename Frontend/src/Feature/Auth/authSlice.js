@@ -77,6 +77,10 @@ const authSlice = createSlice({
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },
+    setForgotPasswordData(state, action) {
+      state.token = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+    },
   },
   extraReducers: (builder) => {
     builder

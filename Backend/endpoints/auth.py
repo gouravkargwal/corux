@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends, Response, Request, Cookie, Header
 from db_module.session import get_sql_db
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 from jwtAuth import JWTAuth
 from schema.user import (
@@ -51,13 +52,61 @@ async def check_mobile_number(
 @router.post("/send-otp/")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = "1234"
+        otp = "123"
 
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
             .first()
         )
+        if otp_found:
+            if otp_found.time >= (datetime.now() - timedelta(minutes=3)):
+                if otp_found.count >= 3:
+                    raise HTTPException(
+                        status_code=400,
+                        detail="Cannot Send Otp,Limit Exceed Try Again After 3 minutes",
+                    )
+
+                otp_found.count = otp_found.count + 1
+                otp_found.otp = otp
+                db.commit()
+
+            else:
+                otp_found.count = 1
+                otp_found.otp = otp
+                otp_found.time = datetime.now()
+
+                db.commit()
+        else:
+            new_otp_log = Otp_Table(
+                mobile_number=userdetail.mobile_number,
+                time=datetime.now(),
+                count=1,
+                otp=otp,
+            )
+
+            db.add(new_otp_log)
+            db.commit()
+            db.refresh(new_otp_log)
+
+        return {"status_code": 200, "message": "OTP Sent Successfully"}
+    except HTTPException as e:
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
+    
+@router.post("/send-otp-forgot/")
+async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_db)):
+    try:
+        user = db.query(User).filter(User.mobile_number == userdetail.mobile_number).first()
+        if not user:
+            raise HTTPException(status_code=400,detail="User not Registered!! Register First")
+        
+        otp = "1234"
+        otp_found = (
+            db.query(Otp_Table)
+            .filter(Otp_Table.mobile_number == userdetail.mobile_number)
+            .first()
+        )
+
         if otp_found:
             if otp_found.time >= (datetime.now() - timedelta(minutes=3)):
                 if otp_found.count >= 3:
@@ -101,6 +150,7 @@ async def verify_otp(
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == user_otp_detail.mobile_number)
+            .order_by(desc(Otp_Table.otp_id))
             .first()
         )
         if not otp_found:

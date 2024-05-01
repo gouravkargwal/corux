@@ -22,6 +22,9 @@ const checkUserAPI = async (data) => {
 const sendOtpAPI = async (data) => {
   return axiosInstance.post(`/auth/send-otp`, data);
 };
+const sendOtpForgotAPI = async (data) => {
+  return axiosInstance.post(`/auth/send-otp-forgot`, data);
+};
 const verifyOtpAPI = async (data) => {
   return axiosInstance.post(`/auth/verify-otp`, data);
 };
@@ -89,6 +92,7 @@ const API = {
   refreshTokenAPI,
   signupAPI,
   sendOtpAPI,
+  sendOtpForgotAPI,
   checkUserAPI,
   verifyOtpAPI,
   resendOtpAPI,

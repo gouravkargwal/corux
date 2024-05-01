@@ -189,11 +189,11 @@ async def get_result(game_id):
             for i in range(0, 10):
                 if result_number[result_number["bet_on"] == i].empty:
                     result_number.loc[len(result_number)] = [i, 0]
-
+            print("Hello1")
             for i in ["red", "green", "violet"]:
                 if result_color[result_color["bet_on"] == i].empty:
                     result_color.loc[len(result_color)] = [i, 0]
-
+            print("Hello2")
             total_amount_bet = (
                 result_color["total_bet_amount"].sum()
                 + result_number["total_bet_amount"].sum()

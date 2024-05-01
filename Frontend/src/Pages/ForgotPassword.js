@@ -37,10 +37,11 @@ export default function ForgotPassword() {
       const dataToSend = {
         mobile_number: data.phone,
       };
-      dispatch(setForgotPhoneData({ mobile_number: data, otpVerified: false }));
+      dispatch(
+        setForgotPhoneData({ mobile_number: data?.phone, otpVerified: false })
+      );
       console.log(dataToSend);
-      await API.checkUserAPI(dataToSend);
-      await API.sendOtpAPI(dataToSend);
+      await API.sendOtpForgotAPI(dataToSend);
       navigate("/otp-verify", { state: { context: "forgot" } });
     } catch (error) {
       setLoadingBtn(false);
