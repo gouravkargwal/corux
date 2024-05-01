@@ -13,6 +13,7 @@ import {
 import AgGridPagination from "../UI/AgGridPagination";
 import TableSkeleton from "../UI/TableSkeleton";
 import { blue } from "@mui/material/colors";
+import { selectGameId } from "../../Feature/ColorPrediction/colorPredictionSlice";
 
 const WinnerTable = () => {
   const dispatch = useDispatch();
@@ -20,6 +21,7 @@ const WinnerTable = () => {
   const page = useSelector(selectResultPage);
   const currentPage = useSelector(selectResultCurrentPage);
   const loading = useSelector(selectResultLoading);
+  const gameId = useSelector(selectGameId);
 
   const [gridApi, setGridApi] = useState(null);
   function onGridReady(params) {
@@ -34,6 +36,8 @@ const WinnerTable = () => {
     dispatch(setWinnerCurrentPage(page));
     dispatch(getResultList({ page, size: 10 }));
   };
+
+  const filteredData = data.filter((item) => item.game_id !== gameId);
 
   const columnDefs = [
     { headerName: "Period", field: "game_id", maxWidth: 185 },
@@ -80,7 +84,7 @@ const WinnerTable = () => {
           >
             <AgGridReact
               onGridReady={onGridReady}
-              rowData={data}
+              rowData={filteredData}
               columnDefs={columnDefs}
               domLayout="autoHeight"
               getRowStyle={getRowStyle}

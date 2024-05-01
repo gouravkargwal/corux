@@ -62,10 +62,14 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logoutUser(state, action) {
-      state.user = null;
       state.token = null;
-      state.refreshToken = null;
+      state.loading = null;
+      state.error = null;
+      state.user = null;
       state.balance = null;
+      state.registrationData = null;
+      state.refreshToken = null;
+      state.forgotPhone = null;
     },
     setRegistrationData(state, action) {
       state.registrationData = action.payload;
@@ -74,10 +78,6 @@ const authSlice = createSlice({
       state.forgotPhone = action.payload;
     },
     setNewTokens(state, action) {
-      state.token = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
-    },
-    setForgotPasswordData(state, action) {
       state.token = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
     },

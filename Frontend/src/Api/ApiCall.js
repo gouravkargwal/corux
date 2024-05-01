@@ -9,7 +9,7 @@ const refreshTokenAPI = async (data) => {
   return axiosInstance.post(`/auth/refresh-token`, data);
 };
 const forgotPasswordAPI = async (data) => {
-  return axiosInstance.patch(`/auth/forgot-password`, data);
+  return axiosInstance.patch(`/auth/forget-password`, data);
 };
 
 // Register User API Call

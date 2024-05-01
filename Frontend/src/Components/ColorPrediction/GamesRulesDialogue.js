@@ -8,6 +8,9 @@ import { DialogContent, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 function GameRulesDialog({ open, onClose }) {
+  // Define the trade cost per trade
+  const tradeCost = 100;
+
   return (
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>Game Trading and Winnings Overview</DialogTitle>
@@ -33,8 +36,8 @@ function GameRulesDialog({ open, onClose }) {
           </ListItem>
           <ListItem>
             <ListItemText
-              primary="Trade Cost and Service Fee"
-              secondary="Participants spend ₹100 per trade. A service fee of ₹2 is deducted, leaving a net contract value of ₹98 for winnings calculation."
+              primary="Trade Cost"
+              secondary={`Participants spend ₹${tradeCost} per trade.`}
             />
           </ListItem>
           <ListItem>

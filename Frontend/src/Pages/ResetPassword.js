@@ -13,21 +13,25 @@ import { Controller, useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import VpnKeyIcon from "@mui/icons-material/VpnKey";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../Components/UI/LoadingButton";
 import API from "../Api/ApiCall";
 import { toast } from "react-toastify";
-import { selectAuthForgotPhoneData } from "../Feature/Auth/authSlice";
+import {
+  logoutUser,
+  selectAuthForgotPhoneData,
+} from "../Feature/Auth/authSlice";
 import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 
 export default function ResetPassword() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const forgotPhoneData = useSelector(selectAuthForgotPhoneData);
 
   const {
     control,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       password: "",
@@ -50,7 +54,13 @@ export default function ResetPassword() {
     try {
       const { password } = data;
       setLoading(true);
-      await API.forgotPasswordAPI({ password });
+      console.log(forgotPhoneData);
+      await API.forgotPasswordAPI({
+        mobile_number: forgotPhoneData?.mobileNumber,
+        password,
+      });
+      dispatch(logoutUser());
+      navigate("/");
       toast.success("Password Changed Successful");
     } catch (error) {
       if (error.response) {
@@ -70,7 +80,7 @@ export default function ResetPassword() {
     return password === confirmPassword || "Passwords do not match";
   };
 
-  if (!forgotPhoneData.otpVerified) {
+  if (!forgotPhoneData?.otpVerified) {
     return navigate("/");
   }
 
@@ -186,7 +196,6 @@ export default function ResetPassword() {
         </FormHelperText>
         <LoadingButton
           type="submit"
-          disabled={!(isValid && isDirty)}
           variant="contained"
           loading={loading}
           fullWidth
