@@ -38,17 +38,6 @@ def determine_winners(result_color, result_number, total_amount_bet):
             "profit_ratio":0
         }
 
-        minimum_loss_dict = {
-            "total_amount_won": 1000000000,
-            "number_who_won": [],
-            "color_who_won": [],
-            "red": 0,
-            "green": 0,
-            "violet": 0,
-            "is_profit": 0,
-            "profit_ratio":0
-        }
-
         # Generate a shuffled list from 0 to 9
         shuffled_list = list(range(10))
         random.shuffle(shuffled_list)
@@ -132,10 +121,9 @@ def determine_winners(result_color, result_number, total_amount_bet):
 
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
-            winner_dict_form["profit_ratio"] = total_amount_won/total_amount_bet
 
             if total_amount_bet == 0:
-                return winner_dict_form,minimum_loss_dict
+                return winner_dict_form
             
             winner_dict_form["profit_ratio"] = (total_amount_bet - total_amount_won)/total_amount_bet
             
@@ -154,7 +142,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
                 pass
 
             
-        return winner_dict, minimum_loss_dict
+        return winner_dict
 
     except Exception as e:
         logger.error(str(e))
@@ -189,11 +177,9 @@ async def get_result(game_id):
             for i in range(0, 10):
                 if result_number[result_number["bet_on"] == i].empty:
                     result_number.loc[len(result_number)] = [i, 0]
-            print("Hello1")
             for i in ["red", "green", "violet"]:
                 if result_color[result_color["bet_on"] == i].empty:
                     result_color.loc[len(result_color)] = [i, 0]
-            print("Hello2")
             total_amount_bet = (
                 result_color["total_bet_amount"].sum()
                 + result_number["total_bet_amount"].sum()
@@ -209,7 +195,7 @@ async def get_result(game_id):
             # print(result_color.head)
             # print(result_number.head)
 
-            winner_dict, minimum_loss_dict = determine_winners(
+            winner_dict = determine_winners(
                 result_color, result_number, total_amount_bet
             )
             db.execute(delete(Winner_Table))

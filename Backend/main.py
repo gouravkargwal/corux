@@ -41,6 +41,13 @@ start_time = None
 game_duration = timedelta(minutes=1.5)
 betting_duration = timedelta(minutes=1)
 result_calculated = False
+start_game_lock = asyncio.Lock()
+
+game_state = {
+    'phase': 'betting',
+    'remaining_time': 90,  # Example remaining time in seconds
+    'game_id': game_id
+}
 
 
 def generate_game_id():
@@ -56,72 +63,79 @@ async def startup():
     sio_manager.start_background_task(notify_timer)
     await start_game()  # Automatically start a game on server startup
 
+@sio_manager.on('disconnect')
+async def handle_disconnect(sid):
+    # Logic to handle disconnection
+    logger.error(f"Client disconnected")
 
-# @app.on_event("startup")
-# async def startup_event():
-#     global background_task
-#     # Initialize the background task but do not start it yet
-#     background_task = asyncio.create_task(notify_timer)
 
+@sio_manager.on('connect')
+async def handle_connect(sid, environ=None, auth=None):
+    logger.error(f"Client connected")
+    await sio_manager.emit('game_state',game_state)
+    # sio_manager.start_background_task(notify_timer)
+    
 
 async def start_game():
     global start_time, game_id, result_calculated, game_inprocess,game_finishing
-    start_time = datetime.now()
-    game_id = generate_game_id()
-    game_inprocess = True
-    game_finishing = False
-    result_calculated = False
-    return {"message": "Game started!", "game_id": game_id}
+    async with start_game_lock:
+        start_time = datetime.now()
+        game_id = generate_game_id()
+        game_inprocess = True
+        game_finishing = False
+        result_calculated = False
+        return {"message": "Game started!", "game_id": game_id}
 
-
+# @sio_manager.on('connect')
 async def notify_timer():
     try:
         global task_running, game_inprocess,game_finishing
         global game_id, start_time, result_calculated
-
         while task_running:
-            if start_time is None:
-                await sio_manager.emit("game_state", {"error": "Game not started"})
-            else:
-                now = datetime.now()
-                elapsed_time = now - start_time
-                remaining_time = game_duration - elapsed_time
-
-                if elapsed_time < betting_duration:
-                    phase = "betting"
+            async with start_game_lock:
+                if start_time is None:
+                    await sio_manager.emit("game_state", {"error": "Game not started"})
                 else:
-                    phase = "results"
+                    now = datetime.now()
+                    elapsed_time = now - start_time
+                    remaining_time = game_duration - elapsed_time
+                    if elapsed_time < betting_duration:
+                        phase = "betting"
+                    else:
+                        phase = "results"
 
-                await sio_manager.emit(
-                    "game_state",
-                    {
+                    game_state.update({
                         "phase": phase,
                         "remaining_time": int(remaining_time.total_seconds()),
                         "game_id": game_id,
-                    },
-                )
-
-                if (
-                    elapsed_time >= game_duration - timedelta(seconds=28)
-                    and not result_calculated
-                ):
-                    winning_user_id = await get_result(game_id)
-                    result_calculated = True
-
-                if elapsed_time >= game_duration and result_calculated:
-                    game_finishing = True
-                    await sio_manager.sleep(5)
+                    })
                     await sio_manager.emit(
-                        "winner_notification",
-                        {
-                            "message": "Congratulations!",
-                            "user_list": winning_user_id,
-                        },
+                        "game_state",
+                        game_state,
                     )
-                    game_inprocess = False
-                    await sio_manager.sleep(5)
-                    await start_game()
-                    game_finishing = False
+                    
+                    if (
+                        elapsed_time >= game_duration - timedelta(seconds=28)
+                        and not result_calculated
+                    ):
+                        winning_user_id = await get_result(game_id)
+                        result_calculated = True
+
+                    if elapsed_time >= game_duration and result_calculated:
+                        game_finishing = True
+                        await sio_manager.sleep(5)
+                        await sio_manager.emit(
+                            "winner_notification",
+                            {
+                                "message": "Congratulations!",
+                                "user_list": winning_user_id,
+                            },
+                        )
+                        game_inprocess = False 
+            if not game_inprocess:    
+                await sio_manager.sleep(5)
+                await start_game()
+                game_finishing = False
 
             await sio_manager.sleep(1)
     except Exception as e:
