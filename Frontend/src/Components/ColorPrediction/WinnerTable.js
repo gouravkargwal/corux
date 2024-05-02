@@ -37,7 +37,7 @@ const WinnerTable = () => {
     dispatch(getResultList({ page, size: 10 }));
   };
 
-  const filteredData = data.filter((item) => item.game_id !== gameId);
+  const filteredData = data?.filter((item) => item.game_id !== gameId);
 
   const columnDefs = [
     { headerName: "Period", field: "game_id", maxWidth: 185 },
