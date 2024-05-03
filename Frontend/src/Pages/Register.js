@@ -67,13 +67,13 @@ export default function Register() {
       dispatch(setRegistrationData(data));
       await API.checkUserAPI(dataToSend);
       await API.sendOtpAPI(dataToSend);
-      navigate("/otp-verify");
+      navigate("/auth/otp-verify");
     } catch (error) {
       setLoadingBtn(false);
       if (error.response) {
         if (error.response.status === 403) {
           toast.error(error.response.data.detail);
-          navigate("/");
+          navigate("/auth");
           return;
         } else {
           return toast.error(error.message);
@@ -382,7 +382,7 @@ export default function Register() {
                     Already have an account?{" "}
                     <Typography
                       onClick={() => {
-                        navigate("/");
+                        navigate("/auth");
                       }}
                       sx={{
                         color: blue[500],

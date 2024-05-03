@@ -42,7 +42,7 @@ const AuthDialogue = ({ open, onClose }) => {
               padding: [1, 0],
               my: 2,
             }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/auth")}
           >
             Login
           </Button>
@@ -54,7 +54,7 @@ const AuthDialogue = ({ open, onClose }) => {
               padding: [1, 0],
               my: 2,
             }}
-            onClick={() => navigate("/register")}
+            onClick={() => navigate("/auth/register")}
           >
             Register
           </Button>

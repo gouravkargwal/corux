@@ -47,10 +47,10 @@ export default function ProfileNavbar() {
         </MenuItem>,
       ]
     : [
-        <MenuItem key="signin" onClick={() => handleNavigate("/")}>
+        <MenuItem key="signin" onClick={() => handleNavigate("/auth")}>
           Sign In
         </MenuItem>,
-        <MenuItem key="register" onClick={() => handleNavigate("/register")}>
+        <MenuItem key="register" onClick={() => handleNavigate("/auth/register")}>
           Register
         </MenuItem>,
       ];

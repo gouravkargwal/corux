@@ -38,7 +38,7 @@ const ManualAddMoney = () => {
 
   const onClose = () => {
     setOpen(false);
-    navigate("/app/profile/wallet");
+    navigate("/profile/wallet");
   };
 
   const onFormSubmit = async (data) => {

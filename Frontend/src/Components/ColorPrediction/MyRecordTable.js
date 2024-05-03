@@ -14,6 +14,7 @@ import {
   selectUserPage,
   setUserCurrentPage,
 } from "../../Feature/User/userSlice";
+import { selectGameId } from "../../Feature/ColorPrediction/colorPredictionSlice";
 
 const MyRecordTable = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const MyRecordTable = () => {
   const page = useSelector(selectUserPage);
   const currentPage = useSelector(selectUserCurrentPage);
   const loading = useSelector(selectUserLoading);
+  const gameId = useSelector(selectGameId);
 
   const [gridApi, setGridApi] = useState(null);
   function onGridReady(params) {
@@ -36,12 +38,21 @@ const MyRecordTable = () => {
     dispatch(getUserGameList({ page, size: 10 }));
   };
 
+  const defaultColDef = {
+    sortable: true,
+    checkboxSelection: false,
+    autoHeight: true,
+    filter: true,
+    flex: 1,
+    suppressMovable: false,
+    resizable: true,
+  };
+
   const columnDefs = [
-    { headerName: "Period", field: "game_id", maxWidth: 185 },
+    { headerName: "Period", field: "game_id" },
     {
       headerName: "Color/Number",
       field: "bet_on",
-      maxWidth: 150,
       cellRenderer: ({ value }) => {
         let color, displayValue;
         if (/[0-9]/.test(value)) {
@@ -79,8 +90,17 @@ const MyRecordTable = () => {
         );
       },
     },
-    { headerName: "Bet Amount", field: "bet_amount", maxWidth: 100 },
-    { headerName: "Winning", field: "winning", maxWidth: 100 },
+    { headerName: "Bet Amount", field: "bet_amount" },
+    {
+      headerName: "Winning",
+      field: "winning",
+      cellRenderer: ({ data }) => {
+        if (data.game_id === gameId) {
+          return ""; // Hide the winning field for the current game
+        }
+        return data.winning;
+      },
+    },
   ];
 
   const getRowStyle = (params) => {
@@ -107,6 +127,7 @@ const MyRecordTable = () => {
               columnDefs={columnDefs}
               domLayout="autoHeight"
               getRowStyle={getRowStyle}
+              defaultColDef={defaultColDef}
             />
           </Box>
           <Box>

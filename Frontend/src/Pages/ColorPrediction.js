@@ -13,7 +13,6 @@ import "../../node_modules/ag-grid-community/styles/ag-theme-alpine.css";
 import { useForm } from "react-hook-form";
 import { selectAuthToken, selectAuthUser } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import {
   createBet,
   selectBetError,
@@ -55,7 +54,6 @@ const ColorPrediction = () => {
   const timer = useSelector(selectTimer);
   const loading = useSelector(selectBetLoading);
   const user = useSelector(selectAuthUser);
-  const error = useSelector(selectBetError);
   const bettingAllowed = useSelector(selectBettingAllowed);
 
   const [selectedColor, setSelectedColor] = useState(null);
@@ -176,6 +174,7 @@ const ColorPrediction = () => {
     <>
       <Grid container direction="column">
         {token && <InfoWithButton />}
+
         <Grid
           item
           xs={4}
@@ -250,7 +249,7 @@ const ColorPrediction = () => {
               visibleScrollbar={false}
             >
               <Tab label="Winner" />
-              <Tab label="My Record" />
+              {token && <Tab label="My Record" />}
             </Tabs>
           </Grid>
           <Grid item xs={12} my={1}>
@@ -272,7 +271,7 @@ const ColorPrediction = () => {
           </Grid>
           <Grid item xs={12}>
             {activeTab === 0 && <WinnerTable />}
-            {activeTab === 1 && <MyRecordTable />}
+            {token && activeTab === 1 && <MyRecordTable />}
           </Grid>
         </Grid>
       </Grid>

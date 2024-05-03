@@ -9,7 +9,7 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import authReducer from "../Feature/Auth/authSlice";
+import authReducer, { logoutUser } from "../Feature/Auth/authSlice";
 import colorPredictionReducer from "../Feature/ColorPrediction/colorPredictionSlice";
 import snackbarReducer from "../Feature/Snackbar/snackbarSlice";
 import balanceReducer from "../Feature/Balance/balanceSlice";
@@ -27,7 +27,7 @@ const persistConfig = {
   whitelist: ["auth"],
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   auth: authReducer,
   colorPrediction: colorPredictionReducer,
   snackbar: snackbarReducer,
@@ -38,6 +38,13 @@ const rootReducer = combineReducers({
   user: userReducer,
   wallet: walletReducer,
 });
+
+const rootReducer = (state, action) => {
+  if (action.type === logoutUser.type) {
+    state = {};
+  }
+  return appReducer(state, action);
+};
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

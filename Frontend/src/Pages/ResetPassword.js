@@ -60,7 +60,7 @@ export default function ResetPassword() {
         password,
       });
       dispatch(logoutUser());
-      navigate("/");
+      navigate("/auth");
       toast.success("Password Changed Successful");
     } catch (error) {
       if (error.response) {
@@ -81,7 +81,7 @@ export default function ResetPassword() {
   };
 
   if (!forgotPhoneData?.otpVerified) {
-    return navigate("/");
+    return navigate("/auth");
   }
 
   return (

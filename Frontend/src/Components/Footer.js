@@ -10,31 +10,31 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import LoginIcon from "@mui/icons-material/Login";
 
 const navigationPaths = [
-  { value: 0, path: "/app/home", label: "Home", icon: <HomeIcon /> },
+  { value: 0, path: "/", label: "Home", icon: <HomeIcon /> },
   {
     value: 1,
-    path: "/app/promotion",
+    path: "/promotion",
     label: "Promotion",
     condition: (token) => token,
     icon: <LocalOfferIcon />,
   },
   {
     value: 2,
-    path: "/app/profile/recharge",
+    path: "/profile/recharge",
     label: "Recharge",
     condition: (token) => token,
     icon: <AddCardIcon />,
   },
   {
     value: 3,
-    path: "/app/profile",
+    path: "/profile",
     label: "Profile",
     condition: (token) => token,
     icon: <AccountCircleIcon />,
   },
   {
     value: 4,
-    path: "/",
+    path: "/auth",
     label: "Login",
     condition: (token) => !token,
     icon: <LoginIcon />,
@@ -48,9 +48,17 @@ export default function Footer() {
   const token = useSelector(selectAuthToken);
 
   useEffect(() => {
-    const foundPath =
-      navigationPaths.find((path) => location.pathname.includes(path.path)) ||
-      navigationPaths[0];
+    const foundPath = navigationPaths.reduce((longestMatch, currentPath) => {
+      const regex = new RegExp(`^${currentPath.path}`);
+      if (
+        regex.test(location.pathname) &&
+        currentPath.path.length > longestMatch.path.length
+      ) {
+        return currentPath;
+      }
+      return longestMatch;
+    }, navigationPaths[0]);
+
     setValue(foundPath.value);
   }, [location]);
 

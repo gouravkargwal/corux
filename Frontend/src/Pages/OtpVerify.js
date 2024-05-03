@@ -88,7 +88,7 @@ export default function OtpVerify() {
             otpVerified: true,
           })
         );
-        return navigate("/reset-password");
+        return navigate("/auth/reset-password");
       } else {
         const userData = {
           mobile_number: registrationData.mobileNumber,
@@ -173,8 +173,8 @@ export default function OtpVerify() {
           <Typography
             onClick={() => {
               context === "forgot"
-                ? navigate("/forgot-password")
-                : navigate("/register");
+                ? navigate("/auth/forgot-password")
+                : navigate("/auth/register");
             }}
             sx={{
               color: blue[500],

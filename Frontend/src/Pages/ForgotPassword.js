@@ -42,13 +42,13 @@ export default function ForgotPassword() {
       );
       console.log(dataToSend);
       await API.sendOtpForgotAPI(dataToSend);
-      navigate("/otp-verify", { state: { context: "forgot" } });
+      navigate("/auth/otp-verify", { state: { context: "forgot" } });
     } catch (error) {
       setLoadingBtn(false);
       if (error.response) {
         if (error.response.status === 403) {
           toast.error(error.response.data.detail);
-          navigate("/");
+          navigate("/auth");
           return;
         } else {
           return toast.error(error.message);
@@ -152,7 +152,7 @@ export default function ForgotPassword() {
                 Don't have an account?{" "}
                 <Typography
                   onClick={() => {
-                    navigate("/register");
+                    navigate("/auth/register");
                   }}
                   sx={{
                     color: blue[500],

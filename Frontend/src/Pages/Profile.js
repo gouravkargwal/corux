@@ -4,15 +4,14 @@ import Info from "../Components/Profile/Info";
 import Option from "../Components/Profile/Option";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import {
   green,
   deepPurple,
-  orange,
   pink,
   blue,
   purple,
   grey,
+  orange,
 } from "@mui/material/colors";
 import PaidIcon from "@mui/icons-material/Paid";
 import GroupIcon from "@mui/icons-material/Group";
@@ -20,6 +19,7 @@ import GavelIcon from "@mui/icons-material/Gavel";
 import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Link } from "react-router-dom";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
 
 export default function ControlledAccordions() {
   return (
@@ -37,7 +37,7 @@ export default function ControlledAccordions() {
         justifyContent="flex-start"
         gap={2}
       >
-        <Link to="/app/profile/profile-details">
+        <Link to="/profile/profile-details">
           <Option
             name="Profile"
             icon={
@@ -51,7 +51,7 @@ export default function ControlledAccordions() {
             }
           />
         </Link>
-        <Link to="/app/profile/wallet">
+        <Link to="/profile/wallet">
           <Option
             name="Wallet"
             icon={
@@ -71,7 +71,7 @@ export default function ControlledAccordions() {
             }
           />
         </Link> */}
-        <Link to="/app/profile/withdraw">
+        <Link to="/profile/withdraw">
           <Option
             name="Withdraw"
             icon={
@@ -81,7 +81,7 @@ export default function ControlledAccordions() {
             }
           />
         </Link>
-        <Link to="/app/promotion/">
+        <Link to="/promotion/">
           <Option
             name="Refer & Earn"
             icon={
@@ -102,24 +102,37 @@ export default function ControlledAccordions() {
         justifyContent="flex-start"
         gap={2}
       >
-        <Option
-          name="Terms & Conditions"
-          icon={
-            <Avatar sx={{ bgcolor: pink[500] }}>
-              <GavelIcon sx={{ color: "text.white" }} />
-            </Avatar>
-          }
-        />
-        <Option
-          name="Privacy Policy"
-          icon={
-            <Avatar sx={{ bgcolor: blue[500] }}>
-              <SecurityIcon sx={{ color: "text.white" }} />
-            </Avatar>
-          }
-        />
-
-        <Link to="/app/profile/settings">
+        <Link to="/terms-and-conditions">
+          <Option
+            name="Terms & Conditions"
+            icon={
+              <Avatar sx={{ bgcolor: pink[500] }}>
+                <GavelIcon sx={{ color: "text.white" }} />
+              </Avatar>
+            }
+          />
+        </Link>
+        <Link to="/privacy-policy">
+          <Option
+            name="Privacy Policy"
+            icon={
+              <Avatar sx={{ bgcolor: blue[500] }}>
+                <SecurityIcon sx={{ color: "text.white" }} />
+              </Avatar>
+            }
+          />
+        </Link>
+        <Link to="/contact-us">
+          <Option
+            name="Contact Us"
+            icon={
+              <Avatar sx={{ bgcolor: orange[500] }}>
+                <ContactPageIcon sx={{ color: "text.white" }} />
+              </Avatar>
+            }
+          />
+        </Link>
+        <Link to="/profile/settings">
           <Option
             name="Settings"
             icon={

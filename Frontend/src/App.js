@@ -24,25 +24,23 @@ import PrivateRoute from "./Routes/PrivateRoute";
 import ManualAddMoney from "./Components/Wallet/Recharge/ManualAddMoney";
 import "./Util/axiosConfig";
 import ResetPassword from "./Pages/ResetPassword";
+import NotFound from "./Pages/NotFound";
+import TermsAndConditions from "./Pages/TermsAndConditions";
+import PrivacyPolicy from "./Pages/PrivacyPolicy";
+import ContactUs from "./Pages/ContactUs";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index element={<Login />} />
-          <Route path="forgot-password" element={<ForgotPassword />} />
-          <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="register/:referCode?" element={<Register />} />
-          <Route path="otp-verify" element={<OtpVerify />} />
-        </Route>
-        <Route path="/app" element={<UserLayout />}>
-          <Route path="home">
-            <Route index element={<HomePage />} />
-            <Route path="color-prediction" element={<ColorPrediction />} />
-            <Route path="monty-hall" element={<MontyHall />} />
-            <Route path="virtual-slot" element={<VirtualSlot />} />
-          </Route>
+        <Route path="/" element={<UserLayout />}>
+          <Route index element={<HomePage />} />
+          <Route path="color-prediction" element={<ColorPrediction />} />
+          <Route path="monty-hall" element={<MontyHall />} />
+          <Route path="virtual-slot" element={<VirtualSlot />} />
+          <Route path="terms-and-conditions" element={<TermsAndConditions />} />
+          <Route path="privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="contact-us" element={<ContactUs />} />
           <Route path="promotion">
             <Route
               index
@@ -130,7 +128,14 @@ function App() {
             />
           </Route>
         </Route>
-        <Route path="*" element={<h1>Page not found</h1>} />
+        <Route path="/auth" element={<AuthLayout />}>
+          <Route index element={<Login />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="register/:referCode?" element={<Register />} />
+          <Route path="otp-verify" element={<OtpVerify />} />
+        </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
       <ToastContainer />
     </BrowserRouter>

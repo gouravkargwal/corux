@@ -39,12 +39,21 @@ const WinnerTable = () => {
 
   const filteredData = data?.filter((item) => item.game_id !== gameId);
 
+  const defaultColDef = {
+    sortable: true,
+    checkboxSelection: false,
+    autoHeight: true,
+    filter: true,
+    flex: 1,
+    suppressMovable: false,
+    resizable: true,
+  };
+
   const columnDefs = [
-    { headerName: "Period", field: "game_id", maxWidth: 185 },
+    { headerName: "Period", field: "game_id" },
     {
       headerName: "Color",
       field: "color_who_won",
-      maxWidth: 100,
       cellRenderer: ({ value }) => {
         return (
           <Box
@@ -61,7 +70,7 @@ const WinnerTable = () => {
         );
       },
     },
-    { headerName: "Number", field: "number_who_won", maxWidth: 100 },
+    { headerName: "Number", field: "number_who_won" },
   ];
 
   const getRowStyle = (params) => {
@@ -78,16 +87,14 @@ const WinnerTable = () => {
         <TableSkeleton />
       ) : (
         <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
-          <Box
-            className="ag-theme-quartz"
-            sx={{ height: "100%", width: "100%" }}
-          >
+          <Box className="ag-theme-quartz">
             <AgGridReact
               onGridReady={onGridReady}
               rowData={filteredData}
               columnDefs={columnDefs}
               domLayout="autoHeight"
               getRowStyle={getRowStyle}
+              defaultColDef={defaultColDef}
             />
           </Box>
           <Box>

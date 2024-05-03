@@ -174,9 +174,11 @@ export default function Login() {
                     my: 1,
                     color: grey[500],
                     cursor: "pointer",
+                    transition: "color 0.3s ease",
+                    "&:hover": { color: grey[800] },
                   }}
                   onClick={() => {
-                    navigate("/forgot-password");
+                    navigate("/auth/forgot-password");
                   }}
                 >
                   Forgot password?
@@ -202,11 +204,13 @@ export default function Login() {
                 Don't have an account?{" "}
                 <Typography
                   onClick={() => {
-                    navigate("/register");
+                    navigate("/auth/register");
                   }}
                   sx={{
                     color: blue[500],
                     cursor: "pointer",
+                    transition: "color 0.3s ease",
+                    "&:hover": { color: blue[800] },
                   }}
                   component="span"
                 >

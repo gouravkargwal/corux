@@ -5,7 +5,7 @@ import { selectAuthToken } from "../Feature/Auth/authSlice";
 const AuthLayout = () => {
   const token = useSelector(selectAuthToken);
 
-  return <>{token ? <Navigate to="/app/home" /> : <Outlet />}</>;
+  return <>{token ? <Navigate to="/" /> : <Outlet />}</>;
 };
 
 export default AuthLayout;

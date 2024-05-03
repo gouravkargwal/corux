@@ -39,7 +39,7 @@ export default function Settings() {
           onClick={() => {
             dispatch(logoutUser());
             persistor.purge();
-            navigate("/");
+            navigate("/auth");
           }}
         />
       </Box>
