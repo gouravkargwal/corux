@@ -280,6 +280,11 @@ sio_manager = SocketManager(app=app, path="/ws")
 game = Game()
 task_running = False
 connected_clients = set()
+game_inprocess = False
+game_finishing = False
+
+
+
 
 
 @sio_manager.on("connect")
@@ -287,7 +292,8 @@ async def handle_connect(sid, environ=None, auth=None):
     try:
         connected_clients.add(sid)
         game_state = game.update_state()
-        await sio_manager.emit("game_state", game_state, room=sid)
+        if game_inprocess:
+            await sio_manager.emit("game_state", game_state, room=sid)
         logger.info({"event": "client_connected", "sid": sid})
     except Exception as e:
         logger.error({"event": "connection_error", "error": str(e)})
@@ -344,8 +350,10 @@ async def handle_disconnect(sid):
 
 
 async def notify_timer():
-    global task_running
+    global task_running,game_inprocess,game_finishing
     while task_running:
+        game_inprocess = True
+        game_finishing = False
         try:
             game_state = game.update_state()
             if game_state:
@@ -382,8 +390,9 @@ async def notify_timer():
                                 "game_id": game.game_id,
                             }
                         )
-
                     game.finalize_results()
+                    game_finishing = True
+                    
 
                     if connected_clients and success:
                         await sio_manager.emit(
@@ -399,8 +408,11 @@ async def notify_timer():
                                 "user_list": winning_user_id,
                             }
                         )
-                    await asyncio.sleep(5)
-                    game.start_game()
+                    game_inprocess = False
+            if not game_inprocess:
+                await asyncio.sleep(5)
+                game.start_game()
+                game_finishing = False
 
             await asyncio.sleep(1)
         except Exception as e:
@@ -424,15 +436,36 @@ async def start_timer():
         raise HTTPException(status_code=500, detail="Unable to start timer")
 
 
+# @app.post("/control/timer/stop")
+# async def stop_timer():
+#     global task_running
+#     try:
+#         if task_running:
+#             task_running = False
+#             return {"status": "Timer stopped"}
+#         raise HTTPException(status_code=400, detail="Timer is not running")
+#     except Exception as e:
+#         logger.error({"event": "timer_stop_error", "error": str(e)})
+#         logger.error(traceback.format_exc())
+#         raise HTTPException(status_code=500, detail="Unable to stop timer")
+
+
 @app.post("/control/timer/stop")
 async def stop_timer():
-    global task_running
     try:
+        global task_running, game_inprocess, game_finishing
         if task_running:
+            while game_inprocess and not game_finishing:
+                await asyncio.sleep(1)
             task_running = False
+            game_inprocess = False
+            # sio_manager.disconnect()
+            # connected_clients.clear()
+            # game.update_state()
             return {"status": "Timer stopped"}
-        raise HTTPException(status_code=400, detail="Timer is not running")
+        else:
+            logger.error("Error")
+            raise HTTPException(status_code=400, detail="Timer is not running")
     except Exception as e:
-        logger.error({"event": "timer_stop_error", "error": str(e)})
-        logger.error(traceback.format_exc())
-        raise HTTPException(status_code=500, detail="Unable to stop timer")
+        logger.error("Error in Stop Timer")
+        raise HTTPException(status_code=400, detail="Unable To Stop Timer")
