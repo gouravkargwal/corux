@@ -74,17 +74,13 @@ const ColorPrediction = () => {
       socket.connect();
     }
     socket.on("game_state", (data) => {
-      if (data.error) {
-        console.error(data.error);
+      if (data?.phase === "betting") {
+        dispatch(setBettingAllowed(true));
       } else {
-        if (data.phase === "betting") {
-          dispatch(setBettingAllowed(true));
-        } else {
-          dispatch(setBettingAllowed(false));
-        }
-        dispatch(setTimer(data.remaining_time));
-        dispatch(setGameId(data.game_id));
+        dispatch(setBettingAllowed(false));
       }
+      dispatch(setTimer(data?.remaining_time));
+      dispatch(setGameId(data?.game_id));
     });
     socket.on("winner_notification", (data) => {
       if (data.user_list) {
