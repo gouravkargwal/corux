@@ -76,7 +76,7 @@ export default function Register() {
           navigate("/auth");
           return;
         } else {
-          return toast.error(error.message);
+          return toast.error(error.response.data.detail);
         }
       } else if (error.request) {
         return toast.error("No response received");

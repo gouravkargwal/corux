@@ -20,10 +20,21 @@ from datetime import datetime, timedelta
 import string
 import secrets
 from utils.logger import setup_logger
+from telesignenterprise.verify import VerifyClient
+from telesign.util import random_with_n_digits
+
+import os
 
 router = APIRouter()
 authhandler = JWTAuth()
 logger = setup_logger()
+
+customer_id = os.getenv('CUSTOMER_ID', '5A594F32-66A5-42D5-AEAE-09C3A674B432')
+api_key = os.getenv('API_KEY','9zIGYs7ZWNjYXS9swpoYYQCVSS3AHUEURj5ZseJDT7p+a0SW2nzi+jdaF5owALjYIqKUwW5XVhShTrvCAJaRg==')
+
+
+verify = VerifyClient(customer_id, api_key)
+
 
 
 def generate_random_string(length):
@@ -46,7 +57,7 @@ async def check_mobile_number(
 
         return {"status_code": 200, "message": "Mobile Number not registered"}
     except HTTPException as e:
-        logger.str(e)
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
         logger.error(str(e))
@@ -56,13 +67,15 @@ async def check_mobile_number(
 @router.post("/send-otp/")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = "1234"
-
+        otp = random_with_n_digits(4)
+        logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
             .first()
         )
+
+        logger.info("OTP Stored in Table")
         if otp_found:
             if otp_found.time >= (datetime.now() - timedelta(minutes=3)):
                 if otp_found.count >= 3:
@@ -92,7 +105,11 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-
+        number = "+91"+userdetail.mobile_number
+        response = verify.sms(number, verify_code=otp)
+        if response.status_code != 200:
+            logger.info(response.body)
+            raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
         return {"status_code": 200, "message": "OTP Sent Successfully"}
     except HTTPException as e:
         logger.error(str(e))
@@ -108,7 +125,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
         if not user:
             raise HTTPException(status_code=400,detail="User not Registered!! Register First")
         
-        otp = "1234"
+        otp = random_with_n_digits(4)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
@@ -145,13 +162,19 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
             db.commit()
             db.refresh(new_otp_log)
 
+        number = "+91"+userdetail.mobile_number
+        response = verify.sms(number, verify_code=otp)
+        logger.info(response.json())
+        if response.status_code != 200:
+            logger.info(response.body)
+            raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
         return {"status_code": 200, "message": "OTP Sent Successfully"}
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
+        raise HTTPException(status_code=404,detail="OTP limit Exceeded")
 
 
 @router.post("/verify-otp/")
@@ -167,7 +190,7 @@ async def verify_otp(
         )
         if not otp_found:
             raise HTTPException(
-                status_code=400, detail="Don not found OTP on server!!Try Again"
+                status_code=400, detail="Do not found OTP on server!!Try Again"
             )
 
         if (datetime.now() - timedelta(minutes=60)) > otp_found.time:

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   TextField,
@@ -35,6 +35,22 @@ const ManualAddMoney = () => {
       utr: "",
     },
   });
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      sessionStorage.setItem("manualAddMoneyReloaded", "true");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    if (sessionStorage.getItem("manualAddMoneyReloaded") === "true") {
+      sessionStorage.removeItem("manualAddMoneyReloaded");
+      toast.error("Contact support as page was refreshed.");
+      navigate("/profile/recharge");
+    }
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [navigate]);
 
   const onClose = () => {
     setOpen(false);
@@ -77,6 +93,15 @@ const ManualAddMoney = () => {
         <Box display="flex" justifyContent="center" alignItems="center">
           <img src={`data:image/png;base64,${qrData?.qr_code}`} alt="QR Code" />
         </Box>
+        <Typography
+          variant="body2"
+          color="error"
+          align="center"
+          sx={{ marginTop: 2 }}
+        >
+          Important: Do not refresh or reload this page before entering the UTR.
+          In case of any error, please contact us for assistance.
+        </Typography>
       </Box>
       <Box
         component="form"
@@ -102,7 +127,6 @@ const ManualAddMoney = () => {
               variant="outlined"
               fullWidth
               margin="normal"
-              type="number"
               placeholder="Enter UTR"
               InputProps={{
                 startAdornment: (

@@ -69,7 +69,7 @@ const Recharge = () => {
           control={control}
           rules={{
             required: "Amount is required",
-            validate: (value) => value > 0 || "Amount must be greater than 0",
+            validate: (value) => value >= 100 || "Amount must be greater than or equal to 100",
           }}
           render={({ field }) => (
             <TextField
