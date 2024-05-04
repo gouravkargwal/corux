@@ -372,16 +372,15 @@ async def refer_information(
 
         # print([row._asdict() for row in refer_result_1])
         # return;
-        refer_result_2 = db.query(All_Referral_Winning).filter(
-            All_Referral_Winning.mobile_number == credentials.mobile_number,
-            All_Referral_Winning.level_1_refer == "",
-            All_Referral_Winning.level_2_refer != "",
+        refer_result_2 = db.query(All_Referral_Winning).filter(and_(All_Referral_Winning.mobile_number == credentials.mobile_number,
+            All_Referral_Winning.level_2_refer != "",)
         )
 
         result_list_level1 = [row.__dict__ for row in refer_result_1]
+        logger.info(result_list_level1)
 
         result_list_level2 = [row.__dict__ for row in refer_result_2]
-
+        logger.info(result_list_level2)
         refer_count = (
             db.query(Referral_table)
             .filter(

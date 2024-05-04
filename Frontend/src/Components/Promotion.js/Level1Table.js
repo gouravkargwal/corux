@@ -13,12 +13,21 @@ const Level1Table = ({ data }) => {
     setGridApi(params.api);
   }
 
-  const columnDefs = [
-    { headerName: "ID", field: "id", maxWidth: 50 },
+  const defaultColDef = {
+    sortable: true,
+    checkboxSelection: false,
+    autoHeight: true,
+    filter: true,
+    flex: 1,
+    suppressMovable: false,
+    resizable: true,
+  };
 
+  const columnDefs = [
+    { headerName: "Game ID", field: "game_id" },
     {
       headerName: "Phone",
-      field: "mobile_number",
+      field: "level_1_refer",
       cellRenderer: ({ value }) => {
         const lastFourDigits = value.slice(-4);
         return <span>xxxxxx{lastFourDigits}</span>;
@@ -36,7 +45,7 @@ const Level1Table = ({ data }) => {
   };
 
   const paginationHandler = (event, page) => {
-    setCurrentPage(page - 1); // AgGridPagination uses 1-based indexing, so subtract 1
+    setCurrentPage(page - 1);
   };
 
   const startRow = currentPage * pageSize;
@@ -53,6 +62,7 @@ const Level1Table = ({ data }) => {
             columnDefs={columnDefs}
             domLayout="autoHeight"
             getRowStyle={getRowStyle}
+            defaultColDef={defaultColDef}
           />
         </Box>
         <Box>

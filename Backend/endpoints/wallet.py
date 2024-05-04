@@ -168,7 +168,7 @@ async def winthdraw(
                         status_code=400,
                         detail="Please play a game before using your latest deposit.",
                     )
-
+        user.balance = user.balance - withdraw_schema.amount
         new_withdraw_request = PaymentWithdrawTable(
             MOBILE_NUMBER=credentials.mobile_number,
             USER_UPI_ID=withdraw_schema.user_upi,

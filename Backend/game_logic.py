@@ -3,7 +3,7 @@ import logging
 
 
 class Game:
-    def __init__(self, game_duration_minutes=90, betting_duration_minutes=60):
+    def __init__(self, game_duration_minutes=180, betting_duration_minutes=150):
         self.game_duration = timedelta(seconds=game_duration_minutes)
         self.betting_duration = timedelta(seconds=betting_duration_minutes)
         self.start_time = None

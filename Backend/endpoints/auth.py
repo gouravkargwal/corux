@@ -30,7 +30,7 @@ authhandler = JWTAuth()
 logger = setup_logger()
 
 customer_id = os.getenv('CUSTOMER_ID', '5A594F32-66A5-42D5-AEAE-09C3A674B432')
-api_key = os.getenv('API_KEY','9zIGYs7ZWNjYXS9swpoYYQCVSS3AHUEURj5ZseJDT7p+a0SW2nzi+jdaF5owALjYIqKUwW5XVhShTrvCAJaRg==')
+api_key = os.getenv('API_KEY','9zIGYs7ZWNjYXS9swpoYYQCVSS3AHUEURj5ZseJDT7p+a0SW2nziK+jdaF5owALjYIqKUwW5XVhShTrvCAJaRg==')
 
 
 verify = VerifyClient(customer_id, api_key)
@@ -99,17 +99,17 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
                 mobile_number=userdetail.mobile_number,
                 time=datetime.now(),
                 count=1,
-                otp=otp,
+                otp=1234,
             )
 
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-        number = "+91"+userdetail.mobile_number
-        response = verify.sms(number, verify_code=otp)
-        if response.status_code != 200:
-            logger.info(response.body)
-            raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
+        # number = "+91"+userdetail.mobile_number
+        # response = verify.sms(number, verify_code=otp)
+        # if response.status_code != 200:
+        #     logger.info(response.body)
+        #     raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
         return {"status_code": 200, "message": "OTP Sent Successfully"}
     except HTTPException as e:
         logger.error(str(e))

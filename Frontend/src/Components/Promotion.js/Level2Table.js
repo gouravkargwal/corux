@@ -13,11 +13,21 @@ const Level2Table = ({ data }) => {
     setGridApi(params.api);
   }
 
+  const defaultColDef = {
+    sortable: true,
+    checkboxSelection: false,
+    autoHeight: true,
+    filter: true,
+    flex: 1,
+    suppressMovable: false,
+    resizable: true,
+  };
+
   const columnDefs = [
-    { headerName: "ID", field: "id" },
+    { headerName: "Game ID", field: "game_id" },
     {
       headerName: "Phone",
-      field: "mobile_number",
+      field: "level_2_refer",
       cellRenderer: ({ value }) => {
         const lastFourDigits = value.slice(-4);
         return <span>xxxxxx{lastFourDigits}</span>;
@@ -52,6 +62,7 @@ const Level2Table = ({ data }) => {
             columnDefs={columnDefs}
             domLayout="autoHeight"
             getRowStyle={getRowStyle}
+            defaultColDef={defaultColDef}
           />
         </Box>
         <Box>

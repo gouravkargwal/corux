@@ -339,7 +339,7 @@ class All_Referral_Winning(Base):
     mobile_number = Column(
         String(12), ForeignKey("USER.MOBILE_NUMBER"), name="MOBILE_NUMBER"
     )
-    game_id = Column(String(14), unique=True, name="GAME_ID", nullable=False)
+    game_id = Column(String(14), unique=False, name="GAME_ID", nullable=False)
     level_1_refer = Column(
         VARCHAR(256), unique=False, name="LEVEL_1_REFER", nullable=True, default=""
     )

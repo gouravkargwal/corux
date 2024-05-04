@@ -368,7 +368,7 @@
 
 
 from fastapi import APIRouter, HTTPException
-from sqlalchemy import text, delete
+from sqlalchemy import text, delete,and_,or_
 from sqlalchemy.orm import Session
 from db_module.session import get_sql_db
 from models.user import (
@@ -657,6 +657,17 @@ async def get_result(game_id):
 
             for i in result_list:
                 if i["amount"] > 0:
+                    actual_amount_won = i["amount"]
+                    if i["bet_on"] in ["green","violet","red"]:
+                        user_bet = db.query(Bet_Color).filter(and_(Bet_Color.game_id == game_id,Bet_Color.mobile_number == i["mobile_number"])).first()
+
+                        actual_amount_won = i["amount"] - user_bet.bet_amount
+                    else:
+                        user_bet = db.query(Bet_Number).filter(and_(Bet_Number.game_id == game_id,Bet_Number.mobile_number == i["mobile_number"])).first()
+
+                        actual_amount_won = i["amount"] - user_bet.bet_amount
+
+
                     user_win = (
                         db.query(User)
                         .filter(User.mobile_number == i["mobile_number"])
@@ -680,12 +691,12 @@ async def get_result(game_id):
                         )
 
                         if user:
-                            user.balance = user.balance + 0.030 * i["amount"]
+                            user.balance = user.balance + round(0.030 * actual_amount_won,2)
                             new_refer_win = All_Referral_Winning(
                                 game_id=game_id,
                                 mobile_number=user.mobile_number,
                                 level_1_refer=i["mobile_number"],
-                                amount_won=0.030 * i["amount"],
+                                amount_won=round(0.030 * actual_amount_won,2),
                             )
 
                             db.add(new_refer_win)
@@ -707,12 +718,12 @@ async def get_result(game_id):
                             )
 
                             if user:
-                                user.balance = user.balance + 0.015 * i["amount"]
+                                user.balance = user.balance + round(0.015 * actual_amount_won,2)
                                 new_refer_win_2 = All_Referral_Winning(
                                     game_id=game_id,
                                     mobile_number=user.mobile_number,
                                     level_2_refer=i["mobile_number"],
-                                    amount_won=0.015 * i["amount"],
+                                    amount_won=round(0.015 * actual_amount_won,2),
                                 )
 
                                 db.add(new_refer_win_2)
