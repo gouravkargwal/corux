@@ -202,3 +202,298 @@
 [ 2024-05-04] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '8740074561'}
 [ 2024-05-04] [INFO] [views:114] deposit get
 [ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '9876543210'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '9876543210'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 198.0, 'MOBILE_NUMBER': '9876543211'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 90.0, 'MOBILE_NUMBER': '9876543211'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 198.0, 'MOBILE_NUMBER': '9876543211'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 56.0, 'MOBILE_NUMBER': '1234567890'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 56.0, 'MOBILE_NUMBER': '1234567890'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '9876543210'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:211] upi post
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:211] upi post
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:211] upi post
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:195] upi patch
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:195] upi patch
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:211] upi post
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '09876543210'}
+[ 2024-05-04] [ERROR] [views:105] Error: UserAdminTable matching query does not exist.

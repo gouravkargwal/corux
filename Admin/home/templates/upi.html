@@ -105,9 +105,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <!-- Form fields for new entry -->
                 <form id="newEntryForm">
-                    <!-- Example input field -->
                     <div class="form-group">
                         <label for="newName">Name:</label>
                         <input type="text" class="form-control" id="newName" required>
@@ -200,24 +198,12 @@
                 {
                     "data": "CREATE_DATE",
                     "className": "lg dot",
-                    "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            if (data) {
-                                return data;
-                            } return '-';
-                        }
-                    }
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
                     "data": "UPDATE_DATE",
                     "className": "lg dot",
-                    "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            if (data) {
-                                return data;
-                            } return '-';
-                        }
-                    }
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
                     "data": "",
@@ -289,16 +275,18 @@
 
     // Handle new entry form submission
     $('#newEntryForm').submit(function (event) {
-        // event.preventDefault();
+        event.preventDefault();
         const newName = $('#newName').val();
         const upiID = $('#upiID').val();
+        $('#upiID').val('');
+        $('#newName').val('')
+        $('#addNewEntryModal').modal('hide');
         showOverlay()
         $.ajax({
             url: '/api/upi/', 
             type: 'POST',
             data: { USER_NAME: newName, UPI_ID: upiID },
             success: function (response) {
-                $('#addNewEntryModal').modal('hide');
                 $('#dashboard2').DataTable().ajax.reload();
             },
             error: function (xhr) {

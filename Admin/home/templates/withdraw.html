@@ -35,6 +35,7 @@
                                     <th class="sm dot">Amount</th>
                                     <th class="md dot">Withdraw Status</th>
                                     <th class="md dot">Admin UPI ID</th>
+                                    <th class="md dot">UTR</th>
                                     <th class="md dot"></th>
                                     <th class="lg dot">Action Date</th>
                                 </tr>
@@ -51,12 +52,19 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-body bl c">
-                <!-- <p> <img src="/assets/images/done.gif" class="img-fluid" width="100px" /> </p> -->
-                <h6>Click on confirm to approve withdrawal </h6>
-                <div class="dig_btn modbtn mt-2"> <button type="button" class="btn bkbtn c" data-dismiss="modal"> <i
-                            class="fa fa-times" aria-hidden="true"></i> Cancel </button> <button type="button"
-                        class="btn svbtn c" data-dismiss="modal" id="approveWithdraw"> <i class="fa fa-check"
-                            aria-hidden="true"></i> Confirm </button> </div>
+                <form id="utrWithdraw">
+                    <div class="form-group">
+                        <label for="utr">UTR</label>
+                        <input type="text" class="form-control" id="utr" placeholder='Enter UTR' required>
+                    </div>
+                    <h6>Click on confirm to approve withdrawal </h6>
+                    <div class="dig_btn modbtn mt-2"> 
+                        <button type="button" class="btn bkbtn c" data-dismiss="modal"> 
+                            <i class="fa fa-times" aria-hidden="true"></i> Cancel </button> 
+                        <button type="submit" class="btn svbtn c" id="approveWithdraw"> 
+                            <i class="fa fa-check" aria-hidden="true"></i> Confirm </button> 
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -192,6 +200,11 @@
                     }
                 },
                 {
+                    "data": "UTR",
+                    "className": "md dot",
+                    "render": function (data, type, row) { return data ? data : '-'; }
+                },
+                {
                     "data": "APPROVE_WITHDRAW",
                     "className": "sm dot",
                     "render": function (data, type, row) {
@@ -236,14 +249,19 @@
         $('#approveModal').data('upi-id', selectedUpiId);
         $('#approveModal').modal('show');
     });
-    $('#approveWithdraw').click(function () {
+    // $('#approveWithdraw').click(function () {
+    $('#utrWithdraw').submit(function (event) {
+        event.preventDefault();
+        var utr = $('#utr').val();
         var userId = $('#approveModal').data('user-id');
         var upiId = $('#approveModal').data('upi-id');
+        $('#utr').val('');
+        $('#approveModal').modal('hide');
         showOverlay()
         $.ajax({
             url: '/api/withdraw/',
             type: 'PATCH',
-            data: { ID: userId, APPROVE_WITHDRAW: 1, ADMIN_UPI_ID: upiId },
+            data: { ID: userId, APPROVE_WITHDRAW: 1, ADMIN_UPI_ID: upiId, UTR: utr },
             success: function (response) {
                 $('#dashboard2').DataTable().ajax.reload(function (json) {
                     if (!json || !json.records || json.records.length === 0) {

@@ -58,7 +58,6 @@
 <script nonce="{{ nonceValue }}">
     $(document).ready(function () {
         var fastapi = "{{ fastapi }}";
-        console.log(fastapi)
         $('.primary-button').click(function () {
             $.ajax({
                 url: fastapi +'/control/timer/start/',

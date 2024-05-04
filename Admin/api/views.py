@@ -20,7 +20,7 @@ class UserAdminView(APIView):
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
             totalCount = UserAdminTable.objects.all().count()
-            users = UserAdminTable.objects.all()[start:start+length]
+            users = UserAdminTable.objects.all().order_by('-CREATE_DATE')[start:start+length]
             serializedUsers = UserAdminSerializer(users, many=True)
             return Response({
                 "data": serializedUsers.data,
@@ -60,7 +60,7 @@ class withdraw(APIView):
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
             totalCount = PaymentWithdrawTable.objects.all().count()
-            payments = PaymentWithdrawTable.objects.all()[start:start+length]
+            payments = PaymentWithdrawTable.objects.all().order_by('-CREATE_DATE')[start:start+length]
             serializedpayments = PaymentWithdrawSerializer(payments, many=True)
             return Response(
                 {
@@ -122,7 +122,7 @@ class deposit(APIView):
                 payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId, UTR__icontains=searchValue)[start:start+length]
             else:
                 totalCount = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId).count()
-                payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId)[start:start+length]
+                payments = PaymentDepositTable.objects.filter(ADMIN_UPI_ID=upiId).order_by('-CREATE_DATE')[start:start+length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
