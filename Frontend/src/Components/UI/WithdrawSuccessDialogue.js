@@ -12,7 +12,7 @@ import { green, grey } from "@mui/material/colors";
 import PaymentIcon from "@mui/icons-material/Payment";
 import CheckIcon from "@mui/icons-material/Check";
 
-const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
+const WithdrawSuccessDialogue = ({ open, onClose, amount }) => {
   return (
     <Dialog onClose={onClose} open={open}>
       <DialogTitle>
@@ -31,8 +31,8 @@ const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
         <Box display="flex" flexDirection="column" minWidth={280}>
           <Typography fontWeight="bold">Successfully Processed</Typography>
           <Typography color={grey[500]}>
-            Your deposit of ₹{amount} has been successfully processed. Please
-            await our approval. Thank you for your patience.
+            Your withdrawal of ₹{amount} has been successfully processed.
+            Please await our approval. Thank you for your patience.
           </Typography>
           <Button
             variant="contained"
@@ -52,4 +52,4 @@ const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
   );
 };
 
-export default RechargeSuccessDialogue;
+export default WithdrawSuccessDialogue;

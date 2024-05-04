@@ -36,12 +36,10 @@ export const registerUser = createAsyncThunk(
   async (payload, { rejectWithValue }) => {
     try {
       const { userData, navigate } = payload;
-      console.log(userData);
       const response = await API.signupAPI(userData);
       navigate("/auth");
       return response.data;
     } catch (error) {
-      console.log(error);
       if (error.response) {
         if (error.response.status === 409) {
           payload.navigate("/auth");

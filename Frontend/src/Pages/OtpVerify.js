@@ -28,8 +28,6 @@ export default function OtpVerify() {
   const registrationData = useSelector(selectAuthRegistrationData);
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
-  console.log(forgotPhoneNumber);
-
   useEffect(() => {
     // Start the countdown from 120 seconds
     setTimer(120);
@@ -67,7 +65,6 @@ export default function OtpVerify() {
   const allOtpFilled = otpValues.every((val) => val.length === 1);
 
   const onSubmit = async (data) => {
-    console.log(data);
     const otp = (data?.otp).map(String).join("");
     try {
       setLoading(true);
@@ -79,7 +76,6 @@ export default function OtpVerify() {
         mobile_number: mobile_number,
         otp: otp,
       };
-      console.log(combinedData);
       const { status } = await API.verifyOtpAPI(combinedData);
       if (status === 200 && context === "forgot") {
         dispatch(
@@ -102,7 +98,6 @@ export default function OtpVerify() {
       }
     } catch (error) {
       setLoading(false);
-      console.log(error);
       toast.error(error.message);
     } finally {
       setLoading(false);

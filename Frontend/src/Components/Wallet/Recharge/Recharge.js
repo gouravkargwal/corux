@@ -42,11 +42,8 @@ const Recharge = () => {
 
   const onFormSubmit = async (data) => {
     try {
-      console.log(data);
       dispatch(generateQr({ amount: data.amount, navigate }));
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   return (
@@ -69,7 +66,8 @@ const Recharge = () => {
           control={control}
           rules={{
             required: "Amount is required",
-            validate: (value) => value >= 100 || "Amount must be greater than or equal to 100",
+            validate: (value) =>
+              value >= 100 || "Amount must be greater than or equal to 100",
           }}
           render={({ field }) => (
             <TextField

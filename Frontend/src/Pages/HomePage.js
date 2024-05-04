@@ -7,6 +7,7 @@ import { selectAuthToken } from "../Feature/Auth/authSlice";
 import GameCard from "../Components/Home/GameCard";
 import ColorPredictionImg from "../Assets/Images/wingo.jpeg";
 import MontyHallImg from "../Assets/Images/montyhall.jpeg";
+import ComingSoonImg from "../Assets/Images/comingsoon.webp";
 
 function GridExample() {
   const token = useSelector(selectAuthToken);
@@ -23,17 +24,17 @@ function GridExample() {
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           {/* <Link to="monty-hall"> */}
-          {/* <GameCard title="Monty Hall" time="30sec" img={MontyHallImg} /> */}
-          <GameCard title="Coming Soon" time="30sec" />
+          <GameCard title="Monty Hall" time="30sec" img={ComingSoonImg} />
+          {/* <GameCard title="Coming Soon" time="30sec" /> */}
           {/* </Link> */}
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           {/* <Link to="virtual-slot"> */}
-          <GameCard title="Coming Soon" time="2min" />
+          <GameCard title="Aviator" time="2min" img={ComingSoonImg} />
           {/* </Link> */}
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard title="Coming Soon" time="1min" />
+          <GameCard title="Casino" time="1min" img={ComingSoonImg} />
         </Grid>
       </Grid>
     </>

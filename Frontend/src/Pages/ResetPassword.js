@@ -54,7 +54,6 @@ export default function ResetPassword() {
     try {
       const { password } = data;
       setLoading(true);
-      console.log(forgotPhoneData);
       await API.forgotPasswordAPI({
         mobile_number: forgotPhoneData?.mobileNumber,
         password,

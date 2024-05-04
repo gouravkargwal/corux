@@ -52,6 +52,8 @@ const Level2Table = ({ data }) => {
   const endRow = (currentPage + 1) * pageSize;
   const rowData = data?.slice(startRow, endRow);
 
+  const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
+
   return (
     <Box>
       <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
@@ -63,6 +65,7 @@ const Level2Table = ({ data }) => {
             domLayout="autoHeight"
             getRowStyle={getRowStyle}
             defaultColDef={defaultColDef}
+            overlayNoRowsTemplate={noRowsMessage}
           />
         </Box>
         <Box>

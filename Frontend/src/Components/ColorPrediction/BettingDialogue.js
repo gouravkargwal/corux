@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Checkbox,
   Dialog,
   DialogContent,
@@ -94,7 +93,11 @@ const BettingDialogue = ({
               }}
               {...register("amount", {
                 required: true,
-                pattern: /^[0-9]+(\.[0-9]{1,2})?$/,
+                pattern: {
+                  value: /^[0-9]+(\.[0-9]{1,2})?$/,
+                  message:
+                    "Enter a valid amount (numbers only, up to 2 decimal places).",
+                },
                 min: {
                   value: 10,
                   message: "Amount should be at least 10.",

@@ -8,13 +8,11 @@ import {
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import LoadingButton from "../../UI/LoadingButton";
 import { blue, grey, red } from "@mui/material/colors";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import IconButton from "@mui/material/IconButton";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
 import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
@@ -60,7 +58,6 @@ const ManualAddMoney = () => {
   const onFormSubmit = async (data) => {
     try {
       setLoading(true);
-      console.log(data);
       await API.saveUtrAPI({
         transaction_id: qrData.transaction_id,
         utr: data.utr,

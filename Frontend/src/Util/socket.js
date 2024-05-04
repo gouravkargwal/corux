@@ -5,8 +5,6 @@ const socket = io(process.env.REACT_APP_BASE_URL, {
   transports: ["websocket", "polling"],
 });
 
-socket.on("connect", () => {
-  console.log("Connected", socket.id);
-});
+socket.on("connect", () => {});
 
 export default socket;

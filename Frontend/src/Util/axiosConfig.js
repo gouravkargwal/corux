@@ -8,7 +8,6 @@ const refreshToken = (failedRequest) =>
   store.dispatch(async (dispatch, getState) => {
     try {
       const refreshTokenOld = getState().auth.refreshToken;
-      console.log(refreshTokenOld);
       const response = await axiosRefreshInstance.post(
         "/auth/refresh-token",
         {},

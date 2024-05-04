@@ -2,8 +2,7 @@ import React, { memo, useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
-import { blue, red, green, violet } from "@mui/material/colors";
-
+import { blue, red, green } from "@mui/material/colors";
 import AgGridPagination from "../UI/AgGridPagination";
 import TableSkeleton from "../UI/TableSkeleton";
 import {
@@ -16,7 +15,7 @@ import {
 } from "../../Feature/User/userSlice";
 import { selectGameId } from "../../Feature/ColorPrediction/colorPredictionSlice";
 
-const MyRecordTable = () => {
+const MyRecordTable = ({ activeTab }) => {
   const dispatch = useDispatch();
   const data = useSelector(selectUserData);
   const page = useSelector(selectUserPage);
@@ -30,8 +29,11 @@ const MyRecordTable = () => {
   }
 
   useEffect(() => {
-    dispatch(getUserGameList({ page: 1, size: 10 }));
-  }, [dispatch]);
+    if (activeTab === 1) {
+      dispatch(setUserCurrentPage(1));
+      dispatch(getUserGameList({ page: 1, size: 10 }));
+    }
+  }, [activeTab, dispatch]);
 
   const paginationHandler = (e, page) => {
     dispatch(setUserCurrentPage(page));
@@ -111,6 +113,8 @@ const MyRecordTable = () => {
     }
   };
 
+  const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
+
   return (
     <Box>
       {loading ? (
@@ -128,6 +132,7 @@ const MyRecordTable = () => {
               domLayout="autoHeight"
               getRowStyle={getRowStyle}
               defaultColDef={defaultColDef}
+              overlayNoRowsTemplate={noRowsMessage}
             />
           </Box>
           <Box>

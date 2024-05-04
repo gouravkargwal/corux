@@ -83,7 +83,6 @@ const ColorPrediction = () => {
     socket.on("winner_notification", (data) => {
       if (data.user_list) {
         const matchingUsers = _.filter(data.user_list, { mobile_number: user });
-        console.log(matchingUsers, "Matching user");
         if (matchingUsers?.length > 0) {
           setResult(matchingUsers);
           setResultDialogue(true);
@@ -270,8 +269,10 @@ const ColorPrediction = () => {
             </Box>
           </Grid>
           <Grid item xs={12}>
-            {activeTab === 0 && <WinnerTable />}
-            {token && activeTab === 1 && <MyRecordTable />}
+            {activeTab === 0 && <WinnerTable activeTab={activeTab} />}
+            {token && activeTab === 1 && (
+              <MyRecordTable activeTab={activeTab} />
+            )}
           </Grid>
         </Grid>
       </Grid>
