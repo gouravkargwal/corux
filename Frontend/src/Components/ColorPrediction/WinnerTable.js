@@ -15,7 +15,7 @@ import TableSkeleton from "../UI/TableSkeleton";
 import { blue } from "@mui/material/colors";
 import { selectGameId } from "../../Feature/ColorPrediction/colorPredictionSlice";
 
-const WinnerTable = () => {
+const WinnerTable = ({ activeTab }) => {
   const dispatch = useDispatch();
   const data = useSelector(selectResultData);
   const page = useSelector(selectResultPage);
@@ -29,7 +29,10 @@ const WinnerTable = () => {
   }
 
   useEffect(() => {
-    dispatch(getResultList({ page: 1, size: 10 }));
+    if (activeTab === 0) {
+      dispatch(setWinnerCurrentPage(1));
+      dispatch(getResultList({ page: 1, size: 10 }));
+    }
   }, [dispatch]);
 
   const paginationHandler = (e, page) => {
@@ -81,6 +84,8 @@ const WinnerTable = () => {
     }
   };
 
+  const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
+
   return (
     <Box>
       {loading ? (
@@ -95,6 +100,7 @@ const WinnerTable = () => {
               domLayout="autoHeight"
               getRowStyle={getRowStyle}
               defaultColDef={defaultColDef}
+              overlayNoRowsTemplate={noRowsMessage}
             />
           </Box>
           <Box>

@@ -10,13 +10,14 @@ import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
 import LoadingButton from "../UI/LoadingButton";
-import RechargeSuccessDialogue from "../UI/RechargeSuccessDialogue";
 import { useNavigate } from "react-router-dom";
+import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
 
 const Withdraw = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [withdrawnAmount, setWithdrawnAmount] = useState(null);
   const {
     control,
     handleSubmit,
@@ -35,6 +36,7 @@ const Withdraw = () => {
     try {
       setLoading(true);
       await API.withdrawMoneyAPI({ amount: data.amount, user_upi: data.upi });
+      setWithdrawnAmount(data.amount);
       setOpen(true);
     } catch (error) {
       if (error.response) {
@@ -73,7 +75,7 @@ const Withdraw = () => {
               rules={{
                 required: "Amount is required",
                 validate: (value) =>
-                  value > 0 || "Amount must be greater than 0",
+                  value >= 100 || "Amount must be greater than or equal 100",
               }}
               render={({ field }) => (
                 <TextField
@@ -172,44 +174,7 @@ const Withdraw = () => {
           </Grid>
         </Grid>
       </Box>
-      {/* <Typography marginLeft={3} fontWeight="600">
-        Withdraw To
-        </Typography>
-        <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-        margin={3}
-        marginTop={1}
-        borderRadius={1}
-        padding={2}
-      >
-        <Controller
-          name="withdrawalMethod"
-          control={control}
-          rules={{ required: "Please select a withdrawal method" }}
-          render={({ field }) => (
-            <SelectableCard
-              options={[{ id: 1, value: "upi", label: "UPI" }]}
-              selectedValue={field.value}
-              onChange={(value) => field.onChange(value)}
-            />
-          )}
-        />
-        <FormHelperText
-          error={!!errors.withdrawalMethod}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
-        >
-          {errors ? errors.withdrawalMethod?.message : " "}
-        </FormHelperText>
-        <Button
-          type="submit"
-          variant="contained"
-          fullWidth
-          sx={{ bgcolor: blue[500], borderRadius: 10, padding: [2, 0] }}
-        >
-          Withdraw
-        </Button>
-      </Box> */}
-      <RechargeSuccessDialogue open={open} onClose={onClose} />
+      <WithdrawSuccessDialogue open={open} onClose={onClose} amount={withdrawnAmount}/>
     </Box>
   );
 };

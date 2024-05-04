@@ -5,7 +5,7 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import moment from "moment";
 
 const Transaction = ({ type, amount, date, approved, denied }) => {
-  const formattedDate = moment(date).format("DD MMMM YYYY");
+  const formattedDateTime = moment(date).format("DD MMMM YYYY, h:mm A");
   return (
     <Box
       display="flex"
@@ -28,7 +28,7 @@ const Transaction = ({ type, amount, date, approved, denied }) => {
         <Box>
           <Typography variant="body2">UPI</Typography>
           <Typography color={grey[500]} variant="caption">
-            {formattedDate}
+            {formattedDateTime}
           </Typography>
         </Box>
       </Box>
@@ -36,7 +36,13 @@ const Transaction = ({ type, amount, date, approved, denied }) => {
         <Typography
           variant="body2"
           color={
-            approved ? (type === "debit" ? red[500] : green[500]) : (denied ? red[700] : orange[700])
+            approved
+              ? type === "debit"
+                ? red[500]
+                : green[500]
+              : denied
+              ? red[700]
+              : orange[700]
           }
         >
           ₹ {amount ?? "-"}
@@ -44,10 +50,16 @@ const Transaction = ({ type, amount, date, approved, denied }) => {
         <Typography
           variant="caption"
           color={
-            approved ? (type === "debit" ? red[500] : green[500]) : (denied ? red[700] : orange[700])
+            approved
+              ? type === "debit"
+                ? red[500]
+                : green[500]
+              : denied
+              ? red[700]
+              : orange[700]
           }
         >
-          {approved ? "Successful" : ( denied ? "Denied" : "Processing")}
+          {approved ? "Successful" : denied ? "Denied" : "Processing"}
         </Typography>
       </Box>
     </Box>
