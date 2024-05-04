@@ -37,15 +37,15 @@ class Bet_Color(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
         name="CREATE_DATE",
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
         name="UPDATE_DATE",
     )
 
@@ -69,15 +69,15 @@ class Bet_Number(Base):
         unique=False,
         nullable=False,
         name="CREATE_DATE",
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
         name="UPDATE_DATE",
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -104,15 +104,15 @@ class All_Time_Winner_Table(Base):
         unique=False,
         nullable=False,
         name="CREATE_DATE",
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
         name="UPDATE_DATE",
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -128,22 +128,22 @@ class Otp_Table(Base):
     otp = Column(String(6), unique=False, name="OTP", nullable=True)
     count = Column(Integer, unique=False, name="COUNT", nullable=True, default=1)
     time = Column(
-        DateTime, unique=False, name="TIME", nullable=False, default=datetime.now()
+        DateTime, unique=False, name="TIME", nullable=False, default=datetime.now
     )
     CREATE_DATE = Column(
         DateTime,
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -167,7 +167,7 @@ class User(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     balance = Column(Float, unique=False, name="BALANCE", nullable=False, default=0)
     UPDATE_DATE = Column(
@@ -175,8 +175,8 @@ class User(Base):
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
     winnings = relationship("Winner_Table", back_populates="user")
@@ -205,15 +205,15 @@ class Account_Detail(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -239,15 +239,15 @@ class Winner_Table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
     user = relationship("User", back_populates="winnings")
@@ -274,15 +274,15 @@ class Result(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -317,15 +317,15 @@ class Referral_table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
     user = relationship("User", back_populates="referrals")
@@ -354,15 +354,15 @@ class All_Referral_Winning(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -386,15 +386,15 @@ class Upi_Table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=datetime.now(),
+        default=datetime.now,
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -404,11 +404,11 @@ class PaymentDepositTable(Base):
     ID = Column(Integer, primary_key=True, autoincrement=True)
     MOBILE_NUMBER = Column(String(10), unique=False, nullable=False)
     TRANSACTION_ID = Column(
-        UUIDType(binary=False), unique=True, nullable=False, default=uuid.uuid4()
+        UUIDType(binary=False), unique=True, nullable=False, default=uuid.uuid4
     )
     ADMIN_UPI_ID = Column(String(50), nullable=True)
     UTR = Column(String(50), nullable=True, unique=False)
-    CREATE_DATE = Column(DateTime, unique=False, nullable=False, default=datetime.now())
+    CREATE_DATE = Column(DateTime, unique=False, nullable=False, default=datetime.now)
     AMOUNT = Column(Float, nullable=False)
     APPROVE_DEPOSIT = Column(Boolean, nullable=False, unique=False, default=False)
     DENY_DEPOSIT = Column(Boolean, nullable=False, unique=False, default=False)
@@ -416,8 +416,8 @@ class PaymentDepositTable(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 
@@ -429,7 +429,7 @@ class PaymentWithdrawTable(Base):
     UTR = Column(String(50), nullable=True)
     USER_UPI_ID = Column(String(50), nullable=False)
     ADMIN_UPI_ID = Column(String(50), nullable=True)
-    CREATE_DATE = Column(DateTime, unique=False, nullable=False, default=datetime.now())
+    CREATE_DATE = Column(DateTime, unique=False, nullable=False, default=datetime.now)
     AMOUNT = Column(Float, nullable=False, unique=False)
     APPROVE_WITHDRAW = Column(Boolean, default=False)
     DENY_WITHDRAW = Column(Boolean, default=False)
@@ -437,8 +437,8 @@ class PaymentWithdrawTable(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=datetime.now(),
-        onupdate=datetime.now(),
+        default=datetime.now,
+        onupdate=datetime.now,
     )
 
 

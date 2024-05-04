@@ -48,6 +48,8 @@ async def get_result_list(
 
         return {"rows": result_list, "totalRows": total_count}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
+        logger.error(str(e))
         raise HTTPException(status_code=500, detail=str(e))

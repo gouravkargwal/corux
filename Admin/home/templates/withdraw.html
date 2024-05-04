@@ -31,12 +31,12 @@
                                 <tr>
                                     <th class="xs dot">ID</th>
                                     <th class="sm dot">Mobile Number</th>
-                                    <th class="md dot">Date of Creation</th>
+                                    <th class="lg dot">Date of Creation</th>
                                     <th class="sm dot">Amount</th>
                                     <th class="md dot">Withdraw Status</th>
                                     <th class="md dot">Admin UPI ID</th>
                                     <th class="md dot"></th>
-                                    <th class="md dot">Action Date</th>
+                                    <th class="lg dot">Action Date</th>
                                 </tr>
                             </thead>
                             <tbody> </tbody>
@@ -161,16 +161,8 @@
                 },
                 {
                     "data": "CREATE_DATE",
-                    "className": "md dot",
-                    "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            if (data) {
-                                var date = new Date(data);
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
-                                return date.toLocaleDateString('en-GB', options);
-                            } return '';
-                        } return data;
-                    }
+                    "className": "lg dot",
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
                     "data": "AMOUNT",
@@ -212,16 +204,8 @@
                 },
                 {
                     "data": "UPDATE_DATE",
-                    "className": "md dot",
-                    "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            if (data) {
-                                var date = new Date(data);
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
-                                return date.toLocaleDateString('en-GB', options);
-                            } return '';
-                        } return data;
-                    }
+                    "className": "lg dot",
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
             ],
         });

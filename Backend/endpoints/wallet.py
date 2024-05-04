@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, status, Depends,Query
 from fastapi.responses import Response, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
-from sqlalchemy import desc
+from sqlalchemy import desc,and_
 from fastapi.responses import StreamingResponse
 from io import BytesIO
 import qrcode
@@ -36,6 +36,9 @@ async def generate_qr(
     db: Session = Depends(get_sql_db),
 ):
     try:
+        if amount.amount < 100:
+            raise HTTPException(status_code=400,detail="Enter Amount 100 or More")
+        
         upi_query_list = db.query(Upi_Table).all()
         upi_list = [row.upi_id for row in upi_query_list]
 
@@ -73,13 +76,12 @@ async def generate_qr(
         }
 
         return JSONResponse(content=response_data)
-
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
         logger.error(f"Failed to generate QR code: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to generate QR code",
-        )
+        raise e
 
 
 # Patch Request to update UTR number.
@@ -93,8 +95,7 @@ async def save_utr(
         transaction = (
             db.query(PaymentDepositTable)
             .filter(
-                PaymentDepositTable.TRANSACTION_ID == uuid.UUID(utr.transaction_id),
-                PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number,
+                and_(PaymentDepositTable.TRANSACTION_ID == uuid.UUID(utr.transaction_id),PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number)
             )
             .first()
         )
@@ -104,12 +105,12 @@ async def save_utr(
         transaction.UTR = utr.utr
         db.commit()
         return {"status_code": 200, "message": "Successfully Updated UTR"}
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
         logger.error(f"Failed to generate QR code: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to generate QR code",
-        )
+        raise e
 
 
 @router.post("/withdraw/")
@@ -120,7 +121,7 @@ async def winthdraw(
 ):
     try:
         if withdraw_schema.amount < 100:
-            raise HTTPException(status_code=400, detail="Enter Amount More than 100")
+            raise HTTPException(status_code=400, detail="Enter Amount 100 or More")
 
         user = (
             db.query(User)
@@ -142,23 +143,22 @@ async def winthdraw(
             .order_by(desc(PaymentDepositTable.CREATE_DATE))
             .first()
         )
-
+        # logger.info([row._asdict() for row in lastest_deposit])
         if lastest_deposit:
             latest_bet_color = (
                 db.query(Bet_Color)
                 .filter(
-                    Bet_Color.mobile_number == credentials.mobile_number,
-                    Bet_Color.CREATE_DATE > lastest_deposit.CREATE_DATE,
+                    and_(Bet_Color.mobile_number == credentials.mobile_number,Bet_Color.CREATE_DATE >= lastest_deposit.CREATE_DATE)
                 )
                 .first()
                 or None
             )
+            # logger.info([row._asdict() for row in lastest_deposit])
             if not latest_bet_color:
                 latest_bet_number = (
                     db.query(Bet_Number)
                     .filter(
-                        Bet_Number.mobile_number == credentials.mobile_number,
-                        Bet_Number.CREATE_DATE > lastest_deposit.CREATE_DATE,
+                        and_(Bet_Number.mobile_number == credentials.mobile_number,Bet_Number.CREATE_DATE > lastest_deposit.CREATE_DATE)
                     )
                     .first()
                     or None
@@ -169,10 +169,8 @@ async def winthdraw(
                         detail="Please play a game before using your latest deposit.",
                     )
 
-        transaction_id = uuid.uuid4()
         new_withdraw_request = PaymentWithdrawTable(
             MOBILE_NUMBER=credentials.mobile_number,
-            TRANSACTION_ID=transaction_id,
             USER_UPI_ID=withdraw_schema.user_upi,
             AMOUNT=withdraw_schema.amount,
         )
@@ -182,7 +180,11 @@ async def winthdraw(
 
         return {"status_code": 200, "detail": "Successfully Placed Withdrawl request"}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 @router.get("/recharge-transaction/")
 async def recharge_transaction(
@@ -191,13 +193,20 @@ async def recharge_transaction(
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
     db: Session = Depends(get_sql_db)
 ):
-    recharge_trans = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentDepositTable.CREATE_DATE)).offset(offset).limit(limit)
+    try:
+        recharge_trans = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentDepositTable.CREATE_DATE)).offset(offset).limit(limit)
 
-    if not recharge_trans:
-        return []
+        if not recharge_trans:
+            return []
+        
+        return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_DEPOSIT,"denied":row.DENY_DEPOSIT} for row in recharge_trans]
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
     
-    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_DEPOSIT,"denied":row.DENY_DEPOSIT} for row in recharge_trans]
-
 @router.get("/withdraw-transaction/")
 async def withdraw_transaction(
     limit: int = Query(10, gt=0), 
@@ -205,10 +214,17 @@ async def withdraw_transaction(
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
     db: Session = Depends(get_sql_db)
 ):
-    withdraw_trans = db.query(PaymentWithdrawTable).filter(PaymentWithdrawTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentWithdrawTable.CREATE_DATE)).offset(offset).limit(limit)
+    try:
+        withdraw_trans = db.query(PaymentWithdrawTable).filter(PaymentWithdrawTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentWithdrawTable.CREATE_DATE)).offset(offset).limit(limit)
 
-    if not withdraw_trans:
-        return []
-    
-    return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_WITHDRAW,"upi":row.USER_UPI_ID} for row in withdraw_trans]
+        if not withdraw_trans:
+            return []
+        
+        return [{"date":row.CREATE_DATE,"amount":row.AMOUNT,"approved":row.APPROVE_WITHDRAW,"upi":row.USER_UPI_ID} for row in withdraw_trans]
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 

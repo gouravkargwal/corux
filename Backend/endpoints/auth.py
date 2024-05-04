@@ -45,14 +45,18 @@ async def check_mobile_number(
             raise HTTPException(status_code=403, detail="Mobile Number Already In Use")
 
         return {"status_code": 200, "message": "Mobile Number not registered"}
+    except HTTPException as e:
+        logger.str(e)
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
 
 
 @router.post("/send-otp/")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = "123"
+        otp = "1234"
 
         otp_found = (
             db.query(Otp_Table)
@@ -91,7 +95,11 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
 
         return {"status_code": 200, "message": "OTP Sent Successfully"}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
     
 @router.post("/send-otp-forgot/")
 async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_db)):
@@ -139,7 +147,11 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
 
         return {"status_code": 200, "message": "OTP Sent Successfully"}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/verify-otp/")
@@ -167,7 +179,11 @@ async def verify_otp(
         return {"status_code": 200, "message": "OTP verified Successfully"}
 
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/login/")
@@ -198,7 +214,11 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
         }
 
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/register/")
@@ -289,7 +309,11 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "referral_code": refer_code,
         }
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.patch("/forget-password/")
@@ -312,7 +336,11 @@ async def forgot_password(
         db.commit()
         return {"status_code": 200, "detail": "Successfully Changed Password"}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/refresh-token/")
@@ -321,6 +349,9 @@ async def refer_codefresh_token(refresh_token: str = Header()):
     try:
         new_token, new_refresh_token = authhandler.refresh_token(refresh_token)
         return {"access_token": new_token, "refresh_token": new_refresh_token}
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise HTTPException(status_code=e.status_code, detail=e.detail)
+        raise e

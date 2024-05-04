@@ -4,7 +4,7 @@ import { green, grey, orange, red } from "@mui/material/colors";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import moment from "moment";
 
-const Transaction = ({ type, amount, date, approved }) => {
+const Transaction = ({ type, amount, date, approved, denied }) => {
   const formattedDate = moment(date).format("DD MMMM YYYY");
   return (
     <Box
@@ -36,7 +36,7 @@ const Transaction = ({ type, amount, date, approved }) => {
         <Typography
           variant="body2"
           color={
-            approved ? (type === "debit" ? red[500] : green[500]) : orange[700]
+            approved ? (type === "debit" ? red[500] : green[500]) : (denied ? red[700] : orange[700])
           }
         >
           ₹ {amount ?? "-"}
@@ -44,10 +44,10 @@ const Transaction = ({ type, amount, date, approved }) => {
         <Typography
           variant="caption"
           color={
-            approved ? (type === "debit" ? red[500] : green[500]) : orange[700]
+            approved ? (type === "debit" ? red[500] : green[500]) : (denied ? red[700] : orange[700])
           }
         >
-          {approved ? "Successful" : "Processing"}
+          {approved ? "Successful" : ( denied ? "Denied" : "Processing")}
         </Typography>
       </Box>
     </Box>

@@ -35,8 +35,8 @@
                                     <th class="xs dot">ID</th>
                                     <th class="md dot">Admin Name</th>
                                     <th class="md dot">Upi ID</th>
-                                    <th class="md dot">Date of Creation</th>
-                                    <th class="md dot">Action Date</th>
+                                    <th class="lg dot">Date of Creation</th>
+                                    <th class="lg dot">Action Date</th>
                                     <th class="sm dot"></th>
                                 </tr>
                             </thead>
@@ -199,28 +199,24 @@
                 },
                 {
                     "data": "CREATE_DATE",
-                    "className": "md dot",
+                    "className": "lg dot",
                     "render": function (data, type, row) {
                         if (type === 'display' || type === 'filter') {
                             if (data) {
-                                var date = new Date(data);
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
-                                return date.toLocaleDateString('en-GB', options);
-                            } return '';
-                        } return data;
+                                return data;
+                            } return '-';
+                        }
                     }
                 },
                 {
                     "data": "UPDATE_DATE",
-                    "className": "md dot",
+                    "className": "lg dot",
                     "render": function (data, type, row) {
                         if (type === 'display' || type === 'filter') {
                             if (data) {
-                                var date = new Date(data);
-                                var options = { day: '2-digit', month: 'short', year: 'numeric' };
-                                return date.toLocaleDateString('en-GB', options);
-                            } return '';
-                        } return data;
+                                return data;
+                            } return '-';
+                        }
                     }
                 },
                 {

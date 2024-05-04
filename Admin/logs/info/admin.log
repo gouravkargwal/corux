@@ -14,3 +14,191 @@
 [ 2024-05-03] [INFO] [views:150] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074568'}
 [ 2024-05-03] [INFO] [views:114] deposit get
 [ 2024-05-03] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (2)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (1)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (2)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [ERROR] [views:166] Error: 'PaymentDepositTable' object has no attribute 'id'
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (2)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [ERROR] [views:166] Error: 'PaymentDepositTable' object has no attribute 'id'
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (2)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (3)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000000.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (3)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 10000000.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (1)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074568'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (4)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (4)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-04] [INFO] [views:173] upi get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (5)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (6)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 600.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (7)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 200.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (8)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 368.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (8)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 368.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:81] withdraw patch
+[ 2024-05-04] [INFO] [views:92] {'AMOUNT': 100.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:59] withdraw get
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 
+[ 2024-05-04] [INFO] [views:143] deposit patch
+[ 2024-05-04] [INFO] [views:148] PaymentDepositTable object (9)
+[ 2024-05-04] [INFO] [views:150] {'AMOUNT': 500.0, 'MOBILE_NUMBER': '8740074561'}
+[ 2024-05-04] [INFO] [views:114] deposit get
+[ 2024-05-04] [INFO] [views:118] 

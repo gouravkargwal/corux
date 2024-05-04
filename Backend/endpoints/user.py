@@ -73,9 +73,14 @@ async def get_profile(
             error_messages.append(
                 {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
             )
+        logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/create-user/")
@@ -161,10 +166,14 @@ async def create_user(user_info: user_info, db: Session = Depends(get_sql_db)):
             error_messages.append(
                 {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
             )
+        logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
-
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 @router.patch("/change-password/")
 async def change_password(
@@ -195,9 +204,14 @@ async def change_password(
             error_messages.append(
                 {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
             )
+        logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.post("/create-bet/")
@@ -251,10 +265,14 @@ async def create_bet(
             error_messages.append(
                 {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
             )
+        logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.get("/user-win/")
@@ -332,7 +350,11 @@ async def get_winning_list(
         )
         return {"rows": result_list[skip : skip + size + 1], "totalRows": bet_count}
     except HTTPException as e:
+        logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
+    except Exception as e:
+        logger.error(str(e))
+        raise e
 
 
 @router.get("/refer-page/")
@@ -401,6 +423,9 @@ async def refer_information(
             "total_winning": amount_won,
             "refer_code": refer_code.referral_code_to,
         }
+    except HTTPException as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=e.status_code,detail=e.detail)
     except Exception as e:
-        print(e)
+        logger.error(str(e))
         raise HTTPException(status_code=404, detail="Cannot Fetch Refer Winning")
