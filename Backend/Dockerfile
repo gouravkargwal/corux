@@ -1,23 +1,26 @@
-# Use the official Python 3.8 slim image as the base image
+# Use official Python 3.8 slim image
 FROM python:3.8-slim
 
-# Prevent Python from writing pyc files to disc
-ENV PYTHONDONTWRITEBYTECODE 1
-# Prevent Python from buffering stdout and stderr
-ENV PYTHONUNBUFFERED 1
+# Disable Python writing bytecode and enable unbuffered output
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 
-# Set the working directory in the Docker container
+# Set working directory
 WORKDIR /Backend
 
-# First, copy only the requirements.txt file to take advantage of Docker's cache
-# This will prevent re-installing all packages every time any source file changes
+# Install system dependencies needed for mysqlclient
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libmariadb-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy only requirements.txt to take advantage of Docker caching
 COPY requirements.txt .
 
-# Upgrade pip and install required Python packages
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies
+RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-# Now copy the rest of your application's code to the container
+# Copy the rest of the application code to the container
 COPY . .
 
 # Command to run the Uvicorn server

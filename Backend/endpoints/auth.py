@@ -30,7 +30,7 @@ authhandler = JWTAuth()
 logger = setup_logger()
 
 customer_id = os.getenv('CUSTOMER_ID', '5A594F32-66A5-42D5-AEAE-09C3A674B432')
-api_key = os.getenv('API_KEY','9zIGYs7ZWNjYXS9swpoYYQCVSS3AHUEURj5ZseJDT7p+a0SW2nziK+jdaF5owALjYIqKUwW5XVhShTrvCAJaRg==')
+api_key = os.getenv('API_KEY')
 
 
 verify = VerifyClient(customer_id, api_key)
