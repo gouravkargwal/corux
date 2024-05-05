@@ -104,8 +104,6 @@ async def save_utr(
         if not user:
             raise HTTPException(status_code=400,detail="User Not Found")
         
-        if user.is_blocked:
-            raise HTTPException(status_code=400,detail="User Blocked")
         transaction = (
             db.query(PaymentDepositTable)
             .filter(
@@ -139,8 +137,6 @@ async def winthdraw(
         if not user:
             raise HTTPException(status_code=400,detail="User Not Found")
         
-        if user.is_blocked:
-            raise HTTPException(status_code=400,detail="User Blocked")
         if withdraw_schema.amount < 100:
             raise HTTPException(status_code=400, detail="Enter Amount 100 or More")
 
@@ -236,6 +232,14 @@ async def withdraw_transaction(
     db: Session = Depends(get_sql_db)
 ):
     try:
+        user = db.query(User).filter(User.mobile_number == credentials.mobile_number).first()
+
+        if not user:
+            raise HTTPException(status_code=400,detail="User Not Found")
+        
+        if user.is_blocked:
+            raise HTTPException(status_code=400,detail="User Blocked")
+        
         withdraw_trans = db.query(PaymentWithdrawTable).filter(PaymentWithdrawTable.MOBILE_NUMBER ==  credentials.mobile_number).order_by(desc(PaymentWithdrawTable.CREATE_DATE)).offset(offset).limit(limit)
 
         if not withdraw_trans:

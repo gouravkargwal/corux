@@ -586,10 +586,11 @@ async def get_result(game_id):
             result_list = []
 
             for row in result_color:
+                amount_won = row.bet_amount*winner_dict[row.bet_on]
                 result_list.append(
                     {
                         "mobile_number": row.mobile_number,
-                        "amount": row.bet_amount * winner_dict[row.bet_on],
+                        "amount": round(amount_won,2),
                         "bet_on": row.bet_on,
                     }
                 )
@@ -598,28 +599,25 @@ async def get_result(game_id):
                     game_id=game_id,
                     mobile_number=row.mobile_number,
                     color=row.bet_on,
-                    amount_won=row.bet_amount * winner_dict[row.bet_on],
+                    amount_won=round(amount_won,2),
                 )
                 new_output = All_Time_Winner_Table(
                     game_id=game_id,
                     bet_id=row.bet_id,
                     mobile_number=row.mobile_number,
                     color=row.bet_on,
-                    amount_won=row.bet_amount * winner_dict[row.bet_on],
+                    amount_won=round(amount_won,2),
                 )
 
                 db.add(new_output_winner)
                 db.add(new_output)
 
             for row in result_number:
+                amount_won = row.bet_amount * 9 if row.bet_on in winner_dict["number_who_won"] else 0
                 result_list.append(
                     {
                         "mobile_number": row.mobile_number,
-                        "amount": (
-                            row.bet_amount * 9
-                            if row.bet_on in winner_dict["number_who_won"]
-                            else 0
-                        ),
+                        "amount": round(amount_won,2),
                         "bet_on": row.bet_on,
                     }
                 )
@@ -627,11 +625,7 @@ async def get_result(game_id):
                     game_id=game_id,
                     mobile_number=row.mobile_number,
                     number=row.bet_on,
-                    amount_won=(
-                        row.bet_amount * 9
-                        if row.bet_on in winner_dict["number_who_won"]
-                        else 0
-                    ),
+                    amount_won=round(amount_won,2),
                 )
 
                 new_output = All_Time_Winner_Table(
@@ -639,11 +633,7 @@ async def get_result(game_id):
                     bet_id=row.bet_id,
                     mobile_number=row.mobile_number,
                     number=row.bet_on,
-                    amount_won=(
-                        row.bet_amount * 9
-                        if row.bet_on in winner_dict["number_who_won"]
-                        else 0
-                    ),
+                    amount_won=round(amount_won,2),
                 )
 
                 db.add(new_output_winner)
@@ -673,7 +663,8 @@ async def get_result(game_id):
                         .first()
                     )
                     if user_win:
-                        user_win.balance = user_win.balance + i["amount"]
+                        user_won_amount = user_win.balance + i["amount"]
+                        user_win.balance = round(user_won_amount,2)
                     user_refer_by_level1 = (
                         db.query(Referral_table)
                         .filter(Referral_table.level_1_refer == i["mobile_number"])
@@ -690,12 +681,14 @@ async def get_result(game_id):
                         )
 
                         if user_level1:
-                            user_level1.balance = user_level1.balance + round(0.03 * actual_amount_won,2)
+                            user_level1_win_commission = 0.03*actual_amount_won 
+                            
+                            user_level1.balance = user_level1.balance + round(user_level1_win_commission,2)
                             new_refer_win = All_Referral_Winning(
                                 game_id=game_id,
                                 mobile_number=user_level1.mobile_number,
                                 level_1_refer=i["mobile_number"],
-                                amount_won=round(0.03 * actual_amount_won,2),
+                                amount_won=round(user_level1_win_commission,2),
                             )
 
                             db.add(new_refer_win)
@@ -717,12 +710,13 @@ async def get_result(game_id):
                             )
 
                             if user_level2:
-                                user_level2.balance = user_level2.balance + round(0.015 * actual_amount_won,2)
+                                user_level2_win_commission = 0.015*actual_amount_won
+                                user_level2.balance = user_level2.balance + round(user_level2_win_commission,2)
                                 new_refer_win_2 = All_Referral_Winning(
                                     game_id=game_id,
                                     mobile_number=user_level2.mobile_number,
                                     level_2_refer=i["mobile_number"],
-                                    amount_won=round(0.015 * actual_amount_won,2),
+                                    amount_won=round(user_level2_win_commission,2),
                                 )
 
                                 db.add(new_refer_win_2)

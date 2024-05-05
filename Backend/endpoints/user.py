@@ -381,9 +381,10 @@ async def refer_information(
         )
 
         result_list_level1 = [row.__dict__ for row in refer_result_1]
-        logger.info(result_list_level1)
+        result_list_level1 = sorted(result_list_level1, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
 
         result_list_level2 = [row.__dict__ for row in refer_result_2]
+        result_list_level2 = sorted(result_list_level2, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
         logger.info(result_list_level2)
         refer_count = (
             db.query(Referral_table)
@@ -423,7 +424,7 @@ async def refer_information(
             "refer_result_level1": result_list_level1,
             "refer_result_level2": result_list_level2,
             "refer_count": refer_count,
-            "total_winning": amount_won,
+            "total_winning": round(amount_won,2),
             "refer_code": refer_code.referral_code_to,
         }
     except HTTPException as e:
