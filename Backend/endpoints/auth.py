@@ -370,7 +370,7 @@ async def forgot_password(
 
 @router.post("/refresh-token/")
 async def refer_codefresh_token(refresh_token: str = Header()):
-    print(refresh_token)
+    # print(refresh_token)
     try:
         new_token, new_refresh_token = authhandler.refresh_token(refresh_token)
         return {"access_token": new_token, "refresh_token": new_refresh_token}
