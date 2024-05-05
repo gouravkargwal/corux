@@ -47,7 +47,7 @@ class result_detail(BaseModel):
 
 
 class amount_schema(BaseModel):
-    amount: int
+    amount: float
 
 
 class withdraw_schema(BaseModel):

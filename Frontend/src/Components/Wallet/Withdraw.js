@@ -3,7 +3,7 @@ import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Info from "../Profile/Info";
-import { Avatar, FormHelperText, Grid, InputAdornment } from "@mui/material";
+import { Avatar, FormHelperText, Grid, InputAdornment, Typography } from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { blue, green, grey, orange } from "@mui/material/colors";
 import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
@@ -12,12 +12,17 @@ import { toast } from "react-toastify";
 import LoadingButton from "../UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
+import { useSelector } from "react-redux";
+import {
+  selectIsBlocked
+} from "../../Feature/Balance/balanceSlice";
 
 const Withdraw = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [withdrawnAmount, setWithdrawnAmount] = useState(null);
+  const isBlock = useSelector(selectIsBlocked);
   const {
     control,
     handleSubmit,
@@ -60,6 +65,15 @@ const Withdraw = () => {
   return (
     <Box component="form" onSubmit={handleSubmit(onFormSubmit)}>
       <Info />
+      {isBlock && 
+        <Typography
+          variant="body2"
+          color="error"
+          align="center"
+          sx={{ marginTop: 2 }}
+        >
+          Important: Your account is blocked, so adding or withdrawing money is not allowed. Please contact us for further assistance.
+        </Typography>}
       <Box
         sx={{ backgroundColor: "background.main", boxShadow: 0 }}
         margin={3}
@@ -164,7 +178,7 @@ const Withdraw = () => {
             <LoadingButton
               type="submit"
               variant="contained"
-              disabled={!(isValid && isDirty)}
+              disabled={!(isValid && isDirty) || isBlock}
               loading={loading}
               fullWidth
               sx={{ bgcolor: blue[500], borderRadius: 10, padding: [2, 0] }}

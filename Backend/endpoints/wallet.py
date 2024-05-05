@@ -36,6 +36,13 @@ async def generate_qr(
     db: Session = Depends(get_sql_db),
 ):
     try:
+        user = db.query(User).filter(User.mobile_number == credentials.mobile_number).first()
+
+        if not user:
+            raise HTTPException(status_code=400,detail="User Not Found")
+        
+        if user.is_blocked:
+            raise HTTPException(status_code=400,detail="User Blocked")
         if amount.amount < 100:
             raise HTTPException(status_code=400,detail="Enter Amount 100 or More")
         
@@ -92,6 +99,13 @@ async def save_utr(
     db: Session = Depends(get_sql_db),
 ):
     try:
+        user = db.query(User).filter(User.mobile_number == credentials.mobile_number).first()
+
+        if not user:
+            raise HTTPException(status_code=400,detail="User Not Found")
+        
+        if user.is_blocked:
+            raise HTTPException(status_code=400,detail="User Blocked")
         transaction = (
             db.query(PaymentDepositTable)
             .filter(
@@ -120,6 +134,13 @@ async def winthdraw(
     db: Session = Depends(get_sql_db),
 ):
     try:
+        user = db.query(User).filter(User.mobile_number == credentials.mobile_number).first()
+
+        if not user:
+            raise HTTPException(status_code=400,detail="User Not Found")
+        
+        if user.is_blocked:
+            raise HTTPException(status_code=400,detail="User Blocked")
         if withdraw_schema.amount < 100:
             raise HTTPException(status_code=400, detail="Enter Amount 100 or More")
 

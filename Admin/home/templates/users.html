@@ -193,13 +193,7 @@
                 {
                     "data": "CREATE_DATE", 
                     "className": "lg dot", 
-                    "render": function (data, type, row) {
-                        if (type === 'display' || type === 'filter') {
-                            if (data) {
-                                return data;
-                            } return '-';
-                        }
-                    }
+                    "render": function (data, type, row) { return data ? data : '-'; }
                 },
                 {
                     "data": "IS_KYC",

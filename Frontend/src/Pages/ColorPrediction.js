@@ -24,6 +24,7 @@ import {
   setGameId,
   setTimer,
 } from "../Feature/ColorPrediction/colorPredictionSlice";
+import { selectIsBlocked } from "../Feature/Balance/balanceSlice";
 import {
   GreenButton,
   RedButton,
@@ -54,6 +55,7 @@ const ColorPrediction = () => {
   const timer = useSelector(selectTimer);
   const loading = useSelector(selectBetLoading);
   const user = useSelector(selectAuthUser);
+  const isBlock = useSelector(selectIsBlocked);
   const bettingAllowed = useSelector(selectBettingAllowed);
 
   const [selectedColor, setSelectedColor] = useState(null);
@@ -201,23 +203,33 @@ const ColorPrediction = () => {
           borderRadius={1}
           padding={2}
         >
+          {isBlock && (
+            <Typography
+              variant="body2"
+              color="error"
+              align="center"
+              sx={{ marginBottom: 2 }}
+            >
+              Important: Your account is blocked, so you are not allowed to create any bet. Please contact us for further assistance.
+            </Typography>
+          )}
           <Grid container direction="column" display="flex">
             <Grid item container xs={12} justifyContent="space-between" mb={2}>
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
-                disabled={!bettingAllowed}
+                disabled={!bettingAllowed || isBlock}
               >
                 Red
               </RedButton>
               <VioletButton
                 onClick={() => handleOpenBidDialog("color", "violet")}
-                disabled={!bettingAllowed}
+                disabled={!bettingAllowed || isBlock}
               >
                 Violet
               </VioletButton>
               <GreenButton
                 onClick={() => handleOpenBidDialog("color", "green")}
-                disabled={!bettingAllowed}
+                disabled={!bettingAllowed || isBlock}
               >
                 Green
               </GreenButton>
@@ -229,7 +241,7 @@ const ColorPrediction = () => {
                     variant="outlined"
                     fullWidth
                     onClick={() => handleOpenBidDialog("number", index)}
-                    disabled={!bettingAllowed}
+                    disabled={!bettingAllowed || isBlock}
                   >
                     {index}
                   </Button>

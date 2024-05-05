@@ -65,6 +65,7 @@ async def get_profile(
             "mobile_number": user.mobile_number,
             "balance": user.balance,
             "refer_code": user_refer.referral_code_to,
+            'is_blocked': user.is_blocked
         }
     except ValidationError as e:
         # Handle validation errors and return a 422 response
@@ -228,6 +229,9 @@ async def create_bet(
         )
         if not user:
             raise HTTPException(status_code=400, detail="Try to login Again")
+        
+        if user.is_blocked:
+            raise HTTPException(status_code=400,detail="User Blocked")
 
         if user.balance < betdetails.bet_amount:
             raise HTTPException(status_code=400, detail="Insufficient Balance")
@@ -348,7 +352,7 @@ async def get_winning_list(
             .filter(Bet_Number.mobile_number == credentials.mobile_number)
             .count()
         )
-        return {"rows": result_list[skip : skip + size + 1], "totalRows": bet_count}
+        return {"rows": result_list[skip:skip+size], "totalRows": bet_count}
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)

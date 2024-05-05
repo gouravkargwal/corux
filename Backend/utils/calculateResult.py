@@ -659,15 +659,14 @@ async def get_result(game_id):
                 if i["amount"] > 0:
                     actual_amount_won = i["amount"]
                     if i["bet_on"] in ["green","violet","red"]:
-                        user_bet = db.query(Bet_Color).filter(and_(Bet_Color.game_id == game_id,Bet_Color.mobile_number == i["mobile_number"])).first()
+                        user_bet = db.query(Bet_Color).filter(and_(Bet_Color.game_id == game_id,Bet_Color.mobile_number == i["mobile_number"],Bet_Color.bet_on == i["bet_on"])).first()
 
                         actual_amount_won = i["amount"] - user_bet.bet_amount
                     else:
-                        user_bet = db.query(Bet_Number).filter(and_(Bet_Number.game_id == game_id,Bet_Number.mobile_number == i["mobile_number"])).first()
+                        user_bet = db.query(Bet_Number).filter(and_(Bet_Number.game_id == game_id,Bet_Number.mobile_number == i["mobile_number"]),Bet_Number.bet_on == i["bet_on"]).first()
 
                         actual_amount_won = i["amount"] - user_bet.bet_amount
-
-
+                    # print(actual_amount_won)
                     user_win = (
                         db.query(User)
                         .filter(User.mobile_number == i["mobile_number"])
@@ -682,7 +681,7 @@ async def get_result(game_id):
                     )
 
                     if user_refer_by_level1:
-                        user = (
+                        user_level1 = (
                             db.query(User)
                             .filter(
                                 User.mobile_number == user_refer_by_level1.mobile_number
@@ -690,13 +689,13 @@ async def get_result(game_id):
                             .first()
                         )
 
-                        if user:
-                            user.balance = user.balance + round(0.030 * actual_amount_won,2)
+                        if user_level1:
+                            user_level1.balance = user_level1.balance + round(0.03 * actual_amount_won,2)
                             new_refer_win = All_Referral_Winning(
                                 game_id=game_id,
-                                mobile_number=user.mobile_number,
+                                mobile_number=user_level1.mobile_number,
                                 level_1_refer=i["mobile_number"],
-                                amount_won=round(0.030 * actual_amount_won,2),
+                                amount_won=round(0.03 * actual_amount_won,2),
                             )
 
                             db.add(new_refer_win)
@@ -708,7 +707,7 @@ async def get_result(game_id):
                         )
 
                         if user_refer_by_level2:
-                            user = (
+                            user_level2 = (
                                 db.query(User)
                                 .filter(
                                     User.mobile_number
@@ -717,11 +716,11 @@ async def get_result(game_id):
                                 .first()
                             )
 
-                            if user:
-                                user.balance = user.balance + round(0.015 * actual_amount_won,2)
+                            if user_level2:
+                                user_level2.balance = user_level2.balance + round(0.015 * actual_amount_won,2)
                                 new_refer_win_2 = All_Referral_Winning(
                                     game_id=game_id,
-                                    mobile_number=user.mobile_number,
+                                    mobile_number=user_level2.mobile_number,
                                     level_2_refer=i["mobile_number"],
                                     amount_won=round(0.015 * actual_amount_won,2),
                                 )

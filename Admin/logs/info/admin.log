@@ -521,3 +521,157 @@
 [ 2024-05-04] [INFO] [views:114] deposit get
 [ 2024-05-04] [INFO] [views:118] 
 [ 2024-05-04] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (1)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353053'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (2)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353054'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (3)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (4)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353056'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (5)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353057'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (6)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353058'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (7)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 912.5, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (8)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 1000.0, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (9)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100014.0, 'MOBILE_NUMBER': '8875353053'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (12)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (11)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353054'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (10)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 100000.0, 'MOBILE_NUMBER': '8875353053'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:59] withdraw get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:59] withdraw get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:173] upi get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:59] withdraw get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:173] upi get
+[ 2024-05-05] [INFO] [views:173] upi get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:59] withdraw get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:173] upi get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 12
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 123
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1234
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 12345
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 123456
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1234568
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 12345689
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 1234568
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 123456
+[ 2024-05-05] [INFO] [views:59] withdraw get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (13)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 400.0, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:143] deposit patch
+[ 2024-05-05] [INFO] [views:148] PaymentDepositTable object (14)
+[ 2024-05-05] [INFO] [views:150] {'AMOUNT': 120.0, 'MOBILE_NUMBER': '8875353055'}
+[ 2024-05-05] [INFO] [views:114] deposit get
+[ 2024-05-05] [INFO] [views:118] 
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:19] UserAdmin get
+[ 2024-05-05] [INFO] [views:38] UserAdmin Patch
+[ 2024-05-05] [INFO] [views:19] UserAdmin get

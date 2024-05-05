@@ -22,6 +22,9 @@ import {
   selectPaymentQrError,
   selectPaymentQrLoading,
 } from "../../../Feature/Payment/paymentSlice";
+import {
+  selectIsBlocked
+} from "../../../Feature/Balance/balanceSlice";
 
 const predefinedValues = [100, 200, 500, 1000];
 const Recharge = () => {
@@ -29,6 +32,7 @@ const Recharge = () => {
   const dispatch = useDispatch();
   const qrLoading = useSelector(selectPaymentQrLoading);
   const qrError = useSelector(selectPaymentQrError);
+  const isBlock = useSelector(selectIsBlocked);
   const {
     control,
     handleSubmit,
@@ -49,6 +53,16 @@ const Recharge = () => {
   return (
     <Box>
       <Info />
+      {isBlock && 
+        <Typography
+          variant="body2"
+          color="error"
+          align="center"
+          sx={{ marginTop: 2 }}
+        >
+          Important: Your account is blocked, so adding or withdrawing money is not allowed. Please contact us for further assistance.
+        </Typography>}
+        
       <Typography marginLeft={3} fontWeight="600">
         Select Amount
       </Typography>
@@ -129,6 +143,7 @@ const Recharge = () => {
           variant="contained"
           fullWidth
           loading={qrLoading}
+          disabled={isBlock}
           sx={{
             bgcolor: blue[500],
             borderRadius: 10,
