@@ -1,22 +1,26 @@
+# Use the official Python 3.8 image with Alpine Linux
 FROM python:3.8-alpine
 
-RUN apk update && \
-    apk add --no-cache \
-    mariadb-dev \
-    mariadb-connector-c-dev \
-    build-base \
-    && rm -rf /var/cache/apk/*
-
+# Set environment variables to prevent Python from writing pyc files and buffering stdout and stderr
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /Admin
+# Install system dependencies
+RUN apk update && \
+    apk add --no-cache mariadb-connector-c-dev build-base
 
+# Set the working directory in the container
+WORKDIR /admin
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code
 COPY . .
 
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
-
+# Expose port 8080
 EXPOSE 8080
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]
+# Command to run the Django server with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "admin.wsgi:application"]

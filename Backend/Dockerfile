@@ -7,11 +7,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 # Set working directory
 WORKDIR /Backend
 
-# Install system dependencies needed for mysqlclient
+# Install system dependencies needed for mysqlclient and curl
 RUN apt-get update && apt-get install -y \
     gcc \
     libmariadb-dev \
     pkg-config \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only requirements.txt to take advantage of Docker caching
@@ -23,5 +24,8 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application code to the container
 COPY . .
 
-# Command to run the Uvicorn server
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Expose the port for the application
+EXPOSE $PORT
+
+# Start the application using Uvicorn
+CMD uvicorn main:app --host 0.0.0.0 --port $PORT
