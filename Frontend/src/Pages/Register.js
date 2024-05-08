@@ -24,7 +24,7 @@ import LoadingButton from "../Components/UI/LoadingButton";
 import { useDispatch } from "react-redux";
 import API from "../Api/ApiCall";
 import { setRegistrationData } from "../Feature/Auth/authSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { blue, green, grey, orange, purple, red } from "@mui/material/colors";
 import RedeemIcon from "@mui/icons-material/Redeem";
@@ -40,7 +40,7 @@ export default function Register() {
     register,
     handleSubmit,
     watch,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
     setValue,
   } = useForm();
 
@@ -348,7 +348,12 @@ export default function Register() {
                       size="small"
                     />
                   }
-                  label="I agree to all statements included in the terms & conditions"
+                  label={
+                    <span>
+                      I agree to all statements included in the{" "}
+                      <Link to="/terms-and-conditions">terms & conditions</Link>
+                    </span>
+                  }
                 />
                 {errors.agreeToTerms && (
                   <FormHelperText

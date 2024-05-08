@@ -20,8 +20,14 @@ from datetime import datetime, timedelta
 import string
 import secrets
 from utils.logger import setup_logger
-from telesignenterprise.verify import VerifyClient
-from telesign.util import random_with_n_digits
+from twilio.rest import Client
+import os, requests
+from fastapi.responses import JSONResponse
+
+
+account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+client = Client(account_sid, auth_token)
 
 import os
 
@@ -29,12 +35,22 @@ router = APIRouter()
 authhandler = JWTAuth()
 logger = setup_logger()
 
-customer_id = os.getenv('CUSTOMER_ID', '5A594F32-66A5-42D5-AEAE-09C3A674B432')
-api_key = os.getenv('API_KEY')
+customer_id = os.getenv("CUSTOMER_ID", "5A594F32-66A5-42D5-AEAE-09C3A674B432")
+api_key = os.getenv("API_KEY")
 
 
-verify = VerifyClient(customer_id, api_key)
+# verify = VerifyClient(customer_id, api_key)
+def call_otp_api(mobile, message):
+    url = "https://www.fast2sms.com/dev/bulkV2"
+    payload = f"sender_id=ABC&message={message}&route=otp&variables_values=''&numbers={mobile}"
+    headers = {
+        "authorization": "EKpNtAyVOHZoVUFUg8oYfh35pRe3Zq5zLF3tkQg5ehQDkewEkuAf0LTQJahg",
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Cache-Control": "no-cache",
+    }
 
+    response = requests.request("POST", url, data=payload, headers=headers)
+    return response.json()
 
 
 def generate_random_string(length):
@@ -53,22 +69,27 @@ async def check_mobile_number(
             .first()
         )
         if user:
-            raise HTTPException(status_code=403, detail="Mobile Number Already In Use")
+            raise HTTPException(
+                status_code=403, detail="User already registered. Please login."
+            )
 
-        return {"status_code": 200, "message": "Mobile Number not registered"}
+        return {"status_code": 200, "message": "User not registered. Please register."}
     except HTTPException as e:
         logger.error(str(e))
-        raise HTTPException(status_code=e.status_code,detail=e.detail)
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise HTTPException(status_code=e.status_code, detail=e.detail)
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.post("/send-otp/")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = random_with_n_digits(4)
-        otp="1234"
+        otp = generate_random_string(4)
+        # otp="1234"
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -82,7 +103,7 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
                 if otp_found.count >= 3:
                     raise HTTPException(
                         status_code=400,
-                        detail="Cannot Send Otp,Limit Exceed Try Again After 3 minutes",
+                        detail="Otp limit exceeded. Please try again after 3 minutes.",
                     )
 
                 otp_found.count = otp_found.count + 1
@@ -106,27 +127,40 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-        # number = "+91"+userdetail.mobile_number
-        # response = verify.sms(number, verify_code=otp)
+
+        number = "+91" + userdetail.mobile_number
+        message = f"Your OTP is {otp}"
+        response = call_otp_api(number, message)
+        logger.info(response)
         # if response.status_code != 200:
         #     logger.info(response.body)
         #     raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
-        return {"status_code": 200, "message": "OTP Sent Successfully"}
+        return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
-    
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
+
+
 @router.post("/send-otp-forgot/")
 async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        user = db.query(User).filter(User.mobile_number == userdetail.mobile_number).first()
+        user = (
+            db.query(User)
+            .filter(User.mobile_number == userdetail.mobile_number)
+            .first()
+        )
         if not user:
-            raise HTTPException(status_code=400,detail="User not Registered!! Register First")
-        
-        otp = random_with_n_digits(4)
+            raise HTTPException(
+                status_code=400, detail="User not registered. Please register."
+            )
+
+        # otp = random_with_n_digits(4)
         otp = "1234"
         otp_found = (
             db.query(Otp_Table)
@@ -139,7 +173,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
                 if otp_found.count >= 3:
                     raise HTTPException(
                         status_code=400,
-                        detail="Cannot Send Otp,Limit Exceed Try Again After 3 minutes",
+                        detail="Otp limit exceeded. Please try again after 3 minutes.",
                     )
 
                 otp_found.count = otp_found.count + 1
@@ -170,13 +204,16 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
         # if response.status_code != 200:
         #     logger.info(response.body)
         #     raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
-        return {"status_code": 200, "message": "OTP Sent Successfully"}
+        return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise HTTPException(status_code=404,detail="OTP limit Exceeded")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.post("/verify-otp/")
@@ -191,24 +228,29 @@ async def verify_otp(
             .first()
         )
         if not otp_found:
-            raise HTTPException(
-                status_code=400, detail="Do not found OTP on server!!Try Again"
-            )
+            raise HTTPException(status_code=400, detail="Please resend otp.")
 
         if (datetime.now() - timedelta(minutes=60)) > otp_found.time:
-            raise HTTPException(status_code=400, detail="OTP Expired!! Try Again")
+            raise HTTPException(
+                status_code=400, detail="Otp expired. Please try again."
+            )
 
         if user_otp_detail.otp != otp_found.otp:
-            raise HTTPException(status_code=400, detail="Wrong OTP!! Try Again")
+            raise HTTPException(
+                status_code=400, detail="Incorrect otp provided. Please try again."
+            )
 
-        return {"status_code": 200, "message": "OTP verified Successfully"}
+        return {"status_code": 200, "message": "Otp verified Successfully"}
 
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.post("/login/")
@@ -220,10 +262,14 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
             .first()
         )
         if not user:
-            raise HTTPException(status_code=400, detail="Do not Found User")
+            raise HTTPException(
+                status_code=400, detail="User not registered. Please register."
+            )
 
         if not verify_password(user_detail.password, user.password):
-            raise HTTPException(status_code=400, detail="Wrong Password!! Try Again")
+            raise HTTPException(
+                status_code=400, detail="Incorrect password provided. Please try again."
+            )
 
         payload = {"mobile_number": user.mobile_number, "user_id": user.user_id}
 
@@ -243,7 +289,10 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.post("/register/")
@@ -257,7 +306,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             )
             if user:
                 raise HTTPException(
-                    status_code=409, detail="User Already Exist. Please Login."
+                    status_code=409, detail="User already registered. Please login."
                 )
 
             new_user = User(
@@ -277,7 +326,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
 
                 # if not user_refered_by_level1:
                 #     pass
-                    # raise HTTPException(status_code=400, detail="Wrong Referral Code")
+                # raise HTTPException(status_code=400, detail="Wrong Referral Code")
                 if user_refered_by_level1:
                     new_refer_entry = Referral_table(
                         mobile_number=user_refered_by_level1.mobile_number,
@@ -338,7 +387,10 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.patch("/forget-password/")
@@ -354,29 +406,36 @@ async def forgot_password(
             )
 
             if not user:
-                raise HTTPException(status_code=400, detail="Do not Found User")
+                raise HTTPException(
+                    status_code=400, detail="User not registered. Please register."
+                )
 
             user.password = hash_password(forgot_password.password)
 
         db.commit()
-        return {"status_code": 200, "detail": "Successfully Changed Password"}
+        return {"status_code": 200, "detail": "Password successfully changed."}
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise e
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 @router.post("/refresh-token/")
 async def refer_codefresh_token(refresh_token: str = Header()):
-    # print(refresh_token)
     try:
         new_token, new_refresh_token = authhandler.refresh_token(refresh_token)
         return {"access_token": new_token, "refresh_token": new_refresh_token}
     except HTTPException as e:
         logger.error(str(e))
-        raise HTTPException(status_code=e.status_code,detail=e.detail)
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
-        logger.error(str(e))
-        raise e
+        logger.error(f"Unexpected error during token refresh: {str(e)}")
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )

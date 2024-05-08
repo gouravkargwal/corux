@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Box, TextField, Typography, Avatar, Container } from "@mui/material";
+import { Box, TextField, Typography, Container } from "@mui/material";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { blue, grey } from "@mui/material/colors";
@@ -29,24 +29,33 @@ export default function OtpVerify() {
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
   useEffect(() => {
-    // Start the countdown from 120 seconds
-    setTimer(120);
-    setResendButtonDisabled(true); // Disable resend button initially
+    let interval = null;
 
-    // Interval to decrement the timer every second
-    const interval = setInterval(() => {
-      setTimer((prevTime) => prevTime - 1);
-    }, 1000);
+    // Start or restart the timer
+    const startTimer = () => {
+      setTimer(120); // Reset the timer to 120 seconds
+      setResendButtonDisabled(true);
 
-    // Timeout to re-enable the resend button after 120 seconds
-    const timeout = setTimeout(() => {
-      setResendButtonDisabled(false);
-      clearInterval(interval); // Stop the countdown when it's not needed
-    }, 120000); // 120 seconds
+      interval = setInterval(() => {
+        setTimer((prevTime) => {
+          if (prevTime <= 1) {
+            clearInterval(interval); // Stop the interval when reaching 0
+            setResendButtonDisabled(false);
+            return 0; // Reset timer to 0 to avoid negative values
+          }
+          return prevTime - 1;
+        });
+      }, 1000);
+    };
 
+    // Initialize the timer on component mount
+    startTimer();
+
+    // Cleanup function to clear the interval when the component unmounts or before rerunning the effect
     return () => {
-      clearTimeout(timeout);
-      clearInterval(interval); // Cleanup on component unmount
+      if (interval) {
+        clearInterval(interval);
+      }
     };
   }, []);
 
@@ -98,7 +107,9 @@ export default function OtpVerify() {
       }
     } catch (error) {
       setLoading(false);
-      toast.error(error.message);
+      return toast.error(
+        error.response?.data?.detail || "No response received" || error.message
+      );
     } finally {
       setLoading(false);
     }
@@ -131,9 +142,20 @@ export default function OtpVerify() {
   const handleResendOtp = async () => {
     try {
       setResendButtonDisabled(true);
-      await API.signupAPI(registrationData);
+      console.log(registrationData);
+      let mobile_number =
+        context === "forgot"
+          ? forgotPhoneNumber.mobile_number
+          : registrationData.mobileNumber;
+      if (context === "forgot") {
+        await API.sendOtpForgotAPI({ mobile_number });
+      } else {
+        await API.sendOtpAPI({ mobile_number });
+      }
     } catch (error) {
-      toast.error(error.message);
+      return toast.error(
+        error.response?.data?.detail || "No response received" || error.message
+      );
     }
   };
 

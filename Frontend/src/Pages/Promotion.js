@@ -18,12 +18,7 @@ import PromotionOption from "../Components/Promotion.js/PromotionOption";
 import RedeemIcon from "@mui/icons-material/Redeem";
 import { useDispatch, useSelector } from "react-redux";
 import { selectBalanceReferCode } from "../Feature/Balance/balanceSlice";
-import {
-  getReferDetails,
-  selectReferData,
-  selectReferError,
-  selectReferLoading,
-} from "../Feature/Refer/referSlice";
+import { getReferDetails, selectReferData } from "../Feature/Refer/referSlice";
 import Level2Table from "../Components/Promotion.js/Level2Table";
 import Level1Table from "../Components/Promotion.js/Level1Table";
 
@@ -31,8 +26,6 @@ export default function Promotion() {
   const dispatch = useDispatch();
   const referCode = useSelector(selectBalanceReferCode);
   const data = useSelector(selectReferData);
-  const loading = useSelector(selectReferLoading);
-  const error = useSelector(selectReferError);
   const [activeTab, setActiveTab] = useState(0);
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
@@ -128,7 +121,9 @@ export default function Promotion() {
                 variant="outlined"
                 startIcon={<ContentCopyIcon />}
                 onClick={() =>
-                  handleCopy(`http://localhost:3000/register/${referCode}`)
+                  handleCopy(
+                    `${process.env.REACT_APP_URL}/auth/register/${referCode}`
+                  )
                 }
               >
                 Copy Link

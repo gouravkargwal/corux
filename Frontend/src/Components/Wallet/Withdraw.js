@@ -178,7 +178,7 @@ const Withdraw = () => {
             <LoadingButton
               type="submit"
               variant="contained"
-              disabled={!(isValid && isDirty) || isBlock}
+              disabled={isBlock}
               loading={loading}
               fullWidth
               sx={{ bgcolor: blue[500], borderRadius: 10, padding: [2, 0] }}

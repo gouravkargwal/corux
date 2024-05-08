@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, Button, Box, Icon } from "@mui/material";
+import { Container, Typography, Button, Box } from "@mui/material";
 import TelegramIcon from "@mui/icons-material/Telegram"; // Import the Telegram icon
 import { blue } from "@mui/material/colors";
 
