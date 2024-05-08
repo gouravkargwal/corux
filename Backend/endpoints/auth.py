@@ -20,31 +20,22 @@ from datetime import datetime, timedelta
 import string
 import secrets
 from utils.logger import setup_logger
-from twilio.rest import Client
-import os, requests
+import os, requests,random
 from fastapi.responses import JSONResponse
-
-
-account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-client = Client(account_sid, auth_token)
-
-import os
 
 router = APIRouter()
 authhandler = JWTAuth()
 logger = setup_logger()
 
-customer_id = os.getenv("CUSTOMER_ID", "5A594F32-66A5-42D5-AEAE-09C3A674B432")
-api_key = os.getenv("API_KEY")
+API_KEY = os.getenv("API_KEY")
 
 
 # verify = VerifyClient(customer_id, api_key)
 def call_otp_api(mobile, message):
     url = "https://www.fast2sms.com/dev/bulkV2"
-    payload = f"sender_id=ABC&message={message}&route=otp&variables_values=''&numbers={mobile}"
+    payload = f"sender_id=Vega-Gaming&message='Vega Gaming'&route=otp&variables_values={message}&numbers={mobile}"
     headers = {
-        "authorization": "EKpNtAyVOHZoVUFUg8oYfh35pRe3Zq5zLF3tkQg5ehQDkewEkuAf0LTQJahg",
+        "authorization": API_KEY,
         "Content-Type": "application/x-www-form-urlencoded",
         "Cache-Control": "no-cache",
     }
@@ -88,7 +79,7 @@ async def check_mobile_number(
 @router.post("/send-otp/")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = generate_random_string(4)
+        otp = random.randint(1000, 9999)
         # otp="1234"
         logger.info("OTP Generated")
         otp_found = (
@@ -99,12 +90,15 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
 
         logger.info("OTP Stored in Table")
         if otp_found:
-            if otp_found.time >= (datetime.now() - timedelta(minutes=3)):
+            if otp_found.time >= (datetime.now() - timedelta(minutes=5)):
+                if otp_found.time > (datetime.now() - timedelta(minutes=3)):
+                    raise HTTPException(status_code=400,detail="Try Again after 5 minutes")
                 if otp_found.count >= 3:
                     raise HTTPException(
                         status_code=400,
-                        detail="Otp limit exceeded. Please try again after 3 minutes.",
+                        detail="Otp limit exceeded. Please try again after 60 minutes.",
                     )
+                
 
                 otp_found.count = otp_found.count + 1
                 otp_found.otp = otp
@@ -121,20 +115,20 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
                 mobile_number=userdetail.mobile_number,
                 time=datetime.now(),
                 count=1,
-                otp=1234,
+                otp=otp,
             )
 
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-
-        number = "+91" + userdetail.mobile_number
-        message = f"Your OTP is {otp}"
+        logger.info("Otp entry done")
+        number = userdetail.mobile_number
+        message = otp
         response = call_otp_api(number, message)
         logger.info(response)
-        # if response.status_code != 200:
-        #     logger.info(response.body)
-        #     raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(status_code=400,detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
@@ -161,7 +155,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
             )
 
         # otp = random_with_n_digits(4)
-        otp = "1234"
+        otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
@@ -169,11 +163,13 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
         )
 
         if otp_found:
-            if otp_found.time >= (datetime.now() - timedelta(minutes=3)):
+            if otp_found.time >= (datetime.now() - timedelta(minutes=5)):
+                if otp_found.time > (datetime.now() - timedelta(minutes=3)):
+                    raise HTTPException(status_code=400,detail="Try Again after 5 minutes")
                 if otp_found.count >= 3:
                     raise HTTPException(
                         status_code=400,
-                        detail="Otp limit exceeded. Please try again after 3 minutes.",
+                        detail="Otp limit exceeded. Please try again after 60 minutes.",
                     )
 
                 otp_found.count = otp_found.count + 1
@@ -198,12 +194,13 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
             db.commit()
             db.refresh(new_otp_log)
 
-        # number = "+91"+userdetail.mobile_number
-        # response = verify.sms(number, verify_code=otp)
-        # logger.info(response.json())
-        # if response.status_code != 200:
-        #     logger.info(response.body)
-        #     raise HTTPException(status_code=400,detail="OTP not generated!! Try Again")
+        number = userdetail.mobile_number
+        message = otp
+        response = call_otp_api(number, message)
+        # logger.info(response)
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(status_code=400,detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))

@@ -29,7 +29,7 @@ export default function OtpVerify() {
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
   const startTimer = () => {
-    setTimer(12); // Reset the timer to 120 seconds
+    setTimer(120); // Reset the timer to 120 seconds
     setResendButtonDisabled(true);
     const interval = setInterval(() => {
       setTimer((prevTime) => {
