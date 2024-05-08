@@ -21,13 +21,14 @@ import string
 import secrets
 from utils.logger import setup_logger
 from twilio.rest import Client
-import os, requests
+import os
+import requests
 from fastapi.responses import JSONResponse
 
 
-account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-client = Client(account_sid, auth_token)
+# account_sid = os.environ["TWILIO_ACCOUNT_SID"]
+# auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+# client = Client(account_sid, auth_token)
 
 import os
 
@@ -271,7 +272,8 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
                 status_code=400, detail="Incorrect password provided. Please try again."
             )
 
-        payload = {"mobile_number": user.mobile_number, "user_id": user.user_id}
+        payload = {"mobile_number": user.mobile_number,
+                   "user_id": user.user_id}
 
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
@@ -370,7 +372,8 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
 
                 db.add(new_user_refer_entry)
         db.commit()
-        payload = {"mobile_number": new_user.mobile_number, "user_id": new_user.user_id}
+        payload = {"mobile_number": new_user.mobile_number,
+                   "user_id": new_user.user_id}
 
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
