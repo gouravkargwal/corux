@@ -28,35 +28,25 @@ export default function OtpVerify() {
   const registrationData = useSelector(selectAuthRegistrationData);
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
+  const startTimer = () => {
+    setTimer(12); // Reset the timer to 120 seconds
+    setResendButtonDisabled(true);
+    const interval = setInterval(() => {
+      setTimer((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(interval);
+          setResendButtonDisabled(false);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  };
+
   useEffect(() => {
-    let interval = null;
-
-    // Start or restart the timer
-    const startTimer = () => {
-      setTimer(120); // Reset the timer to 120 seconds
-      setResendButtonDisabled(true);
-
-      interval = setInterval(() => {
-        setTimer((prevTime) => {
-          if (prevTime <= 1) {
-            clearInterval(interval); // Stop the interval when reaching 0
-            setResendButtonDisabled(false);
-            return 0; // Reset timer to 0 to avoid negative values
-          }
-          return prevTime - 1;
-        });
-      }, 1000);
-    };
-
-    // Initialize the timer on component mount
-    startTimer();
-
-    // Cleanup function to clear the interval when the component unmounts or before rerunning the effect
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
+    const intervalId = startTimer(); // Initialize the timer on component mount
+    return intervalId; // Cleanup function to clear the interval when the component unmounts
   }, []);
 
   const {
@@ -142,7 +132,6 @@ export default function OtpVerify() {
   const handleResendOtp = async () => {
     try {
       setResendButtonDisabled(true);
-      console.log(registrationData);
       let mobile_number =
         context === "forgot"
           ? forgotPhoneNumber.mobile_number
@@ -156,6 +145,8 @@ export default function OtpVerify() {
       return toast.error(
         error.response?.data?.detail || "No response received" || error.message
       );
+    } finally {
+      startTimer();
     }
   };
 
