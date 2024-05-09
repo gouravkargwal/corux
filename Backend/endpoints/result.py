@@ -1,23 +1,12 @@
 from fastapi import APIRouter, HTTPException, Depends, Query
 from models.user import (
     Result,
-    Winner_Table,
-    Bet_Color,
-    Bet_Number,
-    All_Time_Winner_Table,
-    User,
-    Referral_table,
-    All_Referral_Winning,
 )
-from sqlalchemy.exc import SQLAlchemyError
-from pydantic import ValidationError
 from sqlalchemy.orm import Session
 from db_module.session import get_sql_db
 from utils.logger import setup_logger
 from schema.user import result_detail
-from sqlalchemy import text, delete, func, select, desc,asc
-import pandas as pd
-from typing import Optional
+from sqlalchemy import desc
 
 
 router = APIRouter()
