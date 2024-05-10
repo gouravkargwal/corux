@@ -1,4 +1,3 @@
-
 from fastapi import APIRouter, HTTPException
 from sqlalchemy import text, delete, and_, or_
 from sqlalchemy.orm import Session
@@ -55,8 +54,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
             }
 
             total_amount_won = 0
-            minIndex = result_number["total_bet_amount"].nsmallest(
-                i + 1).index[-1]
+            minIndex = result_number["total_bet_amount"].nsmallest(i + 1).index[-1]
             min_number = result_number.loc[minIndex, "bet_on"]
 
             winner_dict_form["number_who_won"].append(min_number)
@@ -213,14 +211,13 @@ async def get_result(game_id):
                 db.query(Bet_Color).filter(Bet_Color.game_id == game_id).all()
             )
             result_number = (
-                db.query(Bet_Number).filter(
-                    Bet_Number.game_id == game_id).all()
+                db.query(Bet_Number).filter(Bet_Number.game_id == game_id).all()
             )
 
             result_list = []
 
             for row in result_color:
-                amount_won = row.bet_amount*winner_dict[row.bet_on]
+                amount_won = row.bet_amount * winner_dict[row.bet_on]
                 result_list.append(
                     {
                         "mobile_number": row.mobile_number,
@@ -247,8 +244,11 @@ async def get_result(game_id):
                 db.add(new_output)
 
             for row in result_number:
-                amount_won = row.bet_amount * \
-                    9 if row.bet_on in winner_dict["number_who_won"] else 0
+                amount_won = (
+                    row.bet_amount * 9
+                    if row.bet_on in winner_dict["number_who_won"]
+                    else 0
+                )
                 result_list.append(
                     {
                         "mobile_number": row.mobile_number,
@@ -284,13 +284,31 @@ async def get_result(game_id):
                 if i["amount"] > 0:
                     actual_amount_won = i["amount"]
                     if i["bet_on"] in ["green", "violet", "red"]:
-                        user_bet = db.query(Bet_Color).filter(and_(
-                            Bet_Color.game_id == game_id, Bet_Color.mobile_number == i["mobile_number"], Bet_Color.bet_on == i["bet_on"])).first()
+                        user_bet = (
+                            db.query(Bet_Color)
+                            .filter(
+                                and_(
+                                    Bet_Color.game_id == game_id,
+                                    Bet_Color.mobile_number == i["mobile_number"],
+                                    Bet_Color.bet_on == i["bet_on"],
+                                )
+                            )
+                            .first()
+                        )
 
                         actual_amount_won = i["amount"] - user_bet.bet_amount
                     else:
-                        user_bet = db.query(Bet_Number).filter(and_(
-                            Bet_Number.game_id == game_id, Bet_Number.mobile_number == i["mobile_number"]), Bet_Number.bet_on == i["bet_on"]).first()
+                        user_bet = (
+                            db.query(Bet_Number)
+                            .filter(
+                                and_(
+                                    Bet_Number.game_id == game_id,
+                                    Bet_Number.mobile_number == i["mobile_number"],
+                                ),
+                                Bet_Number.bet_on == i["bet_on"],
+                            )
+                            .first()
+                        )
 
                         actual_amount_won = i["amount"] - user_bet.bet_amount
                     # print(actual_amount_won)
@@ -318,16 +336,16 @@ async def get_result(game_id):
                         )
 
                         if user_level1:
-                            user_level1_win_commission = 0.03*actual_amount_won
+                            user_level1_win_commission = 0.03 * actual_amount_won
 
-                            user_level1.balance = user_level1.balance + \
-                                round(user_level1_win_commission, 2)
+                            user_level1.balance = user_level1.balance + round(
+                                user_level1_win_commission, 2
+                            )
                             new_refer_win = All_Referral_Winning(
                                 game_id=game_id,
                                 mobile_number=user_level1.mobile_number,
                                 level_1_refer=i["mobile_number"],
-                                amount_won=round(
-                                    user_level1_win_commission, 2),
+                                amount_won=round(user_level1_win_commission, 2),
                             )
 
                             db.add(new_refer_win)
@@ -349,15 +367,15 @@ async def get_result(game_id):
                             )
 
                             if user_level2:
-                                user_level2_win_commission = 0.015*actual_amount_won
-                                user_level2.balance = user_level2.balance + \
-                                    round(user_level2_win_commission, 2)
+                                user_level2_win_commission = 0.015 * actual_amount_won
+                                user_level2.balance = user_level2.balance + round(
+                                    user_level2_win_commission, 2
+                                )
                                 new_refer_win_2 = All_Referral_Winning(
                                     game_id=game_id,
                                     mobile_number=user_level2.mobile_number,
                                     level_2_refer=i["mobile_number"],
-                                    amount_won=round(
-                                        user_level2_win_commission, 2),
+                                    amount_won=round(user_level2_win_commission, 2),
                                 )
 
                                 db.add(new_refer_win_2)
@@ -371,8 +389,7 @@ async def get_result(game_id):
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"],
-                    "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
             )
         logger.error({"event": "validation_error", "error": error_messages})
         raise HTTPException(status_code=422, detail=error_messages)
@@ -393,5 +410,4 @@ async def get_result(game_id):
     except Exception as e:
         db.rollback()
         logger.error({"event": "unknown_error", "error": str(e)})
-        raise HTTPException(
-            status_code=500, detail="An unexpected error occurred")
+        raise HTTPException(status_code=500, detail="An unexpected error occurred")

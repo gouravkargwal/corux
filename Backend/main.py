@@ -18,7 +18,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://vegagaming.fun","wss://vegagaming.fun"],
+    allow_origins="*",
+    # /["https://vegagaming.fun","wss://vegagaming.fun"],
     allow_credentials=True,
     allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allow_headers=["*"],
@@ -30,7 +31,10 @@ app.include_router(Userrouter, tags=["User"], prefix="/user")
 app.include_router(Resultrouter, tags=["Result"], prefix="/result")
 app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
-sio_manager = SocketManager(app=app, path="/ws")
+try:    
+    sio_manager = SocketManager(app=app,cors_allowed_origins="*", path="/ws")
+except Exception as e:
+    print(str(e))
 game = Game()
 task_running = False
 connected_clients = set()

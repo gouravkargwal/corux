@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  admin:
+    build:
+      context: ./Admin
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    env_file: 
+      - .env
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8000}:8000"
+    env_file: 
+      - .env
+
+  react:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file: 
+      - .env
+
+networks:
+  default:
+    driver: bridge
