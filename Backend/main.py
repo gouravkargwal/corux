@@ -18,10 +18,9 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="*",
-    # /["https://vegagaming.fun","wss://vegagaming.fun"],
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -31,10 +30,9 @@ app.include_router(Userrouter, tags=["User"], prefix="/user")
 app.include_router(Resultrouter, tags=["Result"], prefix="/result")
 app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
-try:    
-    sio_manager = SocketManager(app=app,cors_allowed_origins="*", path="/ws")
-except Exception as e:
-    print(str(e))
+
+sio_manager = SocketManager(
+    app=app, path="/ws/")
 game = Game()
 task_running = False
 connected_clients = set()
@@ -49,16 +47,20 @@ async def handle_connect(sid, environ=None, auth=None):
         game_state = game.update_state()
         if game_inprocess:
             await sio_manager.emit("game_state", game_state, room=sid)
-        logger.info({"event": "client_connected", "sid": sid})
+        logger.info(f"Client connected: SID={sid}, Game State={game_state}")
     except Exception as e:
-        logger.error({"event": "connection_error", "error": str(e)})
-        logger.error(traceback.format_exc())
+        logger.error(f"Connection error on connect: {str(e)}", exc_info=True)
+        await sio_manager.emit('error', {'error': 'Connection failed'}, room=sid)
 
 
 @sio_manager.on("disconnect")
 async def handle_disconnect(sid):
-    connected_clients.remove(sid)
-    logger.info({"event": "client_disconnected", "sid": sid})
+    try:
+        connected_clients.remove(sid)
+        logger.info(f"Client disconnected: SID={sid}")
+    except Exception as e:
+        logger.error(
+            f"Connection error on disconnect: {str(e)}", exc_info=True)
 
 
 async def notify_timer():

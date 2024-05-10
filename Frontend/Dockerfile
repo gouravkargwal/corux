@@ -25,7 +25,7 @@ COPY . .
 RUN npm run build
 
 # Expose the port `serve` runs on
-EXPOSE 5000
+EXPOSE 3000
 
 # Command to run the app
-CMD ["serve", "-s", "build", "-l", "5000"]
+CMD ["serve", "-s", "build", "-l", "3000"]
