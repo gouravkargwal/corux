@@ -15,9 +15,9 @@ CLOUD_SQL_NAME = os.getenv("CLOUD_SQL_NAME")
 
 # DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@/{DATABASE_NAME}?unix_socket=/cloudsql/{CLOUD_SQL_NAME}"
 
-# DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{IP_PUBLIC}/{DATABASE_NAME}?unix_socket=/cloudsql/{CLOUD_SQL_NAME}"
+DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{IP_PUBLIC}/{DATABASE_NAME}?unix_socket=/cloudsql/{CLOUD_SQL_NAME}"
 
-DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/{DATABASE_NAME}"
+# DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/{DATABASE_NAME}"
 
 
 # Create an engine instance

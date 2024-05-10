@@ -22,5 +22,5 @@ COPY . .
 # Expose port 8080
 EXPOSE 8080
 
-# Command to run the Django server with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "admin.wsgi:application"]
+# Command to run the Django server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8080"]

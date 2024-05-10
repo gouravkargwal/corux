@@ -44,19 +44,9 @@ export default function ForgotPassword() {
       navigate("/auth/otp-verify", { state: { context: "forgot" } });
     } catch (error) {
       setLoadingBtn(false);
-      if (error.response) {
-        if (error.response.status === 403) {
-          toast.error(error.response.data.detail);
-          navigate("/auth");
-          return;
-        } else {
-          return toast.error(error.message);
-        }
-      } else if (error.request) {
-        return toast.error("No response received");
-      } else {
-        return toast.error(error.message);
-      }
+      return toast.error(
+        error.response?.data?.detail || "No response received" || error.message
+      );
     } finally {
       setLoadingBtn(false);
     }

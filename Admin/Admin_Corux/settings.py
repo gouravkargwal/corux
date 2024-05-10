@@ -31,7 +31,7 @@ SECRET_KEY = "django-insecure-r_aq%07cm#_=a#n^1f3x(gmv6b_g0o6k*uw!97-#akc#6zt=6r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["adminvegagaming.online"]
 
 
 # Application definition
@@ -156,3 +156,14 @@ LOGIN_URL = "/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+CSRF_TRUSTED_ORIGINS = ['https://adminvegagaming.online']
+CORS_ORIGIN_WHITELIST = ['https://adminvegagaming.online']
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_HSTS_SECONDS = 31536000  # 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True

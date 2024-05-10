@@ -21,7 +21,8 @@ from utils.verify import hash_password
 from jwtAuth import authenticate_user
 import pandas as pd
 from utils.logger import setup_logger
-import string, secrets
+import string
+import secrets
 
 router = APIRouter()
 logger = setup_logger()
@@ -40,7 +41,7 @@ def is_convertible_to_number(some_string):
         return False
 
 
-@router.get("/get-profile/")
+@router.get("/get-profile")
 async def get_profile(
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
     db: Session = Depends(get_sql_db),
@@ -72,7 +73,8 @@ async def get_profile(
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"],
+                    "type": error["type"]}
             )
         logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
@@ -84,7 +86,7 @@ async def get_profile(
         raise e
 
 
-@router.post("/create-user/")
+@router.post("/create-user")
 async def create_user(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
@@ -114,7 +116,8 @@ async def create_user(user_info: user_info, db: Session = Depends(get_sql_db)):
                 )
 
                 if not user_refered_by_level1:
-                    raise HTTPException(status_code=400, detail="Wrong Referral Code")
+                    raise HTTPException(
+                        status_code=400, detail="Wrong Referral Code")
                 if user_refered_by_level1:
                     new_refer_entry = Referral_table(
                         mobile_number=user_refered_by_level1.mobile_number,
@@ -165,7 +168,8 @@ async def create_user(user_info: user_info, db: Session = Depends(get_sql_db)):
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"],
+                    "type": error["type"]}
             )
         logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
@@ -176,7 +180,8 @@ async def create_user(user_info: user_info, db: Session = Depends(get_sql_db)):
         logger.error(str(e))
         raise e
 
-@router.patch("/change-password/")
+
+@router.patch("/change-password")
 async def change_password(
     password_detail: password_detail,
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
@@ -203,7 +208,8 @@ async def change_password(
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"],
+                    "type": error["type"]}
             )
         logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
@@ -215,7 +221,7 @@ async def change_password(
         raise e
 
 
-@router.post("/create-bet/")
+@router.post("/create-bet")
 async def create_bet(
     betdetails: betdetails,
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
@@ -229,9 +235,9 @@ async def create_bet(
         )
         if not user:
             raise HTTPException(status_code=400, detail="Try to login Again")
-        
+
         if user.is_blocked:
-            raise HTTPException(status_code=400,detail="User Blocked")
+            raise HTTPException(status_code=400, detail="User Blocked")
 
         if user.balance < betdetails.bet_amount:
             raise HTTPException(status_code=400, detail="Insufficient Balance")
@@ -243,7 +249,8 @@ async def create_bet(
                 game_id=betdetails.game_id,
                 mobile_number=credentials.mobile_number,
                 bet_amount=betdetails.bet_amount,
-                bet_on=0 if betdetails.bet_on == "0" else int(betdetails.bet_on),
+                bet_on=0 if betdetails.bet_on == "0" else int(
+                    betdetails.bet_on),
             )
 
             db.add(new_bet)
@@ -267,7 +274,8 @@ async def create_bet(
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"],
+                    "type": error["type"]}
             )
         logger.error(error_messages)
         raise HTTPException(status_code=422, detail=error_messages)
@@ -279,7 +287,7 @@ async def create_bet(
         raise e
 
 
-@router.get("/user-win/")
+@router.get("/user-win")
 async def get_winning_list(
     page: int = Query(default=1, ge=1),
     size: int = Query(default=10, gt=0),
@@ -340,8 +348,10 @@ async def get_winning_list(
             .all()
         )
 
-        result = [row._asdict() for row in stmt] + [row._asdict() for row in stmt2]
-        result_list = sorted(result, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
+        result = [row._asdict() for row in stmt] + [row._asdict()
+                                                    for row in stmt2]
+        result_list = sorted(result, key=lambda x: (
+            x["game_id"], x["CREATE_DATE"]), reverse=True)
         # result_list = sorted(result_list,key=lambda x: x["CREATE_DATE"])
 
         bet_count = (
@@ -361,7 +371,7 @@ async def get_winning_list(
         raise e
 
 
-@router.get("/refer-page/")
+@router.get("/refer-page")
 async def refer_information(
     credentials: HTTPAuthorizationCredentials = Depends(authenticate_user),
     db: Session = Depends(get_sql_db),
@@ -377,14 +387,16 @@ async def refer_information(
         # print([row._asdict() for row in refer_result_1])
         # return;
         refer_result_2 = db.query(All_Referral_Winning).filter(and_(All_Referral_Winning.mobile_number == credentials.mobile_number,
-            All_Referral_Winning.level_2_refer != "",)
-        )
+                                                                    All_Referral_Winning.level_2_refer != "",)
+                                                               )
 
         result_list_level1 = [row.__dict__ for row in refer_result_1]
-        result_list_level1 = sorted(result_list_level1, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
+        result_list_level1 = sorted(result_list_level1, key=lambda x: (
+            x["game_id"], x["CREATE_DATE"]), reverse=True)
 
         result_list_level2 = [row.__dict__ for row in refer_result_2]
-        result_list_level2 = sorted(result_list_level2, key=lambda x: (x["game_id"],x["CREATE_DATE"]),reverse=True)
+        result_list_level2 = sorted(result_list_level2, key=lambda x: (
+            x["game_id"], x["CREATE_DATE"]), reverse=True)
         logger.info(result_list_level2)
         refer_count = (
             db.query(Referral_table)
@@ -424,12 +436,13 @@ async def refer_information(
             "refer_result_level1": result_list_level1,
             "refer_result_level2": result_list_level2,
             "refer_count": refer_count,
-            "total_winning": round(amount_won,2),
+            "total_winning": round(amount_won, 2),
             "refer_code": refer_code.referral_code_to,
         }
     except HTTPException as e:
         logger.error(str(e))
-        raise HTTPException(status_code=e.status_code,detail=e.detail)
+        raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
-        raise HTTPException(status_code=404, detail="Cannot Fetch Refer Winning")
+        raise HTTPException(
+            status_code=404, detail="Cannot Fetch Refer Winning")

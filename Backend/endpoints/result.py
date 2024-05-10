@@ -13,7 +13,7 @@ router = APIRouter()
 logger = setup_logger()
 
 
-@router.get("/result-list/")
+@router.get("/result-list")
 async def get_result_list(
     page: int = Query(default=1, ge=1),
     size: int = Query(default=10, gt=0),

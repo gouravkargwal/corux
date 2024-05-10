@@ -51,7 +51,7 @@ def generate_random_string(length):
     return "".join(secrets.choice(alphabet) for _ in range(length))
 
 
-@router.post("/check-mobile-number/")
+@router.post("/check-mobile-number")
 async def check_mobile_number(
     mobile_number: mobile_number, db: Session = Depends(get_sql_db)
 ):
@@ -78,7 +78,7 @@ async def check_mobile_number(
         )
 
 
-@router.post("/send-otp/")
+@router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
         otp = random.randint(1000, 9999)
@@ -144,7 +144,7 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
         )
 
 
-@router.post("/send-otp-forgot/")
+@router.post("/send-otp-forgot")
 async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
         user = (
@@ -218,7 +218,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
         )
 
 
-@router.post("/verify-otp/")
+@router.post("/verify-otp")
 async def verify_otp(
     user_otp_detail: user_otp_detail, db: Session = Depends(get_sql_db)
 ):
@@ -255,7 +255,7 @@ async def verify_otp(
         )
 
 
-@router.post("/login/")
+@router.post("/login")
 async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
     try:
         user = (
@@ -298,7 +298,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
         )
 
 
-@router.post("/register/")
+@router.post("/register")
 async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
@@ -397,7 +397,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
         )
 
 
-@router.patch("/forget-password/")
+@router.patch("/forget-password")
 async def forgot_password(
     forgot_password: forgot_password_schema, db: Session = Depends(get_sql_db)
 ):
@@ -429,7 +429,7 @@ async def forgot_password(
         )
 
 
-@router.post("/refresh-token/")
+@router.post("/refresh-token")
 async def refer_codefresh_token(refresh_token: str = Header()):
     try:
         new_token, new_refresh_token = authhandler.refresh_token(refresh_token)

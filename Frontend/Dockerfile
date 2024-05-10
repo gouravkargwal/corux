@@ -1,29 +1,31 @@
-# Step 1: Build the React application
-FROM node:alpine as build
+# Use an official Node.js runtime as a parent image
+FROM node:alpine
 
-# Set the working directory in the Docker container
-WORKDIR /Frontend
+# Set the working directory
+WORKDIR /app
 
-# Copy the package.json and package-lock.json (or yarn.lock) files
+# Define build-time environment variables
+ARG REACT_APP_BASE_URL
+ARG REACT_APP_URL
+
+# Set the build-time environment variables as actual environment variables in the image
+ENV REACT_APP_BASE_URL=$REACT_APP_BASE_URL
+ENV REACT_APP_URL=$REACT_APP_URL
+
+# Copy the package.json and package-lock.json (or yarn.lock)
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --quiet
+# Install dependencies and `serve`
+RUN npm install --quiet && npm install -g serve
 
-# Copy the rest of your app's source code from your host to your image filesystem.
+# Copy the rest of your app's source code
 COPY . .
 
 # Build the app
 RUN npm run build
 
-# Step 2: Serve the app with Caddy
-FROM caddy:alpine
+# Expose the port `serve` runs on
+EXPOSE 5000
 
-# Copy the built app from the previous stage
-COPY --from=build /Frontend/build /srv
-
-# Expose port 8080 (default port for Caddy)
-EXPOSE 8080
-
-# Start Caddy with the configuration to serve static files
-CMD ["caddy", "file-server", "--listen", "0.0.0.0:8080"]
+# Command to run the app
+CMD ["serve", "-s", "build", "-l", "5000"]
