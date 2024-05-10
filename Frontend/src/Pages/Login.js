@@ -192,8 +192,6 @@ export default function Login() {
                   sx={{
                     bgcolor: blue[500],
                     borderRadius: 10,
-                    padding: [2, 0],
-                    my: 2,
                   }}
                   variant="contained"
                 >

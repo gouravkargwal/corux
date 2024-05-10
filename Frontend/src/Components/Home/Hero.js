@@ -33,7 +33,7 @@ const Item = ({ item }) => {
   return (
     <Box
       sx={{
-        height: "200px", // Adjust the height as needed
+        height: "200px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
@@ -44,6 +44,9 @@ const Item = ({ item }) => {
         textAlign: "center",
         backgroundColor: "background.main",
         boxShadow: 0,
+        "@media (min-width: 768px)": {
+          height: "500px",
+        },
       }}
       margin={3}
       marginTop={1}
