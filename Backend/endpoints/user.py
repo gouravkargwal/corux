@@ -47,6 +47,7 @@ async def get_profile(
     db: Session = Depends(get_sql_db),
 ):
     try:
+        logger.info("Entered Get-Profile")
         user = (
             db.query(User)
             .filter(User.mobile_number == credentials.mobile_number)
@@ -54,13 +55,13 @@ async def get_profile(
         )
         if not user:
             raise HTTPException(status_code=404, detail="User Do not Exist")
-
+        logger.info("User Found")
         user_refer = (
             db.query(Referral_table)
             .filter(Referral_table.mobile_number == user.mobile_number)
             .first()
         )
-
+        logger.info("Before Result")
         return {
             "username": user.username,
             "mobile_number": user.mobile_number,

@@ -82,7 +82,6 @@ async def check_mobile_number(
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
         otp = random.randint(1000, 9999)
-        # otp="1234"
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -122,7 +121,7 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
 
             db.add(new_otp_log)
             db.commit()
-            db.refresh(new_otp_log)
+            # db.refresh(new_otp_log)
         logger.info("Otp entry done")
         number = userdetail.mobile_number
         message = otp
@@ -302,6 +301,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
 async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
+            logger.info("Enter Register")
             user = (
                 db.query(User)
                 .filter(User.mobile_number == user_info.mobile_number)
@@ -311,7 +311,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 raise HTTPException(
                     status_code=409, detail="User already registered. Please login."
                 )
-
+            logger.info("User Searched")
             new_user = User(
                 mobile_number=user_info.mobile_number,
                 username=user_info.username,
@@ -319,6 +319,8 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             )
 
             db.add(new_user)
+            logger.info("User Added")
+
             refer_code = generate_random_string(10)
             if user_info.refer_code:
                 user_refered_by_level1 = (
@@ -372,12 +374,14 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 )
 
                 db.add(new_user_refer_entry)
+            payload = {"mobile_number": new_user.mobile_number,
+                       "user_id": new_user.user_id}
+            logger.info("Before Token")
+            access_token = authhandler.encode_token(payload)
+            refresh_token = authhandler.encode_refresh_token(payload)
+            logger.info("After Token")
         db.commit()
-        payload = {"mobile_number": new_user.mobile_number,
-                   "user_id": new_user.user_id}
 
-        access_token = authhandler.encode_token(payload)
-        refresh_token = authhandler.encode_refresh_token(payload)
         return {
             "status_code": 200,
             "refresh_token": refresh_token,
@@ -387,9 +391,11 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "referral_code": refer_code,
         }
     except HTTPException as e:
+        db.rollback()
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
+        db.rollback()
         logger.error(str(e))
         return JSONResponse(
             status_code=500,
