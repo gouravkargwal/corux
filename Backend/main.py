@@ -32,7 +32,8 @@ app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
 
 sio_manager = SocketManager(
-    app=app, path="/ws/")
+    app=app, cors_allowed_origins="*", mount_location='/ws', socketio_path='/')
+
 game = Game()
 task_running = False
 connected_clients = set()

@@ -2,8 +2,8 @@ import { io } from "socket.io-client";
 
 // Setting up the socket connection
 const socket = io(process.env.REACT_APP_BASE_URL, {
-  path: "/ws/socket.io/",
-  transports: ["websocket", "polling"],
+  path: "/ws",
+  transports: ["websocket"],
 });
 
 // Event listener for successful connection
