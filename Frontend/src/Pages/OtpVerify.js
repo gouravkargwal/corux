@@ -24,12 +24,12 @@ export default function OtpVerify() {
   const otpRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [resendButtonDisabled, setResendButtonDisabled] = useState(true);
-  const [timer, setTimer] = useState(120);
+  const [timer, setTimer] = useState(300);
   const registrationData = useSelector(selectAuthRegistrationData);
   const forgotPhoneNumber = useSelector(selectAuthForgotPhoneData);
 
   const startTimer = () => {
-    setTimer(120); // Reset the timer to 120 seconds
+    setTimer(300); // Reset the timer to 120 seconds
     setResendButtonDisabled(true);
     const interval = setInterval(() => {
       setTimer((prevTime) => {

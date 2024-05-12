@@ -64,7 +64,7 @@ async def generate_qr(
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
         img_byte_arr = BytesIO()
-        img.save(img_byte_arr, format="PNG")
+        img.save(img_byte_arr)
         img_byte_arr.seek(0)
 
         transaction_id = uuid.uuid4()
@@ -90,7 +90,10 @@ async def generate_qr(
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(f"Failed to generate QR code: {str(e)}")
-        raise e
+        return JSONResponse(
+            status_code=500,
+            content={"detail": "Internal Server Error"},
+        )
 
 
 # Patch Request to update UTR number.

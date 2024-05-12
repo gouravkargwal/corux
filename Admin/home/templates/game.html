@@ -60,7 +60,7 @@
         var fastapi = "{{ fastapi }}";
         $('.primary-button').click(function () {
             $.ajax({
-                url: fastapi +'/control/timer/start/',
+                url: fastapi +'/control/timer/start',
                 type: 'POST',
                 success: function (response) {
                     $('#errorModalBody').text('Game started!');
@@ -76,7 +76,7 @@
         
         $('.secondary-button').click(function () {
             $.ajax({
-                url: fastapi + '/control/timer/stop/',
+                url: fastapi + '/control/timer/stop',
                 type: 'POST',
                 
                 success: function (response) {

@@ -301,6 +301,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
 async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
+            print("Enter Register")
             logger.info("Enter Register")
             user = (
                 db.query(User)
@@ -311,6 +312,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 raise HTTPException(
                     status_code=409, detail="User already registered. Please login."
                 )
+            print("User Searched")
             logger.info("User Searched")
             new_user = User(
                 mobile_number=user_info.mobile_number,
@@ -320,6 +322,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
 
             db.add(new_user)
             logger.info("User Added")
+            print("User Added")
 
             refer_code = generate_random_string(10)
             if user_info.refer_code:
@@ -376,9 +379,11 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 db.add(new_user_refer_entry)
             payload = {"mobile_number": new_user.mobile_number,
                        "user_id": new_user.user_id}
+            print("Before Token")
             logger.info("Before Token")
             access_token = authhandler.encode_token(payload)
             refresh_token = authhandler.encode_refresh_token(payload)
+            print("After Token")
             logger.info("After Token")
         db.commit()
 

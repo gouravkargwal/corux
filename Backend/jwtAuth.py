@@ -3,15 +3,18 @@ from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from schema.user import JWTPayload
-import traceback,os
+from utils.logger import setup_logger
+import traceback
+import os
 
 security = HTTPBearer()
+logger = setup_logger()
 
 
 class JWTAuth:
-    secret_key = os.getenv('secret_key')
-    algorithm =  os.getenv('algorithm')
-    
+    secret_key = os.getenv('SECRET_KEY')
+    algorithm = os.getenv('ALGORITHM')
+
     def encode_token(self, payload):
         asof = datetime.now()
         payload.update(
@@ -29,7 +32,8 @@ class JWTAuth:
 
     def decode_token(self, token):
         try:
-            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm])
+            payload = jwt.decode(token, self.secret_key,
+                                 algorithms=[self.algorithm])
             if payload["scope"] == "access_token":
                 return payload
             raise HTTPException(
@@ -55,7 +59,8 @@ class JWTAuth:
     def refresh_token(self, refresh_token):
         try:
             if not refresh_token:
-                raise HTTPException(status_code=401, detail="Refresh token is missing")
+                raise HTTPException(
+                    status_code=401, detail="Refresh token is missing")
             payload = jwt.decode(
                 refresh_token, self.secret_key, algorithms=[self.algorithm]
             )
@@ -70,17 +75,24 @@ class JWTAuth:
                 new_token = self.encode_token(payload)
 
                 return new_token, new_refresh_token
-            raise HTTPException(status_code=401, detail="Invalid scope for token")
+            raise HTTPException(
+                status_code=401, detail="Invalid scope for token")
         except jwt.ExpiredSignatureError:
-            raise HTTPException(status_code=401, detail="Refresh token expired")
+            raise HTTPException(
+                status_code=401, detail="Refresh token expired")
         except jwt.JWTError as err:
             print("JWT Error:", err)
-            raise HTTPException(status_code=401, detail="Invalid refresh token")
+            raise HTTPException(
+                status_code=401, detail="Invalid refresh token")
 
 
 async def authenticate_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
 ) -> JWTPayload:
+    if credentials is None or not credentials.credentials:
+        logger.error("No credentials provided")
+        raise HTTPException(
+            status_code=401, detail="Credentials are required to access this resource.")
     auth_handler = JWTAuth()
     payload = auth_handler.decode_token(credentials.credentials)
     return JWTPayload(

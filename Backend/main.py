@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
 from utils.calculateResult import get_result
@@ -6,6 +6,7 @@ from utils.logger import setup_logger
 from game_logic import Game
 import asyncio
 import traceback
+import os
 
 # Import routers for your application
 from endpoints.auth import router as Authrouter
@@ -14,15 +15,25 @@ from endpoints.result import router as Resultrouter
 from endpoints.wallet import router as Walletrouter
 
 logger = setup_logger()
-app = FastAPI()
+app = FastAPI(docs_url=None)
+
+allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# @app.middleware("https")
+# async def log_requests(request: Request, call_next):
+#     logger.info(f"Request headers: {request.headers}")
+#     response = await call_next(request)
+#     logger.info(f"Response headers: {response.headers}")
+#     return response
 
 # Include routers for endpoints
 app.include_router(Authrouter, tags=["Auth"], prefix="/auth")
@@ -32,7 +43,7 @@ app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
 
 sio_manager = SocketManager(
-    app=app, cors_allowed_origins="*", mount_location='/ws', socketio_path='/')
+    app=app, cors_allowed_origins=allowed_origins, mount_location='/ws', socketio_path='/')
 
 game = Game()
 task_running = False
@@ -74,8 +85,8 @@ async def notify_timer():
             if game_state:
                 if connected_clients:
                     await sio_manager.emit("game_state", game_state)
-                    logger.info(
-                        {"event": "game_state_emitted", "state": game_state})
+                    # logger.info(
+                    #     {"event": "game_state_emitted", "state": game_state})
 
                 if game.is_result_ready():
                     max_retries = 3

@@ -23,13 +23,13 @@ class Game:
         self.start_time = datetime.now()
         self.game_id = self.generate_game_id()
         self.result_calculated = False
-        self.logger.info(
-            {
-                "event": "game_started",
-                "game_id": self.game_id,
-                "start_time": str(self.start_time),
-            }
-        )
+        # self.logger.info(
+        #     {
+        #         "event": "game_started",
+        #         "game_id": self.game_id,
+        #         "start_time": str(self.start_time),
+        #     }
+        # )
         self.update_state()
 
     def update_state(self):
@@ -51,13 +51,13 @@ class Game:
                 "game_id": self.game_id,
             }
         )
-        self.logger.info(
-            {
-                "event": "game_state_updated",
-                "game_id": self.game_id,
-                "state": self.state,
-            }
-        )
+        # self.logger.info(
+        #     {
+        #         "event": "game_state_updated",
+        #         "game_id": self.game_id,
+        #         "state": self.state,
+        #     }
+        # )
 
         return self.state
 
@@ -68,9 +68,11 @@ class Game:
             and not self.result_calculated
         )
         if is_ready:
-            self.logger.info({"event": "result_ready", "game_id": self.game_id})
+            self.logger.info(
+                {"event": "result_ready", "game_id": self.game_id})
         return is_ready
 
     def finalize_results(self):
         self.result_calculated = True
-        self.logger.info({"event": "results_finalized", "game_id": self.game_id})
+        self.logger.info(
+            {"event": "results_finalized", "game_id": self.game_id})

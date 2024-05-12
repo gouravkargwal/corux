@@ -54,7 +54,8 @@ def determine_winners(result_color, result_number, total_amount_bet):
             }
 
             total_amount_won = 0
-            minIndex = result_number["total_bet_amount"].nsmallest(i + 1).index[-1]
+            minIndex = result_number["total_bet_amount"].nsmallest(
+                i + 1).index[-1]
             min_number = result_number.loc[minIndex, "bet_on"]
 
             winner_dict_form["number_who_won"].append(min_number)
@@ -157,13 +158,13 @@ async def get_result(game_id):
         with db.begin():
             result_color = db.execute(
                 text(
-                    f"SELECT bet_on,sum(bet_amount) As total_bet_amount FROM bet_color WHERE game_id = '{game_id}' GROUP BY bet_on"
+                    f"SELECT bet_on,sum(bet_amount) As total_bet_amount FROM BET_COLOR WHERE game_id = '{game_id}' GROUP BY bet_on"
                 )
             )
 
             result_number = db.execute(
                 text(
-                    f"SELECT bet_on,sum(bet_amount) As total_bet_amount FROM bet_number WHERE game_id = '{game_id}' GROUP BY bet_on"
+                    f"SELECT bet_on,sum(bet_amount) As total_bet_amount FROM BET_NUMBER WHERE game_id = '{game_id}' GROUP BY bet_on"
                 )
             )
             result_color = [row._asdict() for row in result_color] or []
@@ -211,7 +212,8 @@ async def get_result(game_id):
                 db.query(Bet_Color).filter(Bet_Color.game_id == game_id).all()
             )
             result_number = (
-                db.query(Bet_Number).filter(Bet_Number.game_id == game_id).all()
+                db.query(Bet_Number).filter(
+                    Bet_Number.game_id == game_id).all()
             )
 
             result_list = []
@@ -345,7 +347,8 @@ async def get_result(game_id):
                                 game_id=game_id,
                                 mobile_number=user_level1.mobile_number,
                                 level_1_refer=i["mobile_number"],
-                                amount_won=round(user_level1_win_commission, 2),
+                                amount_won=round(
+                                    user_level1_win_commission, 2),
                             )
 
                             db.add(new_refer_win)
@@ -375,7 +378,8 @@ async def get_result(game_id):
                                     game_id=game_id,
                                     mobile_number=user_level2.mobile_number,
                                     level_2_refer=i["mobile_number"],
-                                    amount_won=round(user_level2_win_commission, 2),
+                                    amount_won=round(
+                                        user_level2_win_commission, 2),
                                 )
 
                                 db.add(new_refer_win_2)
@@ -389,7 +393,8 @@ async def get_result(game_id):
         error_messages = []
         for error in e.errors():
             error_messages.append(
-                {"loc": error["loc"], "msg": error["msg"], "type": error["type"]}
+                {"loc": error["loc"], "msg": error["msg"],
+                    "type": error["type"]}
             )
         logger.error({"event": "validation_error", "error": error_messages})
         raise HTTPException(status_code=422, detail=error_messages)
@@ -410,4 +415,5 @@ async def get_result(game_id):
     except Exception as e:
         db.rollback()
         logger.error({"event": "unknown_error", "error": str(e)})
-        raise HTTPException(status_code=500, detail="An unexpected error occurred")
+        raise HTTPException(
+            status_code=500, detail="An unexpected error occurred")

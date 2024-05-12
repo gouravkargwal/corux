@@ -31,11 +31,9 @@ SECRET_KEY = "django-insecure-r_aq%07cm#_=a#n^1f3x(gmv6b_g0o6k*uw!97-#akc#6zt=6r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ["adminvegagaming.online"]
 ALLOWED_HOSTS = ["*"]
-# ["adminvegagaming.online"]
 
-
-# Application definition
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -82,37 +80,32 @@ WSGI_APPLICATION = "Admin_Corux.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": os.environ.get("DATABASE_NAME"),
+#         "USER": os.environ.get("DATABASE_USERNAME"),
+#         "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+#         "HOST": os.environ.get("IP_PUBLIC"),
+#         'PORT': '3306',
+
+#     }
+# }
+# GCP Hosting DB
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DATABASE_NAME"),
-        "USER": os.environ.get("DATABASE_USERNAME"),
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-        "HOST": os.environ.get("IP_PUBLIC", "127.0.0.1"),
-        "PORT": os.environ.get("DATABASE_PORT", "3306"),
+    'default': {
+        # or 'django.db.backends.postgresql'
+        'ENGINE':  'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USERNAME'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': '',  # Leave blank for unix socket connections
+        'PORT': '',  # Leave blank for default port
+        'OPTIONS': {
+            'unix_socket': f'/cloudsql/{os.getenv("CLOUD_SQL_NAME")}',
+        },
     }
 }
-# GCP Hosting DB
-# DATABASES = {
-#     'default': {
-#         # or 'django.db.backends.postgresql'
-#         'ENGINE':  'django.db.backends.mysql',
-#         'NAME': os.getenv('DATABASE_NAME'),
-#         'USER': os.getenv('DATABASE_USERNAME'),
-#         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-#         'HOST': '',  # Leave blank for unix socket connections
-#         'PORT': '',  # Leave blank for default port
-#         'OPTIONS': {
-#             'unix_socket': f'/cloudsql/{os.getenv("CLOUD_SQL_NAME")}',
-#         },
-#     }
-# }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 
 # Password validation
@@ -150,7 +143,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 LOGIN_URL = "/"
 
@@ -159,10 +151,8 @@ LOGIN_URL = "/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# CSRF_TRUSTED_ORIGINS = ["*"]
-# ['https://adminvegagaming.online']
-# CORS_ORIGIN_WHITELIST = ["*"]
-# ['https://adminvegagaming.online']
+CSRF_TRUSTED_ORIGINS = ['https://adminvegagaming.online']
+CORS_ORIGIN_WHITELIST = ['https://adminvegagaming.online']
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
