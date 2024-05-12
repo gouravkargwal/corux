@@ -8,7 +8,6 @@ class mobile_number(BaseModel):
 
 class JWTPayload(BaseModel):
     mobile_number: str
-    user_id: int
 
 
 class betdetails(BaseModel):

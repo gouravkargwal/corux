@@ -84,9 +84,11 @@ const ColorPrediction = () => {
     });
     socket.on("winner_notification", (data) => {
       if (data.user_list) {
+        dispatch(getResultList({ page: 1, size: 10 }));
         const matchingUsers = _.filter(data.user_list, { mobile_number: user });
         if (matchingUsers?.length > 0) {
           setResult(matchingUsers);
+          dispatch(getBalance());
           setResultDialogue(true);
         } else {
           setResult(null);
@@ -210,7 +212,8 @@ const ColorPrediction = () => {
               align="center"
               sx={{ marginBottom: 2 }}
             >
-              Important: Your account is blocked, so you are not allowed to create any bet. Please contact us for further assistance.
+              Important: Your account is blocked, so you are not allowed to
+              create any bet. Please contact us for further assistance.
             </Typography>
           )}
           <Grid container direction="column" display="flex">

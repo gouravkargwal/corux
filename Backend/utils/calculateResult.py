@@ -17,6 +17,7 @@ from db_module.session import SessionLocal
 import pandas as pd
 from pydantic import ValidationError
 from sqlalchemy.exc import SQLAlchemyError
+from datetime import datetime
 import random
 
 
@@ -225,6 +226,7 @@ async def get_result(game_id):
                         "mobile_number": row.mobile_number,
                         "amount": round(amount_won, 2),
                         "bet_on": row.bet_on,
+                        "create_date": row.CREATE_DATE.isoformat(),
                     }
                 )
 
@@ -256,6 +258,7 @@ async def get_result(game_id):
                         "mobile_number": row.mobile_number,
                         "amount": round(amount_won, 2),
                         "bet_on": row.bet_on,
+                        "create_date": row.CREATE_DATE.isoformat(),
                     }
                 )
                 new_output_winner = Winner_Table(
@@ -293,6 +296,8 @@ async def get_result(game_id):
                                     Bet_Color.game_id == game_id,
                                     Bet_Color.mobile_number == i["mobile_number"],
                                     Bet_Color.bet_on == i["bet_on"],
+                                    Bet_Color.CREATE_DATE == datetime.fromisoformat(
+                                        i["create_date"]),
                                 )
                             )
                             .first()
@@ -306,8 +311,10 @@ async def get_result(game_id):
                                 and_(
                                     Bet_Number.game_id == game_id,
                                     Bet_Number.mobile_number == i["mobile_number"],
-                                ),
-                                Bet_Number.bet_on == i["bet_on"],
+                                    Bet_Number.CREATE_DATE == datetime.fromisoformat(
+                                        i["create_date"]),
+                                    Bet_Number.bet_on == i["bet_on"],
+                                )
                             )
                             .first()
                         )

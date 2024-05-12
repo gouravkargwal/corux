@@ -96,5 +96,5 @@ async def authenticate_user(
     auth_handler = JWTAuth()
     payload = auth_handler.decode_token(credentials.credentials)
     return JWTPayload(
-        **{"mobile_number": payload["mobile_number"], "user_id": payload["user_id"]}
+        **{"mobile_number": payload["mobile_number"]}
     )

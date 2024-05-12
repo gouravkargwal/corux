@@ -272,8 +272,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
                 status_code=400, detail="Incorrect password provided. Please try again."
             )
 
-        payload = {"mobile_number": user.mobile_number,
-                   "user_id": user.user_id}
+        payload = {"mobile_number": user.mobile_number}
 
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
@@ -377,8 +376,9 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 )
 
                 db.add(new_user_refer_entry)
-            payload = {"mobile_number": new_user.mobile_number,
-                       "user_id": new_user.user_id}
+
+            payload = {"mobile_number": user_info.mobile_number}
+
             print("Before Token")
             logger.info("Before Token")
             access_token = authhandler.encode_token(payload)
