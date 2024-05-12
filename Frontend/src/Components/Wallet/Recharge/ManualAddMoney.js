@@ -6,12 +6,17 @@ import {
   Avatar,
   FormHelperText,
   Typography,
+  Button,
+  Divider,
+  Chip,
+  ImageList,
+  ImageListItem,
 } from "@mui/material";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import LoadingButton from "../../UI/LoadingButton";
-import { blue, grey, red } from "@mui/material/colors";
+import { blue, green, grey, red } from "@mui/material/colors";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
@@ -21,6 +26,7 @@ import { toast } from "react-toastify";
 const ManualAddMoney = () => {
   let { amount } = useParams();
   const qrData = useSelector(selectPaymentQrData);
+  console.log(qrData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -87,18 +93,70 @@ const ManualAddMoney = () => {
         borderRadius={1}
         padding={2}
       >
-        <Box display="flex" justifyContent="center" alignItems="center">
-          <img src={`data:image/png;base64,${qrData?.qr_code}`} alt="QR Code" />
+        <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{ overflow: "hidden", width: "100%" }}
+        >
+          <ImageList
+            sx={{
+              width: "auto",
+              height: "auto",
+              alignItems: "center",
+              justifyContent: "center",
+              display: "flex",
+            }}
+          >
+            <ImageListItem sx={{ width: "auto", height: "auto", padding: 0 }}>
+              <img
+                src={`data:image/png;base64,${qrData?.qr_code}`}
+                alt="QR Code"
+                loading="lazy"
+                style={{ width: "100%", height: "auto" }}
+              />
+            </ImageListItem>
+          </ImageList>
         </Box>
+
+        <Typography
+          variant="body2"
+          color="error"
+          align="center"
+          sx={{ marginTop: 2, marginBottom: 2 }}
+        >
+          Important: Do not refresh or reload this page before entering the UTR.
+          In case of any error, please contact us for assistance.
+        </Typography>
+        {/* <Divider>
+          <Chip label="Or" size="small" />
+        </Divider> */}
+        {/* <Button
+          variant="contained"
+          fullWidth
+          sx={{
+            bgcolor: green[500],
+            borderRadius: 10,
+            padding: "10px 24px",
+            margin: "16px 0",
+            minWidth: "auto",
+          }}
+          onClick={() => {
+            window.open(qrData?.upi_link, "_blank");
+          }}
+        >
+          Pay
+        </Button>
         <Typography
           variant="body2"
           color="error"
           align="center"
           sx={{ marginTop: 2 }}
         >
-          Important: Do not refresh or reload this page before entering the UTR.
-          In case of any error, please contact us for assistance.
-        </Typography>
+          Important: By clicking the pay button, you will be prompted to choose
+          a UPI app for completing the transaction. Once the payment is made,
+          please copy the UTR number and enter it in the designated field below.
+        </Typography> */}
       </Box>
       <Box
         component="form"

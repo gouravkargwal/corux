@@ -12,6 +12,7 @@ import {
 import Call from "@mui/icons-material/Call";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import customCapitalize from "../../Util/stringFunc";
 
 export default function Info() {
   const mobile = useSelector(selectBalanceMobile);
@@ -58,7 +59,7 @@ export default function Info() {
             />
           </Avatar>
           <Typography color="text.grey" variant="body2">
-            {username}
+            {customCapitalize(username)}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>

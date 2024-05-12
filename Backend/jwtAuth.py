@@ -1,9 +1,12 @@
 from jose import JWTError, jwt
 from fastapi import HTTPException, Depends
+from sqlalchemy.orm import Session
+from db_module.session import get_sql_db
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from schema.user import JWTPayload
 from utils.logger import setup_logger
+from models.user import User
 import traceback
 import os
 
@@ -88,6 +91,7 @@ class JWTAuth:
 
 async def authenticate_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
+    db: Session = Depends(get_sql_db)
 ) -> JWTPayload:
     if credentials is None or not credentials.credentials:
         logger.error("No credentials provided")
@@ -95,6 +99,13 @@ async def authenticate_user(
             status_code=401, detail="Credentials are required to access this resource.")
     auth_handler = JWTAuth()
     payload = auth_handler.decode_token(credentials.credentials)
+
+    if payload["mobile_number"]:
+        user = db.query(User).filter(User.mobile_number ==
+                                     payload["mobile_number"]).first()
+        if not user:
+            raise HTTPException(status_code=456, detail="User do not exist")
+
     return JWTPayload(
         **{"mobile_number": payload["mobile_number"]}
     )

@@ -201,11 +201,13 @@ export default function OtpVerify() {
                 render={({ field }) => (
                   <TextField
                     {...field}
-                    type="text"
+                    type="tel"
                     sx={{ borderColor: grey[500] }}
                     inputProps={{
                       maxLength: 1,
                       style: { textAlign: "center" },
+                      pattern: "[0-9]*",
+                      inputMode: "numeric",
                     }}
                     onInput={handleInput}
                     onKeyDown={handleKeyDown}

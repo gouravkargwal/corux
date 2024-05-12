@@ -3,7 +3,13 @@ import { useForm, Controller } from "react-hook-form";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Info from "../Profile/Info";
-import { Avatar, FormHelperText, Grid, InputAdornment, Typography } from "@mui/material";
+import {
+  Avatar,
+  FormHelperText,
+  Grid,
+  InputAdornment,
+  Typography,
+} from "@mui/material";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import { blue, green, grey, orange } from "@mui/material/colors";
 import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
@@ -13,9 +19,7 @@ import LoadingButton from "../UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
 import { useSelector } from "react-redux";
-import {
-  selectIsBlocked
-} from "../../Feature/Balance/balanceSlice";
+import { selectIsBlocked } from "../../Feature/Balance/balanceSlice";
 
 const Withdraw = () => {
   const navigate = useNavigate();
@@ -27,7 +31,7 @@ const Withdraw = () => {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       amount: "",
@@ -65,15 +69,17 @@ const Withdraw = () => {
   return (
     <Box component="form" onSubmit={handleSubmit(onFormSubmit)}>
       <Info />
-      {isBlock && 
+      {isBlock && (
         <Typography
           variant="body2"
           color="error"
           align="center"
           sx={{ marginTop: 2 }}
         >
-          Important: Your account is blocked, so adding or withdrawing money is not allowed. Please contact us for further assistance.
-        </Typography>}
+          Important: Your account is blocked, so adding or withdrawing money is
+          not allowed. Please contact us for further assistance.
+        </Typography>
+      )}
       <Box
         sx={{ backgroundColor: "background.main", boxShadow: 0 }}
         margin={3}
@@ -188,7 +194,11 @@ const Withdraw = () => {
           </Grid>
         </Grid>
       </Box>
-      <WithdrawSuccessDialogue open={open} onClose={onClose} amount={withdrawnAmount}/>
+      <WithdrawSuccessDialogue
+        open={open}
+        onClose={onClose}
+        amount={withdrawnAmount}
+      />
     </Box>
   );
 };

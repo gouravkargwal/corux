@@ -47,3 +47,16 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 456) {
+      store.dispatch(logoutUser());
+      persistor.purge();
+      window.location.assign("/");
+      return Promise.reject(error);
+    }
+    return Promise.reject(error);
+  }
+);

@@ -15,7 +15,6 @@ import { selectAuthToken, selectAuthUser } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   createBet,
-  selectBetError,
   selectBetLoading,
   selectBettingAllowed,
   selectGameId,

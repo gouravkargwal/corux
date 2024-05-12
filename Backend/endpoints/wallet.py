@@ -23,6 +23,7 @@ from sqlalchemy import text, delete, func, select
 import random
 import base64
 import uuid
+import urllib.parse
 
 
 router = APIRouter()
@@ -52,7 +53,8 @@ async def generate_qr(
         upi_list = [row.upi_id for row in upi_query_list]
 
         x = random.randint(0, len(upi_list) - 1)
-        upi_link = f"upi://pay?pa={upi_list[x]}&pn=gourav&am={amount.amount}&cu=INR"
+
+        upi_link = f"upi://pay?pa={urllib.parse.quote(upi_list[x])}&am={urllib.parse.quote(str(amount.amount))}&cu=INR"
 
         qr = qrcode.QRCode(
             version=1,
@@ -82,6 +84,7 @@ async def generate_qr(
         response_data = {
             "qr_code": img_base64,
             "transaction_id": str(transaction_id),
+            "upi_link": upi_link
         }
 
         return JSONResponse(content=response_data)

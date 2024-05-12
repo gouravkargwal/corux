@@ -8,7 +8,6 @@ import { DialogContent, IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 function GameRulesDialog({ open, onClose }) {
-  // Define the trade cost per trade
   const tradeCost = 100;
 
   return (
@@ -50,28 +49,28 @@ function GameRulesDialog({ open, onClose }) {
             <ListItemText
               inset
               primary="Join Green"
-              secondary="Win ₹196 for results 1, 3, 7, 9; ₹147 for result 5."
+              secondary="Win ₹200 for results green, 1, 3, 7, 9; ₹150 for result 5 or green + violet."
             />
           </ListItem>
           <ListItem>
             <ListItemText
               inset
               primary="Join Red"
-              secondary="Win ₹196 for results 2, 4, 6, 8; ₹147 for result 0."
+              secondary="Win ₹200 for results red, 2, 4, 6, 8; ₹150 for result 0 or red + violet."
             />
           </ListItem>
           <ListItem>
             <ListItemText
               inset
               primary="Join Violet"
-              secondary="Win ₹441 for results 0 or 5."
+              secondary="Win ₹450 for results violet, 0 and 5."
             />
           </ListItem>
           <ListItem>
             <ListItemText
               inset
               primary="Select Number"
-              secondary="Win ₹882 if the selected number matches the result."
+              secondary="Win ₹900 if the selected number matches the result."
             />
           </ListItem>
         </List>

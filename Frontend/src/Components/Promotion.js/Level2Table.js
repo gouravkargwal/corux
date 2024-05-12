@@ -14,13 +14,13 @@ const Level2Table = ({ data }) => {
   }
 
   const defaultColDef = {
-    sortable: true,
+    sortable: false,
     checkboxSelection: false,
     autoHeight: true,
-    filter: true,
+    filter: false,
     flex: 1,
     suppressMovable: false,
-    resizable: true,
+    resizable: false,
   };
 
   const columnDefs = [

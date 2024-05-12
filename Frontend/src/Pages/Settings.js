@@ -3,9 +3,9 @@ import { Avatar, Box, Typography } from "@mui/material";
 import Option from "../Components/Profile/Option";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { green } from "@mui/material/colors";
-import { Link, useNavigate } from "react-router-dom";
-import { logoutUser, selectAuthToken } from "../Feature/Auth/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { logoutUser } from "../Feature/Auth/authSlice";
+import { useDispatch } from "react-redux";
 import { persistor } from "../App/store";
 
 export default function Settings() {

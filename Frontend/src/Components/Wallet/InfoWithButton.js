@@ -13,6 +13,7 @@ import {
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import Call from "@mui/icons-material/Call";
+import customCapitalize from "../../Util/stringFunc";
 
 const InfoWithButton = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const InfoWithButton = () => {
               />
             </Avatar>
             <Typography color="text.grey" variant="body2">
-              {username}
+              {customCapitalize(username)}
             </Typography>
           </Box>
           <Box display="flex" alignItems="center" gap={1}>

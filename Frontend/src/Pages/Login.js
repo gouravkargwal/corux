@@ -20,7 +20,6 @@ import { loginUser, selectAuthLoading } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { blue, grey, orange, purple } from "@mui/material/colors";
-import LOGO from "../Assets/Images/Logo.webp";
 import AuthLogo from "../Components/UI/AuthLogo";
 
 export default function Login() {
@@ -28,7 +27,7 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    formState: { errors },
   } = useForm();
   const loading = useSelector(selectAuthLoading);
   const dispatch = useDispatch();

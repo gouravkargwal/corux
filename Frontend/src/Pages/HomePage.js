@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { selectAuthToken } from "../Feature/Auth/authSlice";
 import GameCard from "../Components/Home/GameCard";
 import ColorPredictionImg from "../Assets/Images/wingo.jpeg";
-import MontyHallImg from "../Assets/Images/montyhall.jpeg";
+// import MontyHallImg from "../Assets/Images/montyhall.jpeg";
 import ComingSoonImg from "../Assets/Images/comingsoon.webp";
 
 function GridExample() {
