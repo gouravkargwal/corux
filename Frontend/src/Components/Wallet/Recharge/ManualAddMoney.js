@@ -26,7 +26,6 @@ import { toast } from "react-toastify";
 const ManualAddMoney = () => {
   let { amount } = useParams();
   const qrData = useSelector(selectPaymentQrData);
-  console.log(qrData);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -82,6 +81,7 @@ const ManualAddMoney = () => {
       setLoading(false);
     }
   };
+
   return (
     <Box>
       <Box
@@ -130,8 +130,8 @@ const ManualAddMoney = () => {
         </Typography>
         {/* <Divider>
           <Chip label="Or" size="small" />
-        </Divider> */}
-        {/* <Button
+        </Divider>
+        <Button
           variant="contained"
           fullWidth
           sx={{
@@ -142,7 +142,10 @@ const ManualAddMoney = () => {
             minWidth: "auto",
           }}
           onClick={() => {
-            window.open(qrData?.upi_link, "_blank");
+            window.open(
+              `phonepe://pay?pa=${qrData?.upi_id}&am=${qrData?.amount}&cu=INR`,
+              "_blank"
+            );
           }}
         >
           Pay
@@ -172,7 +175,6 @@ const ManualAddMoney = () => {
           control={control}
           rules={{
             required: "UTR is required",
-            validate: (value) => value > 0 || "Amount must be greater than 0",
           }}
           render={({ field }) => (
             <TextField

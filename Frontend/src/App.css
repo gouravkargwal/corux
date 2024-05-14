@@ -1,6 +1,12 @@
 a {
   text-decoration: none;
 }
+/* styles.css or your main CSS file */
+.blur {
+  filter: blur(5px);
+  transition: filter 0.3s ease;
+}
+
 
 /* ---------------------------------table--------------------------------- */
 .ag-header-cell-sortable .ag-header-cell-label {

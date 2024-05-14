@@ -145,9 +145,11 @@ const ColorPrediction = () => {
           bet_on: selectedColor ? selectedColor : String(selectedNumber),
           game_id: gameId,
         };
-        dispatch(createBet(betData));
-        dispatch(getBalance());
-        dispatch(getUserGameList({ page: 1, size: 10 }));
+        const result = await dispatch(createBet(betData));
+        if (createBet.fulfilled.match(result)) {
+          dispatch(getBalance());
+          dispatch(getUserGameList({ page: 1, size: 10 }));
+        }
       } else {
         setLoginDialog(true);
       }
@@ -172,9 +174,29 @@ const ColorPrediction = () => {
     }
   }, [timer, colorBidDialog]);
 
+  const buttonStyles = {
+    height: "60px", // Larger height for better touch target
+    width: "80px", // Larger height for better touch target
+    borderRadius: "5px", // More rounded corners
+    fontWeight: "bold",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Add box shadow for depth
+    transition: "transform 0.2s", // Smooth transition for scaling
+    "&:hover": {
+      transform: "scale(1.05)", // Slightly scale up on hover
+      boxShadow: "0 6px 10px rgba(0, 0, 0, 0.15)", // Enhance box shadow on hover
+    },
+    "&:disabled": {
+      opacity: 0.6, // Reduce opacity for disabled state
+    },
+  };
+
   return (
     <>
-      <Grid container direction="column">
+      <Grid
+        container
+        direction="column"
+        className={resultDialogue || colorBidDialog ? "blur" : ""}
+      >
         {token && <InfoWithButton />}
 
         <Grid
@@ -220,18 +242,21 @@ const ColorPrediction = () => {
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
                 disabled={!bettingAllowed || isBlock}
+                sx={{ ...buttonStyles }}
               >
                 Red
               </RedButton>
               <VioletButton
                 onClick={() => handleOpenBidDialog("color", "violet")}
                 disabled={!bettingAllowed || isBlock}
+                sx={{ ...buttonStyles }}
               >
                 Violet
               </VioletButton>
               <GreenButton
                 onClick={() => handleOpenBidDialog("color", "green")}
                 disabled={!bettingAllowed || isBlock}
+                sx={{ ...buttonStyles }}
               >
                 Green
               </GreenButton>
@@ -244,6 +269,7 @@ const ColorPrediction = () => {
                     fullWidth
                     onClick={() => handleOpenBidDialog("number", index)}
                     disabled={!bettingAllowed || isBlock}
+                    sx={{ ...buttonStyles }}
                   >
                     {index}
                   </Button>
