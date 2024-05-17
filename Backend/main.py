@@ -18,8 +18,8 @@ logger = setup_logger()
 app = FastAPI(docs_url=None)
 # app = FastAPI()
 
-allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
-# allowed_origins = ["http://192.168.1.7:3000"]
+# allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
+allowed_origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,

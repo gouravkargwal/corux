@@ -28,18 +28,30 @@ const WithdrawSuccessDialogue = ({ open, onClose, amount }) => {
         </Badge>
       </DialogTitle>
       <DialogContent>
-        <Box display="flex" flexDirection="column" minWidth={280}>
-          <Typography fontWeight="bold">Successfully Processed</Typography>
-          <Typography color={grey[500]}>
-            Your withdrawal of ₹{amount} has been successfully processed.
-            Please await our approval. Thank you for your patience.
+        <Box
+          display="flex"
+          flexDirection="column"
+          minWidth={{ xs: "auto", sm: 280 }}
+        >
+          <Typography
+            fontWeight="bold"
+            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+          >
+            Successfully Processed
+          </Typography>
+          <Typography
+            color={grey[500]}
+            sx={{ fontSize: { xs: "0.75rem", sm: "0.875rem" } }}
+          >
+            Your withdrawal of ₹{amount} has been successfully processed. Please
+            await our approval. Thank you for your patience.
           </Typography>
           <Button
             variant="contained"
             sx={{
               bgcolor: green[800],
               borderRadius: 1,
-              padding: [1, 0],
+              padding: { xs: 0.5, sm: 1 },
               my: 2,
             }}
             onClick={onClose}

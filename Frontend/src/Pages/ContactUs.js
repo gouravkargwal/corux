@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Typography, Button, Box } from "@mui/material";
-import TelegramIcon from "@mui/icons-material/Telegram"; // Import the Telegram icon
+import TelegramIcon from "@mui/icons-material/Telegram";
 import { blue } from "@mui/material/colors";
 
 const ContactUs = () => {
@@ -29,9 +29,9 @@ const ContactUs = () => {
           <Button
             variant="contained"
             size="large"
-            href="https://t.me/YOUR_BOT_USERNAME"
+            href="https://t.me/vegagaminghelp"
             target="_blank"
-            startIcon={<TelegramIcon />} // Add the Telegram icon
+            startIcon={<TelegramIcon />}
             sx={{
               backgroundColor: blue[500],
               "&:hover": {
@@ -40,7 +40,7 @@ const ContactUs = () => {
               color: "white",
             }}
           >
-            Chat with Us on Telegram
+            Chat on Telegram
           </Button>
         </Box>
       </Container>

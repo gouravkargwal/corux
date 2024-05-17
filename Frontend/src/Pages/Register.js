@@ -63,6 +63,7 @@ export default function Register() {
       setLoadingBtn(true);
       const dataToSend = {
         mobile_number: data.mobileNumber,
+        refer_code: data?.referCode,
       };
       dispatch(setRegistrationData(data));
       await API.checkUserAPI(dataToSend);
