@@ -16,16 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from home.views import login_view, users, withdraw, deposit, logout_view, gameControl, upi
+from home.views import login_view, users, withdraw, deposit, logout_view, gameControl, upi, transactions
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", login_view, name= 'login'),
+    path("", login_view, name='login'),
     path("logout/", logout_view, name="logout"),
-    path("users/", users, name= 'users'),
-    path("withdraw/", withdraw, name= 'withdraw'),
-    path("deposit/", deposit, name= 'deposit'),
-    path("gameControl/", gameControl, name= 'gameControl'),
-    path("upi/", upi, name= 'upi'),
+    path("users/", users, name='users'),
+    path("withdraw/", withdraw, name='withdraw'),
+    path("deposit/", deposit, name='deposit'),
+    path("gameControl/", gameControl, name='gameControl'),
+    path("transactions/", transactions, name='transactions'),
+    path("upi/", upi, name='upi'),
     path("api/", include('api.urls')),
 ]

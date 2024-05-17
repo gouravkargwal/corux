@@ -4,6 +4,7 @@ from typing import Optional
 
 class mobile_number(BaseModel):
     mobile_number: str
+    refer_code: Optional[str] = None
 
 
 class JWTPayload(BaseModel):

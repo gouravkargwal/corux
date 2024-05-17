@@ -1070,7 +1070,7 @@ button.close {
     width: 90px !important;
 }
  
-.clickable.deposit, .clickable.deposit_deny{
+.clickable.deposit, .clickable.deposit_deny, .clickable.withdraw, .clickable.withdraw_deny{
     width: 65px !important;
 }
  

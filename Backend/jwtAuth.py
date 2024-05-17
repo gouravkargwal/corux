@@ -6,7 +6,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from schema.user import JWTPayload
 from utils.logger import setup_logger
-from models.user import User
+from models.user import User, get_current_time_in_kolkata
 import traceback
 import os
 
@@ -19,7 +19,7 @@ class JWTAuth:
     algorithm = os.getenv('ALGORITHM')
 
     def encode_token(self, payload):
-        asof = datetime.now()
+        asof = get_current_time_in_kolkata()
         payload.update(
             {
                 "scope": "access_token",
@@ -49,7 +49,7 @@ class JWTAuth:
             raise HTTPException(status_code=401, detail="Invalid token")
 
     def encode_refresh_token(self, payload):
-        asof = datetime.now()
+        asof = get_current_time_in_kolkata()
         payload.update(
             {
                 "scope": "refresh_token",

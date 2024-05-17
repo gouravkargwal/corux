@@ -33,6 +33,7 @@
                                     <th class="sm dot">Mobile Number</th>
                                     <th class="lg dot">Date of Creation</th>
                                     <th class="sm dot">Amount</th>
+                                    <th class="lg dot">User UPI ID</th>
                                     <th class="md dot">Withdraw Status</th>
                                     <th class="md dot">Admin UPI ID</th>
                                     <th class="md dot">UTR</th>
@@ -70,6 +71,36 @@
     </div>
 </div>
 
+<div
+  class="modal fade"
+  id="approveModal2"
+  tabindex="-1"
+  aria-labelledby="saveLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body bl c">
+        <!-- <p> <img src="/assets/images/done.gif" class="img-fluid" width="100px" /> </p> -->
+        <h6>Click on confirm to deny Withdraw</h6>
+        <div class="dig_btn modbtn mt-2">
+          <button type="button" class="btn bkbtn c" data-dismiss="modal">
+            <i class="fa fa-times" aria-hidden="true"></i> Cancel
+          </button>
+          <button
+            type="button"
+            class="btn svbtn c"
+            data-dismiss="modal"
+            id="approveWithdrawDeny"
+          >
+            <i class="fa fa-check" aria-hidden="true"></i> Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <div class="modal fade" id="user-popup" tabindex="-1" aria-labelledby="token-popupLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -77,7 +108,7 @@
             <div class="modal-body bl c"> <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span> </button>
                 <!-- <p><img src="/assets/images/done.gif" class="img-fluid" width="80px"></p> -->
-                <h6>Withdraw requset has been approved with</h6>
+                <h6>Withdraw requset has been confirmed for</h6>
                 <h6>ID : <span class="bk"></span> </h6>
                 <div class="dig_btn c mt-3"> <button type="button" class="btn grbtn addbtn done-button"
                         data-toggle="modal" data-dismiss="modal" data-target="#user-popup"> <i class="fa fa-check"
@@ -177,6 +208,10 @@
                     "className": "sm dot",
                 },
                 {
+                    "data": "USER_UPI_ID",
+                    "className": "lg dot",
+                },
+                {
                     "data": "APPROVE_WITHDRAW",
                     "className": "md dot",
                     "render": function (data, type, row) { return data ? "Approved" : "Yet to be approve"; }
@@ -206,14 +241,24 @@
                 },
                 {
                     "data": "APPROVE_WITHDRAW",
-                    "className": "sm dot",
+                    "className": "md dot",
                     "render": function (data, type, row) {
-                        if (!data) {
-                            return `<button class="btn btn-success btn-sm clickable withdraw" data-id="${row.ID}" data-bs-toggle="tooltip" data-bs-placement="right" title="Appprove Withdraw">Approve</button>`;
+                        if (!data && !row.DENY_WITHDRAW) {
+                        return `<button class="btn btn-success btn-sm clickable withdraw" data-id="${row.ID}" data-bs-toggle="tooltip" data-bs-placement="right" title="Appprove Withdraw">Approve</button>
+                                        <button class="btn btn-danger btn-sm clickable withdraw_deny" data-id="${row.ID}" data-bs-toggle="tooltip" data-bs-placement="right" title="Deny Withdraw">Deny</button>`;
+                        } else if (!data && row) {
+                        return `<button class="btn btn-success btn-sm clickable withdraw" data-id="${row.ID}" data-bs-toggle="tooltip" data-bs-placement="right" title="Appprove Withdraw">Approve</button>`;
                         } else {
-                            return `-`;
+                        return `-`;
                         }
-                    }
+                    },
+                    // "render": function (data, type, row) {
+                    //     if (!data) {
+                    //         return `<button class="btn btn-success btn-sm clickable withdraw" data-id="${row.ID}" data-bs-toggle="tooltip" data-bs-placement="right" title="Appprove Withdraw">Approve</button>`;
+                    //     } else {
+                    //         return `-`;
+                    //     }
+                    // }
                 },
                 {
                     "data": "UPDATE_DATE",
@@ -285,6 +330,47 @@
             hideOverlay();
         });
     }); 
+    $(document).on("click", ".withdraw_deny", function (event) {
+        var ctId1 = $(this).data("id");
+        $("#approveModal2").data("user-id", ctId1);
+        $("#approveModal2").modal("show");
+    });
+    $("#approveWithdrawDeny").click(function () {
+        var userId = $("#approveModal2").data("user-id");
+        showOverlay();
+        $.ajax({
+        url: "/api/withdraw/",
+        type: "PATCH",
+        data: { ID: userId, DENY_WITHDRAW: 1 },
+        success: function (response) {
+            $("#dashboard2")
+            .DataTable()
+            .ajax.reload(function (json) {
+                if (!json || !json.records || json.records.length === 0) {
+                var table = $("#dashboard2").DataTable();
+                var pageInfo = table.page.info();
+                if (pageInfo.page > 0) {
+                    table.page("previous").draw("page");
+                }
+                }
+            }, false); // Stay on the current page after reload
+            if (response) {
+            $("#user-popup .bk").text(userId);
+            }
+            $("#user-popup").modal("show");
+        },
+        error: function (xhr) {
+            var errorMessage =
+            xhr.responseJSON && xhr.responseJSON.message
+                ? xhr.responseJSON.message
+                : "An error occurred";
+            $("#errorModalBody").text(errorMessage);
+            $("#errorModal").modal("show");
+        },
+        }).always(function () {
+        hideOverlay();
+        });
+    });
 </script>
 
 {% endblock %}

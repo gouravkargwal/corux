@@ -3,6 +3,8 @@ import uuid
 from datetime import datetime
 
 # Create your models here.
+
+
 class UserAdminTable(models.Model):
 
     USER_ID = models.AutoField(primary_key=True)
@@ -19,10 +21,9 @@ class UserAdminTable(models.Model):
 
     CREATE_DATE = models.DateTimeField(auto_now_add=True)
 
-    BALANCE = models.FloatField(default=0)
+    BALANCE = models.DecimalField(max_digits=30, decimal_places=3, default=0)
 
     UPDATE_DATE = models.DateTimeField(auto_now=True)
-
 
     class Meta:
         db_table = "USER"
@@ -42,7 +43,7 @@ class PaymentDepositTable(models.Model):
 
     CREATE_DATE = models.DateTimeField(auto_now_add=True)
 
-    AMOUNT = models.FloatField(null=False)
+    AMOUNT = models.DecimalField(max_digits=30, decimal_places=3, null=False)
 
     APPROVE_DEPOSIT = models.BooleanField(default=False)
 
@@ -52,6 +53,7 @@ class PaymentDepositTable(models.Model):
 
     class Meta:
         db_table = "DEPOSIT"
+
 
 class PaymentWithdrawTable(models.Model):
 
@@ -67,7 +69,7 @@ class PaymentWithdrawTable(models.Model):
 
     CREATE_DATE = models.DateTimeField(auto_now_add=True)
 
-    AMOUNT = models.FloatField(null=False)
+    AMOUNT = models.DecimalField(max_digits=30, decimal_places=3, null=False)
 
     APPROVE_WITHDRAW = models.BooleanField(default=False)
 
@@ -77,6 +79,7 @@ class PaymentWithdrawTable(models.Model):
 
     class Meta:
         db_table = "WITHDRAW"
+
 
 class UpiTable(models.Model):
 

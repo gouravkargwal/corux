@@ -15,7 +15,7 @@ from schema.user import (
 
 from utils.verify import hash_password, verify_password
 from jwtAuth import JWTAuth
-from models.user import Otp_Table, User, Referral_table
+from models.user import Otp_Table, User, Referral_table, get_current_time_in_kolkata
 from datetime import datetime, timedelta
 import string
 import secrets
@@ -65,6 +65,14 @@ async def check_mobile_number(
             raise HTTPException(
                 status_code=403, detail="User already registered. Please login."
             )
+
+        if mobile_number.refer_code:
+            user_refered_by_level1 = db.query(Referral_table).filter(
+                Referral_table.referral_code_to == mobile_number.refer_code).first()
+
+            if not user_refered_by_level1:
+                raise HTTPException(
+                    status_code=400, detail="Wrong Referral Code")
 
         return {"status_code": 200, "message": "User not registered. Please register."}
     except HTTPException as e:
@@ -269,7 +277,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
 
         if not verify_password(user_detail.password, user.password):
             raise HTTPException(
-                status_code=400, detail="Incorrect password provided. Please try again."
+                status_code=400, detail="Incorrect Credentials. Please try again."
             )
 
         payload = {"mobile_number": user.mobile_number}
@@ -300,8 +308,6 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
 async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
     try:
         with db.begin():
-            print("Enter Register")
-            logger.info("Enter Register")
             user = (
                 db.query(User)
                 .filter(User.mobile_number == user_info.mobile_number)
@@ -311,8 +317,6 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 raise HTTPException(
                     status_code=409, detail="User already registered. Please login."
                 )
-            print("User Searched")
-            logger.info("User Searched")
             new_user = User(
                 mobile_number=user_info.mobile_number,
                 username=user_info.username,
@@ -320,20 +324,15 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             )
 
             db.add(new_user)
-            logger.info("User Added")
-            print("User Added")
 
             refer_code = generate_random_string(10)
             if user_info.refer_code:
-                user_refered_by_level1 = (
-                    db.query(Referral_table)
-                    .filter(Referral_table.referral_code_to == user_info.refer_code)
-                    .first()
-                )
+                user_refered_by_level1 = db.query(Referral_table).filter(
+                    Referral_table.referral_code_to == user_info.refer_code).first()
 
-                # if not user_refered_by_level1:
-                #     pass
-                # raise HTTPException(status_code=400, detail="Wrong Referral Code")
+                if not user_refered_by_level1:
+                    raise HTTPException(
+                        status_code=400, detail="Wrong Referral Code")
                 if user_refered_by_level1:
                     new_refer_entry = Referral_table(
                         mobile_number=user_refered_by_level1.mobile_number,
