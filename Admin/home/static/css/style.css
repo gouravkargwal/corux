@@ -1131,3 +1131,14 @@ button.close {
     margin-bottom: 10px; /* Provides a little space below the button */
     font-size: 14px;
 }
+
+.viewBtn{
+    margin-top: 50px;
+}
+
+@media (max-width: 768px) {
+    .viewBtn{
+        margin-top: 10px !important;
+        text-align: center !important;
+    }
+}

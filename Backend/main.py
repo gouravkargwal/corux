@@ -21,7 +21,7 @@ app = FastAPI(docs_url=None)
 # app = FastAPI()
 
 allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
-# allowed_origins = ["http://localhost:3000"]
+# allowed_origins = ["http://127.0.0.1:8080"]
 
 app.add_middleware(
     CORSMiddleware,
