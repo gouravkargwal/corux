@@ -67,7 +67,8 @@ def gameControl(request):
 def transactions(request):
     try:
         nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
-        return render(request, 'transactions.html', {'nonceValue': nonce})
+        fastapi = settings.FASTAPI_API
+        return render(request, 'transactions.html', {'nonceValue': nonce, 'fastapi': fastapi})
     except Exception as e:
         return render(request, 'transactions.html', {'nonceValue': nonce})
 

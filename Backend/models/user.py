@@ -22,12 +22,17 @@ import pytz
 
 from datetime import datetime, timezone, timedelta
 import pytz
+from utils.logger import setup_logger
+
+logger = setup_logger()
+kolkata_timezone = pytz.timezone('Asia/Kolkata')
 
 
 def get_current_time_in_kolkata():
     # IST = timezone(timedelta(hours=5, minutes=30))
     # return datetime.now()
     kolkata_timezone = pytz.timezone('Asia/Kolkata')
+    logger.info(datetime.now(kolkata_timezone))
     return datetime.now(kolkata_timezone)
 
 
@@ -49,15 +54,15 @@ class Bet_Color(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
         name="CREATE_DATE",
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
         name="UPDATE_DATE",
     )
 
@@ -81,15 +86,15 @@ class Bet_Number(Base):
         unique=False,
         nullable=False,
         name="CREATE_DATE",
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
         name="UPDATE_DATE",
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -117,15 +122,15 @@ class All_Time_Winner_Table(Base):
         unique=False,
         nullable=False,
         name="CREATE_DATE",
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         nullable=False,
         name="UPDATE_DATE",
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -149,15 +154,15 @@ class Otp_Table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=datetime.now(),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=datetime.now(),
+        onupdate=datetime.now(),
     )
 
 
@@ -184,7 +189,7 @@ class User(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     balance = Column(Double, unique=False, name="BALANCE",
                      nullable=False, default=0)
@@ -193,8 +198,8 @@ class User(Base):
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
     winnings = relationship("Winner_Table", back_populates="user")
@@ -224,15 +229,15 @@ class Account_Detail(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -259,15 +264,15 @@ class Winner_Table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
     user = relationship("User", back_populates="winnings")
@@ -294,15 +299,15 @@ class Result(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -337,15 +342,15 @@ class Referral_table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
     user = relationship("User", back_populates="referrals")
@@ -375,15 +380,15 @@ class All_Referral_Winning(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -407,15 +412,15 @@ class Upi_Table(Base):
         unique=False,
         name="CREATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
         name="UPDATE_DATE",
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -430,7 +435,7 @@ class PaymentDepositTable(Base):
     ADMIN_UPI_ID = Column(String(50), nullable=True)
     UTR = Column(String(50), nullable=True, unique=False)
     CREATE_DATE = Column(DateTime, unique=False, nullable=False,
-                         default=get_current_time_in_kolkata())
+                         default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')))
     AMOUNT = Column(Double, nullable=False)
     APPROVE_DEPOSIT = Column(Boolean, nullable=False,
                              unique=False, default=False)
@@ -439,8 +444,8 @@ class PaymentDepositTable(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 
@@ -453,7 +458,7 @@ class PaymentWithdrawTable(Base):
     USER_UPI_ID = Column(String(50), nullable=False)
     ADMIN_UPI_ID = Column(String(50), nullable=True)
     CREATE_DATE = Column(DateTime, unique=False, nullable=False,
-                         default=get_current_time_in_kolkata())
+                         default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')))
     AMOUNT = Column(Double, nullable=False, unique=False)
     APPROVE_WITHDRAW = Column(Boolean, default=False)
     DENY_WITHDRAW = Column(Boolean, default=False)
@@ -461,8 +466,8 @@ class PaymentWithdrawTable(Base):
         DateTime,
         unique=False,
         nullable=False,
-        default=get_current_time_in_kolkata(),
-        onupdate=get_current_time_in_kolkata(),
+        default=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
+        onupdate=lambda: datetime.now(pytz.timezone('Asia/Kolkata')),
     )
 
 

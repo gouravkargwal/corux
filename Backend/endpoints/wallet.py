@@ -17,9 +17,12 @@ from models.user import (
     Bet_Color,
     Bet_Number,
     User,
+    All_Time_Winner_Table,
+    All_Referral_Winning
 )
 from schema.user import amount_schema, utr_schema, withdraw_schema
 from sqlalchemy import text, delete, func, select
+from datetime import datetime
 import random
 import base64
 import uuid
@@ -265,10 +268,66 @@ async def withdraw_transaction(
         if not withdraw_trans:
             return []
 
-        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_WITHDRAW, "upi": row.USER_UPI_ID} for row in withdraw_trans]
+        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_WITHDRAW, "upi": row.USER_UPI_ID, "denied": row.DENY_WITHDRAW} for row in withdraw_trans]
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)
     except Exception as e:
         logger.error(str(e))
         raise e
+
+
+@router.get('/transactions')
+async def get_stats(start_date: datetime = Query(None, description="Start date in YYYY-MM-DD format"),
+                    end_date: datetime = Query(None, description="End date in YYYY-MM-DD format"), db: Session = Depends(get_sql_db)):
+    try:
+        if not start_date or not end_date:
+            return {"error": "Both start_date and end_date are required."}
+
+        deposit_amount = db.query(func.sum(PaymentDepositTable.AMOUNT)).filter(and_(
+            PaymentDepositTable.UPDATE_DATE >= start_date, PaymentDepositTable.UPDATE_DATE <= end_date, PaymentDepositTable.APPROVE_DEPOSIT == True)).one_or_none()
+
+        if deposit_amount:
+            deposit_amount = deposit_amount[0]
+
+        withdraw_amount = db.query(func.sum(PaymentWithdrawTable.AMOUNT)).filter(and_(
+            PaymentWithdrawTable.UPDATE_DATE >= start_date, PaymentWithdrawTable.UPDATE_DATE <= end_date, PaymentWithdrawTable.APPROVE_WITHDRAW == True)).one_or_none()
+
+        if withdraw_amount:
+            withdraw_amount = withdraw_amount[0]
+
+        bet_color_amount = db.query(func.sum(Bet_Color.bet_amount)).filter(and_(
+            Bet_Color.UPDATE_DATE >= start_date, Bet_Color.UPDATE_DATE <= end_date)).one_or_none()
+
+        if bet_color_amount:
+            bet_color_amount = bet_color_amount[0]
+
+        bet_number_amount = db.query(func.sum(Bet_Number.bet_amount)).filter(and_(
+            Bet_Number.UPDATE_DATE >= start_date, Bet_Number.UPDATE_DATE <= end_date)).one_or_none()
+
+        if bet_number_amount:
+            bet_number_amount = bet_number_amount[0]
+
+        user_winning_amount = db.query(func.sum(All_Time_Winner_Table.amount_won)).filter(and_(
+            All_Time_Winner_Table.UPDATE_DATE >= start_date, All_Time_Winner_Table.UPDATE_DATE <= end_date)).one_or_none()
+
+        if user_winning_amount:
+            user_winning_amount = user_winning_amount[0]
+
+        user_refer_winning = db.query(func.sum(All_Referral_Winning.amount_won)).filter(and_(
+            All_Referral_Winning.UPDATE_DATE >= start_date, All_Referral_Winning.UPDATE_DATE <= end_date)).one_or_none()
+
+        if user_refer_winning:
+            user_refer_winning = user_refer_winning[0]
+
+        return {
+            "deposit_amount": deposit_amount,
+            "withdraw_amount": withdraw_amount,
+            "bet_color_amount": bet_color_amount,
+            "bet_number_amount": bet_number_amount,
+            "user_winning_amount": user_winning_amount,
+            "user_refer_winning": user_refer_winning
+        }
+    except Exception as e:
+        logger.error(str(e))
+        raise HTTPException(status_code=400, detail="Something want wrong.")

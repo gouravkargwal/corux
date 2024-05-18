@@ -6,9 +6,10 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from datetime import datetime, timedelta
 from schema.user import JWTPayload
 from utils.logger import setup_logger
-from models.user import User, get_current_time_in_kolkata
+from models.user import User
 import traceback
 import os
+import pytz
 
 security = HTTPBearer()
 logger = setup_logger()
@@ -19,7 +20,7 @@ class JWTAuth:
     algorithm = os.getenv('ALGORITHM')
 
     def encode_token(self, payload):
-        asof = get_current_time_in_kolkata()
+        asof = datetime.now(pytz.timezone('Asia/Kolkata'))
         payload.update(
             {
                 "scope": "access_token",
@@ -49,7 +50,7 @@ class JWTAuth:
             raise HTTPException(status_code=401, detail="Invalid token")
 
     def encode_refresh_token(self, payload):
-        asof = get_current_time_in_kolkata()
+        asof = datetime.now(pytz.timezone('Asia/Kolkata'))
         payload.update(
             {
                 "scope": "refresh_token",

@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import logging
-from models.user import get_current_time_in_kolkata
+import pytz
+# from models.user import get_current_time_in_kolkata
 
 
 class Game:
@@ -18,10 +19,10 @@ class Game:
         self.logger = logging.getLogger(__name__)
 
     def generate_game_id(self):
-        return get_current_time_in_kolkata().strftime("%Y%m%d%H%M%S")
+        return datetime.now(pytz.timezone('Asia/Kolkata')).strftime("%Y%m%d%H%M%S")
 
     def start_game(self):
-        self.start_time = get_current_time_in_kolkata()
+        self.start_time = datetime.now(pytz.timezone('Asia/Kolkata'))
         self.game_id = self.generate_game_id()
         self.result_calculated = False
         # self.logger.info(
@@ -37,7 +38,7 @@ class Game:
         if not self.start_time:
             return None
 
-        now = get_current_time_in_kolkata()
+        now = datetime.now(pytz.timezone('Asia/Kolkata'))
         elapsed_time = now - self.start_time
         remaining_time = self.game_duration - elapsed_time
 
@@ -65,7 +66,7 @@ class Game:
     def is_result_ready(self):
         is_ready = (
             self.start_time
-            and (get_current_time_in_kolkata() - self.start_time) >= self.game_duration
+            and (datetime.now(pytz.timezone('Asia/Kolkata')) - self.start_time) >= self.game_duration
             and not self.result_calculated
         )
         if is_ready:

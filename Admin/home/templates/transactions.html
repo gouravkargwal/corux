@@ -47,19 +47,19 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="field1">Deposit</label>
+                            <label for="field1">Total Deposit</label>
                             <input type="text" id="field1" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="field2">Withdraw</label>
+                            <label for="field2">Total Withdraw</label>
                             <input type="text" id="field2" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="field3">Paid</label>
+                            <label for="field3">Profit</label>
                             <input type="text" id="field3" class="form-control" readonly>
                         </div>
                     </div>
@@ -93,8 +93,18 @@
     crossorigin="anonymous"></script>
 
     <script nonce="{{ nonceValue }}">
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const overlay = document.getElementById("overlay");
+        window.addEventListener("unload", function (event) {
+          hideOverlay();
+        });
+      </script>
+
+    <script nonce="{{ nonceValue }}">
         $(document).ready(function () {
-            var today = new Date().toISOString().split('T')[0];
+            var fastapi = "{{ fastapi }}";
+            var now = new Date();
+            var today = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
             $('#date').attr('max', today);
     
             $('#view-btn').click(function () {
@@ -105,9 +115,21 @@
                     $('#errorModal').modal('show');
                     return;
                 }
-    
+                var now = new Date();
+                var selectedDate = new Date(date);
+
+                if (selectedDate.toISOString().split('T')[0] === today) {
+                    var hours = String(now.getHours()).padStart(2, '0');
+                    var minutes = String(now.getMinutes()).padStart(2, '0');
+                    var seconds = String(now.getSeconds()).padStart(2, '0');
+                    date += `T${hours}:${minutes}:${seconds}`;
+                } else {
+                    date += 'T23:59:59';
+                }
+
+                showOverlay();
                 $.ajax({
-                    url: '/api/transaction',  // Adjust the URL to your FastAPI endpoint
+                    url: fastapi+'/transactions',  // Adjust the URL to your FastAPI endpoint
                     type: 'GET',
                     data: { date: date },
                     success: function (response) {
@@ -120,6 +142,8 @@
                         $('#errorModalBody').text('Failed to fetch data!');
                         $('#errorModal').modal('show');
                     }
+                }).always(function () {
+                    hideOverlay();
                 });
             });
         });

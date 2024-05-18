@@ -14,6 +14,7 @@ const WithdrawHistory = () => {
   const data = useSelector(selectWalletWithdrawHistoryData);
   const isLoading = useSelector(selectWalletWithdrawHistoryLoading);
   const error = useSelector(selectWalletWithdrawHistoryError);
+  console.log(data);
 
   useEffect(() => {
     dispatch(withdrawHistory());

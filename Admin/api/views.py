@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,9 +10,10 @@ from home.custom_logging import adminlogger
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
-from django.db import transaction
 from django.db.models import Sum
+from django.utils import timezone
 from decimal import Decimal
+import datetime
 
 
 class UserAdminView(APIView):
@@ -166,6 +168,7 @@ class deposit(APIView):
         permission_classes = [IsAuthenticated]
         try:
             with transaction.atomic():
+                print("123")
                 adminlogger.info("deposit patch")
                 data = request.data.copy()
                 if not data.get('ID'):
@@ -195,6 +198,7 @@ class deposit(APIView):
 
         except Exception as e:
             adminlogger.error(f"Error: {str(e)}")
+            print(str(e))
             return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -252,27 +256,32 @@ class upi(APIView):
             return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class transaction(APIView):
+class transactions(APIView):
     def get(self, request):
         permission_classes = [IsAuthenticated]
         try:
             date = request.GET.get("date")
             adminlogger.info(date)
             deposit_sum = PaymentDepositTable.objects.filter(
-                CREATED_DATE__lt=date).aggregate(Sum('AMOUNT'))['amount__sum'] or 0
+                UPDATE_DATE__lte=date, APPROVE_DEPOSIT=1).aggregate(Sum('AMOUNT'))['AMOUNT__sum'] or 0
+            adminlogger.info(deposit_sum)
+            deposit_sum = round(deposit_sum, 2)
 
             withdraw_sum = PaymentWithdrawTable.objects.filter(
-                CREATED_DATE__lt=date).aggregate(Sum('AMOUNT'))['amount__sum'] or 0
+                UPDATE_DATE__lte=date, APPROVE_WITHDRAW=1).aggregate(Sum('AMOUNT'))['AMOUNT__sum'] or 0
+            withdraw_sum = round(withdraw_sum, 2)
 
             balance_sum = UserAdminTable.objects.aggregate(Sum('BALANCE'))[
-                'balance__sum'] or 0
+                'BALANCE__sum'] or 0
+            balance_sum = round(balance_sum, 2)
+            profit = deposit_sum-withdraw_sum-balance_sum
 
             return Response({
                 'status': 200,
                 'message': 'success',
                 'deposit': deposit_sum,
                 'withdraw': withdraw_sum,
-                'balance': balance_sum
+                'balance': profit
             })
 
         except Exception as e:

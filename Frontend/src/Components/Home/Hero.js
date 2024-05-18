@@ -2,13 +2,14 @@ import React from "react";
 import { Box } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import Banner from "../../Assets/Images/Banner.webp";
+import ReferralBanner from "../../Assets/Images/referralbanner.webp";
 
 const Hero = () => {
   const items = [
     {
       // title: "Hero Title 1",
       // description: "Something short ",
-      imageUrl: Banner,
+      imageUrl: ReferralBanner,
     },
     {
       // title: "Hero Title 2",

@@ -1,9 +1,11 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException, Request, Depends, Query
+from db_module.session import get_sql_db
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
 from utils.calculateResult import get_result
 from utils.logger import setup_logger
 from game_logic import Game
+from datetime import datetime
 import asyncio
 import traceback
 import os
@@ -18,8 +20,8 @@ logger = setup_logger()
 app = FastAPI(docs_url=None)
 # app = FastAPI()
 
-# allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
-allowed_origins = ["http://localhost:3000"]
+allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
+# allowed_origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,

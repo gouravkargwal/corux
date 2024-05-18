@@ -65,7 +65,7 @@ async def get_profile(
         return {
             "username": user.username,
             "mobile_number": user.mobile_number,
-            "balance": user.balance,
+            "balance": round(user.balance, 2),
             "refer_code": user_refer.referral_code_to,
             'is_blocked': user.is_blocked
         }
@@ -420,11 +420,9 @@ async def refer_information(
             .filter(All_Referral_Winning.mobile_number == credentials.mobile_number)
         ).one_or_none()
 
-        print(total_winning)
         amount_won = 0
         if total_winning:
             amount_won = total_winning[1]
-            print(amount_won)
             # return amount_won
 
         refer_code = (
