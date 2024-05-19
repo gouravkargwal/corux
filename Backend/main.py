@@ -20,8 +20,8 @@ logger = setup_logger()
 app = FastAPI(docs_url=None)
 # app = FastAPI()
 
-allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
-# allowed_origins = ["http://127.0.0.1:8080"]
+# allowed_origins = ["https://vegagaming.fun", "https://adminvegagaming.online"]
+allowed_origins = ["http://127.0.0.1:8080", "http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,6 +63,13 @@ async def handle_connect(sid, environ=None, auth=None):
         game_state = game.update_state()
         if game_inprocess:
             await sio_manager.emit("game_state", game_state, room=sid)
+            logger.info(
+                f"Inside handle_connect function when start_time becomes None and run Again")
+        elif game.start_time_flag:
+            await sio_manager.emit("game_state", game_state, room=sid)
+            logger.info(
+                f"Inside handle_connect function when game class variable start_time_flag is True")
+            game.start_time_flag = False
         logger.info(f"Client connected: SID={sid}, Game State={game_state}")
     except Exception as e:
         logger.error(f"Connection error on connect: {str(e)}", exc_info=True)

@@ -1,7 +1,10 @@
 from datetime import datetime, timedelta
 import logging
 import pytz
+from utils.logger import setup_logger
 # from models.user import get_current_time_in_kolkata
+
+logger = setup_logger()
 
 
 class Game:
@@ -11,6 +14,7 @@ class Game:
         self.start_time = None
         self.game_id = None
         self.result_calculated = False
+        self.start_time_flag = False
         self.state = {
             "phase": "betting",
             "remaining_time": int(self.game_duration.total_seconds()),
@@ -36,7 +40,13 @@ class Game:
 
     def update_state(self):
         if not self.start_time:
-            return None
+            self.start_time_flag = True
+            logger.info(
+                f"Inside update state .. start_time is None at {datetime.now(pytz.timezone('Asia/Kolkata'))}")
+            self.start_game()
+            # self.start_time = datetime.now(pytz.timezone('Asia/Kolkata'))
+            # self.game_id = self.generate_game_id()
+            # self.result_calculated = False
 
         now = datetime.now(pytz.timezone('Asia/Kolkata'))
         elapsed_time = now - self.start_time
