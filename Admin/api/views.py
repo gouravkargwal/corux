@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import login_required
 from rest_framework.permissions import IsAuthenticated
 from django.db.models import Sum
 from django.utils import timezone
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 import datetime
 
 
@@ -105,6 +105,8 @@ class withdraw(APIView):
                 elif data.get("DENY_WITHDRAW"):
                     balance = Decimal(user.BALANCE) + \
                         Decimal(paymentGetSerializer.data["AMOUNT"])
+                balance = balance.quantize(
+                    Decimal('0.001'), rounding=ROUND_HALF_UP)
                 serializedUser = UserAdminSerializer(
                     user, data={"BALANCE": balance}, partial=True)
                 serializedpayment = PaymentWithdrawSerializer(
@@ -185,15 +187,25 @@ class deposit(APIView):
                         Decimal(paymentGetSerializer.data["AMOUNT"])
                 elif data.get("DENY_DEPOSIT"):
                     balance = Decimal(user.BALANCE)
+                balance = balance.quantize(
+                    Decimal('0.001'), rounding=ROUND_HALF_UP)
                 serializedUser = UserAdminSerializer(
                     user, data={"BALANCE": balance}, partial=True)
                 serializedpayment = PaymentDepositSerializer(
                     payment, data=data, partial=True)
-                if serializedpayment.is_valid() and serializedUser.is_valid():
-                    serializedpayment.save()
-                    serializedUser.save()
+
+                if serializedpayment.is_valid():
+                    if serializedUser.is_valid():
+                        serializedpayment.save()
+                        serializedUser.save()
+                    else:
+                        first_field = next(iter(serializedUser.errors))
+                        first_error = serializedUser.errors[first_field][0]
+                        return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response(serializedpayment.errors)
+                    first_field = next(iter(serializedpayment.errors))
+                    first_error = serializedpayment.errors[first_field][0]
+                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
                 return Response({'status': 200, "message": "success"})
 
         except Exception as e:

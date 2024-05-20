@@ -43,10 +43,10 @@ class Game:
             self.start_time_flag = True
             logger.info(
                 f"Inside update state .. start_time is None at {datetime.now(pytz.timezone('Asia/Kolkata'))}")
-            self.start_game()
-            # self.start_time = datetime.now(pytz.timezone('Asia/Kolkata'))
-            # self.game_id = self.generate_game_id()
-            # self.result_calculated = False
+
+            self.start_time = datetime.now(pytz.timezone('Asia/Kolkata'))
+            self.game_id = self.generate_game_id()
+            self.result_calculated = False
 
         now = datetime.now(pytz.timezone('Asia/Kolkata'))
         elapsed_time = now - self.start_time

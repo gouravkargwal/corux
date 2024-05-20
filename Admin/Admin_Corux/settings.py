@@ -151,8 +151,10 @@ LOGIN_URL = "/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CSRF_TRUSTED_ORIGINS = ['https://adminvegagaming.online']
-CORS_ORIGIN_WHITELIST = ['https://adminvegagaming.online']
+CSRF_TRUSTED_ORIGINS = ['https://adminvegagaming.online',
+                        "https://vega-admin-wsltptu5dq-uc.a.run.app"]
+CORS_ORIGIN_WHITELIST = ['https://adminvegagaming.online',
+                         "https://vega-admin-wsltptu5dq-uc.a.run.app"]
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
