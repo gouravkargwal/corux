@@ -20,8 +20,8 @@ logger = setup_logger()
 app = FastAPI(docs_url=None)
 # app = FastAPI()
 
-allowed_origins = ["https://vegagaming.fun",
-                   "https://adminvegagaming.online", "https://vega-admin-wsltptu5dq-uc.a.run.app", "https://vega-fe-wsltptu5dq-uc.a.run.app"]
+allowed_origins = ["https://vegagaming.site",
+                   "https://vega-admin-wsltptu5dq-uc.a.run.app", "https://vega-fe-wsltptu5dq-uc.a.run.app"]
 # allowed_origins = ["http://localhost:3000", "http://192.168.1.2:3000"]
 
 app.add_middleware(
@@ -57,20 +57,36 @@ game_inprocess = False
 game_finishing = False
 
 
+# @app.on_event("startup")
+# async def startup_event():
+#     global task_running
+#     logger.info("Starting up. Checking game state...")
+#     if not task_running:
+#         task_running = True
+#         game.start_game()
+#         sio_manager.start_background_task(notify_timer)
+#         logger.info("Game started on startup.")
+
+
 @sio_manager.on("connect")
 async def handle_connect(sid, environ=None, auth=None):
     try:
         connected_clients.add(sid)
         game_state = game.update_state()
+        if game_state is None:
+            game.start_game()
+            game_state = game.update_state()
+            await sio_manager.emit("game_state", game_state, room=sid)
+
         if game_inprocess:
             await sio_manager.emit("game_state", game_state, room=sid)
-            logger.info(
-                f"Inside handle_connect function when start_time becomes None and run Again")
-        elif game.start_time_flag:
-            await sio_manager.emit("game_state", game_state, room=sid)
-            logger.info(
-                f"Inside handle_connect function when game class variable start_time_flag is True")
-            game.start_time_flag = False
+            # logger.info(
+            #     f"Inside handle_connect function when start_time becomes None and run Again")
+        # elif game.start_time_flag:
+        #     await sio_manager.emit("game_state", game_state, room=sid)
+        #     logger.info(
+        #         f"Inside handle_connect function when game class variable start_time_flag is True")
+        #     game.start_time_flag = False
         logger.info(f"Client connected: SID={sid}, Game State={game_state}")
     except Exception as e:
         logger.error(f"Connection error on connect: {str(e)}", exc_info=True)
