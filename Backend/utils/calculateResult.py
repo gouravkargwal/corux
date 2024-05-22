@@ -25,7 +25,7 @@ router = APIRouter()
 logger = setup_logger()
 
 
-def determine_winners(result_color, result_number, total_amount_bet):
+def determine_winners(result_color, result_number, total_amount_bet, is_single_row):
     try:
         flag = 0
         winner_dict = {
@@ -120,7 +120,7 @@ def determine_winners(result_color, result_number, total_amount_bet):
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
 
-            if total_amount_bet == 0:
+            if total_amount_bet == 0 or (is_single_row and total_amount_won <= 300):
                 return winner_dict_form
 
             winner_dict_form["profit_ratio"] = (
@@ -178,6 +178,16 @@ async def get_result(game_id):
                 result_number, columns=["bet_on", "total_bet_amount"]
             )
 
+            # Check the number of rows in each DataFrame separately
+            num_rows_result_color = len(result_color)
+            num_rows_result_number = len(result_number)
+
+            # Combine the lengths
+            total_rows_combined = num_rows_result_color + num_rows_result_number
+
+            # Check if the total number of rows is one
+            is_single_row = total_rows_combined == 1
+
             for i in range(0, 10):
                 if result_number[result_number["bet_on"] == i].empty:
                     result_number.loc[len(result_number)] = [i, 0]
@@ -197,7 +207,7 @@ async def get_result(game_id):
             ].astype(float)
 
             winner_dict = determine_winners(
-                result_color, result_number, total_amount_bet
+                result_color, result_number, total_amount_bet, is_single_row
             )
             db.execute(delete(Winner_Table))
 
