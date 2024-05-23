@@ -1,20 +1,17 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Info from "../../Profile/Info";
 import {
-  Avatar,
+  Box,
+  Typography,
   Chip,
   Divider,
   FormHelperText,
-  InputAdornment,
-  Typography,
+  Paper,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { blue, green, grey } from "@mui/material/colors";
-import LoadingButton from "../../UI/LoadingButton";
+import Info from "../../Profile/Info";
+import { blue, grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,17 +19,50 @@ import {
   selectPaymentQrError,
   selectPaymentQrLoading,
 } from "../../../Feature/Payment/paymentSlice";
-import {
-  selectIsBlocked
-} from "../../../Feature/Balance/balanceSlice";
+import { selectIsBlocked } from "../../../Feature/Balance/balanceSlice";
+import AuthTextField from "../../Auth/AuthTextField";
+import AuthButton from "../../Auth/AuthButton";
+import { styled, keyframes } from "@mui/system";
 
 const predefinedValues = [100, 200, 500, 1000];
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const ChipStyled = styled(Chip)(({ theme }) => ({
+  backgroundColor: "white",
+  color: "black",
+  borderColor: grey[500],
+  transition: "all 0.3s ease",
+  "&:hover": {
+    backgroundColor: blue[500],
+    color: "white",
+    transform: "scale(1.05)",
+  },
+  "&:active": {
+    transform: "scale(0.95)",
+  },
+  animation: `${fadeIn} 0.5s ease`,
+  margin: theme.spacing(1),
+}));
+
 const Recharge = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const qrLoading = useSelector(selectPaymentQrLoading);
   const qrError = useSelector(selectPaymentQrError);
   const isBlock = useSelector(selectIsBlocked);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const {
     control,
     handleSubmit,
@@ -51,29 +81,46 @@ const Recharge = () => {
   };
 
   return (
-    <Box>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        padding: isMobile ? 2 : 3,
+      }}
+    >
       <Info />
-      {isBlock && 
+      {isBlock && (
         <Typography
           variant="body2"
           color="error"
           align="center"
           sx={{ marginTop: 2 }}
         >
-          Important: Your account is blocked, so adding or withdrawing money is not allowed. Please contact us for further assistance.
-        </Typography>}
-        
+          Important: Your account is blocked, so adding or withdrawing money is
+          not allowed. Please contact us for further assistance.
+        </Typography>
+      )}
+
       <Typography marginLeft={3} fontWeight="600">
         Select Amount
       </Typography>
-      <Box
+      <Paper
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-        margin={3}
-        marginTop={1}
-        borderRadius={1}
-        padding={2}
+        sx={{
+          padding: isMobile ? 2 : 4,
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "16px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          margin: isMobile ? 2 : 3,
+          marginTop: 1,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
       >
         <Controller
           name="amount"
@@ -84,81 +131,67 @@ const Recharge = () => {
               value >= 100 || "Amount must be greater than or equal to 100",
           }}
           render={({ field }) => (
-            <TextField
+            <AuthTextField
               {...field}
-              sx={{ borderColor: grey[500] }}
               error={!!errors.amount}
-              variant="outlined"
               fullWidth
-              margin="normal"
               type="number"
               placeholder="Enter Amount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: green[500],
-                      }}
-                    >
-                      <CurrencyRupeeIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
             />
           )}
         />
         <FormHelperText
           error={!!errors.amount}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: errors.amount ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
-          {errors ? errors?.amount?.message : " "}
+          {errors.amount ? errors.amount.message : " "}
         </FormHelperText>
-        <Divider>
+        <Divider sx={{ width: "100%", my: 2 }}>
           <Chip label="Or" size="small" />
         </Divider>
         <Box
           display="flex"
           gap={2}
-          justifyContent="space-evenly"
+          justifyContent="center"
           marginY={2}
           flexWrap="wrap"
+          width="100%"
         >
           {predefinedValues.map((value) => (
-            <Button
+            <ChipStyled
               key={value}
-              variant="outlined"
+              label={`₹ ${value}`}
               onClick={() =>
                 setValue("amount", value, { shouldValidate: true })
               }
-              sx={{ color: "black", borderColor: grey[500] }}
-            >
-              ₹{value}
-            </Button>
+              clickable
+            />
           ))}
         </Box>
-        <LoadingButton
+        <AuthButton
           type="submit"
           variant="contained"
           fullWidth
           loading={qrLoading}
           disabled={isBlock}
-          sx={{
-            bgcolor: blue[500],
-            borderRadius: 10,
-            padding: [2, 0],
-          }}
         >
           Recharge
-        </LoadingButton>
+        </AuthButton>
         <FormHelperText
           error={!!qrError}
-          sx={{ visibility: qrError ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: qrError ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
           {qrError ? qrError : " "}
         </FormHelperText>
-      </Box>
+      </Paper>
     </Box>
   );
 };

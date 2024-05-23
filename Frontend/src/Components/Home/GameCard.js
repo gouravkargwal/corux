@@ -6,39 +6,57 @@ import Typography from "@mui/material/Typography";
 import { Box, CardActionArea } from "@mui/material";
 import AvTimerIcon from "@mui/icons-material/AvTimer";
 import { blue, lightBlue } from "@mui/material/colors";
+import { styled, keyframes } from "@mui/system";
 
-export default function GameCard({ title, time, img }) {
+const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
+
+const StyledCard = styled(Card)(({ theme }) => ({
+  border: "none",
+  borderRadius: 16,
+  overflow: "hidden",
+  background: "rgba(255, 255, 255, 0.1)",
+  boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+  backdropFilter: "blur(16px) saturate(180%)",
+  WebkitBackdropFilter: "blur(16px) saturate(180%)",
+  border: "1px solid rgba(209, 213, 219, 0.3)",
+  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+  },
+  animation: `${fadeIn} 0.5s ease`,
+}));
+
+const GameCard = ({ title, time, img }) => {
   return (
-    <Card
-      sx={{
-        width: "100%",
-        maxWidth: 350,
-        border: "none",
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
-      }}
-      variant="outlined"
-    >
+    <StyledCard variant="outlined">
       <CardActionArea>
         <CardMedia
           component="img"
-          height="260"
+          height="500px"
           image={img}
           alt={title}
-          sx={{ objectFit: "fill" }}
+          sx={{ objectFit: "cover" }}
         />
-        <CardContent sx={{ m: 0, p: 0 }}>
-          <Typography gutterBottom variant="body1" textAlign="center">
-            {title}
-          </Typography>
-        </CardContent>
-        <CardContent sx={{ m: 0, p: 0, borderRadius: 5 }}>
+        <CardContent sx={{ p: 2 }}>
           <Box
             display="flex"
             justifyContent="center"
-            gap={2}
-            bgcolor={lightBlue[100]}
-            p={2}
+            alignItems="center"
+            gap={1}
+            mt={1}
+            bgcolor={lightBlue[50]}
+            p={1}
+            borderRadius={2}
           >
             <AvTimerIcon sx={{ color: blue[900] }} />
             <Typography fontWeight="600" color={blue[900]}>
@@ -47,6 +65,8 @@ export default function GameCard({ title, time, img }) {
           </Box>
         </CardContent>
       </CardActionArea>
-    </Card>
+    </StyledCard>
   );
-}
+};
+
+export default GameCard;

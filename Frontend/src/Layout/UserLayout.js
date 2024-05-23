@@ -11,6 +11,7 @@ const UserLayout = () => {
         sx={{
           paddingBottom: "70px",
           minHeight: "100vh",
+          paddingTop: 5,
         }}
       >
         <Outlet />

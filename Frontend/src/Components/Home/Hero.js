@@ -21,7 +21,32 @@ const Hero = () => {
   return (
     <Carousel
       animation="slide"
-      interval={6000} // Change slide every 3 seconds
+      interval={6000} // Change slide every 6 seconds
+      indicatorContainerProps={{
+        style: {
+          marginTop: "10px",
+          textAlign: "center",
+        },
+      }}
+      indicatorIconButtonProps={{
+        style: {
+          padding: "3px", // 1
+          color: "rgba(0, 0, 0, 0.2)", // 3
+        },
+      }}
+      activeIndicatorIconButtonProps={{
+        style: {
+          color: "#fc211d", // 2
+        },
+      }}
+      indicatorProps={{
+        style: {
+          display: "inline-block",
+          width: "10px",
+          height: "10px",
+          margin: "0 5px",
+        },
+      }}
     >
       {items.map((item, i) => (
         <Item key={i} item={item} />

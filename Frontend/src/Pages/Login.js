@@ -4,25 +4,20 @@ import {
   Box,
   IconButton,
   InputAdornment,
-  TextField,
   Typography,
-  Avatar,
   Container,
   Grid,
   FormHelperText,
   useMediaQuery,
   Paper,
 } from "@mui/material";
-import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { loginUser, selectAuthLoading } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import { blue, grey, orange, purple } from "@mui/material/colors";
-import AuthLogo from "../Components/UI/AuthLogo";
+import { useNavigate } from "react-router-dom";
+import { blue, grey } from "@mui/material/colors";
 import AuthTextField from "../Components/Auth/AuthTextField";
 
 export default function Login() {

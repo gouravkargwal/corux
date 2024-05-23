@@ -20,6 +20,8 @@ import { useNavigate } from "react-router-dom";
 import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
 import { useSelector } from "react-redux";
 import { selectIsBlocked } from "../../Feature/Balance/balanceSlice";
+import AuthTextField from "../Auth/AuthTextField";
+import AuthButton from "../Auth/AuthButton";
 
 const Withdraw = () => {
   const navigate = useNavigate();
@@ -81,11 +83,24 @@ const Withdraw = () => {
         </Typography>
       )}
       <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
-        marginTop={1}
         borderRadius={1}
         padding={2}
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-start"
+        gap={2}
+        marginTop={0}
       >
         <Grid container>
           <Grid item xs={12}>
@@ -98,28 +113,12 @@ const Withdraw = () => {
                   value >= 100 || "Amount must be greater than or equal 100",
               }}
               render={({ field }) => (
-                <TextField
+                <AuthTextField
                   {...field}
-                  sx={{ borderColor: grey[500] }}
                   error={!!errors.amount}
-                  variant="outlined"
                   fullWidth
-                  margin="normal"
                   type="number"
                   placeholder="Enter Amount"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Avatar
-                          sx={{
-                            bgcolor: green[500],
-                          }}
-                        >
-                          <CurrencyRupeeIcon sx={{ color: "text.white" }} />
-                        </Avatar>
-                      </InputAdornment>
-                    ),
-                  }}
                 />
               )}
             />
@@ -127,7 +126,8 @@ const Withdraw = () => {
               error={!!errors.amount}
               sx={{
                 visibility: errors ? "visible" : "hidden",
-                height: "20px",
+                height: "10px",
+                m: 1,
               }}
             >
               {errors ? errors?.amount?.message : " "}
@@ -145,28 +145,12 @@ const Withdraw = () => {
                 },
               }}
               render={({ field }) => (
-                <TextField
+                <AuthTextField
                   {...field}
-                  sx={{ borderColor: grey[500] }}
                   error={!!errors.upi}
-                  variant="outlined"
                   fullWidth
-                  margin="normal"
                   type="text"
                   placeholder="Enter UPI"
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <Avatar
-                          sx={{
-                            bgcolor: orange[500],
-                          }}
-                        >
-                          <SensorOccupiedIcon sx={{ color: "text.white" }} />
-                        </Avatar>
-                      </InputAdornment>
-                    ),
-                  }}
                 />
               )}
             />
@@ -174,23 +158,22 @@ const Withdraw = () => {
               error={!!errors.upi}
               sx={{
                 visibility: errors ? "visible" : "hidden",
-                height: "20px",
+                height: "10px",
+                m: 1,
               }}
             >
               {errors ? errors?.upi?.message : " "}
             </FormHelperText>
           </Grid>
-          <Grid item xs={12}>
-            <LoadingButton
+          <Grid item xs={12} marginTop={1}>
+            <AuthButton
               type="submit"
-              variant="contained"
               disabled={isBlock}
               loading={loading}
               fullWidth
-              sx={{ bgcolor: blue[500], borderRadius: 10, padding: [2, 0] }}
             >
               Withdraw
-            </LoadingButton>
+            </AuthButton>
           </Grid>
         </Grid>
       </Box>

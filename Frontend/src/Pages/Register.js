@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
-  Avatar,
   Box,
   Checkbox,
   Container,
@@ -10,26 +9,19 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  TextField,
   Typography,
   useTheme,
   useMediaQuery,
   Paper,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import PhoneAndroidOutlinedIcon from "@mui/icons-material/PhoneAndroidOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { toast } from "react-toastify";
-import LoadingButton from "../Components/UI/LoadingButton";
 import { useDispatch } from "react-redux";
 import API from "../Api/ApiCall";
 import { setRegistrationData } from "../Feature/Auth/authSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
-import { blue, green, grey, orange, purple, red } from "@mui/material/colors";
-import RedeemIcon from "@mui/icons-material/Redeem";
-import AuthLogo from "../Components/UI/AuthLogo";
+import { blue, grey } from "@mui/material/colors";
 import AuthTextField from "../Components/Auth/AuthTextField";
 import AuthButton from "../Components/Auth/AuthButton";
 

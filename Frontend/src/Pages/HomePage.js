@@ -5,7 +5,7 @@ import Info from "../Components/Profile/Info";
 import { useSelector } from "react-redux";
 import { selectAuthToken } from "../Feature/Auth/authSlice";
 import GameCard from "../Components/Home/GameCard";
-import ColorPredictionImg from "../Assets/Images/wingo.jpeg";
+import ColorPredictionImg from "../Assets/Images/wingo.webp";
 // import MontyHallImg from "../Assets/Images/montyhall.jpeg";
 import ComingSoonImg from "../Assets/Images/comingsoon.webp";
 
