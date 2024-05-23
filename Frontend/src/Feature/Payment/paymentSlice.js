@@ -18,13 +18,9 @@ export const getReceiverDetails = createAsyncThunk(
       const response = await API.getBalanceAPI();
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );
@@ -38,13 +34,9 @@ export const generateQr = createAsyncThunk(
       navigate(`add-money/${amount}`);
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );

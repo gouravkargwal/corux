@@ -10,8 +10,6 @@ import MontyHall from "./Pages/MontyHall";
 import VirtualSlot from "./Pages/VirtualSlot";
 import Promotion from "./Pages/Promotion";
 import Profile from "./Pages/Profile";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import Bank from "./Pages/Bank";
 import Wallet from "./Pages/Wallet";
@@ -137,7 +135,6 @@ function App() {
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <ToastContainer />
     </BrowserRouter>
   );
 }

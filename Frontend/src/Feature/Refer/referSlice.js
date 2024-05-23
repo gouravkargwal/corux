@@ -14,13 +14,7 @@ export const getReferDetails = createAsyncThunk(
       const response = await API.getReferDetailsAPI();
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(error.response?.data?.message || 'An error occurred');
     }
   }
 );

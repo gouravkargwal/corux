@@ -1,13 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
-import { toast } from "react-toastify";
 
 const initialState = {
   loading: null,
   error: null,
-  balance: null,
-  mobile: null,
-  username: null,
+  balance: 256165161,
+  mobile: 917023074548,
+  username: "Gourav",
   referCode: null,
   isBlock: false,
 };
@@ -19,13 +18,9 @@ export const getBalance = createAsyncThunk(
       const response = await API.getBalanceAPI();
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );
@@ -46,12 +41,11 @@ const balanceSlice = createSlice({
         state.mobile = action.payload.mobile_number;
         state.username = action.payload.username;
         state.referCode = action.payload.refer_code;
-        state.isBlock = action.payload.is_blocked
+        state.isBlock = action.payload.is_blocked;
       })
       .addCase(getBalance.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(action.payload);
       });
   },
 });

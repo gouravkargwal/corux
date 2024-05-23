@@ -3,11 +3,11 @@ import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
 
 const initialState = {
-  token: null,
+  token: "askdjaslkdjaslkdjkasljdas",
   loading: null,
   error: null,
-  user: null,
-  balance: null,
+  user: "gourav",
+  balance: 841541511515151,
   registrationData: null,
   refreshToken: null,
   forgotPhone: null,
@@ -20,13 +20,9 @@ export const loginUser = createAsyncThunk(
       const response = await API.signinAPI(data);
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );
@@ -40,17 +36,9 @@ export const registerUser = createAsyncThunk(
       navigate("/auth");
       return response.data;
     } catch (error) {
-      if (error.response) {
-        if (error.response.status === 409) {
-          payload.navigate("/auth");
-          return rejectWithValue(error.response?.data?.detail);
-        }
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );

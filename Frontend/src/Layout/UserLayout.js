@@ -7,12 +7,11 @@ const UserLayout = () => {
   return (
     <>
       <Box
-        // sx={{
-        //   overflowY: "auto",
-        //   marginBottom: "56px",
-        //   backgroundColor: "background.default",
-        //   height: "calc(100vh - 56px)",
-        // }}
+        className="glass-container"
+        sx={{
+          paddingBottom: "70px",
+          minHeight: "100vh",
+        }}
       >
         <Outlet />
       </Box>
