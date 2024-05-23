@@ -7,12 +7,12 @@ const UserLayout = () => {
   return (
     <>
       <Box
-        sx={{
-          overflowY: "auto",
-          marginBottom: "56px",
-          backgroundColor: "background.default",
-          height: "calc(100vh - 56px)",
-        }}
+        // sx={{
+        //   overflowY: "auto",
+        //   marginBottom: "56px",
+        //   backgroundColor: "background.default",
+        //   height: "calc(100vh - 56px)",
+        // }}
       >
         <Outlet />
       </Box>

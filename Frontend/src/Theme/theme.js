@@ -37,10 +37,14 @@ const theme = createTheme({
     },
   },
   components: {
-    MuiOutlinedInput: {
+    MuiInputBase: {
       styleOverrides: {
-        root: {
-          borderRadius: "30px",
+        input: {
+          "&::placeholder": {
+            fontWeight: 500,
+            fontFamily: "Ubuntu,sans-serif",
+            fontSize: "12px",
+          },
         },
       },
     },
