@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Box, TextField, Typography, Container } from "@mui/material";
+import {
+  Box,
+  TextField,
+  Typography,
+  Container,
+  Paper,
+  useMediaQuery,
+} from "@mui/material";
 import LoadingButton from "../Components/UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import { blue, grey } from "@mui/material/colors";
@@ -15,6 +22,8 @@ import {
 import { toast } from "react-toastify";
 import AuthLogo from "../Components/UI/AuthLogo";
 import { useLocation } from "react-router-dom/dist/umd/react-router-dom.development";
+import AuthTextField from "../Components/Auth/AuthTextField";
+import AuthButton from "../Components/Auth/AuthButton";
 
 export default function OtpVerify() {
   const navigate = useNavigate();
@@ -149,27 +158,61 @@ export default function OtpVerify() {
       startTimer();
     }
   };
+  const isMobile = useMediaQuery("(max-width:600px)");
 
   return (
-    <Box height="100vh">
-      <Container component="main" maxWidth="xs">
+    <Box
+      height="100vh"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      className="glass-container"
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          width: isMobile ? "90%" : "400px",
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
           }}
         >
-          <Box justifyContent="center" display="flex">
-            <AuthLogo />
-          </Box>
-          <Typography variant="h5" fontSize="600" textAlign="center">
+          <Typography
+            variant="h6"
+            align="center"
+            gutterBottom
+            color={grey[500]}
+            sx={{
+              fontFamily: "Ubuntu,sans-serif",
+              fontWeight: 300,
+            }}
+          >
             OTP Verification
           </Typography>
           <Typography
-            variant="caption"
-            fontSize="600"
+            variant="h6"
+            align="center"
+            gutterBottom
             color={grey[500]}
-            textAlign="center"
+            sx={{
+              fontFamily: "Ubuntu,sans-serif",
+              fontWeight: 300,
+            }}
           >
             Enter OTP sent to +91
             {context === "forgot" ? (
@@ -184,12 +227,14 @@ export default function OtpVerify() {
                 ? navigate("/auth/forgot-password")
                 : navigate("/auth/register");
             }}
+            variant="h6"
+            align="center"
+            gutterBottom
+            color={grey[500]}
             sx={{
-              color: blue[500],
-              cursor: "pointer",
+              fontFamily: "Ubuntu,sans-serif",
+              fontWeight: 300,
             }}
-            variant="caption"
-            textAlign="center"
           >
             Change Number
           </Typography>
@@ -199,7 +244,7 @@ export default function OtpVerify() {
                 name={`otp.${index}`}
                 control={control}
                 render={({ field }) => (
-                  <TextField
+                  <AuthTextField
                     {...field}
                     type="tel"
                     sx={{ borderColor: grey[500] }}
@@ -224,48 +269,60 @@ export default function OtpVerify() {
             noValidate
             sx={{ mt: 1 }}
           >
-            <LoadingButton
+            <AuthButton
               type="submit"
               fullWidth
               disabled={!allOtpFilled || !isValid || !isDirty}
               loading={loading}
-              sx={{
-                bgcolor: blue[500],
-                borderRadius: 10,
-                padding: [2, 0],
-                my: 1,
-              }}
               variant="contained"
             >
               Verify Otp
-            </LoadingButton>
+            </AuthButton>
 
             <Typography
+              variant="h6"
+              align="center"
+              gutterBottom
+              color={grey[500]}
               sx={{
-                textAlign: "center",
-                my: 1,
-                color: blue[500],
+                fontFamily: "Ubuntu,sans-serif",
+                fontWeight: 300,
               }}
             >
               {formatTime(timer)}
             </Typography>
 
-            <Typography sx={{ textAlign: "center", my: 2 }}>
+            <Typography
+              variant="h6"
+              align="center"
+              gutterBottom
+              color={grey[500]}
+              sx={{
+                fontFamily: "Ubuntu,sans-serif",
+                fontWeight: 300,
+              }}
+            >
               Didn't receive the OTP?{" "}
               <Typography
                 onClick={handleResendOtp}
                 sx={{
                   cursor: resendButtonDisabled ? "default" : "pointer",
                   color: resendButtonDisabled ? grey[500] : blue[500],
+                  fontFamily: "Ubuntu,sans-serif",
+                  fontWeight: 300,
                 }}
                 component="span"
+                variant="h6"
+                align="center"
+                gutterBottom
+                color={grey[500]}
               >
                 Resend
               </Typography>
             </Typography>
           </Box>
         </Box>
-      </Container>
+      </Paper>
     </Box>
   );
 }

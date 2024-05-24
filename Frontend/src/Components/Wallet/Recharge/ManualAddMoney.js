@@ -22,6 +22,8 @@ import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
 import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
 import { toast } from "react-toastify";
+import AuthButton from "../../Auth/AuthButton";
+import AuthTextField from "../../Auth/AuthTextField";
 
 const ManualAddMoney = () => {
   let { amount } = useParams();
@@ -87,7 +89,16 @@ const ManualAddMoney = () => {
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         marginTop={1}
         borderRadius={1}
@@ -164,7 +175,16 @@ const ManualAddMoney = () => {
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         marginTop={1}
         borderRadius={1}
@@ -177,7 +197,7 @@ const ManualAddMoney = () => {
             required: "UTR is required",
           }}
           render={({ field }) => (
-            <TextField
+            <AuthTextField
               {...field}
               sx={{ borderColor: grey[500] }}
               error={!!errors.amount}
@@ -185,41 +205,27 @@ const ManualAddMoney = () => {
               fullWidth
               margin="normal"
               placeholder="Enter UTR"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: red[500],
-                      }}
-                    >
-                      <ReceiptIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
             />
           )}
         />
         <FormHelperText
           error={!!errors.utr}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: errors ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
           {errors ? errors?.utr?.message : " "}
         </FormHelperText>
-        <LoadingButton
+        <AuthButton
           type="submit"
           variant="contained"
           fullWidth
           loading={loading}
-          sx={{
-            bgcolor: blue[500],
-            borderRadius: 10,
-            padding: [2, 0],
-          }}
         >
           Submit
-        </LoadingButton>
+        </AuthButton>
       </Box>
       <RechargeSuccessDialogue open={open} onClose={onClose} amount={amount} />
     </Box>

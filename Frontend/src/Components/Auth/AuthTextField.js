@@ -1,10 +1,11 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-const AuthTextField = (props) => {
+const AuthTextField = ({ inputRef, ...props }) => {
   return (
     <TextField
       {...props}
+      ref={inputRef}
       sx={{
         "& .MuiOutlinedInput-root": {
           "& fieldset": {

@@ -17,6 +17,7 @@ const ColorPredictionTimer = ({ timer }) => {
       alignItems={"center"}
       color={theme.palette.text.blue}
       justifyContent="flex-end"
+      
     >
       <TimerIcon />
       {formatTime(timer)}

@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Avatar,
   Box,
@@ -12,12 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React from "react";
-import LoadingButton from "../UI/LoadingButton";
-import theme from "../../Theme/theme";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { blue, green, grey } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
+import LoadingButton from "../UI/LoadingButton";
+import { blue, green, grey, red } from "@mui/material/colors";
+import AuthTextField from "../Auth/AuthTextField";
+import AuthButton from "../Auth/AuthButton";
 
 const BettingDialogue = ({
   open,
@@ -32,19 +33,38 @@ const BettingDialogue = ({
   loading,
 }) => {
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      sx={{
+        "& .MuiDialog-paper": {
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        },
+      }}
+    >
       <DialogTitle
-        component="div"
-        onClose={onClose}
         display="flex"
         justifyContent="space-between"
+        alignItems="center"
       >
         <Typography
           variant="h6"
           sx={{
             color: selectedColor
-              ? theme.palette.text[selectedColor]
-              : theme.palette.text.blue,
+              ? selectedColor === "red"
+                ? red[500]
+                : selectedColor === "blue"
+                ? blue[500]
+                : green[500]
+              : "red",
+            fontFamily: "Ubuntu, sans-serif",
           }}
         >
           {dialogType === "color"
@@ -55,10 +75,7 @@ const BettingDialogue = ({
           aria-label="close"
           onClick={onClose}
           sx={{
-            position: "absolute",
-            right: 8,
-            top: 14,
-            color: (theme) => theme.palette.grey[500],
+            color: grey[500],
           }}
         >
           <CloseIcon />
@@ -68,8 +85,7 @@ const BettingDialogue = ({
       <DialogContent>
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <Box m={0}>
-            <TextField
-              sx={{ borderColor: grey[500] }}
+            <AuthTextField
               error={!!errors.amount}
               variant="outlined"
               autoFocus
@@ -78,21 +94,8 @@ const BettingDialogue = ({
               margin="normal"
               type="text"
               placeholder="Enter Amount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: green[500],
-                      }}
-                    >
-                      <CurrencyRupeeIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
               {...register("amount", {
-                required: true,
+                required: "Amount is required",
                 pattern: {
                   value: /^[0-9]+(\.[0-9]{1,2})?$/,
                   message:
@@ -103,12 +106,17 @@ const BettingDialogue = ({
                   message: "Amount should be at least 10.",
                 },
               })}
+              inputRef={register("amount").ref}
             />
             <FormHelperText
               error={!!errors.amount}
-              sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+              sx={{
+                visibility: errors.amount ? "visible" : "hidden",
+                height: "10px",
+                m: 1,
+              }}
             >
-              {errors ? errors?.amount?.message : ""}
+              {errors.amount ? errors.amount.message : ""}
             </FormHelperText>
           </Box>
 
@@ -126,7 +134,6 @@ const BettingDialogue = ({
                 </Typography>
               }
             />
-
             {errors.termsAndConditions && (
               <FormHelperText error>
                 You must accept the terms and conditions.
@@ -135,20 +142,14 @@ const BettingDialogue = ({
           </Box>
 
           <Box>
-            <LoadingButton
+            <AuthButton
               type="submit"
               loading={loading}
               variant="contained"
               fullWidth
-              sx={{
-                bgcolor: blue["A700"],
-                borderRadius: 10,
-                padding: [1, 0],
-                my: 2,
-              }}
             >
               Submit
-            </LoadingButton>
+            </AuthButton>
           </Box>
         </Box>
       </DialogContent>

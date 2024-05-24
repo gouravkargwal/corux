@@ -2,6 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import Banner from "../../Assets/Images/Banner.webp";
+import PlayWin from "../../Assets/Images/playwin.webp";
 import ReferralBanner from "../../Assets/Images/Designer.jpeg";
 
 const Hero = () => {
@@ -11,11 +12,11 @@ const Hero = () => {
       // description: "Something short ",
       imageUrl: ReferralBanner,
     },
-    // {
-    //   // title: "Hero Title 2",
-    //   // description: "An engaging description",
-    //   imageUrl: Banner,
-    // },
+    {
+      // title: "Hero Title 2",
+      // description: "An engaging description",
+      imageUrl: PlayWin,
+    },
   ];
 
   return (

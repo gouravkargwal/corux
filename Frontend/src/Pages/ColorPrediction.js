@@ -3,6 +3,7 @@ import {
   Button,
   Grid,
   IconButton,
+  Paper,
   Tab,
   Tabs,
   Typography,
@@ -202,7 +203,16 @@ const ColorPrediction = () => {
         <Grid
           item
           xs={4}
-          sx={{ backgroundColor: theme.palette.background.main, boxShadow: 0 }}
+          sx={{
+            padding: "40px",
+            background: "rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(16px) saturate(180%)",
+            "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            borderRadius: "12px",
+            border: "1px solid rgba(209, 213, 219, 0.3)",
+          }}
           margin={3}
           borderRadius={1}
           padding={2}
@@ -221,7 +231,17 @@ const ColorPrediction = () => {
         <Grid
           item
           xs={4}
-          sx={{ backgroundColor: theme.palette.background.main, boxShadow: 0 }}
+          sx={{
+            marginTop: 3,
+            padding: 3,
+            background: "rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(16px) saturate(180%)",
+            WebkitBackdropFilter: "blur(16px) saturate(180%)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            borderRadius: "16px",
+            border: "1px solid rgba(209, 213, 219, 0.3)",
+          }}
           margin={3}
           borderRadius={1}
           padding={2}
@@ -238,7 +258,24 @@ const ColorPrediction = () => {
             </Typography>
           )}
           <Grid container direction="column" display="flex">
-            <Grid item container xs={12} justifyContent="space-between" mb={2}>
+            <Grid
+              item
+              container
+              xs={12}
+              justifyContent="space-between"
+              mb={2}
+              sx={{
+                marginTop: 3,
+                padding: 3,
+                background: "rgba(255, 255, 255, 0.1)",
+                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                backdropFilter: "blur(16px) saturate(180%)",
+                WebkitBackdropFilter: "blur(16px) saturate(180%)",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                borderRadius: "16px",
+                border: "1px solid rgba(209, 213, 219, 0.3)",
+              }}
+            >
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
                 disabled={!bettingAllowed || isBlock}
@@ -280,16 +317,45 @@ const ColorPrediction = () => {
         </Grid>
         <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
           <Grid item xs={12} my={1}>
-            <Tabs
-              value={activeTab}
-              onChange={handleTabChange}
-              aria-label="simple tabs example"
-              variant="fullWidth"
-              visibleScrollbar={false}
+            <Paper
+              elevation={3}
+              sx={{
+                marginTop: 3,
+                padding: 3,
+                background: "rgba(255, 255, 255, 0.1)",
+                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                backdropFilter: "blur(16px) saturate(180%)",
+                WebkitBackdropFilter: "blur(16px) saturate(180%)",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                borderRadius: "16px",
+                border: "1px solid rgba(209, 213, 219, 0.3)",
+              }}
             >
-              <Tab label="Winner" />
-              {token && <Tab label="My Record" />}
-            </Tabs>
+              <Tabs
+                value={activeTab}
+                onChange={handleTabChange}
+                aria-label="simple tabs example"
+                variant="fullWidth"
+                visibleScrollbar={false}
+                sx={{
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "#fc211d",
+                  },
+                  "& .MuiTab-root.Mui-selected": {
+                    color: "#fc211d",
+                  },
+                  "& .MuiTab-root": {
+                    transition: "color 0.3s, background-color 0.3s",
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                  },
+                }}
+              >
+                <Tab label="Winner" />
+                {token && <Tab label="My Record" />}
+              </Tabs>
+            </Paper>
           </Grid>
           <Grid item xs={12} my={1}>
             <Box

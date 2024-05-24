@@ -5,29 +5,60 @@ import PaymentsIcon from "@mui/icons-material/Payments";
 import moment from "moment";
 
 const Transaction = ({ type, amount, date, approved, denied }) => {
+  const iconColor = grey[700];
+  const hoverColor = "#fc211d";
   const formattedDateTime = moment(date).format("DD MMMM YYYY, h:mm A");
+
   return (
     <Box
       display="flex"
       justifyContent="space-between"
-      sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-      borderRadius={1}
+      alignItems="center"
+      borderRadius={2}
       padding={2}
+      sx={{
+        transition: "transform 0.3s ease",
+        "&:hover": {
+          transform: "scale(1.02)",
+        },
+      }}
     >
-      <Box display="flex" gap={1}>
+      <Box display="flex" gap={2} alignItems="center">
         <Avatar
           sx={{
-            bgcolor: "black",
+            bgcolor: "transparent",
             width: 48,
-            height: 38,
+            height: 48,
+            transition: "color 0.3s",
+            "& .MuiSvgIcon-root": {
+              color: iconColor,
+              fontSize: 30,
+            },
+            "&:hover .MuiSvgIcon-root": {
+              color: hoverColor,
+            },
           }}
-          variant="rounded"
         >
-          <PaymentsIcon sx={{ color: "white" }} />
+          <PaymentsIcon />
         </Avatar>
         <Box>
-          <Typography variant="body2">UPI</Typography>
-          <Typography color={grey[500]} variant="caption">
+          <Typography
+            variant="body2"
+            sx={{
+              fontFamily: "Ubuntu, sans-serif",
+              fontWeight: 500,
+            }}
+          >
+            UPI
+          </Typography>
+          <Typography
+            color={grey[500]}
+            variant="caption"
+            sx={{
+              fontFamily: "Ubuntu, sans-serif",
+              fontWeight: 300,
+            }}
+          >
             {formattedDateTime}
           </Typography>
         </Box>

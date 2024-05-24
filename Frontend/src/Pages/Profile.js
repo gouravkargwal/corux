@@ -51,7 +51,7 @@ export default function ControlledAccordions() {
       }}
     >
       <Box width="100%" mb={3}>
-        {/* <Info /> */}
+        <Info />
       </Box>
       <Box
         width="100%"

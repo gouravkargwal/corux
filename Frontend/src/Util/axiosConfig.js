@@ -61,7 +61,7 @@ axiosInstance.interceptors.response.use(
       }
       store.dispatch(
         openSnackbar({
-          message: error.response.data.message || "An error occurred",
+          message: error.response.data.detail || "An error occurred",
           type: "error",
         })
       );

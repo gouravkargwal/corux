@@ -148,6 +148,7 @@ export default function Register() {
                     placeholder="Enter name"
                     {...register("name", { required: "Name is required" })}
                     error={!!errors.name}
+                    inputRef={register("name").ref}
                   />
                   <FormHelperText
                     error={!!errors.name}
@@ -172,6 +173,7 @@ export default function Register() {
                       },
                     })}
                     placeholder="Mobile Number"
+                    inputRef={register("mobileNumber").ref}
                     error={!!errors.mobileNumber}
                     InputProps={{
                       inputProps: {
@@ -203,6 +205,7 @@ export default function Register() {
                     })}
                     placeholder="Password"
                     error={!!errors.password}
+                    inputRef={register("password").ref}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment position="end">
@@ -237,6 +240,7 @@ export default function Register() {
                     variant="outlined"
                     type={showPassword ? "text" : "password"}
                     fullWidth
+                    inputRef={register("confirmPassword").ref}
                     {...register("confirmPassword", {
                       validate: (value) =>
                         value === password || "The passwords do not match",
@@ -278,6 +282,7 @@ export default function Register() {
                     placeholder="Refer Code (Optional)"
                     {...register("referCode")}
                     error={!!errors.referCode}
+                    inputRef={register("referCode").ref}
                   />
                   <FormHelperText
                     error={!!errors.referCode}

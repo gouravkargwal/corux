@@ -10,6 +10,7 @@ import {
   FormHelperText,
   useMediaQuery,
   Paper,
+  TextField,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -19,6 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { blue, grey } from "@mui/material/colors";
 import AuthTextField from "../Components/Auth/AuthTextField";
+import AuthButton from "../Components/Auth/AuthButton";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ export default function Login() {
   const handleMouseDownPassword = (event) => event.preventDefault();
   const onSubmit = async (data) => {
     const { phone, password } = data;
+    console.log(data);
     dispatch(loginUser({ mobile_number: phone, password }));
   };
 
@@ -131,6 +134,7 @@ export default function Login() {
                       },
                     })}
                     error={!!errors.phone}
+                    inputRef={register("phone").ref}
                   />
                   <FormHelperText
                     error={!!errors.phone}
@@ -146,6 +150,7 @@ export default function Login() {
                 <Grid item xs={12}>
                   <AuthTextField
                     fullWidth
+                    name="password"
                     placeholder="Enter password"
                     type={showPassword ? "text" : "password"}
                     InputProps={{
@@ -173,6 +178,7 @@ export default function Login() {
                       },
                     })}
                     error={!!errors.password}
+                    inputRef={register("password").ref}
                   />
                   <FormHelperText
                     error={!!errors.password}
@@ -201,27 +207,14 @@ export default function Login() {
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                  <LoadingButton
+                  <AuthButton
                     type="submit"
                     fullWidth
                     loading={loading}
-                    sx={{
-                      backgroundColor: "#fc4642",
-                      color: "white",
-                      padding: "10px 15px",
-                      borderRadius: "20px",
-                      boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
-                      "&:hover": {
-                        backgroundColor: "#fc211d",
-                        boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
-                      },
-                      textTransform: "none",
-                      fontSize: "16px",
-                    }}
                     variant="contained"
                   >
                     Login
-                  </LoadingButton>
+                  </AuthButton>
                 </Grid>
                 <Grid item xs={12}>
                   <Typography
