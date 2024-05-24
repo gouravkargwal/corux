@@ -1,21 +1,10 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Info from "../Profile/Info";
-import {
-  Avatar,
-  FormHelperText,
-  Grid,
-  InputAdornment,
-  Typography,
-} from "@mui/material";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { blue, green, grey, orange } from "@mui/material/colors";
-import SensorOccupiedIcon from "@mui/icons-material/SensorOccupied";
+import { FormHelperText, Grid, Typography } from "@mui/material";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
-import LoadingButton from "../UI/LoadingButton";
 import { useNavigate } from "react-router-dom";
 import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
 import { useSelector } from "react-redux";

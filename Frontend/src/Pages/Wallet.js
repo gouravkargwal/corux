@@ -1,4 +1,4 @@
-import { Box, Grid, Tab, Tabs, Paper, Typography } from "@mui/material";
+import { Box, Tab, Tabs, Paper } from "@mui/material";
 import React, { useState } from "react";
 import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import RechargeHistory from "../Components/Wallet/RechargeHistory";

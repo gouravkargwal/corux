@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import { Box } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
-import { blue } from "@mui/material/colors";
+import { blue, grey } from "@mui/material/colors";
 import AgGridPagination from "../UI/AgGridPagination";
 
 const Level1Table = ({ data }) => {
@@ -14,13 +14,13 @@ const Level1Table = ({ data }) => {
   }
 
   const defaultColDef = {
-    sortable: false,
-    checkboxSelection: false,
-    autoHeight: true,
-    filter: false,
+    sortable: true,
+    resizable: true,
     flex: 1,
-    suppressMovable: false,
-    resizable: false,
+    minWidth: 100,
+    filter: true,
+    headerClass: "header-cell",
+    cellClass: "cell",
   };
 
   const columnDefs = [
@@ -38,7 +38,7 @@ const Level1Table = ({ data }) => {
 
   const getRowStyle = (params) => {
     if (params.node.rowIndex % 2 === 0) {
-      return { backgroundColor: blue[100] };
+      return { backgroundColor: blue[50] };
     } else {
       return null;
     }
@@ -53,8 +53,9 @@ const Level1Table = ({ data }) => {
   const rowData = data?.slice(startRow, endRow);
 
   const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
+
   return (
-    <Box>
+    <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "auto" }}>
       <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
         <Box className="ag-theme-quartz" sx={{ height: "100%", width: "100%" }}>
           <AgGridReact
@@ -67,7 +68,7 @@ const Level1Table = ({ data }) => {
             overlayNoRowsTemplate={noRowsMessage}
           />
         </Box>
-        <Box>
+        <Box display="flex" justifyContent="center">
           <AgGridPagination
             count={Math.ceil(data?.length / pageSize)}
             onChange={paginationHandler}

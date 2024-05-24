@@ -68,7 +68,7 @@ const Level2Table = ({ data }) => {
             overlayNoRowsTemplate={noRowsMessage}
           />
         </Box>
-        <Box>
+        <Box display="flex" justifyContent="center">
           <AgGridPagination
             count={Math.ceil(data?.length / pageSize)}
             onChange={paginationHandler}

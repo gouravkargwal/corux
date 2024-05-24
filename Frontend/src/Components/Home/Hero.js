@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
 import Banner from "../../Assets/Images/Banner.webp";
-import ReferralBanner from "../../Assets/Images/referralbanner.webp";
+import ReferralBanner from "../../Assets/Images/Designer.jpeg";
 
 const Hero = () => {
   const items = [
@@ -11,11 +11,11 @@ const Hero = () => {
       // description: "Something short ",
       imageUrl: ReferralBanner,
     },
-    {
-      // title: "Hero Title 2",
-      // description: "An engaging description",
-      imageUrl: Banner,
-    },
+    // {
+    //   // title: "Hero Title 2",
+    //   // description: "An engaging description",
+    //   imageUrl: Banner,
+    // },
   ];
 
   return (
@@ -59,7 +59,7 @@ const Item = ({ item }) => {
   return (
     <Box
       sx={{
-        height: "200px",
+        height: "400px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",

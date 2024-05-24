@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, CircularProgress, Typography, Paper } from "@mui/material";
+import { Box, Typography, Paper } from "@mui/material";
 import Transaction from "./Transaction";
 import { useDispatch, useSelector } from "react-redux";
 import {
