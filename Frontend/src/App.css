@@ -1,3 +1,4 @@
+/* Glass effect for the container */
 .glass-container {
   background-color: #fdf4f4;
   background-image: radial-gradient(
@@ -14,7 +15,7 @@ a {
 
 /* Glass effect and animations for AG Grid */
 .ag-theme-quartz {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.2); /* Increased transparency */
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
@@ -24,7 +25,7 @@ a {
 }
 
 .ag-theme-quartz:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.3); /* Increased transparency */
   box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
 }
 
@@ -37,7 +38,12 @@ a {
 }
 
 .ag-header-container {
-  background-color: rgba(255, 255, 255, 0.3) !important;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ) !important; /* Increased transparency */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: background 0.3s ease;
@@ -58,7 +64,12 @@ a {
 }
 
 .ag-row:hover .ag-ltr .ag-cell {
-  background-color: rgba(255, 255, 255, 0.2) !important;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ) !important; /* Increased transparency */
   color: #000 !important;
 }
 

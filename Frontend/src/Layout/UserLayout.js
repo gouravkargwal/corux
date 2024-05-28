@@ -6,14 +6,7 @@ import { Box } from "@mui/material";
 const UserLayout = () => {
   return (
     <>
-      <Box
-        className="glass-container"
-        sx={{
-          paddingBottom: "70px",
-          minHeight: "100vh",
-          paddingTop: 5,
-        }}
-      >
+      <Box className="glass-container">
         <Outlet />
       </Box>
       <Footer />

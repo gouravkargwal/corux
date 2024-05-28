@@ -26,6 +26,7 @@ import NotFound from "./Pages/NotFound";
 import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import ContactUs from "./Pages/ContactUs";
+import Feature from "./Pages/Feature";
 
 function App() {
   return (
@@ -127,7 +128,8 @@ function App() {
           </Route>
         </Route>
         <Route path="/auth" element={<AuthLayout />}>
-          <Route index element={<Login />} />
+          <Route index element={<Feature />} />
+          <Route path="login" element={<Login />} />
           <Route path="forgot-password" element={<ForgotPassword />} />
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="register/:referCode?" element={<Register />} />

@@ -14,13 +14,13 @@ const Level2Table = ({ data }) => {
   }
 
   const defaultColDef = {
-    sortable: false,
-    checkboxSelection: false,
-    autoHeight: true,
-    filter: false,
+    sortable: true,
+    resizable: true,
     flex: 1,
-    suppressMovable: false,
-    resizable: false,
+    minWidth: 100,
+    filter: true,
+    headerClass: "header-cell",
+    cellClass: "cell",
   };
 
   const columnDefs = [
@@ -55,7 +55,7 @@ const Level2Table = ({ data }) => {
   const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
 
   return (
-    <Box>
+    <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "auto" }}>
       <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
         <Box className="ag-theme-quartz" sx={{ height: "100%", width: "100%" }}>
           <AgGridReact

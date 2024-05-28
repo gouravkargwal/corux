@@ -66,7 +66,7 @@ const ColorPrediction = () => {
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
 
-  const [resultDialogue, setResultDialogue] = useState(false);
+  const [resultDialogue, setResultDialogue] = useState(true);
   const [result, setResult] = useState(null);
 
   useEffect(() => {
@@ -106,6 +106,7 @@ const ColorPrediction = () => {
   }, [timer, dispatch]);
 
   const handleOpenBidDialog = (type, value) => {
+    reset();
     if (type === "color") {
       setSelectedColor(value);
       setSelectedNumber(null);
@@ -258,24 +259,7 @@ const ColorPrediction = () => {
             </Typography>
           )}
           <Grid container direction="column" display="flex">
-            <Grid
-              item
-              container
-              xs={12}
-              justifyContent="space-between"
-              mb={2}
-              sx={{
-                marginTop: 3,
-                padding: 3,
-                background: "rgba(255, 255, 255, 0.1)",
-                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-                backdropFilter: "blur(16px) saturate(180%)",
-                WebkitBackdropFilter: "blur(16px) saturate(180%)",
-                backgroundColor: "rgba(255, 255, 255, 0.5)",
-                borderRadius: "16px",
-                border: "1px solid rgba(209, 213, 219, 0.3)",
-              }}
-            >
+            <Grid item container xs={12} justifyContent="space-between" mb={2}>
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
                 disabled={!bettingAllowed || isBlock}

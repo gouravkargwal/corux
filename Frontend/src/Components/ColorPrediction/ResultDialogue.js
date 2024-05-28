@@ -12,12 +12,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {
-  CheckCircleOutline,
-  RemoveCircleOutline,
-  ErrorOutline,
-  Close as CloseIcon,
-} from "@mui/icons-material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { green, red } from "@mui/material/colors";
 
@@ -31,13 +26,26 @@ const ResultDialogue = ({ open, onClose, data }) => {
       TransitionProps={{ timeout: 500 }}
       fullWidth={true}
       maxWidth="md"
-      sx={{ width: "80%", maxWidth: 600, mx: "auto" }}
+      sx={{
+        "& .MuiDialog-paper": {
+          padding: 4,
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "16px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          mx: "auto",
+          width: "80%",
+          maxWidth: 600,
+        },
+      }}
     >
       <DialogTitle
         sx={{
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.primary.contrastText,
           padding: theme.spacing(2),
+          position: "relative",
         }}
       >
         <Typography variant="h6">Results</Typography>
@@ -58,7 +66,6 @@ const ResultDialogue = ({ open, onClose, data }) => {
       <DialogContent
         sx={{
           padding: theme.spacing(2),
-          backgroundColor: theme.palette.background.default,
         }}
       >
         <List>
@@ -68,7 +75,7 @@ const ResultDialogue = ({ open, onClose, data }) => {
                 {item.amount > 0 ? (
                   <picture>
                     <source
-                      srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.webp"
+                      srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.webp"
                       type="image/webp"
                     />
                     <img
@@ -81,7 +88,7 @@ const ResultDialogue = ({ open, onClose, data }) => {
                 ) : (
                   <picture>
                     <source
-                      srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.webp"
+                      srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.webp"
                       type="image/webp"
                     />
                     <img

@@ -43,13 +43,13 @@ const WinnerTable = ({ activeTab }) => {
   const filteredData = data?.filter((item) => item.game_id !== gameId);
 
   const defaultColDef = {
-    sortable: false,
-    checkboxSelection: false,
-    autoHeight: true,
-    filter: false,
+    sortable: true,
+    resizable: true,
     flex: 1,
-    suppressMovable: false,
-    resizable: false,
+    minWidth: 100,
+    filter: true,
+    headerClass: "header-cell",
+    cellClass: "cell",
   };
 
   const columnDefs = [
@@ -87,12 +87,12 @@ const WinnerTable = ({ activeTab }) => {
   const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
 
   return (
-    <Box>
+    <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "auto" }}>
       {loading ? (
         <TableSkeleton />
       ) : (
         <Box display="flex" flexDirection="column" gap={2} alignItems="stretch">
-          <Box className="ag-theme-quartz">
+          <Box className="ag-theme-quartz glass-container">
             <AgGridReact
               onGridReady={onGridReady}
               rowData={filteredData}

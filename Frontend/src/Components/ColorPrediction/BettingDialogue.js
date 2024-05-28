@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Avatar,
   Box,
   Checkbox,
   Dialog,
@@ -9,14 +8,11 @@ import {
   FormControlLabel,
   FormHelperText,
   IconButton,
-  InputAdornment,
-  TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CloseIcon from "@mui/icons-material/Close";
-import LoadingButton from "../UI/LoadingButton";
-import { blue, green, grey, red } from "@mui/material/colors";
 import AuthTextField from "../Auth/AuthTextField";
 import AuthButton from "../Auth/AuthButton";
 
@@ -32,20 +28,26 @@ const BettingDialogue = ({
   errors,
   loading,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <Dialog
       onClose={onClose}
       open={open}
       sx={{
         "& .MuiDialog-paper": {
-          padding: "40px",
-          background: "rgba(255, 255, 255, 0.1)",
-          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
-          backdropFilter: "blur(16px) saturate(180%)",
-          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
-          borderRadius: "12px",
+          padding: 4,
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "16px",
+          maxWidth: "500px",
+          width: "100%",
           border: "1px solid rgba(209, 213, 219, 0.3)",
+          maxHeight: isMobile ? "80vh" : "auto",
         },
       }}
     >
@@ -54,41 +56,29 @@ const BettingDialogue = ({
         justifyContent="space-between"
         alignItems="center"
       >
-        <Typography
-          variant="h6"
-          sx={{
-            color: selectedColor
-              ? selectedColor === "red"
-                ? red[500]
-                : selectedColor === "blue"
-                ? blue[500]
-                : green[500]
-              : "red",
-            fontFamily: "Ubuntu, sans-serif",
-          }}
-        >
+        <Typography variant="h6" fontFamily={"Ubuntu, sans-serif"}>
           {dialogType === "color"
             ? `Join ${selectedColor}`
             : `Select ${selectedNumber}`}
         </Typography>
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            color: grey[500],
-          }}
-        >
+        <IconButton aria-label="close" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
 
-      <DialogContent>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Box m={0}>
+      <DialogContent
+        dividers
+        sx={{
+          overflowY: isMobile ? "scroll" : "auto",
+          maxHeight: isMobile ? "calc(100vh - 200px)" : "auto",
+          padding: theme.spacing(2),
+        }}
+      >
+        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+          <Box mb={2}>
             <AuthTextField
               error={!!errors.amount}
               variant="outlined"
-              autoFocus
               autoComplete="off"
               fullWidth
               margin="normal"
@@ -113,14 +103,14 @@ const BettingDialogue = ({
               sx={{
                 visibility: errors.amount ? "visible" : "hidden",
                 height: "10px",
-                m: 1,
+                mt: 1,
               }}
             >
               {errors.amount ? errors.amount.message : ""}
             </FormHelperText>
           </Box>
 
-          <Box textAlign="center">
+          <Box mb={2}>
             <FormControlLabel
               control={
                 <Checkbox

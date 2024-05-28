@@ -1,7 +1,7 @@
 import React, { memo, useState } from "react";
 import { Box } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
-import { blue, grey } from "@mui/material/colors";
+import { blue } from "@mui/material/colors";
 import AgGridPagination from "../UI/AgGridPagination";
 
 const Level1Table = ({ data }) => {
