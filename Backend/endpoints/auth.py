@@ -89,8 +89,8 @@ async def check_mobile_number(
 @router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        # otp = random.randint(1000, 9999)
-        otp=1234
+        otp = random.randint(1000, 9999)
+        # otp=1234
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -134,12 +134,12 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
         logger.info("Otp entry done")
         number = userdetail.mobile_number
         message = otp
-        # response = call_otp_api(number, message)
-        # logger.info(response)
-        # if response.get("status_code"):
-        #     logger.info(response)
-        #     raise HTTPException(
-        #         status_code=400, detail="Try Again after 30 minutes")
+        response = call_otp_api(number, message)
+        logger.info(response)
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(
+                status_code=400, detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
@@ -166,8 +166,8 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
             )
 
         # otp = random_with_n_digits(4)
-        otp=1234
-        # otp = random.randint(1000, 9999)
+        # otp=1234
+        otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
@@ -209,12 +209,12 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
 
         number = userdetail.mobile_number
         message = otp
-        # response = call_otp_api(number, message)
-        # # logger.info(response)
-        # if response.get("status_code"):
-        #     logger.info(response)
-        #     raise HTTPException(
-        #         status_code=400, detail="Try Again after 30 minutes")
+        response = call_otp_api(number, message)
+        # logger.info(response)
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(
+                status_code=400, detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
