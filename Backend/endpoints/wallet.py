@@ -168,7 +168,7 @@ async def winthdraw(
             )
 
         if user.balance < withdraw_schema.amount:
-            raise HTTPException(status_code=400, detail="Insufficient Balance")
+            raise HTTPException(status_code=400, detail="Insufficient Withdrawable Balance")
 
         lastest_deposit = (
             db.query(PaymentDepositTable)
