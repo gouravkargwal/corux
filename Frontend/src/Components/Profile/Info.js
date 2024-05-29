@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Avatar, Box, Typography } from "@mui/material";
-import { blue, green, purple } from "@mui/material/colors";
+import { blue, green, purple,red } from "@mui/material/colors";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,16 +8,19 @@ import {
   selectBalanceData,
   selectBalanceMobile,
   selectBalanceUsername,
+  selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
 import Call from "@mui/icons-material/Call";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import customCapitalize from "../../Util/stringFunc";
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 export default function Info() {
   const mobile = useSelector(selectBalanceMobile);
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
+  const bonus = useSelector(selectPromotionalBalance);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBalance());
@@ -77,6 +80,23 @@ export default function Info() {
           </Avatar>
           <Typography color="text.grey" variant="body2">
             {balance}
+          </Typography>
+        </Box>
+        <Box display="flex" alignItems="center" gap={1}>
+        <Avatar
+          sx={{
+            bgcolor: red[500],
+            width: 24,
+            height: 24,
+          }}
+          whileHover={{ scale: 1.2 }}
+        >
+          <CardGiftcardIcon
+            sx={{ color: "white", width: 16, height: 16 }}
+          />
+        </Avatar>
+          <Typography color="text.grey" variant="body2">
+            {bonus}
           </Typography>
         </Box>
         <Box display="flex" alignItems="center" gap={1}>
