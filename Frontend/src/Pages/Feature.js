@@ -2,8 +2,10 @@ import React from "react";
 import { Box, Typography, Container, Button } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import AuthCarousel from "../Components/Auth/AuthCarousel";
+import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 
 export default function Feature() {
+  const navigate = useNavigate();
   return (
     <Box height="100vh" className="glass-container">
       <Container component="main" maxWidth="sm">
@@ -14,35 +16,59 @@ export default function Feature() {
             flexDirection: "column",
             alignItems: "center",
           }}
-          marginTop={1}
+          marginTop={4}
         >
           <Typography
             variant="h4"
             align="center"
             gutterBottom
             sx={{
-              fontFamily: "Ubuntu,sans-serif",
-              fontWeight: 400,
+              fontFamily: "Ubuntu, sans-serif",
+              fontWeight: 700,
+              color: grey[900],
             }}
           >
-            Hello
+            Welcome to Vega gaming
           </Typography>
           <Typography
             variant="h6"
             align="center"
             color={grey[500]}
             sx={{
-              fontFamily: "Ubuntu,sans-serif",
-              fontWeight: 300,
+              fontFamily: "Ubuntu, sans-serif",
+              fontWeight: 400,
+              marginBottom: 2,
             }}
           >
-            Welcome To Our Platform
+            Level up your gaming experience!
           </Typography>
           <Box sx={{ display: "flex", gap: 2, marginTop: 4 }}>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              sx={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}
+              onClick={() => {
+                navigate("login");
+              }}
+            >
               Sign In
             </Button>
-            <Button variant="outlined" color="primary">
+            <Button
+              variant="outlined"
+              color="secondary"
+              sx={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                fontWeight: "bold",
+              }}
+              onClick={() => {
+                navigate("register");
+              }}
+            >
               Register
             </Button>
           </Box>
