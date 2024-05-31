@@ -9,6 +9,7 @@ const initialState = {
   username: "Gourav",
   referCode: null,
   isBlock: false,
+  promotional_balance: null,
 };
 
 export const getBalance = createAsyncThunk(
@@ -57,5 +58,6 @@ export const selectBalanceUsername = (state) => state.balance.username;
 export const selectBalanceMobile = (state) => state.balance.mobile;
 export const selectBalanceReferCode = (state) => state.balance.referCode;
 export const selectIsBlocked = (state) => state.balance.isBlock;
+export const selectPromotionalBalance = (state) => state.balance.promotional_balance;
 
 export default balanceSlice.reducer;

@@ -89,8 +89,8 @@ async def check_mobile_number(
 @router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        # otp = random.randint(1000, 9999)
-        otp = 1234
+        otp = random.randint(1000, 9999)
+        # otp=1234
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -165,8 +165,9 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
                 status_code=400, detail="User not registered. Please register."
             )
 
-        otp = 1234
-        # otp = random.randint(1000, 9999)
+        # otp = random_with_n_digits(4)
+        # otp=1234
+        otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
@@ -340,7 +341,11 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                         referral_code_to=user_refered_by_level1.referral_code_to,
                         level_1_refer=user_info.mobile_number,
                     )
+                    user_level1_in_user_table = db.query(User).filter(User.mobile_number == user_refered_by_level1.mobile_number).first()
+                    logger.info(user_level1_in_user_table)
+                    promotional_balance = user_level1_in_user_table.promotional_balance + 50
 
+                    user_level1_in_user_table.promotional_balance = round(promotional_balance,2)
                     db.add(new_refer_entry)
                     user_refered_by_level2 = (
                         db.query(Referral_table)
@@ -358,6 +363,12 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                             referral_code_from=user_refered_by_level2.referral_code_from,
                             level_2_refer=user_info.mobile_number,
                         )
+
+                            
+                        user_level2_in_user_table = db.query(User).filter(User.mobile_number == user_refered_by_level2.mobile_number).first()
+                        promotional_balance = user_level2_in_user_table.promotional_balance + 25
+
+                        user_level2_in_user_table.promotional_balance = round(promotional_balance,2)
 
                         db.add(new_refer_entry_2)
 
@@ -393,6 +404,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
+            "promotional_balance":new_user.promotional_balance,
             "referral_code": refer_code,
         }
     except HTTPException as e:

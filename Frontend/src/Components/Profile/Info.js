@@ -10,13 +10,16 @@ import {
   selectBalanceData,
   selectBalanceMobile,
   selectBalanceUsername,
+  selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
 import customCapitalize from "../../Util/stringFunc";
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 
 export default function Info() {
   const mobile = useSelector(selectBalanceMobile);
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
+  const bonus = useSelector(selectPromotionalBalance);
   const dispatch = useDispatch();
 
   useEffect(() => {

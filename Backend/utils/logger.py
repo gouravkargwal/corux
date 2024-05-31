@@ -58,5 +58,5 @@ def setup_logger():
 #     return logger
 
 
-# # Initialize the logger
+# Initialize the logger
 logger = setup_logger()
