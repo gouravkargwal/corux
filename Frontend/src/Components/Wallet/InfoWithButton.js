@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Paper, Button } from "@mui/material";
-import { blue, blueGrey, green } from "@mui/material/colors";
+import { blueGrey } from "@mui/material/colors";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import Call from "@mui/icons-material/Call";
+import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -11,31 +12,13 @@ import {
   selectBalanceData,
   selectBalanceMobile,
   selectBalanceUsername,
+  selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
 import customCapitalize from "../../Util/stringFunc";
 
-const WaveSVG = () => (
-  <svg
-    viewBox="0 0 1440 320"
-    style={{
-      position: "absolute",
-      top: 0,
-      left: 0,
-      width: "100%",
-      height: "100%",
-      zIndex: -1,
-    }}
-  >
-    <path
-      fill="#e0f7fa"
-      fillOpacity="1"
-      d="M0,192L60,186.7C120,181,240,171,360,154.7C480,139,600,117,720,133.3C840,149,960,203,1080,208C1200,213,1320,171,1380,149.3L1440,128L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z"
-    ></path>
-  </svg>
-);
-
 export default function InfoWithButton() {
   const mobile = useSelector(selectBalanceMobile);
+  const bonus = useSelector(selectPromotionalBalance);
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
   const dispatch = useDispatch();
@@ -73,10 +56,18 @@ export default function InfoWithButton() {
           maxWidth: "500px",
           width: "100%",
           border: "1px solid rgba(209, 213, 219, 0.3)",
+          overflow: "hidden",
+          position: "relative",
         }}
       >
-        <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
-          <Box display="flex" alignItems="center" gap={2} mb={2}>
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={2}
+          zIndex={1}
+        >
+          <Box display="flex" alignItems="center" gap={2}>
             <AccountCircle sx={{ color: blueGrey[700], fontSize: 40 }} />
             <Typography color="text.primary" variant="h6">
               {customCapitalize(username)}
@@ -89,6 +80,12 @@ export default function InfoWithButton() {
                 {balance}
               </Typography>
             </Box>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+              <CardGiftcard sx={iconStyles} />
+              <Typography color="text.primary" variant="body1">
+                {bonus}
+              </Typography>
+            </Box>
             <Box display="flex" alignItems="center" gap={2}>
               <Call sx={iconStyles} />
               <Typography color="text.primary" variant="body1">
@@ -97,7 +94,6 @@ export default function InfoWithButton() {
             </Box>
           </Box>
           <Box
-            mt={2}
             display="flex"
             justifyContent="space-between"
             gap={2}
@@ -105,9 +101,15 @@ export default function InfoWithButton() {
           >
             <Button
               sx={{
-                bgcolor: blue[700],
-                "&:hover": { bgcolor: blue[900] },
+                backgroundColor: "#fc4642",
+                color: "white",
+                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  backgroundColor: "#fc211d",
+                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+                },
                 flex: 1,
+                zIndex: 100,
               }}
               variant="contained"
               onClick={() => {
@@ -118,11 +120,15 @@ export default function InfoWithButton() {
             </Button>
             <Button
               sx={{
-                bgcolor: green[700],
-                "&:hover": { bgcolor: green[900] },
                 flex: 1,
+                zIndex: 100,
+                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+                },
               }}
-              variant="contained"
+              color="secondary"
+              variant="outlined"
               onClick={() => {
                 navigate("/profile/withdraw");
               }}
@@ -130,6 +136,36 @@ export default function InfoWithButton() {
               Withdraw
             </Button>
           </Box>
+        </Box>
+        <Box
+          component="svg"
+          sx={{
+            position: "absolute",
+            bottom: -8,
+            left: 0,
+            width: "100%",
+            height: "100px",
+            zIndex: 0, // Ensure wave is below the content
+          }}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+        >
+          <path
+            fill="#2196f3"
+            fillOpacity="1"
+            d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+          >
+            <animate
+              attributeName="d"
+              dur="10s"
+              repeatCount="indefinite"
+              values="
+                M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,240C96,256,192,288,288,288C384,288,480,256,576,234.7C672,213,768,203,864,202.7C960,203,1056,213,1152,218.7C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,234.7C96,245,192,267,288,272C384,277,480,267,576,234.7C672,203,768,149,864,133.3C960,117,1056,139,1152,165.3C1248,192,1344,224,1392,240L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
+            />
+          </path>
         </Box>
       </Paper>
     </Box>

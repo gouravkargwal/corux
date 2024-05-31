@@ -17,11 +17,16 @@ from endpoints.result import router as Resultrouter
 from endpoints.wallet import router as Walletrouter
 
 logger = setup_logger()
-app = FastAPI(docs_url=None)
+app = FastAPI()
 # app = FastAPI()
 
-allowed_origins = ["https://vegagaming.site","https://vega-admin-wsltptu5dq-uc.a.run.app", "https://vega-fe-wsltptu5dq-uc.a.run.app"]
-# allowed_origins = ["http://localhost:3000", "http://192.168.1.2:3000"]
+allowed_origins = [
+    "https://vegagaming.site",
+    "https://vega-admin-wsltptu5dq-uc.a.run.app",
+    "https://vega-fe-wsltptu5dq-uc.a.run.app",
+    "http://localhost:3000",
+]
+# allowed_origins = [, "http://192.168.1.2:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -47,7 +52,11 @@ app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
 
 sio_manager = SocketManager(
-    app=app, cors_allowed_origins=allowed_origins, mount_location='/ws', socketio_path='/')
+    app=app,
+    cors_allowed_origins=allowed_origins,
+    mount_location="/ws",
+    socketio_path="/",
+)
 
 game = Game()
 task_running = False
@@ -89,7 +98,7 @@ async def handle_connect(sid, environ=None, auth=None):
         logger.info(f"Client connected: SID={sid}, Game State={game_state}")
     except Exception as e:
         logger.error(f"Connection error on connect: {str(e)}", exc_info=True)
-        await sio_manager.emit('error', {'error': 'Connection failed'}, room=sid)
+        await sio_manager.emit("error", {"error": "Connection failed"}, room=sid)
 
 
 @sio_manager.on("disconnect")
@@ -98,8 +107,7 @@ async def handle_disconnect(sid):
         connected_clients.remove(sid)
         logger.info(f"Client disconnected: SID={sid}")
     except Exception as e:
-        logger.error(
-            f"Connection error on disconnect: {str(e)}", exc_info=True)
+        logger.error(f"Connection error on disconnect: {str(e)}", exc_info=True)
 
 
 async def notify_timer():

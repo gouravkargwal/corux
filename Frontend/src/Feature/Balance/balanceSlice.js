@@ -9,7 +9,7 @@ const initialState = {
   username: "Gourav",
   referCode: null,
   isBlock: false,
-  promotional_balance: null,
+  promotionalBalance: null,
 };
 
 export const getBalance = createAsyncThunk(
@@ -43,6 +43,7 @@ const balanceSlice = createSlice({
         state.username = action.payload.username;
         state.referCode = action.payload.refer_code;
         state.isBlock = action.payload.is_blocked;
+        state.promotionalBalance = action.payload.promotional_balance;
       })
       .addCase(getBalance.rejected, (state, action) => {
         state.loading = false;
@@ -58,6 +59,7 @@ export const selectBalanceUsername = (state) => state.balance.username;
 export const selectBalanceMobile = (state) => state.balance.mobile;
 export const selectBalanceReferCode = (state) => state.balance.referCode;
 export const selectIsBlocked = (state) => state.balance.isBlock;
-export const selectPromotionalBalance = (state) => state.balance.promotional_balance;
+export const selectPromotionalBalance = (state) =>
+  state.balance.promotionalBalance;
 
 export default balanceSlice.reducer;

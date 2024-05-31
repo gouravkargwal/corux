@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Avatar, Box, useMediaQuery, useTheme } from "@mui/material";
-import Info from "../Components/Profile/Info";
 import Option from "../Components/Profile/Option";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
@@ -12,6 +11,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
 import { Link } from "react-router-dom";
 import { grey } from "@mui/material/colors";
+import InfoWithButton from "../Components/Wallet/InfoWithButton";
 
 export default function ControlledAccordions() {
   const theme = useTheme();
@@ -51,7 +51,7 @@ export default function ControlledAccordions() {
       }}
     >
       <Box width="100%" mb={3}>
-        <Info />
+        <InfoWithButton />
       </Box>
       <Box
         width="100%"

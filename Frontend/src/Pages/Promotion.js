@@ -10,21 +10,26 @@ import {
   Tab,
   Paper,
 } from "@mui/material";
-import { deepPurple, blue, orange, grey } from "@mui/material/colors";
-import InfoWithButton from "../Components/Wallet/InfoWithButton";
+import { blue, grey } from "@mui/material/colors";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBalanceReferCode } from "../Feature/Balance/balanceSlice";
+import {
+  selectBalanceReferCode,
+  selectPromotionalBalance,
+} from "../Feature/Balance/balanceSlice";
 import { getReferDetails, selectReferData } from "../Feature/Refer/referSlice";
 import Level2Table from "../Components/Promotion.js/Level2Table";
 import Level1Table from "../Components/Promotion.js/Level1Table";
 import PromotionOption from "../Components/Promotion.js/PromotionOption";
+import PromotionCarousel from "../Components/Promotion.js/PromotionCarousel";
 
 export default function Promotion() {
   const dispatch = useDispatch();
+  const bonus = useSelector(selectPromotionalBalance);
   const referCode = useSelector(selectBalanceReferCode);
   const data = useSelector(selectReferData);
   const [activeTab, setActiveTab] = useState(0);
@@ -49,7 +54,7 @@ export default function Promotion() {
 
   return (
     <Box>
-      <InfoWithButton />
+      <PromotionCarousel />
       <Box
         padding={2}
         display="flex"
@@ -89,6 +94,49 @@ export default function Promotion() {
               }}
             >
               <LoyaltyIcon sx={{ color: "inherit" }} />
+            </Avatar>
+          }
+        />
+      </Box>
+      <Box
+        padding={2}
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-start"
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
+        margin={3}
+        gap={2}
+        marginTop={0}
+      >
+        <PromotionOption
+          name="Promotional Bonus"
+          count={bonus}
+          icon={
+            <Avatar
+              sx={{
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
+              }}
+            >
+              <CardGiftcard sx={{ color: "inherit" }} />
             </Avatar>
           }
         />
