@@ -89,8 +89,8 @@ async def check_mobile_number(
 @router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = random.randint(1000, 9999)
-        # otp=1234
+        # otp = random.randint(1000, 9999)
+        otp=1234
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -166,8 +166,8 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
             )
 
         # otp = random_with_n_digits(4)
-        # otp=1234
-        otp = random.randint(1000, 9999)
+        otp=1234
+        # otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)

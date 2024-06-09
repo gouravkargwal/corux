@@ -339,7 +339,7 @@ export default function Register() {
                     Already have an account?{" "}
                     <Typography
                       onClick={() => {
-                        navigate("/auth");
+                        navigate("/auth/login");
                       }}
                       sx={{
                         color: blue[500],

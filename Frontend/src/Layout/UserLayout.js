@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 const UserLayout = () => {
   return (
     <>
-      <Box className="glass-container">
+      <Box className="glass-container" pb={"80px"}>
         <Outlet />
       </Box>
       <Footer />

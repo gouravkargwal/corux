@@ -1,9 +1,8 @@
 import React from "react";
 import { Box } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import Banner from "../../Assets/Images/Banner.webp";
-import PlayWin from "../../Assets/Images/playwin.webp";
 import ReferralBanner from "../../Assets/Images/Designer.jpeg";
+import JoiningBanner from "../../Assets/Images/joiningbanner.webp";
 
 const AuthCarousel = () => {
   const items = [
@@ -15,7 +14,7 @@ const AuthCarousel = () => {
     {
       // title: "Hero Title 2",
       // description: "An engaging description",
-      imageUrl: PlayWin,
+      imageUrl: JoiningBanner,
     },
   ];
 
