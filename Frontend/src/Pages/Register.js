@@ -10,7 +10,6 @@ import {
   IconButton,
   InputAdornment,
   Typography,
-  useTheme,
   useMediaQuery,
   Paper,
 } from "@mui/material";
@@ -26,9 +25,7 @@ import AuthTextField from "../Components/Auth/AuthTextField";
 import AuthButton from "../Components/Auth/AuthButton";
 
 export default function Register() {
-  const theme = useTheme();
   let { referCode } = useParams();
-  const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
@@ -98,7 +95,7 @@ export default function Register() {
         elevation={0}
         sx={{
           width: isMobile ? "90%" : "400px",
-          padding: "40px",
+          padding: "20px 10px",
           background: "rgba(255, 255, 255, 0.1)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           display: "flex",
@@ -117,7 +114,6 @@ export default function Register() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              px: isXsScreen ? 2 : 3,
             }}
           >
             <Typography
@@ -141,7 +137,7 @@ export default function Register() {
               onSubmit={handleSubmit(onSubmitRegistration)}
               sx={{ mt: 1 }}
             >
-              <Grid container spacing={1}>
+              <Grid container>
                 <Grid item xs={12}>
                   <AuthTextField
                     fullWidth

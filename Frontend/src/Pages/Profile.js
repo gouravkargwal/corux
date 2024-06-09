@@ -50,16 +50,15 @@ export default function ControlledAccordions() {
         paddingBottom: isMobile ? 8 : 3, // Add more padding on mobile
       }}
     >
-      <Box width="100%" mb={3}>
+      <Box width="100%" mb={1}>
         <InfoWithButton />
       </Box>
       <Box
         width="100%"
         display="flex"
         flexDirection="column"
-        gap={2}
         sx={{
-          padding: isMobile ? 1 : 3, // Adjust padding for mobile
+          padding: isMobile ? 1 : 2, // Adjust padding for mobile
         }}
       >
         {options.map(({ name, icon: IconComponent, url }) => (

@@ -100,7 +100,7 @@ const Recharge = () => {
         </Typography>
       )}
 
-      <Typography marginLeft={3} fontWeight="600">
+      <Typography marginLeft={3} fontWeight="600" marginTop={1}>
         Select Amount
       </Typography>
       <Paper
@@ -128,7 +128,7 @@ const Recharge = () => {
           rules={{
             required: "Amount is required",
             validate: (value) =>
-              value >= 100 || "Amount must be greater than or equal to 100",
+              value >= 100 || "Please enter a value more than 100",
           }}
           render={({ field }) => (
             <AuthTextField
@@ -155,7 +155,7 @@ const Recharge = () => {
         </Divider>
         <Box
           display="flex"
-          gap={2}
+          gap={1}
           justifyContent="center"
           marginY={2}
           flexWrap="wrap"

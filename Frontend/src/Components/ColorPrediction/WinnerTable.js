@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -12,7 +12,7 @@ import {
 } from "../../Feature/Result/resultSlice";
 import AgGridPagination from "../UI/AgGridPagination";
 import TableSkeleton from "../UI/TableSkeleton";
-import { blue } from "@mui/material/colors";
+import { blue, green, grey, purple, red } from "@mui/material/colors";
 import { selectGameId } from "../../Feature/ColorPrediction/colorPredictionSlice";
 
 const WinnerTable = ({ activeTab }) => {
@@ -52,28 +52,87 @@ const WinnerTable = ({ activeTab }) => {
     cellClass: "cell",
   };
 
+  const getColor = (colorName) => {
+    switch (colorName) {
+      case "red":
+        return red[600];
+      case "green":
+        return green[600];
+      case "violet":
+        return purple[600];
+      default:
+        return "#000000";
+    }
+  };
+
   const columnDefs = [
-    { headerName: "Period", field: "game_id" },
+    {
+      headerName: "Period",
+      field: "game_id",
+      cellRenderer: ({ value }) => {
+        return (
+          <Typography color={grey[800]} variant="caption" fontSize="10px">
+            {value}
+          </Typography>
+        );
+      },
+    },
     {
       headerName: "Color",
       field: "color_who_won",
       cellRenderer: ({ value }) => {
+        if (value.length == 2) {
+          return (
+            <Box gap={0.3} display="flex">
+              <Box
+                sx={{
+                  height: 15,
+                  width: 15,
+                  borderRadius: "50%",
+                  background: getColor(value[0]),
+                }}
+              />
+              <Box
+                sx={{
+                  height: 15,
+                  width: 15,
+                  borderRadius: "50%",
+                  background: getColor(value[1]),
+                }}
+              />
+            </Box>
+          );
+        } else {
+          return (
+            <Box
+              sx={{
+                height: 15,
+                width: 15,
+                borderRadius: "50%",
+                background: getColor(value[0]),
+              }}
+            />
+          );
+        }
+      },
+    },
+    {
+      headerName: "Number",
+      field: "number_who_won",
+      cellRenderer: ({ value }) => {
         return (
-          <Box
+          <Typography
+            variant="caption"
+            fontSize="10px"
             sx={{
-              height: 20,
-              width: 20,
-              borderRadius: "50%",
-              background:
-                value.length === 2
-                  ? `linear-gradient(90deg, ${value[0]} 50%, ${value[1]} 50%)`
-                  : value[0],
+              color: [1, 3, 5, 7, 9].includes(value) ? green[600] : red[600],
             }}
-          />
+          >
+            {value}
+          </Typography>
         );
       },
     },
-    { headerName: "Number", field: "number_who_won" },
   ];
 
   const getRowStyle = (params) => {

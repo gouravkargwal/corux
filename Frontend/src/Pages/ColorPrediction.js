@@ -42,11 +42,11 @@ import { grey } from "@mui/material/colors";
 import GameRulesDialog from "../Components/ColorPrediction/GamesRulesDialogue";
 import AuthDialogue from "../Components/UI/AuthDialogue";
 import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
-import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import { getBalance } from "../Feature/Balance/balanceSlice";
 import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
 import { getResultList } from "../Feature/Result/resultSlice";
 import { getUserGameList } from "../Feature/User/userSlice";
+import ProfileColor from "../Components/ColorPrediction/ProfileColor";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -177,8 +177,8 @@ const ColorPrediction = () => {
   }, [timer, colorBidDialog]);
 
   const buttonStyles = {
-    height: "60px", // Larger height for better touch target
-    width: "80px", // Larger height for better touch target
+    height: "40px", // Larger height for better touch target
+    width: "40px", // Larger height for better touch target
     borderRadius: "5px", // More rounded corners
     fontWeight: "bold",
     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Add box shadow for depth
@@ -199,13 +199,11 @@ const ColorPrediction = () => {
         direction="column"
         className={resultDialogue || colorBidDialog ? "blur" : ""}
       >
-        {token && <InfoWithButton />}
-
+        {token && <ProfileColor />}
         <Grid
           item
           xs={4}
           sx={{
-            padding: "40px",
             background: "rgba(255, 255, 255, 0.1)",
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             backdropFilter: "blur(16px) saturate(180%)",
@@ -214,18 +212,23 @@ const ColorPrediction = () => {
             borderRadius: "12px",
             border: "1px solid rgba(209, 213, 219, 0.3)",
           }}
-          margin={3}
+          marginY={1}
+          marginX={3}
           borderRadius={1}
           padding={2}
           display="flex"
           justifyContent="space-between"
         >
           <Grid item xs={6}>
-            <Typography color={theme.palette.text.grey}>GameId</Typography>
+            <Typography color={theme.palette.text.grey} gutterBottom>
+              GameId
+            </Typography>
             <Typography>{gameId}</Typography>
           </Grid>
           <Grid item xs={6} textAlign="right">
-            <Typography color={theme.palette.text.grey}>Count Down</Typography>
+            <Typography color={theme.palette.text.grey} gutterBottom>
+              Count Down
+            </Typography>
             <ColorPredictionTimer timer={timer} />
           </Grid>
         </Grid>
@@ -233,8 +236,8 @@ const ColorPrediction = () => {
           item
           xs={4}
           sx={{
-            marginTop: 3,
-            padding: 3,
+            marginTop: 1,
+            padding: 1,
             background: "rgba(255, 255, 255, 0.1)",
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
             backdropFilter: "blur(16px) saturate(180%)",
@@ -243,9 +246,9 @@ const ColorPrediction = () => {
             borderRadius: "16px",
             border: "1px solid rgba(209, 213, 219, 0.3)",
           }}
-          margin={3}
+          marginX={3}
+          marginY={1}
           borderRadius={1}
-          padding={2}
         >
           {isBlock && (
             <Typography
@@ -259,7 +262,7 @@ const ColorPrediction = () => {
             </Typography>
           )}
           <Grid container direction="column" display="flex">
-            <Grid item container xs={12} justifyContent="space-between" mb={2}>
+            <Grid item container xs={12} justifyContent="space-evenly" mb={2}>
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
                 disabled={!bettingAllowed || isBlock}
@@ -282,30 +285,52 @@ const ColorPrediction = () => {
                 Green
               </GreenButton>
             </Grid>
-            <Grid container item xs={12} justifyContent="space-between" gap={2}>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <Grid item key={index}>
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    onClick={() => handleOpenBidDialog("number", index)}
-                    disabled={!bettingAllowed || isBlock}
-                    sx={{ ...buttonStyles }}
-                  >
-                    {index}
-                  </Button>
-                </Grid>
-              ))}
+            <Grid
+              container
+              item
+              xs={12}
+              sm={10}
+              justifyContent="space-evenly"
+              gap={1}
+            >
+              {Array.from({ length: 10 }).map((_, index) => {
+                return (
+                  <Grid item key={index} xs={2} sm={1}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => handleOpenBidDialog("number", index)}
+                      disabled={!bettingAllowed || isBlock}
+                      sx={{
+                        ...buttonStyles,
+                        padding: 1,
+                        minWidth: "55px",
+                      }}
+                    >
+                      {index}
+                    </Button>
+                  </Grid>
+                );
+              })}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
-          <Grid item xs={12} my={1}>
+        <Grid
+          item
+          xs={4}
+          marginX={1}
+          marginY={0}
+          borderRadius={1}
+          paddingX={2}
+          height="40vh"
+        >
+          <Grid item xs={12}>
             <Paper
               elevation={3}
               sx={{
-                marginTop: 3,
-                padding: 3,
+                marginTop: 1,
+                paddingY: 1,
+                paddingX: 3,
                 background: "rgba(255, 255, 255, 0.1)",
                 boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
                 backdropFilter: "blur(16px) saturate(180%)",

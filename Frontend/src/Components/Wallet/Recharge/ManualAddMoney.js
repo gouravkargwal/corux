@@ -1,23 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  TextField,
-  InputAdornment,
-  Avatar,
   FormHelperText,
   Typography,
-  Button,
-  Divider,
-  Chip,
   ImageList,
   ImageListItem,
 } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import LoadingButton from "../../UI/LoadingButton";
-import { blue, green, grey, red } from "@mui/material/colors";
-import ReceiptIcon from "@mui/icons-material/Receipt";
+import { grey } from "@mui/material/colors";
 import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
 import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
