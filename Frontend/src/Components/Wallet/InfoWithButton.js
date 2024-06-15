@@ -39,8 +39,7 @@ export default function InfoWithButton() {
       sx={{
         display: "flex",
         justifyContent: "center",
-        paddingY: 1,
-        paddingX: 3,
+        padding: 1,
         position: "relative",
       }}
     >

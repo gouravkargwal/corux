@@ -158,7 +158,6 @@ const Recharge = () => {
           gap={1}
           justifyContent="center"
           marginY={2}
-          flexWrap="wrap"
           width="100%"
         >
           {predefinedValues.map((value) => (

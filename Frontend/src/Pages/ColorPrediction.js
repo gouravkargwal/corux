@@ -47,6 +47,7 @@ import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
 import { getResultList } from "../Feature/Result/resultSlice";
 import { getUserGameList } from "../Feature/User/userSlice";
 import ProfileColor from "../Components/ColorPrediction/ProfileColor";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -220,7 +221,13 @@ const ColorPrediction = () => {
           justifyContent="space-between"
         >
           <Grid item xs={6}>
-            <Typography color={theme.palette.text.grey} gutterBottom>
+            <Typography
+              color={theme.palette.text.grey}
+              gutterBottom
+              display="flex"
+              alignItems="center"
+            >
+              <EmojiEventsIcon sx={{ height: 18 }} />
               GameId
             </Typography>
             <Typography>{gameId}</Typography>
@@ -372,9 +379,6 @@ const ColorPrediction = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography variant="body1" fontWeight="500">
-                {activeTab === 0 ? "Winner" : "My Record"}
-              </Typography>
               <Typography variant="body2" fontWeight="500" color={grey[500]}>
                 <IconButton onClick={handleOpenRulesDialog}>
                   <NotListedLocationIcon />

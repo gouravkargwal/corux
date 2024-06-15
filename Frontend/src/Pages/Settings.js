@@ -14,7 +14,7 @@ export default function Settings() {
   const iconColor = grey[700];
   const hoverColor = "#fc211d";
   return (
-    <Box>
+    <Box height="100vh">
       <Box
         sx={{
           padding: "40px",
