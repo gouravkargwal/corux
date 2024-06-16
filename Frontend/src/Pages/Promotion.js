@@ -18,6 +18,7 @@ import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getBalance,
   selectBalanceReferCode,
   selectPromotionalBalance,
 } from "../Feature/Balance/balanceSlice";
@@ -47,6 +48,7 @@ export default function Promotion() {
 
   useEffect(() => {
     dispatch(getReferDetails());
+    dispatch(getBalance());
   }, [dispatch]);
 
   const iconColor = grey[700];

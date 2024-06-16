@@ -114,7 +114,7 @@ const Withdraw = () => {
               rules={{
                 required: "Amount is required",
                 validate: (value) =>
-                  value >= 100 || "Amount must be greater than or equal 100",
+                  value >= 100 || "Amount must be greater than 100",
               }}
               render={({ field }) => (
                 <AuthTextField

@@ -71,6 +71,11 @@ const Item = ({ item }) => {
         textAlign: "center",
         backgroundColor: "background.main",
         boxShadow: 0,
+        "@media (min-width: 768px)": {
+          height: "400px",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+        },
       }}
       margin={3}
       marginTop={1}

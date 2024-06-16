@@ -72,6 +72,8 @@ const Item = ({ item }) => {
         boxShadow: 0,
         "@media (min-width: 768px)": {
           height: "500px",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
         },
       }}
       margin={3}
