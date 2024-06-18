@@ -89,8 +89,8 @@ const BettingDialogue = ({
                     "Enter a valid amount (numbers only, up to 2 decimal places).",
                 },
                 min: {
-                  value: 10,
-                  message: "Amount should be at least 10.",
+                  value: 50,
+                  message: "Amount should be at least 50.",
                 },
               })}
               inputRef={register("amount").ref}

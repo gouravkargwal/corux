@@ -24,7 +24,7 @@ allowed_origins = [
     "https://vegagaming.site",
     "https://vega-admin-wsltptu5dq-uc.a.run.app",
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
-    "http://localhost:3000",
+    "http://localhost:3001",
 ]
 # allowed_origins = [, "http://192.168.1.2:3000"]
 

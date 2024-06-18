@@ -67,7 +67,7 @@ const ColorPrediction = () => {
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
 
-  const [resultDialogue, setResultDialogue] = useState(false);
+  const [resultDialogue, setResultDialogue] = useState(true);
   const [result, setResult] = useState(null);
 
   useEffect(() => {
