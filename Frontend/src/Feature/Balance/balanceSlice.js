@@ -4,9 +4,9 @@ import API from "../../Api/ApiCall";
 const initialState = {
   loading: null,
   error: null,
-  balance: 256165161,
-  mobile: 917023074548,
-  username: "Gourav",
+  balance: null,
+  mobile: null,
+  username: null,
   referCode: null,
   isBlock: false,
   promotionalBalance: null,

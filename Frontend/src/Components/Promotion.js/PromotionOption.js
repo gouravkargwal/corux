@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography, useTheme, useMediaQuery } from "@mui/material";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 const PromotionOption = ({ name, icon, onClick, count }) => {
   const theme = useTheme();

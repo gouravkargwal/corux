@@ -34,7 +34,7 @@ export default function Info() {
       sx={{
         display: "flex",
         justifyContent: "center",
-        padding: 3,
+        padding: 1,
         position: "relative",
       }}
     >

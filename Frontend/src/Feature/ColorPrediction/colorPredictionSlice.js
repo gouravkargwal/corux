@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
+import { openSnackbar } from "../Snackbar/snackbarSlice";
 
 const initialState = {
   loading: null,
@@ -15,6 +16,12 @@ export const createBet = createAsyncThunk(
   async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await API.createBetAPI(data);
+      dispatch(
+        openSnackbar({
+          message: response?.data?.message,
+          type: "success",
+        })
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(

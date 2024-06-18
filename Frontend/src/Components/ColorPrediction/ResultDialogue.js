@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -16,6 +15,8 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { green, red } from "@mui/material/colors";
 import ShareIcon from "@mui/icons-material/Share";
+import HappyEmoji from "../../Assets/Images/happyemoji.png";
+import SadEmoji from "../../Assets/Images/sadEmoji.png";
 
 const ResultDialogue = ({ open, onClose, data }) => {
   const theme = useTheme();
@@ -102,33 +103,11 @@ const ResultDialogue = ({ open, onClose, data }) => {
           {_.map(data, (item, index) => (
             <ListItem key={index}>
               <ListItemIcon>
-                {item.amount > 0 ? (
-                  <picture>
-                    <source
-                      srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.webp"
-                      type="image/webp"
-                    />
-                    <img
-                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.gif"
-                      alt="🥳"
-                      width="32"
-                      height="32"
-                    />
-                  </picture>
-                ) : (
-                  <picture>
-                    <source
-                      srcSet="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.webp"
-                      type="image/webp"
-                    />
-                    <img
-                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.gif"
-                      alt="😔"
-                      width="32"
-                      height="32"
-                    />
-                  </picture>
-                )}
+                <img
+                  src={item.amount > 0 ? HappyEmoji : SadEmoji}
+                  alt={item.amount > 0 ? "Win" : "Lose"}
+                  style={{ width: 64, height: 64 }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary={

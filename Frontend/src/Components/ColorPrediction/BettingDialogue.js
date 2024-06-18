@@ -37,7 +37,7 @@ const BettingDialogue = ({
       open={open}
       sx={{
         "& .MuiDialog-paper": {
-          padding: 4,
+          padding: 3,
           background: "rgba(255, 255, 255, 0.6)",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
@@ -65,16 +65,13 @@ const BettingDialogue = ({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-
       <DialogContent
-        dividers
         sx={{
-          overflowY: isMobile ? "scroll" : "auto",
           maxHeight: isMobile ? "calc(100vh - 200px)" : "auto",
           padding: theme.spacing(2),
         }}
       >
-        <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 2 }}>
+        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
           <Box mb={2}>
             <AuthTextField
               error={!!errors.amount}

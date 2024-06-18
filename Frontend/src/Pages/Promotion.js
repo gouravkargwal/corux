@@ -18,6 +18,7 @@ import LoyaltyIcon from "@mui/icons-material/Loyalty";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getBalance,
   selectBalanceReferCode,
   selectPromotionalBalance,
 } from "../Feature/Balance/balanceSlice";
@@ -47,6 +48,7 @@ export default function Promotion() {
 
   useEffect(() => {
     dispatch(getReferDetails());
+    dispatch(getBalance());
   }, [dispatch]);
 
   const iconColor = grey[700];
@@ -61,7 +63,7 @@ export default function Promotion() {
         flexDirection="column"
         justifyContent="flex-start"
         sx={{
-          padding: "40px",
+          padding: "20px",
           background: "rgba(255, 255, 255, 0.1)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(16px) saturate(180%)",
@@ -70,7 +72,8 @@ export default function Promotion() {
           borderRadius: "12px",
           border: "1px solid rgba(209, 213, 219, 0.3)",
         }}
-        margin={3}
+        marginX={3}
+        marginY={1}
         gap={2}
         marginTop={0}
       >
@@ -104,7 +107,7 @@ export default function Promotion() {
         flexDirection="column"
         justifyContent="flex-start"
         sx={{
-          padding: "40px",
+          padding: "20px",
           background: "rgba(255, 255, 255, 0.1)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(16px) saturate(180%)",
@@ -113,7 +116,8 @@ export default function Promotion() {
           borderRadius: "12px",
           border: "1px solid rgba(209, 213, 219, 0.3)",
         }}
-        margin={3}
+        marginX={3}
+        marginY={1}
         gap={2}
         marginTop={0}
       >
@@ -147,7 +151,7 @@ export default function Promotion() {
         flexDirection="column"
         justifyContent="flex-start"
         sx={{
-          padding: "40px",
+          padding: "20px",
           background: "rgba(255, 255, 255, 0.1)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(16px) saturate(180%)",
@@ -156,7 +160,8 @@ export default function Promotion() {
           borderRadius: "12px",
           border: "1px solid rgba(209, 213, 219, 0.3)",
         }}
-        margin={3}
+        marginX={3}
+        marginY={1}
         gap={2}
         marginTop={0}
       >
@@ -190,7 +195,7 @@ export default function Promotion() {
         flexDirection="column"
         justifyContent="flex-start"
         sx={{
-          padding: "40px",
+          padding: "20px",
           background: "rgba(255, 255, 255, 0.1)",
           boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(16px) saturate(180%)",
@@ -263,13 +268,14 @@ export default function Promotion() {
           </Box>
         </Box>
       </Box>
-      <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
-        <Grid item xs={12} my={1}>
+      <Grid item xs={4} marginX={1} borderRadius={1} paddingX={2} height="40vh">
+        <Grid item xs={12}>
           <Paper
             elevation={3}
             sx={{
-              marginTop: 3,
-              padding: 3,
+              marginTop: 1,
+              paddingY: 1,
+              paddingX: 3,
               background: "rgba(255, 255, 255, 0.1)",
               boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
               backdropFilter: "blur(16px) saturate(180%)",
@@ -304,7 +310,7 @@ export default function Promotion() {
             </Tabs>
           </Paper>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} mt={1}>
           {activeTab === 0 && <Level1Table data={data?.refer_result_level1} />}
           {activeTab === 1 && <Level2Table data={data?.refer_result_level2} />}
         </Grid>

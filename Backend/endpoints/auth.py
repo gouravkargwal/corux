@@ -89,8 +89,7 @@ async def check_mobile_number(
 @router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        # otp = random.randint(1000, 9999)
-        otp=1234
+        otp = random.randint(1000, 9999)
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -130,16 +129,16 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
 
             db.add(new_otp_log)
             db.commit()
-            # db.refresh(new_otp_log)
+            db.refresh(new_otp_log)
         logger.info("Otp entry done")
         number = userdetail.mobile_number
         message = otp
-        # response = call_otp_api(number, message)
-        # logger.info(response)
-        # if response.get("status_code"):
-        #     logger.info(response)
-        #     raise HTTPException(
-        #         status_code=400, detail="Try Again after 30 minutes")
+        response = call_otp_api(number, message)
+        logger.info(response)
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(
+                status_code=400, detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
@@ -165,9 +164,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
                 status_code=400, detail="User not registered. Please register."
             )
 
-        # otp = random_with_n_digits(4)
-        otp=1234
-        # otp = random.randint(1000, 9999)
+        otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
             .filter(Otp_Table.mobile_number == userdetail.mobile_number)
@@ -209,12 +206,12 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
 
         number = userdetail.mobile_number
         message = otp
-        # response = call_otp_api(number, message)
-        # # logger.info(response)
-        # if response.get("status_code"):
-        #     logger.info(response)
-        #     raise HTTPException(
-        #         status_code=400, detail="Try Again after 30 minutes")
+        response = call_otp_api(number, message)
+        logger.info(response)
+        if response.get("status_code"):
+            logger.info(response)
+            raise HTTPException(
+                status_code=400, detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
@@ -281,9 +278,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
             raise HTTPException(
                 status_code=400, detail="Incorrect Credentials. Please try again."
             )
-
         payload = {"mobile_number": user.mobile_number}
-
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
 
@@ -341,11 +336,13 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                         referral_code_to=user_refered_by_level1.referral_code_to,
                         level_1_refer=user_info.mobile_number,
                     )
-                    user_level1_in_user_table = db.query(User).filter(User.mobile_number == user_refered_by_level1.mobile_number).first()
+                    user_level1_in_user_table = db.query(User).filter(
+                        User.mobile_number == user_refered_by_level1.mobile_number).first()
                     logger.info(user_level1_in_user_table)
                     promotional_balance = user_level1_in_user_table.promotional_balance + 50
 
-                    user_level1_in_user_table.promotional_balance = round(promotional_balance,2)
+                    user_level1_in_user_table.promotional_balance = round(
+                        promotional_balance, 2)
                     db.add(new_refer_entry)
                     user_refered_by_level2 = (
                         db.query(Referral_table)
@@ -364,11 +361,12 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                             level_2_refer=user_info.mobile_number,
                         )
 
-                            
-                        user_level2_in_user_table = db.query(User).filter(User.mobile_number == user_refered_by_level2.mobile_number).first()
+                        user_level2_in_user_table = db.query(User).filter(
+                            User.mobile_number == user_refered_by_level2.mobile_number).first()
                         promotional_balance = user_level2_in_user_table.promotional_balance + 25
 
-                        user_level2_in_user_table.promotional_balance = round(promotional_balance,2)
+                        user_level2_in_user_table.promotional_balance = round(
+                            promotional_balance, 2)
 
                         db.add(new_refer_entry_2)
 
@@ -404,7 +402,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
-            "promotional_balance":new_user.promotional_balance,
+            "promotional_balance": new_user.promotional_balance,
             "referral_code": refer_code,
         }
     except HTTPException as e:

@@ -27,10 +27,12 @@ import TermsAndConditions from "./Pages/TermsAndConditions";
 import PrivacyPolicy from "./Pages/PrivacyPolicy";
 import ContactUs from "./Pages/ContactUs";
 import Feature from "./Pages/Feature";
+import ScrollToTop from "./Components/UI/ScrollToTop";
 
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<UserLayout />}>
           <Route index element={<HomePage />} />

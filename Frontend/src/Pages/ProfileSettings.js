@@ -11,7 +11,7 @@ import Option from "../Components/Profile/Option";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { grey } from "@mui/material/colors";
 import CallIcon from "@mui/icons-material/Call";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,6 +24,7 @@ import API from "../Api/ApiCall";
 import { toast } from "react-toastify";
 import AuthTextField from "../Components/Auth/AuthTextField";
 import AuthButton from "../Components/Auth/AuthButton";
+import { openSnackbar } from "../Feature/Snackbar/snackbarSlice";
 
 export default function ProfileSettings() {
   const dispatch = useDispatch();
@@ -34,8 +35,10 @@ export default function ProfileSettings() {
   }, [dispatch]);
 
   const {
-    control,
     handleSubmit,
+    register,
+    watch,
+    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -44,23 +47,25 @@ export default function ProfileSettings() {
     },
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const password = watch("password");
 
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const [loading, setLoading] = useState(false);
 
   const onFormSubmit = async (data) => {
     try {
       const { password } = data;
       setLoading(true);
       await API.changePasswordAPI({ password });
-      toast.success("Password Changed Successful");
+      dispatch(
+        openSnackbar({
+          message: "Password Changed Successful",
+          type: "success",
+        })
+      );
     } catch (error) {
       if (error.response) {
         return toast.error(error.response?.data?.detail);
@@ -71,12 +76,8 @@ export default function ProfileSettings() {
       }
     } finally {
       setLoading(false);
+      reset();
     }
-  };
-
-  const validatePasswordsMatch = (confirmPassword) => {
-    const { password } = control._formValues;
-    return password === confirmPassword || "Passwords do not match";
   };
 
   const iconColor = grey[700];
@@ -183,41 +184,36 @@ export default function ProfileSettings() {
         >
           Change Password
         </Typography>
-        <Controller
-          name="password"
-          control={control}
-          rules={{
+        <AuthTextField
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          {...register("password", {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password must be at least 8 characters long",
+              message: "Password must be at least 8 characters",
             },
+          })}
+          placeholder="Password"
+          error={!!errors.password}
+          inputRef={register("password").ref}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: grey[300] }} />
+                  ) : (
+                    <Visibility sx={{ color: grey[300] }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
-          render={({ field }) => (
-            <AuthTextField
-              {...field}
-              type={showPassword ? "text" : "password"}
-              fullWidth
-              placeholder="Enter new password"
-              error={!!errors.password}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowConfirmPassword}
-                    >
-                      {showPassword ? (
-                        <VisibilityOff sx={{ color: grey[300] }} />
-                      ) : (
-                        <Visibility sx={{ color: grey[300] }} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          )}
         />
         <FormHelperText
           error={!!errors.password}
@@ -230,39 +226,36 @@ export default function ProfileSettings() {
           {errors ? errors?.password?.message : " "}
         </FormHelperText>
 
-        <Controller
-          name="confirmPassword"
-          control={control}
-          rules={{
-            required: "Confirm Password is required",
-            validate: validatePasswordsMatch,
+        <AuthTextField
+          variant="outlined"
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          inputRef={register("confirmPassword").ref}
+          {...register("confirmPassword", {
+            validate: (value) =>
+              value === password || "The passwords do not match",
+          })}
+          placeholder="Confirm Password"
+          error={!!errors.confirmPassword}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: grey[300] }} />
+                  ) : (
+                    <Visibility sx={{ color: grey[300] }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
-          render={({ field }) => (
-            <AuthTextField
-              {...field}
-              type={showConfirmPassword ? "text" : "password"}
-              fullWidth
-              placeholder="Enter confirm password"
-              error={!!errors.confirmPassword}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                    >
-                      {showPassword ? (
-                        <VisibilityOff sx={{ color: grey[300] }} />
-                      ) : (
-                        <Visibility sx={{ color: grey[300] }} />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          )}
         />
+
         <FormHelperText
           error={!!errors.confirmPassword}
           sx={{

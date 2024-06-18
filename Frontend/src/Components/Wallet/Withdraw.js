@@ -2,7 +2,13 @@ import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Info from "../Profile/Info";
-import { FormHelperText, Grid, Typography } from "@mui/material";
+import {
+  FormHelperText,
+  Grid,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +20,7 @@ import AuthButton from "../Auth/AuthButton";
 
 const Withdraw = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [withdrawnAmount, setWithdrawnAmount] = useState(null);
@@ -57,9 +64,17 @@ const Withdraw = () => {
     navigate("/profile/wallet");
   };
 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Box component="form" onSubmit={handleSubmit(onFormSubmit)}>
-      <Info />
+    <Box component="form" onSubmit={handleSubmit(onFormSubmit)} height="100vh">
+      <Box
+        sx={{
+          padding: isMobile ? 2 : 3,
+        }}
+      >
+        <Info />
+      </Box>
       {isBlock && (
         <Typography
           variant="body2"

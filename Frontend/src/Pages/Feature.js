@@ -16,7 +16,7 @@ export default function Feature() {
             flexDirection: "column",
             alignItems: "center",
           }}
-          marginTop={4}
+          marginTop={2}
         >
           <Typography
             variant="h4"
@@ -37,12 +37,12 @@ export default function Feature() {
             sx={{
               fontFamily: "Ubuntu, sans-serif",
               fontWeight: 400,
-              marginBottom: 2,
+              marginBottom: 1,
             }}
           >
             Level up your gaming experience!
           </Typography>
-          <Box sx={{ display: "flex", gap: 2, marginTop: 4 }}>
+          <Box sx={{ display: "flex", gap: 2, marginTop: 2 }}>
             <Button
               variant="contained"
               color="primary"

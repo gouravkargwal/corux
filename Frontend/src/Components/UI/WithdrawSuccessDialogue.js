@@ -22,7 +22,7 @@ const WithdrawSuccessDialogue = ({ open, onClose, amount }) => {
       maxWidth="md"
       sx={{
         "& .MuiDialog-paper": {
-          padding: 4,
+          padding: 3,
           background: "rgba(255, 255, 255, 0.6)",
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",

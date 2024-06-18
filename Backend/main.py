@@ -106,8 +106,10 @@ async def handle_disconnect(sid):
     try:
         connected_clients.remove(sid)
         logger.info(f"Client disconnected: SID={sid}")
+
     except Exception as e:
-        logger.error(f"Connection error on disconnect: {str(e)}", exc_info=True)
+        logger.error(
+            f"Connection error on disconnect: {str(e)}", exc_info=True)
 
 
 async def notify_timer():

@@ -3,11 +3,11 @@ import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
 
 const initialState = {
-  token: "askdjaslkdjaslkdjkasljdas",
+  token: null,
   loading: null,
   error: null,
-  user: "gourav",
-  balance: 841541511515151,
+  user: null,
+  balance: null,
   registrationData: null,
   refreshToken: null,
   forgotPhone: null,
