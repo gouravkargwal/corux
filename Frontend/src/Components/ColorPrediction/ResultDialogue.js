@@ -15,9 +15,39 @@ import {
 import { Close as CloseIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { green, red } from "@mui/material/colors";
+import ShareIcon from "@mui/icons-material/Share";
 
 const ResultDialogue = ({ open, onClose, data }) => {
   const theme = useTheme();
+  const generateShareText = () => {
+    const header = "🎉 Bet Results! 🎉";
+    const results = data
+      ?.map((item) =>
+        item.amount > 0
+          ? `🥳 You won ₹${item.amount} on ${item.bet_on}!`
+          : `😔 You lost on ${item.bet_on}.`
+      )
+      .join("\n");
+    const footer = `Check out more at Vega Gaming: ${process.env.REACT_APP_BASE_URL}`;
+
+    return `${header}\n\n${results}\n\n${footer}`;
+  };
+
+  const handleShare = () => {
+    const shareData = {
+      title: "Bet Results",
+      text: generateShareText(),
+    };
+
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("Share successful"))
+        .catch((error) => console.error("Error sharing", error));
+    } else {
+      alert("Share not supported on this browser.");
+    }
+  };
 
   return (
     <Dialog
@@ -120,6 +150,25 @@ const ResultDialogue = ({ open, onClose, data }) => {
             </ListItem>
           ))}
         </List>
+
+        <IconButton
+          sx={{
+            backgroundColor: "#fc4642",
+            color: "white",
+            padding: "5px 5px",
+            borderRadius: "100%",
+            boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+            "&:hover": {
+              backgroundColor: "#fc211d",
+              boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+            },
+            textTransform: "none",
+            fontSize: "10px",
+          }}
+          onClick={handleShare}
+        >
+          <ShareIcon fontSize="small" />
+        </IconButton>
       </DialogContent>
     </Dialog>
   );
