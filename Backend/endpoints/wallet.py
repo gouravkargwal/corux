@@ -174,7 +174,7 @@ async def winthdraw(
 
         lastest_deposit = (
             db.query(PaymentDepositTable)
-            .filter(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number)
+            .filter(and_(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number, PaymentDepositTable.APPROVE_DEPOSIT == True))
             .order_by(desc(PaymentDepositTable.CREATE_DATE))
             .first()
         )

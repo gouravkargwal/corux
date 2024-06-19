@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import now
-from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer
-from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable
+from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer, ReferralTableSerializer
+from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable
 from home.custom_logging import adminlogger
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -186,6 +186,86 @@ class deposit(APIView):
                         APPROVE_DEPOSIT=True, IS_PROMOTIONAL=False, MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"]).exists()
                     if not notExist:
                         adminlogger.info("not exist")
+                        refer_l1 = ReferralTable.objects.filter(
+                            LEVEL_1_REFER=paymentGetSerializer.data["MOBILE_NUMBER"]).first()
+                        if refer_l1:
+                            adminlogger.info(refer_l1)
+                            mobile_number_l1 = refer_l1.MOBILE_NUMBER
+                            user_l1 = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=mobile_number_l1)
+                            promotional_amount_new_l1 = (Decimal(user_l1.PROMOTIONAL_BALANCE) + 25).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance_l1 = {
+                                "PROMOTIONAL_BALANCE": promotional_amount_new_l1}
+
+                            serializedUserL1 = UserAdminSerializer(
+                                user_l1, data=new_balance_l1, partial=True)
+
+                            new_deposit_data_l1 = {
+                                "AMOUNT": 25,
+                                "MOBILE_NUMBER": mobile_number_l1,
+                                "IS_PROMOTIONAL": 1,
+                                "APPROVE_DEPOSIT": 1
+                            }
+                            new_deposit_serializer_l1 = PaymentDepositSerializer(
+                                data=new_deposit_data_l1)
+
+                            if serializedUserL1.is_valid():
+                                if new_deposit_serializer_l1.is_valid():
+                                    new_deposit_serializer_l1.save()
+                                    serializedUserL1.save()
+                                else:
+                                    first_field = next(
+                                        iter(new_deposit_serializer_l1.errors))
+                                    first_error = new_deposit_serializer_l1.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedUserL1.errors))
+                                first_error = serializedUserL1.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                        refer_l2 = ReferralTable.objects.filter(
+                            LEVEL_2_REFER=paymentGetSerializer.data["MOBILE_NUMBER"]).first()
+                        if refer_l2:
+                            adminlogger.info(refer_l2)
+                            mobile_number_l2 = refer_l2.MOBILE_NUMBER
+                            user_l2 = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=mobile_number_l2)
+                            promotional_amount_new_l2 = (Decimal(user_l2.PROMOTIONAL_BALANCE) + 10).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance_l2 = {
+                                "PROMOTIONAL_BALANCE": promotional_amount_new_l2}
+
+                            serializedUserL2 = UserAdminSerializer(
+                                user_l2, data=new_balance_l2, partial=True)
+
+                            new_deposit_data_l2 = {
+                                "AMOUNT": 10,
+                                "MOBILE_NUMBER": mobile_number_l2,
+                                "IS_PROMOTIONAL": 1,
+                                "APPROVE_DEPOSIT": 1
+                            }
+                            new_deposit_serializer_l2 = PaymentDepositSerializer(
+                                data=new_deposit_data_l2)
+
+                            if serializedUserL2.is_valid():
+                                if new_deposit_serializer_l2.is_valid():
+                                    new_deposit_serializer_l2.save()
+                                    serializedUserL2.save()
+                                else:
+                                    first_field = next(
+                                        iter(new_deposit_serializer_l2.errors))
+                                    first_error = new_deposit_serializer_l2.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedUserL2.errors))
+                                first_error = serializedUserL2.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
                         promotional_amount = Decimal(
                             paymentGetSerializer.data["AMOUNT"]) * Decimal('0.15')
                         user = UserAdminTable.objects.get(
