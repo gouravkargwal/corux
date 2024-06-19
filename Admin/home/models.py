@@ -57,6 +57,8 @@ class PaymentDepositTable(models.Model):
 
     DENY_DEPOSIT = models.BooleanField(default=False)
 
+    IS_PROMOTIONAL = models.BooleanField(default=False)
+
     UPDATE_DATE = models.DateTimeField(auto_now=True)
 
     class Meta:
