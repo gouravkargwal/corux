@@ -18,7 +18,6 @@ const Level1Table = ({ data }) => {
     resizable: true,
     flex: 1,
     minWidth: 100,
-    filter: true,
     headerClass: "header-cell",
     cellClass: "cell",
   };
@@ -66,6 +65,10 @@ const Level1Table = ({ data }) => {
             getRowStyle={getRowStyle}
             defaultColDef={defaultColDef}
             overlayNoRowsTemplate={noRowsMessage}
+            gridOptions={{
+              suppressDragLeaveHidesColumns: true,
+              suppressMovableColumns: true,
+            }}
           />
         </Box>
         <Box display="flex" justifyContent="center">

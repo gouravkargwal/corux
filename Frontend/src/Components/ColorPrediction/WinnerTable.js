@@ -47,7 +47,6 @@ const WinnerTable = ({ activeTab }) => {
     resizable: true,
     flex: 1,
     minWidth: 100,
-    filter: true,
     headerClass: "header-cell",
     cellClass: "cell",
   };
@@ -160,6 +159,10 @@ const WinnerTable = ({ activeTab }) => {
               getRowStyle={getRowStyle}
               defaultColDef={defaultColDef}
               overlayNoRowsTemplate={noRowsMessage}
+              gridOptions={{
+                suppressDragLeaveHidesColumns: true,
+                suppressMovableColumns: true,
+              }}
             />
           </Box>
           <Box>

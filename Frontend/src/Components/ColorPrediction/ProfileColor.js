@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Paper, Button } from "@mui/material";
 import { blueGrey, grey } from "@mui/material/colors";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -59,15 +58,9 @@ export default function ProfileColor() {
           position: "relative",
         }}
       >
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          gap={2}
-          zIndex={1}
-        >
-          <Box width="100%" display="flex" justifyContent="space-between">
-            <Box display="flex" alignItems="center">
+        <Box width="100%" display="flex" flexDirection="column" gap={2}>
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex">
               <AccountBalanceIcon sx={iconStyles} />
               <Box display="flex" flexDirection="column" ml={1}>
                 <Typography color={grey["500"]} variant="caption">
@@ -78,6 +71,26 @@ export default function ProfileColor() {
                 </Typography>
               </Box>
             </Box>
+            <Button
+              sx={{
+                backgroundColor: "#fc4642",
+                color: "white",
+                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  backgroundColor: "#fc211d",
+                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+                },
+                zIndex: 100,
+              }}
+              variant="contained"
+              onClick={() => {
+                navigate("/profile/recharge");
+              }}
+            >
+              Recharge
+            </Button>
+          </Box>
+          <Box display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center">
               <EmojiEventsIcon sx={iconStyles} />
               <Box display="flex" flexDirection="column" ml={1}>
@@ -89,46 +102,8 @@ export default function ProfileColor() {
                 </Typography>
               </Box>
             </Box>
-            <Box display="flex" alignItems="center">
-              <CardGiftcard sx={iconStyles} />
-              <Box display="flex" flexDirection="column" ml={1}>
-                <Typography color={grey["500"]} variant="caption">
-                  Promotional
-                </Typography>
-                <Typography color="text.primary" variant="caption">
-                  {bonus}
-                </Typography>
-              </Box>
-            </Box>
-          </Box>
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            gap={2}
-            width="100%"
-          >
             <Button
               sx={{
-                backgroundColor: "#fc4642",
-                color: "white",
-                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
-                "&:hover": {
-                  backgroundColor: "#fc211d",
-                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
-                },
-                flex: 1,
-                zIndex: 100,
-              }}
-              variant="contained"
-              onClick={() => {
-                navigate("/profile/recharge");
-              }}
-            >
-              Recharge
-            </Button>
-            <Button
-              sx={{
-                flex: 1,
                 zIndex: 100,
                 boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
                 "&:hover": {
@@ -143,6 +118,17 @@ export default function ProfileColor() {
             >
               Withdraw
             </Button>
+          </Box>
+          <Box display="flex" alignItems="center">
+            <CardGiftcard sx={iconStyles} />
+            <Box display="flex" flexDirection="column" ml={1}>
+              <Typography color={grey["500"]} variant="caption">
+                Promotional
+              </Typography>
+              <Typography color="text.primary" variant="caption">
+                {bonus}
+              </Typography>
+            </Box>
           </Box>
         </Box>
       </Paper>
