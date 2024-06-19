@@ -26,7 +26,7 @@ allowed_origins = [
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
     "http://localhost:3000",
 ]
-# allowed_origins = [, "http://192.168.1.2:3000"]
+# allowed_origins = ["http://192.168.1.2:3000"]
 # allowed_origins = ["*"]
 app.add_middleware(
     CORSMiddleware,

@@ -310,8 +310,16 @@ export default function Register() {
                     label={
                       <Typography variant="body2" color="textSecondary">
                         I agree to the{" "}
-                        <Link
+                        {/* <Link
                           href="/terms-and-conditions"
+                          underline="always"
+                          sx={{ color: blue[500] }}
+                        >
+                          terms & conditions
+                        </Link> */}
+                        <Link
+                          // component={RouterLink} // Change to RouterLink for internal navigation
+                          to="/terms-and-conditions" // Replace with your actual route path
                           underline="always"
                           sx={{ color: blue[500] }}
                         >

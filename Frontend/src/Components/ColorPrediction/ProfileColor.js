@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Paper, Button } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
+import { blueGrey, grey } from "@mui/material/colors";
 import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,11 +8,15 @@ import { useNavigate } from "react-router-dom";
 import {
   getBalance,
   selectBalanceData,
+  selectBalanceWinning,
   selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function ProfileColor() {
   const bonus = useSelector(selectPromotionalBalance);
+  const winning = useSelector(selectBalanceWinning);
   const balance = useSelector(selectBalanceData);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,16 +68,37 @@ export default function ProfileColor() {
         >
           <Box width="100%" display="flex" justifyContent="space-between">
             <Box display="flex" alignItems="center">
-              <CurrencyRupeeIcon sx={iconStyles} />
-              <Typography color="text.primary" variant="body1">
-                {balance}
-              </Typography>
+              <AccountBalanceIcon sx={iconStyles} />
+              <Box display="flex" flexDirection="column" ml={1}>
+                <Typography color={grey["500"]} variant="caption">
+                  Deposit
+                </Typography>
+                <Typography color="text.primary" variant="caption">
+                  {balance}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center">
+              <EmojiEventsIcon sx={iconStyles} />
+              <Box display="flex" flexDirection="column" ml={1}>
+                <Typography color={grey["500"]} variant="caption">
+                  Winnings
+                </Typography>
+                <Typography color="text.primary" variant="caption">
+                  {winning}
+                </Typography>
+              </Box>
             </Box>
             <Box display="flex" alignItems="center">
               <CardGiftcard sx={iconStyles} />
-              <Typography color="text.primary" variant="body1">
-                {bonus}
-              </Typography>
+              <Box display="flex" flexDirection="column" ml={1}>
+                <Typography color={grey["500"]} variant="caption">
+                  Promotional
+                </Typography>
+                <Typography color="text.primary" variant="caption">
+                  {bonus}
+                </Typography>
+              </Box>
             </Box>
           </Box>
           <Box

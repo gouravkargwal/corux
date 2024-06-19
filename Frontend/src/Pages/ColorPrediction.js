@@ -8,7 +8,7 @@ import {
   Tabs,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import "../../node_modules/ag-grid-community/styles/ag-grid.css";
 import "../../node_modules/ag-grid-community/styles/ag-theme-alpine.css";
 import { useForm } from "react-hook-form";
@@ -48,6 +48,9 @@ import { getResultList } from "../Feature/Result/resultSlice";
 import { getUserGameList } from "../Feature/User/userSlice";
 import ProfileColor from "../Components/ColorPrediction/ProfileColor";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import VideoDialog from "../Components/UI/VideoDialog";
+import CustomLoadingIndicator from "../Components/UI/CustomLoadingIndicator";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -66,6 +69,7 @@ const ColorPrediction = () => {
   const [loginDialog, setLoginDialog] = useState(false);
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
+  const [videoDialog, setVideoDialog] = useState(false);
 
   const [resultDialogue, setResultDialogue] = useState(false);
   const [result, setResult] = useState(null);
@@ -385,6 +389,16 @@ const ColorPrediction = () => {
                 </IconButton>
                 Rules
               </Typography>
+              <Typography variant="body2" fontWeight="500" color={grey[500]}>
+                <IconButton
+                  onClick={() => {
+                    setVideoDialog(true);
+                  }}
+                >
+                  <YouTubeIcon />
+                </IconButton>
+                Guide
+              </Typography>
             </Box>
           </Grid>
           <Grid item xs={12}>
@@ -396,31 +410,42 @@ const ColorPrediction = () => {
         </Grid>
       </Grid>
 
-      <GameRulesDialog open={rulesDialog} onClose={handleCloseRulesDialog} />
+      <Suspense fallback={<CustomLoadingIndicator />}>
+        <GameRulesDialog open={rulesDialog} onClose={handleCloseRulesDialog} />
 
-      <BettingDialogue
-        open={colorBidDialog}
-        onClose={handleCloseBidDialog}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        register={register}
-        errors={errors}
-        loading={loading}
-        dialogType={dialogType}
-        selectedColor={selectedColor}
-        selectedNumber={selectedNumber}
-      />
+        <BettingDialogue
+          open={colorBidDialog}
+          onClose={handleCloseBidDialog}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          register={register}
+          errors={errors}
+          loading={loading}
+          dialogType={dialogType}
+          selectedColor={selectedColor}
+          selectedNumber={selectedNumber}
+        />
 
-      <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
+        <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
 
-      <ResultDialogue
-        open={resultDialogue}
-        onClose={() => {
-          setResult(null);
-          setResultDialogue(false);
-        }}
-        data={result}
-      />
+        <ResultDialogue
+          open={resultDialogue}
+          onClose={() => {
+            setResult(null);
+            setResultDialogue(false);
+          }}
+          data={result}
+        />
+
+        <VideoDialog
+          open={videoDialog}
+          onClose={() => {
+            setVideoDialog(false);
+          }}
+          title="How to play"
+          videoId="fRuOeAusQQA?si=RavJmLPcyvPqxmiR"
+        />
+      </Suspense>
     </>
   );
 };

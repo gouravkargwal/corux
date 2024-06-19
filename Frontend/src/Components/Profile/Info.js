@@ -1,22 +1,25 @@
 import React, { useEffect } from "react";
 import { Box, Typography, Paper } from "@mui/material";
-import { blueGrey } from "@mui/material/colors";
+import { blueGrey, grey } from "@mui/material/colors";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
 import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBalance,
   selectBalanceData,
   selectBalanceUsername,
+  selectBalanceWinning,
   selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
 import customCapitalize from "../../Util/stringFunc";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function Info() {
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
   const bonus = useSelector(selectPromotionalBalance);
+  const winning = useSelector(selectBalanceWinning);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,8 +28,8 @@ export default function Info() {
 
   const iconStyles = {
     color: blueGrey[700],
-    width: 20,
-    height: 20,
+    width: 30,
+    height: 30,
   };
 
   return (
@@ -62,17 +65,38 @@ export default function Info() {
             </Typography>
           </Box>
           <Box width="100%">
-            <Box display="flex" alignItems="center" gap={2} mb={2}>
-              <CurrencyRupeeIcon sx={iconStyles} />
-              <Typography color="text.primary" variant="body1">
-                {balance}
-              </Typography>
+            <Box display="flex" alignItems="center" gap={2}>
+              <AccountBalanceIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Deposit
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  {balance}
+                </Typography>
+              </Box>
             </Box>
             <Box display="flex" alignItems="center" gap={2}>
+              <EmojiEventsIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Winning
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  {winning}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
               <CardGiftcard sx={iconStyles} />
-              <Typography color="text.primary" variant="body1">
-                {bonus}
-              </Typography>
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Promotional
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  {bonus}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>

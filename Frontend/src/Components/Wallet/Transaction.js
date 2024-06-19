@@ -4,7 +4,14 @@ import { green, grey, orange, red } from "@mui/material/colors";
 import PaymentsIcon from "@mui/icons-material/Payments";
 import moment from "moment";
 
-const Transaction = ({ type, amount, date, approved, denied }) => {
+const Transaction = ({
+  type,
+  amount,
+  date,
+  approved,
+  denied,
+  is_promotional = false,
+}) => {
   const iconColor = grey[700];
   const hoverColor = "#fc211d";
   const formattedDateTime = moment(date).format("DD MMMM YYYY, h:mm A");
@@ -90,7 +97,13 @@ const Transaction = ({ type, amount, date, approved, denied }) => {
               : orange[700]
           }
         >
-          {approved ? "Successful" : denied ? "Denied" : "Processing"}
+          {is_promotional
+            ? "Promotional"
+            : approved
+            ? "Successful"
+            : denied
+            ? "Denied"
+            : "Processing"}
         </Typography>
       </Box>
     </Box>

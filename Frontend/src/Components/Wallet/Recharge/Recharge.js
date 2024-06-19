@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import {
   Box,
@@ -9,6 +9,7 @@ import {
   Paper,
   useMediaQuery,
   useTheme,
+  InputAdornment,
 } from "@mui/material";
 import Info from "../../Profile/Info";
 import { blue, grey } from "@mui/material/colors";
@@ -23,6 +24,9 @@ import { selectIsBlocked } from "../../../Feature/Balance/balanceSlice";
 import AuthTextField from "../../Auth/AuthTextField";
 import AuthButton from "../../Auth/AuthButton";
 import { styled, keyframes } from "@mui/system";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import CustomLoadingIndicator from "../../UI/CustomLoadingIndicator";
+const VideoDialog = lazy(() => import("../../UI/VideoDialog"));
 
 const predefinedValues = [100, 200, 500, 1000];
 
@@ -62,6 +66,7 @@ const Recharge = () => {
   const isBlock = useSelector(selectIsBlocked);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [open, setOpen] = useState(false);
 
   const {
     control,
@@ -137,6 +142,19 @@ const Recharge = () => {
               fullWidth
               type="number"
               placeholder="Enter Amount"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment
+                    position="start"
+                    sx={{ cursor: "pointer" }}
+                    onClick={() => {
+                      setOpen(true);
+                    }}
+                  >
+                    <YouTubeIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
           )}
         />
@@ -191,6 +209,16 @@ const Recharge = () => {
           {qrError ? qrError : " "}
         </FormHelperText>
       </Paper>
+      <Suspense fallback={<CustomLoadingIndicator />}>
+        <VideoDialog
+          open={open}
+          onClose={() => {
+            setOpen(false);
+          }}
+          title="How to do a recharge"
+          videoId="6sl85yaxZ9E?si=PiD8_CrkMUo_9KWd"
+        />
+      </Suspense>
     </Box>
   );
 };

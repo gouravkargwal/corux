@@ -131,15 +131,15 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-        logger.info("Otp entry done")
-        number = userdetail.mobile_number
-        message = otp
-        response = call_otp_api(number, message)
-        logger.info(response)
-        if response.get("status_code"):
-            logger.info(response)
-            raise HTTPException(
-                status_code=400, detail="Try Again after 30 minutes")
+        # logger.info("Otp entry done")
+        # number = userdetail.mobile_number
+        # message = otp
+        # response = call_otp_api(number, message)
+        # logger.info(response)
+        # if response.get("status_code"):
+        #     logger.info(response)
+        #     raise HTTPException(
+        #         status_code=400, detail="Try Again after 30 minutes")
         return {"status_code": 200, "message": "Otp sent successfully."}
     except HTTPException as e:
         logger.error(str(e))
