@@ -241,7 +241,7 @@ async def recharge_transaction(
         if not recharge_trans:
             return []
 
-        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_DEPOSIT, "denied": row.DENY_DEPOSIT} for row in recharge_trans]
+        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_DEPOSIT, "denied": row.DENY_DEPOSIT, "is_promotional": row.IS_PROMOTIONAL} for row in recharge_trans]
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)

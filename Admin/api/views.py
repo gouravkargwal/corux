@@ -145,14 +145,14 @@ class deposit(APIView):
                 USER_NAME=user.username).first().UPI_ID
             if searchValue:
                 totalCount = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, UTR__icontains=searchValue).count()
+                    ADMIN_UPI_ID=upiId, UTR__icontains=searchValue, IS_PROMOTIONAL=False).count()
                 payments = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, UTR__icontains=searchValue)[start:start+length]
+                    ADMIN_UPI_ID=upiId, UTR__icontains=searchValue, IS_PROMOTIONAL=False)[start:start+length]
             else:
                 totalCount = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId).count()
+                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False).count()
                 payments = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId).order_by('-CREATE_DATE')[start:start+length]
+                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False).order_by('-CREATE_DATE')[start:start+length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
@@ -180,32 +180,102 @@ class deposit(APIView):
                 adminlogger.info(payment)
                 paymentGetSerializer = UpdateDepositSerializer(payment)
                 adminlogger.info(paymentGetSerializer.data)
-                user = UserAdminTable.objects.get(
-                    MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
-                if data.get("APPROVE_DEPOSIT"):
-                    balance = Decimal(user.BALANCE) + \
-                        Decimal(paymentGetSerializer.data["AMOUNT"])
-                elif data.get("DENY_DEPOSIT"):
-                    balance = Decimal(user.BALANCE)
-                balance = balance.quantize(
-                    Decimal('0.001'), rounding=ROUND_HALF_UP)
-                serializedUser = UserAdminSerializer(
-                    user, data={"BALANCE": balance}, partial=True)
-                serializedpayment = PaymentDepositSerializer(
-                    payment, data=data, partial=True)
 
-                if serializedpayment.is_valid():
-                    if serializedUser.is_valid():
-                        serializedpayment.save()
-                        serializedUser.save()
+                if data.get("APPROVE_DEPOSIT"):
+                    notExist = PaymentDepositTable.objects.filter(
+                        APPROVE_DEPOSIT=True, IS_PROMOTIONAL=False, MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"]).exists()
+                    if not notExist:
+                        adminlogger.info("not exist")
+                        promotional_amount = Decimal(
+                            paymentGetSerializer.data["AMOUNT"]) * Decimal('0.15')
+                        user = UserAdminTable.objects.get(
+                            MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+
+                        balance = (Decimal(user.BALANCE) +
+                                   Decimal(paymentGetSerializer.data["AMOUNT"])).quantize(
+                            Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                        promotional_amount_new = (Decimal(user.PROMOTIONAL_BALANCE) + promotional_amount).quantize(
+                            Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                        new_balance = {"BALANCE": balance,
+                                       "PROMOTIONAL_BALANCE": promotional_amount_new}
+
+                        serializedUser = UserAdminSerializer(
+                            user, data=new_balance, partial=True)
+                        serializedpayment = PaymentDepositSerializer(
+                            payment, data=data, partial=True)
+
+                        new_deposit_data = {
+                            "AMOUNT": promotional_amount.quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP),
+                            "MOBILE_NUMBER": paymentGetSerializer.data["MOBILE_NUMBER"],
+                            "IS_PROMOTIONAL": 1,
+                            "APPROVE_DEPOSIT": 1
+                        }
+                        new_deposit_serializer = PaymentDepositSerializer(
+                            data=new_deposit_data)
+
+                        if serializedpayment.is_valid():
+                            if serializedUser.is_valid():
+                                if new_deposit_serializer.is_valid():
+                                    new_deposit_serializer.save()
+                                    serializedpayment.save()
+                                    serializedUser.save()
+                                else:
+                                    first_field = next(
+                                        iter(new_deposit_serializer.errors))
+                                    first_error = new_deposit_serializer.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(iter(serializedUser.errors))
+                                first_error = serializedUser.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            first_field = next(iter(serializedpayment.errors))
+                            first_error = serializedpayment.errors[first_field][0]
+                            return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
                     else:
-                        first_field = next(iter(serializedUser.errors))
-                        first_error = serializedUser.errors[first_field][0]
+                        adminlogger.info("exist")
+                        user = UserAdminTable.objects.get(
+                            MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+
+                        balance = (Decimal(user.BALANCE) +
+                                   Decimal(paymentGetSerializer.data["AMOUNT"])).quantize(
+                            Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                        new_balance = {"BALANCE": balance}
+
+                        serializedUser = UserAdminSerializer(
+                            user, data=new_balance, partial=True)
+                        serializedpayment = PaymentDepositSerializer(
+                            payment, data=data, partial=True)
+
+                        if serializedpayment.is_valid():
+                            if serializedUser.is_valid():
+                                serializedpayment.save()
+                                serializedUser.save()
+
+                            else:
+                                first_field = next(iter(serializedUser.errors))
+                                first_error = serializedUser.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            first_field = next(iter(serializedpayment.errors))
+                            first_error = serializedpayment.errors[first_field][0]
+                            return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                elif data.get("DENY_DEPOSIT"):
+                    serializedpayment = PaymentDepositSerializer(
+                        payment, data=data, partial=True)
+                    if serializedpayment.is_valid():
+                        serializedpayment.save()
+
+                    else:
+                        first_field = next(iter(serializedpayment.errors))
+                        first_error = serializedpayment.errors[first_field][0]
                         return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
-                else:
-                    first_field = next(iter(serializedpayment.errors))
-                    first_error = serializedpayment.errors[first_field][0]
-                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
                 return Response({'status': 200, "message": "success"})
 
         except Exception as e:
