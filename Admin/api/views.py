@@ -98,17 +98,17 @@ class withdraw(APIView):
                     MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
                 if data.get("APPROVE_WITHDRAW"):
                     if paymentGetSerializer.data["DENY_WITHDRAW"]:
-                        balance = Decimal(user.BALANCE) - \
+                        balance = Decimal(user.WINNING_BALANCE) - \
                             Decimal(paymentGetSerializer.data["AMOUNT"])
                     else:
                         balance = Decimal(user.BALANCE)
                 elif data.get("DENY_WITHDRAW"):
-                    balance = Decimal(user.BALANCE) + \
+                    balance = Decimal(user.WINNING_BALANCE) + \
                         Decimal(paymentGetSerializer.data["AMOUNT"])
                 balance = balance.quantize(
                     Decimal('0.001'), rounding=ROUND_HALF_UP)
                 serializedUser = UserAdminSerializer(
-                    user, data={"BALANCE": balance}, partial=True)
+                    user, data={"WINNING_BALANCE": balance}, partial=True)
                 serializedpayment = PaymentWithdrawSerializer(
                     payment, data=data, partial=True)
                 if serializedpayment.is_valid():
