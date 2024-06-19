@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.developm
 
 export default function Feature() {
   const navigate = useNavigate();
+
   return (
     <Box height="100vh" className="glass-container">
       <Container component="main" maxWidth="sm">
