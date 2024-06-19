@@ -65,6 +65,7 @@ async def get_profile(
             "balance": round(user.balance, 2),
             "refer_code": user_refer.referral_code_to,
             "promotional_balance": user.promotional_balance,
+            "winning_balance": user.winning_balance,
             'is_blocked': user.is_blocked
         }
     except ValidationError as e:
@@ -242,7 +243,8 @@ async def create_bet(
             raise HTTPException(
                 status_code=400, detail="Minimum Bet Amount is 50")
 
-        user_balance = user.balance + 1*(user.promotional_balance)
+        user_balance = user.balance + 1 * \
+            (user.promotional_balance) + user.winning_balance
         if user_balance < betdetails.bet_amount:
             raise HTTPException(status_code=400, detail="Insufficient Balance")
 
@@ -254,7 +256,15 @@ async def create_bet(
         else:
             user.promotional_balance = user.promotional_balance - amount
             amount = 0
-        user.balance = user.balance - amount
+
+        if amount >= user.balance:
+            amount = amount - user.balance
+            user.balance = 0
+        else:
+            user.balance = user.balance - amount
+            amount = 0
+
+        user.winning_balance = user.winning_balance - amount
 
         if is_convertible_to_number(betdetails.bet_on):
             new_bet = Bet_Number(

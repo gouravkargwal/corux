@@ -65,6 +65,7 @@ async def generate_qr(
             box_size=10,
             border=4,
         )
+
         qr.add_data(upi_link)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
@@ -146,11 +147,11 @@ async def winthdraw(
     db: Session = Depends(get_sql_db),
 ):
     try:
-        user = db.query(User).filter(User.mobile_number ==
-                                     credentials.mobile_number).first()
+        # user = db.query(User).filter(User.mobile_number ==
+        #                              credentials.mobile_number).first()
 
-        if not user:
-            raise HTTPException(status_code=400, detail="User Not Found")
+        # if not user:
+        #     raise HTTPException(status_code=400, detail="User Not Found")
 
         if withdraw_schema.amount < 300:
             raise HTTPException(
@@ -167,7 +168,7 @@ async def winthdraw(
                 status_code=400, detail="Cannot Found User!!Login Again"
             )
 
-        if user.balance < withdraw_schema.amount:
+        if user.winning_balance < withdraw_schema.amount:
             raise HTTPException(
                 status_code=400, detail="Insufficient Withdrawable Balance")
 
@@ -207,7 +208,7 @@ async def winthdraw(
                         status_code=400,
                         detail="Please play a game before using your latest deposit.",
                     )
-        user.balance = user.balance - withdraw_schema.amount
+        user.winning_balance = user.winning_balance - withdraw_schema.amount
         new_withdraw_request = PaymentWithdrawTable(
             MOBILE_NUMBER=credentials.mobile_number,
             USER_UPI_ID=withdraw_schema.user_upi,

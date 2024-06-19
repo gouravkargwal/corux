@@ -24,10 +24,10 @@ allowed_origins = [
     "https://vegagaming.site",
     "https://vega-admin-wsltptu5dq-uc.a.run.app",
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
-    "http://localhost:3001",
+    "http://localhost:3000",
 ]
 # allowed_origins = [, "http://192.168.1.2:3000"]
-
+# allowed_origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,

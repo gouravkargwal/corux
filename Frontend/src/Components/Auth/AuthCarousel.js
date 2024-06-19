@@ -14,7 +14,7 @@ const AuthCarousel = () => {
     {
       // title: "Hero Title 2",
       // description: "An engaging description",
-      imageUrl: JoiningBanner,
+      imageUrl: ReferralBanner,
     },
   ];
 

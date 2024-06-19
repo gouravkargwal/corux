@@ -24,7 +24,10 @@ class UserAdminTable(models.Model):
     BALANCE = models.DecimalField(max_digits=30, decimal_places=3, default=0)
 
     PROMOTIONAL_BALANCE = models.DecimalField(
-        max_digits=30, decimal_places=3, default=100)
+        max_digits=30, decimal_places=3, default=50)
+
+    WINNING_BALANCE = models.DecimalField(
+        max_digits=30, decimal_places=3, default=0)
 
     UPDATE_DATE = models.DateTimeField(auto_now=True)
 

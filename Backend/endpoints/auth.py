@@ -15,7 +15,7 @@ from schema.user import (
 
 from utils.verify import hash_password, verify_password
 from jwtAuth import JWTAuth
-from models.user import Otp_Table, User, Referral_table, get_current_time_in_kolkata
+from models.user import Otp_Table, User, Referral_table, get_current_time_in_kolkata, PaymentDepositTable
 from datetime import datetime, timedelta
 import string
 import secrets
@@ -89,7 +89,8 @@ async def check_mobile_number(
 @router.post("/send-otp")
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
-        otp = random.randint(1000, 9999)
+        # otp = random.randint(1000, 9999)
+        otp = 1234
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -320,6 +321,14 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 password=hash_password(user_info.password),
             )
 
+            new_user_deposit_entry = PaymentDepositTable(
+                MOBILE_NUMBER=user_info.mobile_number,
+                AMOUNT=50,
+                APPROVE_DEPOSIT=True,
+                IS_PROMOTIONAL=True
+            )
+
+            db.add(new_user_deposit_entry)
             db.add(new_user)
 
             refer_code = generate_random_string(10)
@@ -340,6 +349,15 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                         User.mobile_number == user_refered_by_level1.mobile_number).first()
                     logger.info(user_level1_in_user_table)
                     promotional_balance = user_level1_in_user_table.promotional_balance + 25
+
+                    new_user_deposit_entry_1 = PaymentDepositTable(
+                        MOBILE_NUMBER=user_level1_in_user_table.mobile_number,
+                        AMOUNT=25,
+                        APPROVE_DEPOSIT=True,
+                        IS_PROMOTIONAL=True,
+                    )
+
+                    db.add(new_user_deposit_entry_1)
 
                     user_level1_in_user_table.promotional_balance = round(
                         promotional_balance, 2)
@@ -369,6 +387,14 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                             promotional_balance, 2)
 
                         db.add(new_refer_entry_2)
+                        new_user_deposit_entry_2 = PaymentDepositTable(
+                            MOBILE_NUMBER=user_level2_in_user_table.mobile_number,
+                            AMOUNT=10,
+                            APPROVE_DEPOSIT=True,
+                            IS_PROMOTIONAL=True,
+                        )
+
+                        db.add(new_user_deposit_entry_2)
 
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
