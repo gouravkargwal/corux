@@ -131,15 +131,12 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
             db.add(new_otp_log)
             db.commit()
             db.refresh(new_otp_log)
-<<<<<<< HEAD
         # logger.info("Otp entry done")
         # number = userdetail.mobile_number
         # message = otp
-=======
         logger.info("Otp entry done")
         number = userdetail.mobile_number
         message = otp
->>>>>>> e27cd3b26800cdcc4ddf184af829eeaa0380ad98
         # response = call_otp_api(number, message)
         # logger.info(response)
         # if response.get("status_code"):
