@@ -2,6 +2,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import Footer from "../Components/Footer";
 import { Box } from "@mui/material";
+import FloatingButton from "../Components/Home/FabButton";
 
 const UserLayout = () => {
   return (
@@ -10,6 +11,7 @@ const UserLayout = () => {
         <Outlet />
       </Box>
       <Footer />
+      <FloatingButton />
     </>
   );
 };
