@@ -9,6 +9,7 @@ import GavelIcon from "@mui/icons-material/Gavel";
 import SecurityIcon from "@mui/icons-material/Security";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ContactPageIcon from "@mui/icons-material/ContactPage";
+import TelegramIcon from "@mui/icons-material/Telegram";
 import { Link } from "react-router-dom";
 import { grey } from "@mui/material/colors";
 import InfoWithButton from "../Components/Wallet/InfoWithButton";
@@ -35,6 +36,11 @@ export default function ControlledAccordions() {
     },
     { name: "Privacy Policy", icon: SecurityIcon, url: "/privacy-policy" },
     { name: "Contact Us", icon: ContactPageIcon, url: "/contact-us" },
+    {
+      name: "Telegram Group",
+      icon: TelegramIcon,
+      url: "https://t.me/vegagamingfunavelable",
+    },
     { name: "Settings", icon: SettingsIcon, url: "/profile/settings" },
   ];
 
@@ -61,32 +67,65 @@ export default function ControlledAccordions() {
           padding: isMobile ? 1 : 2, // Adjust padding for mobile
         }}
       >
-        {options.map(({ name, icon: IconComponent, url }) => (
-          <Link to={url} key={name} style={{ textDecoration: "none" }}>
-            <Option
-              name={name}
-              icon={
-                <Avatar
-                  sx={{
-                    bgcolor: "transparent",
-                    width: 40,
-                    height: 40,
-                    marginRight: 2,
-                    transition: "color 0.3s",
-                    "& .MuiSvgIcon-root": {
-                      color: iconColor,
-                    },
-                    "&:hover .MuiSvgIcon-root": {
-                      color: hoverColor,
-                    },
-                  }}
-                >
-                  <IconComponent sx={{ color: "inherit" }} />
-                </Avatar>
-              }
-            />
-          </Link>
-        ))}
+        {options.map(({ name, icon: IconComponent, url }) =>
+          name === "Telegram Group" ? (
+            <a
+              href={url}
+              key={name}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Option
+                name={name}
+                icon={
+                  <Avatar
+                    sx={{
+                      bgcolor: "transparent",
+                      width: 40,
+                      height: 40,
+                      marginRight: 2,
+                      transition: "color 0.3s",
+                      "& .MuiSvgIcon-root": {
+                        color: iconColor,
+                      },
+                      "&:hover .MuiSvgIcon-root": {
+                        color: hoverColor,
+                      },
+                    }}
+                  >
+                    <IconComponent sx={{ color: "inherit" }} />
+                  </Avatar>
+                }
+              />
+            </a>
+          ) : (
+            <Link to={url} key={name} style={{ textDecoration: "none" }}>
+              <Option
+                name={name}
+                icon={
+                  <Avatar
+                    sx={{
+                      bgcolor: "transparent",
+                      width: 40,
+                      height: 40,
+                      marginRight: 2,
+                      transition: "color 0.3s",
+                      "& .MuiSvgIcon-root": {
+                        color: iconColor,
+                      },
+                      "&:hover .MuiSvgIcon-root": {
+                        color: hoverColor,
+                      },
+                    }}
+                  >
+                    <IconComponent sx={{ color: "inherit" }} />
+                  </Avatar>
+                }
+              />
+            </Link>
+          )
+        )}
       </Box>
     </Box>
   );

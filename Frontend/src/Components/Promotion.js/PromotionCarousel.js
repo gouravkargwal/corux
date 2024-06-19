@@ -1,20 +1,24 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import Charges from "../../Assets/Images/charges.webp";
-import ReferralBanner from "../../Assets/Images/Referral.png";
+import CommissionBanner from "../../Assets/Images/commisionBanner.png";
+import ReferralBanner from "../../Assets/Images/referralBanner.png";
+import { grey } from "@mui/material/colors";
+import NoChargesBanner from "../../Assets/Images/noChargesBanner.png";
 
 const PromotionCarousel = () => {
   const items = [
     {
-      // title: "Hero Title 1",
-      // description: "Something short ",
-      imageUrl: ReferralBanner,
+      imageUrl: CommissionBanner,
+      text: "Earn 3% on level 1 and 1.5% on level 2 referral",
     },
     {
-      // title: "Hero Title 2",
-      // description: "An engaging description",
-      imageUrl: Charges,
+      imageUrl: NoChargesBanner,
+      text: "Zero fee and no hidden charges",
+    },
+    {
+      imageUrl: ReferralBanner,
+      text: "Get ₹25 on Level 1 and ₹10 on Level 2",
     },
   ];
 
@@ -64,24 +68,31 @@ const Item = ({ item }) => {
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundImage: `url(${item.imageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
         textAlign: "center",
-        backgroundColor: "background.main",
-        boxShadow: 0,
-        "@media (min-width: 768px)": {
-          height: "400px",
-          backgroundSize: "contain",
-          backgroundRepeat: "no-repeat",
-        },
+        padding: 2,
       }}
-      margin={3}
-      marginTop={1}
-      borderRadius={1}
-      padding={2}
-    ></Box>
+      mt={4}
+    >
+      <img
+        src={item.imageUrl}
+        alt="Banner"
+        style={{
+          maxWidth: "auto",
+          maxHeight: "120px",
+          borderRadius: "6px",
+          marginBottom: "10px",
+        }}
+      />
+      {item.text && (
+        <Typography
+          variant="caption"
+          fontFamily={"Ubuntu, sans-serif"}
+          color={grey[600]}
+        >
+          {item.text}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

@@ -164,6 +164,10 @@ const MyRecordTable = ({ activeTab }) => {
               getRowStyle={getRowStyle}
               defaultColDef={defaultColDef}
               overlayNoRowsTemplate={noRowsMessage}
+              gridOptions={{
+                suppressDragLeaveHidesColumns: true,
+                suppressMovableColumns: true,
+              }}
             />
           </Box>
           <Box>

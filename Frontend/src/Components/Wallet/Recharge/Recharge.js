@@ -171,6 +171,13 @@ const Recharge = () => {
         <Divider sx={{ width: "100%", my: 2 }}>
           <Chip label="Or" size="small" />
         </Divider>
+        <Typography
+          variant="caption"
+          fontFamily={"Ubuntu, sans-serif"}
+          color="primary"
+        >
+          Receive 115% on your first deposit
+        </Typography>
         <Box
           display="flex"
           gap={1}

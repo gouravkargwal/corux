@@ -1,20 +1,29 @@
 import React from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import Carousel from "react-material-ui-carousel";
-import ReferralBanner from "../../Assets/Images/Designer.jpeg";
-import JoiningBanner from "../../Assets/Images/joiningbanner.webp";
+import NoChargesBanner from "../../Assets/Images/noChargesBanner.png";
+import ReferralBanner from "../../Assets/Images/referralBanner.png";
+import DepositBonusBanner from "../../Assets/Images/depositBonusBanner.png";
+import SignupBanner from "../../Assets/Images/signupBanner.png";
+import { grey } from "@mui/material/colors";
 
 const AuthCarousel = () => {
   const items = [
     {
-      // title: "Hero Title 1",
-      // description: "Something short ",
-      imageUrl: ReferralBanner,
+      imageUrl: SignupBanner,
+      text: "Signup and get a joining bonus of ₹50",
     },
     {
-      // title: "Hero Title 2",
-      // description: "An engaging description",
+      imageUrl: NoChargesBanner,
+      text: "Zero fee and no hidden charges",
+    },
+    {
+      imageUrl: DepositBonusBanner,
+      text: "Receive 115% on your first deposit",
+    },
+    {
       imageUrl: ReferralBanner,
+      text: "Refer and earn upto ₹25",
     },
   ];
 
@@ -31,25 +40,36 @@ const Item = ({ item }) => {
   return (
     <Box
       sx={{
-        height: "500px",
+        height: "400px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
-        backgroundImage: `url(${item.imageUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
         textAlign: "center",
-        backgroundColor: "background.main",
-        boxShadow: 0,
-        "@media (min-width: 768px)": {
-          height: "500px",
-        },
+        padding: 2,
       }}
-      marginTop={1}
-      borderRadius={6}
-      padding={1}
-    ></Box>
+      mt={4}
+    >
+      <img
+        src={item.imageUrl}
+        alt="Banner"
+        style={{
+          maxWidth: "auto",
+          maxHeight: "300px",
+          borderRadius: "6px",
+          marginBottom: "10px",
+        }}
+      />
+      {item.text && (
+        <Typography
+          variant="caption"
+          fontFamily={"Ubuntu, sans-serif"}
+          color={grey[600]}
+        >
+          {item.text}
+        </Typography>
+      )}
+    </Box>
   );
 };
 

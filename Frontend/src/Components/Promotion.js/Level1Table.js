@@ -18,6 +18,7 @@ const Level1Table = ({ data }) => {
     resizable: true,
     flex: 1,
     minWidth: 100,
+    filter: true,
     headerClass: "header-cell",
     cellClass: "cell",
   };

@@ -4,8 +4,13 @@ import { Link } from "react-router-dom";
 import GameCard from "../Components/Home/GameCard";
 import ColorPredictionImg from "../Assets/Images/wingo.webp";
 import ComingSoonImg from "../Assets/Images/comingsoon.webp";
+import CongratsDialogue from "../Components/Home/CongratsDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { closeDialog, selectDialogOpen } from "../Feature/Dialog/dialogSlice";
 
 function GridExample() {
+  const dispatch = useDispatch();
+  const open = useSelector(selectDialogOpen);
   return (
     <>
       <Hero />
@@ -19,6 +24,12 @@ function GridExample() {
           <GameCard title="Monty Hall" time="30sec" img={ComingSoonImg} />
         </Grid>
       </Grid>
+      <CongratsDialogue
+        open={open}
+        onClose={() => {
+          dispatch(closeDialog());
+        }}
+      />
     </>
   );
 }

@@ -15,8 +15,8 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { green, red } from "@mui/material/colors";
 import ShareIcon from "@mui/icons-material/Share";
-import HappyEmoji from "../../Assets/Images/happyemoji.png";
-import SadEmoji from "../../Assets/Images/sadEmoji.png";
+import HappyEmoji from "../../Assets/Images/3d-casual-life-money-and-phone.png";
+import SadEmoji from "../../Assets/Images/3d-casual-life-sad-and-confused-chatgpt-robot.png";
 
 const ResultDialogue = ({ open, onClose, data }) => {
   const theme = useTheme();
@@ -106,7 +106,7 @@ const ResultDialogue = ({ open, onClose, data }) => {
                 <img
                   src={item.amount > 0 ? HappyEmoji : SadEmoji}
                   alt={item.amount > 0 ? "Win" : "Lose"}
-                  style={{ width: 64, height: 64 }}
+                  style={{ width: 70, height: "auto" }}
                 />
               </ListItemIcon>
               <ListItemText

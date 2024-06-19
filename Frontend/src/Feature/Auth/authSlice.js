@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
 import { toast } from "react-toastify";
+import { openDialog } from "../Dialog/dialogSlice";
 
 const initialState = {
   token: null,
@@ -29,11 +30,12 @@ export const loginUser = createAsyncThunk(
 
 export const registerUser = createAsyncThunk(
   "auth/registerUser",
-  async (payload, { rejectWithValue }) => {
+  async (payload, { rejectWithValue, dispatch }) => {
     try {
       const { userData, navigate } = payload;
       const response = await API.signupAPI(userData);
       navigate("/auth");
+      dispatch(openDialog());
       return response.data;
     } catch (error) {
       return rejectWithValue(
