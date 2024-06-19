@@ -339,7 +339,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                     user_level1_in_user_table = db.query(User).filter(
                         User.mobile_number == user_refered_by_level1.mobile_number).first()
                     logger.info(user_level1_in_user_table)
-                    promotional_balance = user_level1_in_user_table.promotional_balance + 50
+                    promotional_balance = user_level1_in_user_table.promotional_balance + 25
 
                     user_level1_in_user_table.promotional_balance = round(
                         promotional_balance, 2)
@@ -363,7 +363,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
 
                         user_level2_in_user_table = db.query(User).filter(
                             User.mobile_number == user_refered_by_level2.mobile_number).first()
-                        promotional_balance = user_level2_in_user_table.promotional_balance + 25
+                        promotional_balance = user_level2_in_user_table.promotional_balance + 10
 
                         user_level2_in_user_table.promotional_balance = round(
                             promotional_balance, 2)

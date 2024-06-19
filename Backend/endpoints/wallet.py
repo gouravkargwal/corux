@@ -152,9 +152,9 @@ async def winthdraw(
         if not user:
             raise HTTPException(status_code=400, detail="User Not Found")
 
-        if withdraw_schema.amount < 100:
+        if withdraw_schema.amount < 300:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 100 or More")
+                status_code=400, detail="Enter Amount 300 or More")
 
         user = (
             db.query(User)
@@ -168,7 +168,8 @@ async def winthdraw(
             )
 
         if user.balance < withdraw_schema.amount:
-            raise HTTPException(status_code=400, detail="Insufficient Withdrawable Balance")
+            raise HTTPException(
+                status_code=400, detail="Insufficient Withdrawable Balance")
 
         lastest_deposit = (
             db.query(PaymentDepositTable)
@@ -177,6 +178,9 @@ async def winthdraw(
             .first()
         )
         # logger.info([row._asdict() for row in lastest_deposit])
+        if not lastest_deposit:
+            raise HTTPException(
+                status_code=400, detail="Please Make Atleast One Deposit Transaction Before Withdrawal")
         if lastest_deposit:
             latest_bet_color = (
                 db.query(Bet_Color)
