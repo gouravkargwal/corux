@@ -194,7 +194,7 @@ class User(Base):
     balance = Column(Double, unique=False, name="BALANCE",
                      nullable=False, default=0)
     promotional_balance = Column(Double, unique=False, name="PROMOTIONAL_BALANCE",
-                     nullable=False, default=100)
+                                 nullable=False, default=50)
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
