@@ -348,22 +348,22 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                         referral_code_to=user_refered_by_level1.referral_code_to,
                         level_1_refer=user_info.mobile_number,
                     )
-                    user_level1_in_user_table = db.query(User).filter(
-                        User.mobile_number == user_refered_by_level1.mobile_number).first()
-                    logger.info(user_level1_in_user_table)
-                    promotional_balance = user_level1_in_user_table.promotional_balance + 25
+                    # user_level1_in_user_table = db.query(User).filter(
+                    #     User.mobile_number == user_refered_by_level1.mobile_number).first()
+                    # logger.info(user_level1_in_user_table)
+                    # promotional_balance = user_level1_in_user_table.promotional_balance + 25
 
-                    new_user_deposit_entry_1 = PaymentDepositTable(
-                        MOBILE_NUMBER=user_level1_in_user_table.mobile_number,
-                        AMOUNT=25,
-                        APPROVE_DEPOSIT=True,
-                        IS_PROMOTIONAL=True,
-                    )
+                    # new_user_deposit_entry_1 = PaymentDepositTable(
+                    #     MOBILE_NUMBER=user_level1_in_user_table.mobile_number,
+                    #     AMOUNT=25,
+                    #     APPROVE_DEPOSIT=True,
+                    #     IS_PROMOTIONAL=True,
+                    # )
 
-                    db.add(new_user_deposit_entry_1)
+                    # db.add(new_user_deposit_entry_1)
 
-                    user_level1_in_user_table.promotional_balance = round(
-                        promotional_balance, 2)
+                    # user_level1_in_user_table.promotional_balance = round(
+                    #     promotional_balance, 2)
                     db.add(new_refer_entry)
                     user_refered_by_level2 = (
                         db.query(Referral_table)
@@ -382,22 +382,22 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                             level_2_refer=user_info.mobile_number,
                         )
 
-                        user_level2_in_user_table = db.query(User).filter(
-                            User.mobile_number == user_refered_by_level2.mobile_number).first()
-                        promotional_balance = user_level2_in_user_table.promotional_balance + 10
+                        # user_level2_in_user_table = db.query(User).filter(
+                        #     User.mobile_number == user_refered_by_level2.mobile_number).first()
+                        # promotional_balance = user_level2_in_user_table.promotional_balance + 10
 
-                        user_level2_in_user_table.promotional_balance = round(
-                            promotional_balance, 2)
+                        # user_level2_in_user_table.promotional_balance = round(
+                        #     promotional_balance, 2)
 
                         db.add(new_refer_entry_2)
-                        new_user_deposit_entry_2 = PaymentDepositTable(
-                            MOBILE_NUMBER=user_level2_in_user_table.mobile_number,
-                            AMOUNT=10,
-                            APPROVE_DEPOSIT=True,
-                            IS_PROMOTIONAL=True,
-                        )
+                        # new_user_deposit_entry_2 = PaymentDepositTable(
+                        #     MOBILE_NUMBER=user_level2_in_user_table.mobile_number,
+                        #     AMOUNT=10,
+                        #     APPROVE_DEPOSIT=True,
+                        #     IS_PROMOTIONAL=True,
+                        # )
 
-                        db.add(new_user_deposit_entry_2)
+                        # db.add(new_user_deposit_entry_2)
 
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
