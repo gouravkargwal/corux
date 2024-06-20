@@ -16,7 +16,9 @@ ENV REACT_APP_URL=$REACT_APP_URL
 COPY package*.json ./
 
 # Install dependencies and `serve`
-RUN npm install --quiet && npm install -g serve
+RUN npm cache clean --force
+RUN npm install --quiet
+RUN npm install -g serve
 
 # Copy the rest of your app's source code
 COPY . .

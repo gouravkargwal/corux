@@ -153,9 +153,9 @@ async def winthdraw(
         # if not user:
         #     raise HTTPException(status_code=400, detail="User Not Found")
 
-        if withdraw_schema.amount < 300:
+        if withdraw_schema.amount < 500:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 300 or More")
+                status_code=400, detail="Enter Amount 500 or More")
 
         user = (
             db.query(User)
@@ -174,7 +174,7 @@ async def winthdraw(
 
         lastest_deposit = (
             db.query(PaymentDepositTable)
-            .filter(and_(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number, PaymentDepositTable.APPROVE_DEPOSIT == True))
+            .filter(and_(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number, PaymentDepositTable.APPROVE_DEPOSIT == True, PaymentDepositTable.IS_PROMOTIONAL == False))
             .order_by(desc(PaymentDepositTable.CREATE_DATE))
             .first()
         )

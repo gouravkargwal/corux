@@ -91,6 +91,7 @@ DATABASES = {
 
     }
 }
+
 # GCP Hosting DB
 # DATABASES = {
 #     'default': {

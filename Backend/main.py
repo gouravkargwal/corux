@@ -17,17 +17,17 @@ from endpoints.result import router as Resultrouter
 from endpoints.wallet import router as Walletrouter
 
 logger = setup_logger()
-app = FastAPI()
+app = FastAPI(docs_url=None)
 # app = FastAPI()
 
 allowed_origins = [
     "https://vegagaming.site",
     "https://vega-admin-wsltptu5dq-uc.a.run.app",
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
-    "http://localhost:3000",
+    # "http://localhost:3000",
+    # "http://192.168.1.5:3000"
 ]
 # allowed_origins = ["http://192.168.1.2:3000"]
-# allowed_origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
