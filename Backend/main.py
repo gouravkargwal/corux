@@ -27,7 +27,8 @@ allowed_origins = [
     "https://vega-admin-wsltptu5dq-uc.a.run.app",
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
     "http://localhost:3000",
-    "http://192.168.1.5:3000"
+    "http://192.168.1.5:3000",
+    "http://127.0.0.1:8080"
 ]
 # allowed_origins = ["http://192.168.1.2:3000"]
 app.add_middleware(
@@ -67,6 +68,7 @@ game_inprocess = False
 game_finishing = False
 user_count = 0
 factor = 0
+show_user_count = False
 
 
 # @app.on_event("startup")
@@ -117,10 +119,10 @@ async def handle_disconnect(sid):
 
 
 async def online_user_count():
-    global user_count, factor
+    global user_count, factor, show_user_count
     user = user_count
 
-    while True:
+    while show_user_count:
         digit = random.randint(0, 1)
         factor_range = random.randint(0, factor)
         if digit:
@@ -129,6 +131,14 @@ async def online_user_count():
         else:
             await asyncio.sleep(3)
             await sio_manager.emit("online_user", user-factor_range)
+
+    if not show_user_count:
+        while user_count > 10:
+            await asyncio.sleep(2)
+            await sio_manager.emit("online_user", user_count)
+            minus_by = random.randint(7, 10)
+            user_count = user_count - minus_by
+        await sio_manager.emit("online_user", 10)
     return
 
 
@@ -205,14 +215,16 @@ async def notify_timer():
 
 @app.post("/control/timer/start")
 async def start_timer(onlineUserSchema: onlineUserSchema):
-    global task_running, user_count, factor
+    global task_running, user_count, factor, show_user_count
     user_count = onlineUserSchema.user_count
     factor = onlineUserSchema.factor
     try:
+        if not show_user_count:
+            show_user_count = True
+            sio_manager.start_background_task(online_user_count)
         if not task_running:
             task_running = True
             game.start_game()
-            sio_manager.start_background_task(online_user_count)
             sio_manager.start_background_task(notify_timer)
             return {"status": "Timer started"}
         raise HTTPException(status_code=400, detail="Timer already running")
@@ -225,12 +237,13 @@ async def start_timer(onlineUserSchema: onlineUserSchema):
 @app.post("/control/timer/stop")
 async def stop_timer():
     try:
-        global task_running, game_inprocess, game_finishing
+        global task_running, game_inprocess, game_finishing, show_user_count
         if task_running:
             while game_inprocess and not game_finishing:
                 await asyncio.sleep(1)
             task_running = False
             game_inprocess = False
+            show_user_count = False
             # sio_manager.disconnect()
             # connected_clients.clear()
             # game.update_state()
