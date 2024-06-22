@@ -80,33 +80,33 @@ WSGI_APPLICATION = "Admin_Corux.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DATABASE_NAME"),
-        "USER": os.environ.get("DATABASE_USERNAME"),
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-        "HOST": os.environ.get("IP_PUBLIC"),
-        'PORT': '3306',
-
-    }
-}
-
-# GCP Hosting DB
 # DATABASES = {
-#     'default': {
-#         # or 'django.db.backends.postgresql'
-#         'ENGINE':  'django.db.backends.mysql',
-#         'NAME': os.getenv('DATABASE_NAME'),
-#         'USER': os.getenv('DATABASE_USERNAME'),
-#         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-#         'HOST': '',  # Leave blank for unix socket connections
-#         'PORT': '',  # Leave blank for default port
-#         'OPTIONS': {
-#             'unix_socket': f'/cloudsql/{os.getenv("CLOUD_SQL_NAME")}',
-#         },
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": os.environ.get("DATABASE_NAME"),
+#         "USER": os.environ.get("DATABASE_USERNAME"),
+#         "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+#         "HOST": os.environ.get("IP_PUBLIC"),
+#         'PORT': '3306',
+
 #     }
 # }
+
+# GCP Hosting DB
+DATABASES = {
+    'default': {
+        # or 'django.db.backends.postgresql'
+        'ENGINE':  'django.db.backends.mysql',
+        'NAME': os.getenv('DATABASE_NAME'),
+        'USER': os.getenv('DATABASE_USERNAME'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+        'HOST': '',  # Leave blank for unix socket connections
+        'PORT': '',  # Leave blank for default port
+        'OPTIONS': {
+            'unix_socket': f'/cloudsql/{os.getenv("CLOUD_SQL_NAME")}',
+        },
+    }
+}
 
 
 # Password validation
