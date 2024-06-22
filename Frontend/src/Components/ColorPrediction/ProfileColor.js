@@ -119,15 +119,17 @@ export default function ProfileColor() {
               Withdraw
             </Button>
           </Box>
-          <Box display="flex" alignItems="center">
-            <CardGiftcard sx={iconStyles} />
-            <Box display="flex" flexDirection="column" ml={1}>
-              <Typography color={grey["500"]} variant="caption">
-                Promotional
-              </Typography>
-              <Typography color="text.primary" variant="caption">
-                {bonus}
-              </Typography>
+          <Box display="flex" justifyContent="space-between">
+            <Box display="flex" alignItems="center">
+              <CardGiftcard sx={iconStyles} />
+              <Box display="flex" flexDirection="column" ml={1}>
+                <Typography color={grey["500"]} variant="caption">
+                  Promotional
+                </Typography>
+                <Typography color="text.primary" variant="caption">
+                  {bonus}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>

@@ -106,7 +106,6 @@ const BettingDialogue = ({
               {errors.amount ? errors.amount.message : ""}
             </FormHelperText>
           </Box>
-
           <Box mb={2}>
             <FormControlLabel
               control={
@@ -137,6 +136,14 @@ const BettingDialogue = ({
             >
               Submit
             </AuthButton>
+            <FormHelperText
+              sx={{
+                height: "10px",
+                m: 1,
+              }}
+            >
+              Minimum amount ₹25
+            </FormHelperText>
           </Box>
         </Box>
       </DialogContent>

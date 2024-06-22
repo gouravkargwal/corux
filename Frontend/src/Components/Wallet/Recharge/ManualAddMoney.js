@@ -5,17 +5,21 @@ import {
   Typography,
   ImageList,
   ImageListItem,
+  Divider,
+  Chip,
+  Button,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import { grey } from "@mui/material/colors";
+import { green, grey } from "@mui/material/colors";
 import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
 import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
 import { toast } from "react-toastify";
 import AuthButton from "../../Auth/AuthButton";
 import AuthTextField from "../../Auth/AuthTextField";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 
 const ManualAddMoney = () => {
   let { amount } = useParams();
@@ -32,6 +36,15 @@ const ManualAddMoney = () => {
       utr: "",
     },
   });
+
+  const handleCopy = async (data) => {
+    try {
+      await navigator.clipboard.writeText(data);
+      alert("Code copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -121,48 +134,35 @@ const ManualAddMoney = () => {
             </ImageListItem>
           </ImageList>
         </Box>
-
-        <Typography
-          variant="body2"
-          color="error"
-          align="center"
-          sx={{ marginTop: 2, marginBottom: 2 }}
-        >
-          Important: Do not refresh or reload this page before entering the UTR.
-          In case of any error, please contact us for assistance.
-        </Typography>
-        {/* <Divider>
+        <Divider sx={{ width: "100%", my: 2 }}>
           <Chip label="Or" size="small" />
         </Divider>
-        <Button
-          variant="contained"
-          fullWidth
-          sx={{
-            bgcolor: green[500],
-            borderRadius: 10,
-            padding: "10px 24px",
-            margin: "16px 0",
-            minWidth: "auto",
-          }}
-          onClick={() => {
-            window.open(
-              `phonepe://pay?pa=${qrData?.upi_id}&am=${qrData?.amount}&cu=INR`,
-              "_blank"
-            );
-          }}
-        >
-          Pay
-        </Button>
+        <Box display="flex" justifyContent="space-between">
+          <Box display="flex" flexDirection="column" ml={1}>
+            <Typography color={grey["500"]} variant="caption">
+              Upi Id
+            </Typography>
+            <Typography color="text.primary" variant="caption">
+              {qrData?.upi_id}
+            </Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            startIcon={<ContentCopyIcon />}
+            onClick={() => handleCopy(qrData?.upi_id)}
+          >
+            Copy Upi
+          </Button>
+        </Box>
         <Typography
           variant="body2"
           color="error"
           align="center"
           sx={{ marginTop: 2 }}
         >
-          Important: By clicking the pay button, you will be prompted to choose
-          a UPI app for completing the transaction. Once the payment is made,
-          please copy the UTR number and enter it in the designated field below.
-        </Typography> */}
+          Important: Do not refresh or reload this page before entering the UTR.
+          In case of any error, please contact us for assistance.
+        </Typography>
       </Box>
       <Box
         component="form"

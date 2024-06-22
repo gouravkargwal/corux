@@ -14,7 +14,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import WithdrawSuccessDialogue from "../UI/WithdrawSuccessDialogue";
 import { useSelector } from "react-redux";
-import { selectIsBlocked } from "../../Feature/Balance/balanceSlice";
+import {
+  selectBalanceWinning,
+  selectIsBlocked,
+} from "../../Feature/Balance/balanceSlice";
 import AuthTextField from "../Auth/AuthTextField";
 import AuthButton from "../Auth/AuthButton";
 
@@ -25,6 +28,7 @@ const Withdraw = () => {
   const [open, setOpen] = useState(false);
   const [withdrawnAmount, setWithdrawnAmount] = useState(null);
   const isBlock = useSelector(selectIsBlocked);
+  const winnings = useSelector(selectBalanceWinning);
   const {
     control,
     handleSubmit,
@@ -178,6 +182,15 @@ const Withdraw = () => {
             >
               Withdraw
             </AuthButton>
+            <FormHelperText
+              sx={{
+                visibility: errors ? "visible" : "hidden",
+                height: "10px",
+                m: 1,
+              }}
+            >
+              Available to withdraw ₹{winnings}
+            </FormHelperText>
           </Grid>
         </Grid>
       </Box>

@@ -205,6 +205,7 @@ const Recharge = () => {
         >
           Recharge
         </AuthButton>
+
         <FormHelperText
           error={!!qrError}
           sx={{

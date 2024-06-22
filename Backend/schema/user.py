@@ -63,3 +63,8 @@ class utr_schema(BaseModel):
 class forgot_password_schema(BaseModel):
     mobile_number: str
     password: str
+
+
+class onlineUserSchema(BaseModel):
+    user_count: int
+    factor: int

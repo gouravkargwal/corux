@@ -51,6 +51,7 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import VideoDialog from "../Components/UI/VideoDialog";
 import CustomLoadingIndicator from "../Components/UI/CustomLoadingIndicator";
+import OnlineUsers from "../Components/ColorPrediction/OnlineUsers";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -204,7 +205,7 @@ const ColorPrediction = () => {
         direction="column"
         className={resultDialogue || colorBidDialog ? "blur" : ""}
       >
-        {token && <ProfileColor />}
+        {token && <ProfileColor timer={timer} />}
         <Grid
           item
           xs={4}
@@ -221,27 +222,28 @@ const ColorPrediction = () => {
           marginX={3}
           borderRadius={1}
           padding={2}
-          display="flex"
-          justifyContent="space-between"
         >
-          <Grid item xs={6}>
-            <Typography
-              color={theme.palette.text.grey}
-              gutterBottom
-              display="flex"
-              alignItems="center"
-            >
-              <EmojiEventsIcon sx={{ height: 18 }} />
-              GameId
-            </Typography>
-            <Typography>{gameId}</Typography>
-          </Grid>
-          <Grid item xs={6} textAlign="right">
-            <Typography color={theme.palette.text.grey} gutterBottom>
-              Count Down
-            </Typography>
-            <ColorPredictionTimer timer={timer} />
-          </Grid>
+          <OnlineUsers />
+          <Box display="flex">
+            <Grid item xs={6}>
+              <Typography
+                color={theme.palette.text.grey}
+                gutterBottom
+                display="flex"
+                alignItems="center"
+              >
+                <EmojiEventsIcon sx={{ height: 18 }} />
+                GameId
+              </Typography>
+              <Typography>{gameId}</Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="right">
+              <Typography color={theme.palette.text.grey} gutterBottom>
+                Count Down
+              </Typography>
+              <ColorPredictionTimer timer={timer} />
+            </Grid>
+          </Box>
         </Grid>
         <Grid
           item

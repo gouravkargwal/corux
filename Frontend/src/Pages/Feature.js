@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, Container, Button } from "@mui/material";
-import { grey } from "@mui/material/colors";
+import { green, grey } from "@mui/material/colors";
 import AuthCarousel from "../Components/Auth/AuthCarousel";
 import { useNavigate } from "react-router-dom/dist/umd/react-router-dom.development";
 

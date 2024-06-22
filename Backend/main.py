@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Request, Depends, Query
 from db_module.session import get_sql_db
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
+from schema.user import onlineUserSchema
 from utils.calculateResult import get_result
 from utils.logger import setup_logger
 from game_logic import Game
@@ -9,6 +10,7 @@ from datetime import datetime
 import asyncio
 import traceback
 import os
+import random
 
 # Import routers for your application
 from endpoints.auth import router as Authrouter
@@ -17,15 +19,15 @@ from endpoints.result import router as Resultrouter
 from endpoints.wallet import router as Walletrouter
 
 logger = setup_logger()
-app = FastAPI(docs_url=None)
-# app = FastAPI()
+# app = FastAPI(docs_url=None)
+app = FastAPI()
 
 allowed_origins = [
     "https://vegagaming.site",
     "https://vega-admin-wsltptu5dq-uc.a.run.app",
     "https://vega-fe-wsltptu5dq-uc.a.run.app",
-    # "http://localhost:3000",
-    # "http://192.168.1.5:3000"
+    "http://localhost:3000",
+    "http://192.168.1.5:3000"
 ]
 # allowed_origins = ["http://192.168.1.2:3000"]
 app.add_middleware(
@@ -63,6 +65,8 @@ task_running = False
 connected_clients = set()
 game_inprocess = False
 game_finishing = False
+user_count = 0
+factor = 0
 
 
 # @app.on_event("startup")
@@ -110,6 +114,22 @@ async def handle_disconnect(sid):
     except Exception as e:
         logger.error(
             f"Connection error on disconnect: {str(e)}", exc_info=True)
+
+
+async def online_user_count():
+    global user_count, factor
+    user = user_count
+
+    while True:
+        digit = random.randint(0, 1)
+        factor_range = random.randint(0, factor)
+        if digit:
+            await asyncio.sleep(3)
+            await sio_manager.emit("online_user", user+factor_range)
+        else:
+            await asyncio.sleep(3)
+            await sio_manager.emit("online_user", user-factor_range)
+    return
 
 
 async def notify_timer():
@@ -184,12 +204,15 @@ async def notify_timer():
 
 
 @app.post("/control/timer/start")
-async def start_timer():
-    global task_running
+async def start_timer(onlineUserSchema: onlineUserSchema):
+    global task_running, user_count, factor
+    user_count = onlineUserSchema.user_count
+    factor = onlineUserSchema.factor
     try:
         if not task_running:
             task_running = True
             game.start_game()
+            sio_manager.start_background_task(online_user_count)
             sio_manager.start_background_task(notify_timer)
             return {"status": "Timer started"}
         raise HTTPException(status_code=400, detail="Timer already running")

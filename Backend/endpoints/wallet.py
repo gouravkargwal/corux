@@ -57,6 +57,8 @@ async def generate_qr(
 
         x = random.randint(0, len(upi_list) - 1)
 
+        upi_id = upi_list[x]
+
         upi_link = f"upi://pay?pa={urllib.parse.quote(upi_list[x])}&am={urllib.parse.quote(str(amount.amount))}&cu=INR"
 
         qr = qrcode.QRCode(
@@ -88,7 +90,7 @@ async def generate_qr(
         response_data = {
             "qr_code": img_base64,
             "transaction_id": str(transaction_id),
-            "upi_link": upi_link
+            "upi_id": upi_id
         }
 
         return JSONResponse(content=response_data)
