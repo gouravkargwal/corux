@@ -118,7 +118,7 @@ const Withdraw = () => {
               rules={{
                 required: "Amount is required",
                 validate: (value) =>
-                  value >= 500 || "Amount must be greater than 500",
+                  value >= 199 || "Amount must be greater than 199",
               }}
               render={({ field }) => (
                 <AuthTextField
@@ -189,7 +189,7 @@ const Withdraw = () => {
                 m: 1,
               }}
             >
-              Available to withdraw ₹{winnings}
+              Available to withdraw ₹ {winnings}
             </FormHelperText>
           </Grid>
         </Grid>

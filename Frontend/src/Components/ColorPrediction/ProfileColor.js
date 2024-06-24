@@ -67,7 +67,7 @@ export default function ProfileColor() {
                   Deposit
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  {balance}
+                  ₹ {balance}
                 </Typography>
               </Box>
             </Box>
@@ -98,7 +98,7 @@ export default function ProfileColor() {
                   Winnings
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  {winning}
+                  ₹ {winning}
                 </Typography>
               </Box>
             </Box>
@@ -127,7 +127,7 @@ export default function ProfileColor() {
                   Promotional
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  {bonus}
+                  ₹ {bonus}
                 </Typography>
               </Box>
             </Box>

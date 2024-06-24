@@ -72,7 +72,7 @@ export default function Info() {
                   Deposit
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {balance}
+                  ₹ {balance}
                 </Typography>
               </Box>
             </Box>
@@ -83,7 +83,7 @@ export default function Info() {
                   Winning
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {winning}
+                  ₹ {winning}
                 </Typography>
               </Box>
             </Box>
@@ -94,7 +94,7 @@ export default function Info() {
                   Promotional
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {bonus}
+                  ₹ {bonus}
                 </Typography>
               </Box>
             </Box>

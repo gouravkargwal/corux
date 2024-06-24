@@ -48,9 +48,9 @@ async def generate_qr(
 
         if user.is_blocked:
             raise HTTPException(status_code=400, detail="User Blocked")
-        if amount.amount < 100:
+        if amount.amount < 19:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 100 or More")
+                status_code=400, detail="Enter Amount 19 or More")
 
         upi_query_list = db.query(Upi_Table).all()
         upi_list = [row.upi_id for row in upi_query_list]
@@ -90,7 +90,8 @@ async def generate_qr(
         response_data = {
             "qr_code": img_base64,
             "transaction_id": str(transaction_id),
-            "upi_id": upi_id
+            "upi_id": upi_id,
+            "upi_link": upi_link
         }
 
         return JSONResponse(content=response_data)
@@ -155,9 +156,9 @@ async def winthdraw(
         # if not user:
         #     raise HTTPException(status_code=400, detail="User Not Found")
 
-        if withdraw_schema.amount < 500:
+        if withdraw_schema.amount < 200:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 500 or More")
+                status_code=400, detail="Enter Amount 200 or More")
 
         user = (
             db.query(User)

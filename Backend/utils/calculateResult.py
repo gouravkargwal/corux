@@ -120,7 +120,7 @@ def determine_winners(result_color, result_number, total_amount_bet, is_single_r
                 winner_dict_form["color_who_won"].append("violet")
             winner_dict_form["total_amount_won"] = total_amount_won
 
-            if total_amount_bet == 0 or (is_single_row and total_amount_won < 150):
+            if total_amount_bet == 0 or (is_single_row and total_amount_won <= 300):
                 return winner_dict_form
 
             winner_dict_form["profit_ratio"] = (

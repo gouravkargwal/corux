@@ -19,7 +19,7 @@ const AuthCarousel = () => {
     },
     {
       imageUrl: DepositBonusBanner,
-      text: "Receive 115% on your first deposit",
+      text: "Receive 115% on your first deposit above 99 onwards",
     },
     {
       imageUrl: ReferralBanner,

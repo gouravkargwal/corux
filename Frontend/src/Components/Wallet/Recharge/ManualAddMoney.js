@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import AuthButton from "../../Auth/AuthButton";
 import AuthTextField from "../../Auth/AuthTextField";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CredIcon from "../../UI/CredIcon";
 
 const ManualAddMoney = () => {
   let { amount } = useParams();
@@ -89,6 +90,10 @@ const ManualAddMoney = () => {
     }
   };
 
+  const handleCredPayment = () => {
+    window.open(qrData?.upi_link, "_blank");
+  };
+
   return (
     <Box>
       <Box
@@ -151,10 +156,48 @@ const ManualAddMoney = () => {
             startIcon={<ContentCopyIcon />}
             onClick={() => handleCopy(qrData?.upi_id)}
           >
-            Copy Upi
+            Copy
           </Button>
         </Box>
-        <Typography
+        <Divider sx={{ width: "100%", my: 2 }}>
+          <Chip label="Or" size="small" />
+        </Divider>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          startIcon={<CredIcon />}
+          onClick={handleCredPayment}
+          sx={{
+            backgroundColor: "black", // Base color
+            color: "white",
+            padding: "8px 24px",
+            textTransform: "none",
+            fontSize: "1rem",
+            fontWeight: "bold",
+            letterSpacing: "0.05rem",
+            boxShadow:
+              "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)",
+            transition: "background-color 0.3s ease-in-out",
+            "&:hover": {
+              backgroundColor: "black", // Hover color
+              boxShadow:
+                "0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)",
+              transform: "translateY(-2px)", // Slight lift effect
+            },
+            "& .MuiButton-startIcon": {
+              color: "inherit",
+              marginRight: "8px",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.1)", // Enlarges the icon slightly on hover
+              },
+            },
+          }}
+        >
+          Pay with CRED
+        </Button>
+        {/* <Typography
           variant="body2"
           color="error"
           align="center"
@@ -162,7 +205,7 @@ const ManualAddMoney = () => {
         >
           Important: Do not refresh or reload this page before entering the UTR.
           In case of any error, please contact us for assistance.
-        </Typography>
+        </Typography> */}
       </Box>
       <Box
         component="form"

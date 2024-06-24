@@ -81,7 +81,7 @@ export default function InfoWithButton() {
                   Deposit
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {balance}
+                  ₹ {balance}
                 </Typography>
               </Box>
             </Box>
@@ -92,7 +92,7 @@ export default function InfoWithButton() {
                   Winning
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {winning}
+                  ₹ {winning}
                 </Typography>
               </Box>
             </Box>
@@ -103,7 +103,7 @@ export default function InfoWithButton() {
                   Promotional
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  {bonus}
+                  ₹ {bonus}
                 </Typography>
               </Box>
             </Box>

@@ -12,7 +12,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import Info from "../../Profile/Info";
-import { blue, grey } from "@mui/material/colors";
+import { blue, blueGrey, grey } from "@mui/material/colors";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -28,7 +28,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import CustomLoadingIndicator from "../../UI/CustomLoadingIndicator";
 const VideoDialog = lazy(() => import("../../UI/VideoDialog"));
 
-const predefinedValues = [100, 200, 500, 1000];
+const predefinedValues = [19, 49, 99, 199];
 
 const fadeIn = keyframes`
   from {
@@ -133,7 +133,7 @@ const Recharge = () => {
           rules={{
             required: "Amount is required",
             validate: (value) =>
-              value >= 100 || "Please enter a value more than 100",
+              value >= 19 || "Please enter a value more than 19",
           }}
           render={({ field }) => (
             <AuthTextField
@@ -174,9 +174,9 @@ const Recharge = () => {
         <Typography
           variant="caption"
           fontFamily={"Ubuntu, sans-serif"}
-          color="primary"
+          color={blueGrey[700]}
         >
-          Receive 115% on your first deposit
+          Receive 115% on your first deposit above 99 onwards
         </Typography>
         <Box
           display="flex"

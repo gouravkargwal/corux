@@ -14,6 +14,7 @@ from models.user import (
     Result,
     Referral_table,
     All_Referral_Winning,
+    PaymentDepositTable
 )
 
 from schema.user import betdetails, user_info, password_detail, result_detail
@@ -235,6 +236,13 @@ async def create_bet(
         )
         if not user:
             raise HTTPException(status_code=400, detail="Try to login Again")
+
+        last_deposit = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==
+                                                            credentials.mobile_number, PaymentDepositTable.IS_PROMOTIONAL == False).first()
+        print(last_deposit)
+        if not last_deposit:
+            raise HTTPException(
+                status_code=400, detail="Promotional balance can be used after 1st deposit only")
 
         if user.is_blocked:
             raise HTTPException(status_code=400, detail="User Blocked")
