@@ -1,5 +1,5 @@
-# Use an official Node.js runtime as a parent image
-FROM node:alpine
+# Use a Node.js runtime as a parent image for building
+FROM node:18-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -15,10 +15,8 @@ ENV REACT_APP_URL=$REACT_APP_URL
 # Copy the package.json and package-lock.json (or yarn.lock)
 COPY package*.json ./
 
-# Install dependencies and `serve`
-RUN npm cache clean --force
-RUN npm install --quiet
-RUN npm install -g serve
+# Install dependencies
+RUN npm install --production --silent
 
 # Copy the rest of your app's source code
 COPY . .
@@ -26,8 +24,20 @@ COPY . .
 # Build the app
 RUN npm run build
 
+# Use a lighter image for serving the app
+FROM node:18-alpine AS production
+
+# Set the working directory
+WORKDIR /app
+
+# Install serve
+RUN npm install -g serve
+
+# Copy built files from the build stage
+COPY --from=build /app/build ./build
+
 # Expose the port `serve` runs on
-EXPOSE 3000
+EXPOSE 1000
 
 # Command to run the app
-CMD ["serve", "-s", "build", "-l", "3000"]
+CMD ["serve", "-s", "build", "-l", "1000"]

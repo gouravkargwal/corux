@@ -4,29 +4,22 @@ from sqlalchemy.ext.declarative import declarative_base
 from dotenv import load_dotenv
 import os
 
+# Load environment variables from .env file
 load_dotenv()
 
-DATABASE_ENGINE = os.getenv("DATABASE_ENGINE")
-DATABASE_USERNAME = os.getenv("DATABASE_USERNAME")
-DATABASE_PASSWORD = os.getenv("DATABASE_PASSWORD").replace("@", "%40")
-DATABASE_NAME = os.getenv("DATABASE_NAME")
-IP_PUBLIC = os.getenv("IP_PUBLIC")
-CLOUD_SQL_NAME = os.getenv("CLOUD_SQL_NAME")
+# Load the full database connection URL from the environment
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{IP_PUBLIC}/{DATABASE_NAME}?unix_socket=/cloudsql/{CLOUD_SQL_NAME}"
-# DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@{IP_PUBLIC}/{DATABASE_NAME}"
-
-# DATABASE_URL = f"mysql+pymysql://{DATABASE_USERNAME}:{DATABASE_PASSWORD}@localhost/{DATABASE_NAME}"
-
-
-# Create an engine instance
+# Create the SQLAlchemy engine using the connection URL from the environment
 engine = create_engine(DATABASE_URL)
 
+# Create a session factory bound to the engine
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
+# Base class for models
 Base = declarative_base()
 
-
+# Dependency function to get the DB session
 def get_sql_db():
     try:
         _db = SessionLocal()
