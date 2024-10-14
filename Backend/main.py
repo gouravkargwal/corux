@@ -21,13 +21,14 @@ from endpoints.wallet import router as Walletrouter
 logger = setup_logger()
 app = FastAPI(docs_url=None)
 
-allowed_origins = [
-    "http://localhost:1000",
-    "http://frontend:1000",
-    "http://localhost:1002"
-    "http://0.0.0.0:1002"
-    "http://admin:1002",
-]
+def get_allowed_origins():
+    origins = os.getenv("ALLOWED_ORIGINS", "")
+    # Split the comma-separated origins into a list and strip any extra whitespace
+    return [origin.strip() for origin in origins.split(",") if origin.strip()]
+
+# Use the function to set the allowed origins
+allowed_origins = get_allowed_origins()
+
 # allowed_origins = ["*"]
 app.add_middleware(
     CORSMiddleware,
