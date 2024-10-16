@@ -27,9 +27,9 @@ def get_allowed_origins():
     return [origin.strip() for origin in origins.split(",") if origin.strip()]
 
 # Use the function to set the allowed origins
-allowed_origins = get_allowed_origins()
+# allowed_origins = get_allowed_origins()
 
-# allowed_origins = ["*"]
+allowed_origins = ["https://vegagaming.site","https://admin.vegagaming.site"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
