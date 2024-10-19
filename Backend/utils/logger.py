@@ -20,9 +20,9 @@ def setup_logger():
 
 
 # Example usage:
-if __name__ == "__main__":
-    logger = setup_logger()
-    logger.info("Logging initialized successfully")
+# if __name__ == "__main__":
+#     logger = setup_logger()
+#     logger.info("Logging initialized successfully")
 
 
 # from google.cloud import logging as google_logging

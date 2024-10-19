@@ -101,7 +101,7 @@ class withdraw(APIView):
                         balance = Decimal(user.WINNING_BALANCE) - \
                             Decimal(paymentGetSerializer.data["AMOUNT"])
                     else:
-                        balance = Decimal(user.BALANCE)
+                        balance = Decimal(user.WINNING_BALANCE)
                 elif data.get("DENY_WITHDRAW"):
                     balance = Decimal(user.WINNING_BALANCE) + \
                         Decimal(paymentGetSerializer.data["AMOUNT"])
