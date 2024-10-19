@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Paper, Typography } from "@mui/material";
 import Transaction from "./Transaction";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -8,6 +8,7 @@ import {
   selectWalletRechargeHistoryLoading,
   selectWalletRechargeHistoryError,
 } from "../../Feature/Wallet/walletSlice";
+import CustomLoadingIndicator from "../UI/CustomLoadingIndicator";
 
 const RechargeHistory = () => {
   const dispatch = useDispatch();
@@ -22,7 +23,7 @@ const RechargeHistory = () => {
   if (isLoading || data === null) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center">
-        <CircularProgress />
+        <CustomLoadingIndicator />
       </Box>
     );
   }

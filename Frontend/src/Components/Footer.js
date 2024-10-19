@@ -8,9 +8,15 @@ import { useSelector } from "react-redux";
 import { selectAuthToken } from "../Feature/Auth/authSlice";
 import AddCardIcon from "@mui/icons-material/AddCard";
 import LoginIcon from "@mui/icons-material/Login";
+import { styled, keyframes } from "@mui/system";
 
 const navigationPaths = [
-  { value: 0, path: "/", label: "Home", icon: <HomeIcon /> },
+  {
+    value: 0,
+    path: "/",
+    label: "Home",
+    icon: <HomeIcon />,
+  },
   {
     value: 1,
     path: "/promotion",
@@ -40,6 +46,44 @@ const navigationPaths = [
     icon: <LoginIcon />,
   },
 ];
+
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+`;
+
+const StyledBottomNavigationAction = styled(BottomNavigationAction)(
+  ({ theme }) => ({
+    "&.Mui-selected": {
+      color: theme.palette.primary.main,
+      transition: "color 0.3s ease",
+      "& .MuiSvgIcon-root": {
+        color: "#fc211d", // Change the icon color when selected
+      },
+    },
+    "&.Mui-selected:after": {
+      content: '""',
+      position: "absolute",
+      bottom: 0,
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "24px",
+      height: "4px",
+      backgroundColor: "#fc211d",
+      borderRadius: "2px",
+      transition: "all 0.3s ease",
+    },
+    "@media (max-width: 600px)": {
+      "&:hover": {
+        animation: `${bounce} 0.5s`,
+      },
+    },
+  })
+);
 
 export default function Footer() {
   const [value, setValue] = useState(0);
@@ -71,23 +115,34 @@ export default function Footer() {
   };
 
   return (
-    <>
-      <Box
-        sx={{ width: "100%", position: "fixed", bottom: 0, display: "block" }}
+    <Box
+      sx={{
+        width: "100%",
+        position: "fixed",
+        bottom: 20,
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <BottomNavigation
+        value={value}
+        onChange={handleChange}
+        showLabels={false}
+        sx={{
+          width: "90%",
+          backgroundColor: "white",
+          boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+          borderRadius: "24px",
+          overflow: "hidden",
+        }}
       >
-        <BottomNavigation value={value} onChange={handleChange} showLabels>
-          {navigationPaths.map(
-            (path) =>
-              (!path.condition || path.condition(token)) && (
-                <BottomNavigationAction
-                  key={path.value}
-                  label={path.label}
-                  icon={path.icon}
-                />
-              )
-          )}
-        </BottomNavigation>
-      </Box>
-    </>
+        {navigationPaths.map(
+          (path) =>
+            (!path.condition || path.condition(token)) && (
+              <StyledBottomNavigationAction key={path.value} icon={path.icon} />
+            )
+        )}
+      </BottomNavigation>
+    </Box>
   );
 }

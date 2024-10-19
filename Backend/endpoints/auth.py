@@ -15,7 +15,7 @@ from schema.user import (
 
 from utils.verify import hash_password, verify_password
 from jwtAuth import JWTAuth
-from models.user import Otp_Table, User, Referral_table, get_current_time_in_kolkata
+from models.user import Otp_Table, User, Referral_table, get_current_time_in_kolkata, PaymentDepositTable
 from datetime import datetime, timedelta
 import string
 import secrets
@@ -90,6 +90,7 @@ async def check_mobile_number(
 async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
     try:
         otp = random.randint(1000, 9999)
+        # otp = 1234
         logger.info("OTP Generated")
         otp_found = (
             db.query(Otp_Table)
@@ -129,7 +130,10 @@ async def send_otp(userdetail: userdetail, db: Session = Depends(get_sql_db)):
 
             db.add(new_otp_log)
             db.commit()
-            # db.refresh(new_otp_log)
+            db.refresh(new_otp_log)
+        # logger.info("Otp entry done")
+        # number = userdetail.mobile_number
+        # message = otp
         logger.info("Otp entry done")
         number = userdetail.mobile_number
         message = otp
@@ -164,7 +168,6 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
                 status_code=400, detail="User not registered. Please register."
             )
 
-        # otp = random_with_n_digits(4)
         otp = random.randint(1000, 9999)
         otp_found = (
             db.query(Otp_Table)
@@ -208,7 +211,7 @@ async def send_otp_forgot(userdetail: userdetail, db: Session = Depends(get_sql_
         number = userdetail.mobile_number
         message = otp
         response = call_otp_api(number, message)
-        # logger.info(response)
+        logger.info(response)
         if response.get("status_code"):
             logger.info(response)
             raise HTTPException(
@@ -279,9 +282,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
             raise HTTPException(
                 status_code=400, detail="Incorrect Credentials. Please try again."
             )
-
         payload = {"mobile_number": user.mobile_number}
-
         access_token = authhandler.encode_token(payload)
         refresh_token = authhandler.encode_refresh_token(payload)
 
@@ -323,6 +324,14 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                 password=hash_password(user_info.password),
             )
 
+            new_user_deposit_entry = PaymentDepositTable(
+                MOBILE_NUMBER=user_info.mobile_number,
+                AMOUNT=50,
+                APPROVE_DEPOSIT=True,
+                IS_PROMOTIONAL=True
+            )
+
+            db.add(new_user_deposit_entry)
             db.add(new_user)
 
             refer_code = generate_random_string(10)
@@ -339,7 +348,22 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                         referral_code_to=user_refered_by_level1.referral_code_to,
                         level_1_refer=user_info.mobile_number,
                     )
+                    # user_level1_in_user_table = db.query(User).filter(
+                    #     User.mobile_number == user_refered_by_level1.mobile_number).first()
+                    # logger.info(user_level1_in_user_table)
+                    # promotional_balance = user_level1_in_user_table.promotional_balance + 25
 
+                    # new_user_deposit_entry_1 = PaymentDepositTable(
+                    #     MOBILE_NUMBER=user_level1_in_user_table.mobile_number,
+                    #     AMOUNT=25,
+                    #     APPROVE_DEPOSIT=True,
+                    #     IS_PROMOTIONAL=True,
+                    # )
+
+                    # db.add(new_user_deposit_entry_1)
+
+                    # user_level1_in_user_table.promotional_balance = round(
+                    #     promotional_balance, 2)
                     db.add(new_refer_entry)
                     user_refered_by_level2 = (
                         db.query(Referral_table)
@@ -358,7 +382,22 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
                             level_2_refer=user_info.mobile_number,
                         )
 
+                        # user_level2_in_user_table = db.query(User).filter(
+                        #     User.mobile_number == user_refered_by_level2.mobile_number).first()
+                        # promotional_balance = user_level2_in_user_table.promotional_balance + 10
+
+                        # user_level2_in_user_table.promotional_balance = round(
+                        #     promotional_balance, 2)
+
                         db.add(new_refer_entry_2)
+                        # new_user_deposit_entry_2 = PaymentDepositTable(
+                        #     MOBILE_NUMBER=user_level2_in_user_table.mobile_number,
+                        #     AMOUNT=10,
+                        #     APPROVE_DEPOSIT=True,
+                        #     IS_PROMOTIONAL=True,
+                        # )
+
+                        # db.add(new_user_deposit_entry_2)
 
                 new_user_refer_entry = Referral_table(
                     mobile_number=user_info.mobile_number,
@@ -392,6 +431,7 @@ async def register(user_info: user_info, db: Session = Depends(get_sql_db)):
             "access_token": access_token,
             "balance": new_user.balance,
             "mobile_number": new_user.mobile_number,
+            "promotional_balance": new_user.promotional_balance,
             "referral_code": refer_code,
         }
     except HTTPException as e:

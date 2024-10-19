@@ -5,26 +5,26 @@ import {
   FormHelperText,
   IconButton,
   InputAdornment,
-  TextField,
   Typography,
 } from "@mui/material";
 import Option from "../Components/Profile/Option";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { green, blue, purple, grey, orange } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import CallIcon from "@mui/icons-material/Call";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import VpnKeyIcon from "@mui/icons-material/VpnKey";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBalance,
   selectBalanceMobile,
   selectBalanceUsername,
 } from "../Feature/Balance/balanceSlice";
-import LoadingButton from "../Components/UI/LoadingButton";
 import API from "../Api/ApiCall";
 import { toast } from "react-toastify";
+import AuthTextField from "../Components/Auth/AuthTextField";
+import AuthButton from "../Components/Auth/AuthButton";
+import { openSnackbar } from "../Feature/Snackbar/snackbarSlice";
 
 export default function ProfileSettings() {
   const dispatch = useDispatch();
@@ -35,9 +35,11 @@ export default function ProfileSettings() {
   }, [dispatch]);
 
   const {
-    control,
     handleSubmit,
-    formState: { errors, isDirty, isValid },
+    register,
+    watch,
+    reset,
+    formState: { errors },
   } = useForm({
     defaultValues: {
       password: "",
@@ -45,23 +47,25 @@ export default function ProfileSettings() {
     },
   });
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
-  };
+  const password = watch("password");
 
-  const handleClickShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleMouseDownPassword = (event) => event.preventDefault();
+
+  const [loading, setLoading] = useState(false);
 
   const onFormSubmit = async (data) => {
     try {
       const { password } = data;
       setLoading(true);
       await API.changePasswordAPI({ password });
-      toast.success("Password Changed Successful");
+      dispatch(
+        openSnackbar({
+          message: "Password Changed Successful",
+          type: "success",
+        })
+      );
     } catch (error) {
       if (error.response) {
         return toast.error(error.response?.data?.detail);
@@ -72,18 +76,26 @@ export default function ProfileSettings() {
       }
     } finally {
       setLoading(false);
+      reset();
     }
   };
 
-  const validatePasswordsMatch = (confirmPassword) => {
-    const { password } = control._formValues;
-    return password === confirmPassword || "Passwords do not match";
-  };
+  const iconColor = grey[700];
+  const hoverColor = "#fc211d";
 
   return (
     <Box>
       <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         borderRadius={1}
         padding={2}
@@ -91,6 +103,7 @@ export default function ProfileSettings() {
         flexDirection="column"
         justifyContent="flex-start"
         gap={2}
+        marginTop={0}
       >
         <Typography fontWeight="600">Profile Details</Typography>
         <Option
@@ -98,18 +111,42 @@ export default function ProfileSettings() {
           icon={
             <Avatar
               sx={{
-                bgcolor: green[500],
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
               }}
             >
-              <AccountCircleIcon sx={{ color: "text.white" }} />
+              <AccountCircleIcon sx={{ color: "inherit" }} />
             </Avatar>
           }
         />
         <Option
           name={mobile}
           icon={
-            <Avatar sx={{ bgcolor: purple[500] }}>
-              <CallIcon sx={{ color: "text.white" }} />
+            <Avatar
+              sx={{
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
+              }}
+            >
+              <CallIcon sx={{ color: "inherit" }} />
             </Avatar>
           }
         />
@@ -118,130 +155,120 @@ export default function ProfileSettings() {
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         marginTop={1}
         borderRadius={1}
         padding={2}
       >
-        <Typography fontWeight="600">Change Password</Typography>
-        <Controller
-          name="password"
-          control={control}
-          rules={{
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{
+            fontFamily: "Ubuntu,sans-serif",
+            fontWeight: 400,
+          }}
+        >
+          Change Password
+        </Typography>
+        <AuthTextField
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          {...register("password", {
             required: "Password is required",
             minLength: {
               value: 8,
-              message: "Password must be at least 8 characters long",
+              message: "Password must be at least 8 characters",
             },
+          })}
+          placeholder="Password"
+          error={!!errors.password}
+          inputRef={register("password").ref}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: grey[300] }} />
+                  ) : (
+                    <Visibility sx={{ color: grey[300] }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              type={showPassword ? "text" : "password"}
-              sx={{ borderColor: grey[500] }}
-              variant="outlined"
-              fullWidth
-              placeholder="Enter New Password"
-              error={!!errors.password}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: orange[500],
-                      }}
-                    >
-                      <VpnKeyIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      edge="end"
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              margin="normal"
-            />
-          )}
         />
         <FormHelperText
           error={!!errors.password}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: errors ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
           {errors ? errors?.password?.message : " "}
         </FormHelperText>
 
-        <Controller
-          name="confirmPassword"
-          control={control}
-          rules={{
-            required: "Confirm Password is required",
-            validate: validatePasswordsMatch,
+        <AuthTextField
+          variant="outlined"
+          type={showPassword ? "text" : "password"}
+          fullWidth
+          inputRef={register("confirmPassword").ref}
+          {...register("confirmPassword", {
+            validate: (value) =>
+              value === password || "The passwords do not match",
+          })}
+          placeholder="Confirm Password"
+          error={!!errors.confirmPassword}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                >
+                  {showPassword ? (
+                    <VisibilityOff sx={{ color: grey[300] }} />
+                  ) : (
+                    <Visibility sx={{ color: grey[300] }} />
+                  )}
+                </IconButton>
+              </InputAdornment>
+            ),
           }}
-          render={({ field }) => (
-            <TextField
-              {...field}
-              sx={{ borderColor: grey[500] }}
-              type={showConfirmPassword ? "text" : "password"}
-              variant="outlined"
-              fullWidth
-              placeholder="Enter Confirm Password"
-              error={!!errors.confirmPassword}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: orange[500],
-                      }}
-                    >
-                      <VpnKeyIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle confirm password visibility"
-                      onClick={handleClickShowConfirmPassword}
-                      edge="end"
-                    >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-              margin="normal"
-            />
-          )}
         />
+
         <FormHelperText
           error={!!errors.confirmPassword}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: errors ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
           {errors ? errors?.confirmPassword?.message : " "}
         </FormHelperText>
-        <LoadingButton
-          type="submit"
-          variant="contained"
-          loading={loading}
-          fullWidth
-          sx={{
-            bgcolor: blue[500],
-            borderRadius: 10,
-            padding: [2, 0],
-          }}
-        >
+        <AuthButton type="submit" loading={loading} fullWidth>
           Change Password
-        </LoadingButton>
+        </AuthButton>
       </Box>
     </Box>
   );

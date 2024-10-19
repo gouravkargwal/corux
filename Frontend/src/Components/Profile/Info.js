@@ -1,100 +1,136 @@
 import React, { useEffect } from "react";
-import { Avatar, Box, Typography } from "@mui/material";
-import { blue, green, purple } from "@mui/material/colors";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import { Box, Typography, Paper } from "@mui/material";
+import { blueGrey, grey } from "@mui/material/colors";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getBalance,
   selectBalanceData,
-  selectBalanceMobile,
   selectBalanceUsername,
+  selectBalanceWinning,
+  selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
-import Call from "@mui/icons-material/Call";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import customCapitalize from "../../Util/stringFunc";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
 export default function Info() {
-  const mobile = useSelector(selectBalanceMobile);
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
+  const bonus = useSelector(selectPromotionalBalance);
+  const winning = useSelector(selectBalanceWinning);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getBalance());
   }, [dispatch]);
 
+  const iconStyles = {
+    color: blueGrey[700],
+    width: 30,
+    height: 30,
+  };
+
   return (
     <Box
-      sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-      margin={3}
-      borderRadius={1}
-      padding={2}
-      display="flex"
-      justifyContent="flex-start"
-      gap={2}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        padding: 1,
+        position: "relative",
+      }}
     >
-      <Avatar
+      <Paper
+        elevation={3}
         sx={{
-          bgcolor: blue[100],
-          width: 90,
-          height: 90,
+          padding: 4,
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "16px",
+          maxWidth: "500px",
+          width: "100%",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          overflow: "hidden",
         }}
-        variant="rounded"
-        whileHover={{ scale: 1.1 }}
       >
-        <AccountBalanceIcon sx={{ color: blue[500], fontSize: 40 }} />
-      </Avatar>
-      <Box gap={1} display="flex" flexDirection="column">
-        <Box display="flex" alignItems="center" gap={1}>
-          <Avatar
-            sx={{
-              bgcolor: blue[500],
-              width: 24,
-              height: 24,
-            }}
-            whileHover={{ scale: 1.2 }}
+        <Box display="flex" flexDirection="column" alignItems="center" gap={3}>
+          <Box display="flex" alignItems="center" gap={2} mb={2}>
+            <AccountCircle sx={{ color: blueGrey[700], fontSize: 40 }} />
+            <Typography color="text.primary" variant="h6">
+              {customCapitalize(username)}
+            </Typography>
+          </Box>
+          <Box width="100%">
+            <Box display="flex" alignItems="center" gap={2}>
+              <AccountBalanceIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Deposit
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {balance}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center" gap={2}>
+              <EmojiEventsIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Winning
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {winning}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+              <CardGiftcard sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Promotional
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {bonus}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
+        {/* <Box
+          component="svg"
+          sx={{
+            position: "absolute",
+            bottom: -8,
+            left: 0,
+            width: "100%",
+            height: "100px",
+            zIndex: 0, // Ensure wave is below the content
+          }}
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1440 320"
+        >
+          <path
+            fill="#2196f3"
+            fillOpacity="1"
+            d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
           >
-            <AccountCircle
-              sx={{ color: "text.white", width: 16, height: 16 }}
+            <animate
+              attributeName="d"
+              dur="10s"
+              repeatCount="indefinite"
+              values="
+                M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,240C96,256,192,288,288,288C384,288,480,256,576,234.7C672,213,768,203,864,202.7C960,203,1056,213,1152,218.7C1248,224,1344,224,1392,224L1440,224L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,234.7C96,245,192,267,288,272C384,277,480,267,576,234.7C672,203,768,149,864,133.3C960,117,1056,139,1152,165.3C1248,192,1344,224,1392,240L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z;
+                M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,218.7C672,235,768,245,864,245.3C960,245,1056,235,1152,213.3C1248,192,1344,160,1392,144L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
             />
-          </Avatar>
-          <Typography color="text.grey" variant="body2">
-            {customCapitalize(username)}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1}>
-          <Avatar
-            sx={{
-              bgcolor: green[500],
-              width: 24,
-              height: 24,
-            }}
-            whileHover={{ scale: 1.2 }}
-          >
-            <CurrencyRupeeIcon
-              sx={{ color: "text.white", width: 16, height: 16 }}
-            />
-          </Avatar>
-          <Typography color="text.grey" variant="body2">
-            {balance}
-          </Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap={1}>
-          <Avatar
-            sx={{
-              bgcolor: purple[500],
-              width: 24,
-              height: 24,
-            }}
-            whileHover={{ scale: 1.2 }}
-          >
-            <Call sx={{ color: "text.white", width: 16, height: 16 }} />
-          </Avatar>
-          <Typography color="text.grey" variant="body2">
-            {mobile}
-          </Typography>
-        </Box>
-      </Box>
+          </path>
+        </Box> */}
+      </Paper>
     </Box>
   );
 }

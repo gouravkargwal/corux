@@ -4,7 +4,16 @@ import { Container, Typography, Box } from "@mui/material";
 const TermsAndConditions = () => {
   return (
     <Box
-      sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+      sx={{
+        padding: "40px",
+        background: "rgba(255, 255, 255, 0.1)",
+        boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+        backdropFilter: "blur(16px) saturate(180%)",
+        "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
+        borderRadius: "12px",
+        border: "1px solid rgba(209, 213, 219, 0.3)",
+      }}
       margin={3}
       borderRadius={1}
       padding={2}
@@ -12,13 +21,13 @@ const TermsAndConditions = () => {
       flexDirection="column"
       justifyContent="flex-start"
       gap={2}
+      marginTop={0}
     >
       <Container maxWidth="md">
         <Box>
           <Typography variant="h4" gutterBottom>
             Terms and Conditions
           </Typography>
-
           {/* Example Sections */}
           <Typography variant="h5" gutterBottom>
             1. Introduction

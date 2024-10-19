@@ -1,5 +1,5 @@
+import React from "react";
 import {
-  Avatar,
   Box,
   Checkbox,
   Dialog,
@@ -8,16 +8,13 @@ import {
   FormControlLabel,
   FormHelperText,
   IconButton,
-  InputAdornment,
-  TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
-import React from "react";
-import LoadingButton from "../UI/LoadingButton";
-import theme from "../../Theme/theme";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import { blue, green, grey } from "@mui/material/colors";
 import CloseIcon from "@mui/icons-material/Close";
+import AuthTextField from "../Auth/AuthTextField";
+import AuthButton from "../Auth/AuthButton";
 
 const BettingDialogue = ({
   open,
@@ -31,88 +28,85 @@ const BettingDialogue = ({
   errors,
   loading,
 }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Dialog onClose={onClose} open={open}>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      sx={{
+        "& .MuiDialog-paper": {
+          padding: 3,
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "16px",
+          maxWidth: "500px",
+          width: "100%",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          maxHeight: isMobile ? "80vh" : "auto",
+        },
+      }}
+    >
       <DialogTitle
-        component="div"
-        onClose={onClose}
         display="flex"
         justifyContent="space-between"
+        alignItems="center"
       >
-        <Typography
-          variant="h6"
-          sx={{
-            color: selectedColor
-              ? theme.palette.text[selectedColor]
-              : theme.palette.text.blue,
-          }}
-        >
+        <Typography variant="h6" fontFamily={"Ubuntu, sans-serif"}>
           {dialogType === "color"
             ? `Join ${selectedColor}`
             : `Select ${selectedNumber}`}
         </Typography>
-        <IconButton
-          aria-label="close"
-          onClick={onClose}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 14,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
+        <IconButton aria-label="close" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-
-      <DialogContent>
+      <DialogContent
+        sx={{
+          maxHeight: isMobile ? "calc(100vh - 200px)" : "auto",
+          padding: theme.spacing(2),
+        }}
+      >
         <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          <Box m={0}>
-            <TextField
-              sx={{ borderColor: grey[500] }}
+          <Box mb={2}>
+            <AuthTextField
               error={!!errors.amount}
               variant="outlined"
-              autoFocus
               autoComplete="off"
               fullWidth
               margin="normal"
               type="text"
               placeholder="Enter Amount"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: green[500],
-                      }}
-                    >
-                      <CurrencyRupeeIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
               {...register("amount", {
-                required: true,
+                required: "Amount is required",
                 pattern: {
                   value: /^[0-9]+(\.[0-9]{1,2})?$/,
                   message:
                     "Enter a valid amount (numbers only, up to 2 decimal places).",
                 },
                 min: {
-                  value: 10,
-                  message: "Amount should be at least 10.",
+                  value: 25,
+                  message: "Amount should be at least 25.",
                 },
               })}
+              inputRef={register("amount").ref}
             />
             <FormHelperText
               error={!!errors.amount}
-              sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+              sx={{
+                visibility: errors.amount ? "visible" : "hidden",
+                height: "10px",
+                mt: 1,
+              }}
             >
-              {errors ? errors?.amount?.message : ""}
+              {errors.amount ? errors.amount.message : ""}
             </FormHelperText>
           </Box>
-
-          <Box textAlign="center">
+          <Box mb={2}>
             <FormControlLabel
               control={
                 <Checkbox
@@ -126,7 +120,6 @@ const BettingDialogue = ({
                 </Typography>
               }
             />
-
             {errors.termsAndConditions && (
               <FormHelperText error>
                 You must accept the terms and conditions.
@@ -135,20 +128,22 @@ const BettingDialogue = ({
           </Box>
 
           <Box>
-            <LoadingButton
+            <AuthButton
               type="submit"
               loading={loading}
               variant="contained"
               fullWidth
-              sx={{
-                bgcolor: blue["A700"],
-                borderRadius: 10,
-                padding: [1, 0],
-                my: 2,
-              }}
             >
               Submit
-            </LoadingButton>
+            </AuthButton>
+            <FormHelperText
+              sx={{
+                height: "10px",
+                m: 1,
+              }}
+            >
+              Minimum amount ₹25
+            </FormHelperText>
           </Box>
         </Box>
       </DialogContent>

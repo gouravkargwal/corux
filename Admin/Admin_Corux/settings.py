@@ -14,6 +14,8 @@ from decouple import config
 from dotenv import load_dotenv
 import os
 from pathlib import Path
+import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -77,34 +79,12 @@ TEMPLATES = [
 WSGI_APPLICATION = "Admin_Corux.wsgi.application"
 
 
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": os.environ.get("DATABASE_NAME"),
-#         "USER": os.environ.get("DATABASE_USERNAME"),
-#         "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
-#         "HOST": os.environ.get("IP_PUBLIC"),
-#         'PORT': '3306',
-
-#     }
-# }
 # GCP Hosting DB
+
 DATABASES = {
-    'default': {
-        # or 'django.db.backends.postgresql'
-        'ENGINE':  'django.db.backends.mysql',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USERNAME'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': '',  # Leave blank for unix socket connections
-        'PORT': '',  # Leave blank for default port
-        'OPTIONS': {
-            'unix_socket': f'/cloudsql/{os.getenv("CLOUD_SQL_NAME")}',
-        },
-    }
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL')
+    )
 }
 
 
@@ -151,10 +131,13 @@ LOGIN_URL = "/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-CSRF_TRUSTED_ORIGINS = ['https://adminvegagaming.online',
-                        "https://vega-admin-wsltptu5dq-uc.a.run.app"]
-CORS_ORIGIN_WHITELIST = ['https://adminvegagaming.online',
-                         "https://vega-admin-wsltptu5dq-uc.a.run.app"]
+# CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(',')
+# CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split(',')
+CSRF_TRUSTED_ORIGINS = ["https://admin.vegagaming.site"]
+# CORS Origin Whitelist (from environment variables)
+# CORS_ORIGIN_WHITELIST = os.getenv("CORS_ORIGIN_WHITELIST").split(',')
+CORS_ORIGIN_WHITELIST = ["https://admin.vegagaming.site"]
+
 
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True

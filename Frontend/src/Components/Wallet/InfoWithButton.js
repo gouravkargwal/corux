@@ -1,124 +1,158 @@
 import React, { useEffect } from "react";
-import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import { blue, green, purple } from "@mui/material/colors";
-import { Avatar, Box, Button, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Typography, Paper, Button } from "@mui/material";
+import { blueGrey, grey } from "@mui/material/colors";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import CardGiftcard from "@mui/icons-material/CardGiftcard";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getBalance,
   selectBalanceData,
-  selectBalanceMobile,
   selectBalanceUsername,
+  selectBalanceWinning,
+  selectPromotionalBalance,
 } from "../../Feature/Balance/balanceSlice";
-import CurrencyRupeeIcon from "@mui/icons-material/CurrencyRupee";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Call from "@mui/icons-material/Call";
 import customCapitalize from "../../Util/stringFunc";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 
-const InfoWithButton = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const mobile = useSelector(selectBalanceMobile);
+export default function InfoWithButton() {
+  const bonus = useSelector(selectPromotionalBalance);
   const username = useSelector(selectBalanceUsername);
   const balance = useSelector(selectBalanceData);
+  const winning = useSelector(selectBalanceWinning);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(getBalance());
   }, [dispatch]);
 
+  const iconStyles = {
+    color: blueGrey[700],
+    width: 20,
+    height: 20,
+  };
+
   return (
     <Box
-      sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-      margin={3}
-      borderRadius={1}
-      padding={2}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        padding: 1,
+        position: "relative",
+      }}
     >
-      <Box display="flex" justifyContent="flex-start" gap={2}>
-        <Avatar
-          sx={{
-            bgcolor: blue[100],
-            width: 90,
-            height: 90,
-          }}
-          variant="rounded"
+      <Paper
+        elevation={3}
+        sx={{
+          padding: 4,
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          WebkitBackdropFilter: "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "16px",
+          maxWidth: "500px",
+          width: "100%",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          overflow: "hidden",
+          position: "relative",
+        }}
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          gap={2}
+          zIndex={1}
         >
-          <AccountBalanceIcon sx={{ color: blue[500], fontSize: 40 }} />
-        </Avatar>
-        <Box gap={1} display="flex" flexDirection="column">
-          <Box display="flex" alignItems="center" gap={1}>
-            <Avatar
-              sx={{
-                bgcolor: blue[500],
-                width: 24,
-                height: 24,
-              }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <AccountCircle
-                sx={{ color: "text.white", width: 16, height: 16 }}
-              />
-            </Avatar>
-            <Typography color="text.grey" variant="body2">
+          <Box display="flex" alignItems="center" gap={2}>
+            <AccountCircle sx={{ color: blueGrey[700], fontSize: 40 }} />
+            <Typography color="text.primary" variant="h6">
               {customCapitalize(username)}
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" gap={1}>
-            <Avatar
-              sx={{
-                bgcolor: green[500],
-                width: 24,
-                height: 24,
-              }}
-              whileHover={{ scale: 1.2 }}
-            >
-              <CurrencyRupeeIcon
-                sx={{ color: "text.white", width: 16, height: 16 }}
-              />
-            </Avatar>
-            <Typography color="text.grey" variant="body2">
-              {balance}
-            </Typography>
+          <Box width="100%">
+            <Box display="flex" alignItems="center" gap={2}>
+              <AccountBalanceIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Deposit
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {balance}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center" gap={2}>
+              <EmojiEventsIcon sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Winning
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {winning}
+                </Typography>
+              </Box>
+            </Box>
+            <Box display="flex" alignItems="center" gap={2} mb={2}>
+              <CardGiftcard sx={iconStyles} />
+              <Box>
+                <Typography color={grey["500"]} variant="caption">
+                  Promotional
+                </Typography>
+                <Typography color="text.primary" variant="body1">
+                  ₹ {bonus}
+                </Typography>
+              </Box>
+            </Box>
           </Box>
-          <Box display="flex" alignItems="center" gap={1}>
-            <Avatar
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            gap={2}
+            width="100%"
+          >
+            <Button
               sx={{
-                bgcolor: purple[500],
-                width: 24,
-                height: 24,
+                backgroundColor: "#fc4642",
+                color: "white",
+                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  backgroundColor: "#fc211d",
+                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+                },
+                flex: 1,
+                zIndex: 100,
               }}
-              whileHover={{ scale: 1.2 }}
+              variant="contained"
+              onClick={() => {
+                navigate("/profile/recharge");
+              }}
             >
-              <Call sx={{ color: "text.white", width: 16, height: 16 }} />
-            </Avatar>
-            <Typography color="text.grey" variant="body2">
-              {mobile}
-            </Typography>
+              Recharge
+            </Button>
+            <Button
+              sx={{
+                flex: 1,
+                zIndex: 100,
+                boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+                "&:hover": {
+                  boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+                },
+              }}
+              color="secondary"
+              variant="outlined"
+              onClick={() => {
+                navigate("/profile/withdraw");
+              }}
+            >
+              Withdraw
+            </Button>
           </Box>
         </Box>
-      </Box>
-      <Box mt={2} display="flex" justifyContent="space-between" gap={2}>
-        <Button
-          sx={{ bgcolor: blue[500] }}
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            navigate("/profile/recharge");
-          }}
-        >
-          Recharge
-        </Button>
-        <Button
-          sx={{ bgcolor: green[500] }}
-          variant="contained"
-          fullWidth
-          onClick={() => {
-            navigate("/profile/withdraw");
-          }}
-        >
-          Withdraw
-        </Button>
-      </Box>
+      </Paper>
     </Box>
   );
-};
-
-export default InfoWithButton;
+}

@@ -193,6 +193,11 @@ class User(Base):
     )
     balance = Column(Double, unique=False, name="BALANCE",
                      nullable=False, default=0)
+    promotional_balance = Column(Double, unique=False, name="PROMOTIONAL_BALANCE",
+                                 nullable=False, default=50)
+
+    winning_balance = Column(Double, unique=False,
+                             nullable=False, name="WINNING_BALANCE", default=0)
     UPDATE_DATE = Column(
         DateTime,
         unique=False,
@@ -440,6 +445,8 @@ class PaymentDepositTable(Base):
     APPROVE_DEPOSIT = Column(Boolean, nullable=False,
                              unique=False, default=False)
     DENY_DEPOSIT = Column(Boolean, nullable=False, unique=False, default=False)
+    IS_PROMOTIONAL = Column(Boolean, unique=False,
+                            nullable=False, default=False)
     UPDATE_DATE = Column(
         DateTime,
         unique=False,

@@ -8,22 +8,29 @@ import {
   Grid,
   Tabs,
   Tab,
+  Paper,
 } from "@mui/material";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { deepPurple, blue, orange } from "@mui/material/colors";
-import InfoWithButton from "../Components/Wallet/InfoWithButton";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import { blue, grey } from "@mui/material/colors";
+import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import PromotionOption from "../Components/Promotion.js/PromotionOption";
-import RedeemIcon from "@mui/icons-material/Redeem";
+import CardGiftcard from "@mui/icons-material/CardGiftcard";
+import LoyaltyIcon from "@mui/icons-material/Loyalty";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import { useDispatch, useSelector } from "react-redux";
-import { selectBalanceReferCode } from "../Feature/Balance/balanceSlice";
+import {
+  getBalance,
+  selectBalanceReferCode,
+  selectPromotionalBalance,
+} from "../Feature/Balance/balanceSlice";
 import { getReferDetails, selectReferData } from "../Feature/Refer/referSlice";
 import Level2Table from "../Components/Promotion.js/Level2Table";
 import Level1Table from "../Components/Promotion.js/Level1Table";
+import PromotionOption from "../Components/Promotion.js/PromotionOption";
+import PromotionCarousel from "../Components/Promotion.js/PromotionCarousel";
 
 export default function Promotion() {
   const dispatch = useDispatch();
+  const bonus = useSelector(selectPromotionalBalance);
   const referCode = useSelector(selectBalanceReferCode);
   const data = useSelector(selectReferData);
   const [activeTab, setActiveTab] = useState(0);
@@ -41,21 +48,34 @@ export default function Promotion() {
 
   useEffect(() => {
     dispatch(getReferDetails());
+    dispatch(getBalance());
   }, [dispatch]);
+
+  const iconColor = grey[700];
+  const hoverColor = blue[500];
 
   return (
     <Box>
-      <Box borderColor="red">
-        <InfoWithButton />
-      </Box>
+      <PromotionCarousel />
       <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-        margin={3}
-        borderRadius={1}
         padding={2}
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
+        sx={{
+          padding: "20px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
+        marginX={3}
+        marginY={1}
+        gap={2}
+        marginTop={0}
       >
         <PromotionOption
           name="Refer Bonus"
@@ -63,60 +83,154 @@ export default function Promotion() {
           icon={
             <Avatar
               sx={{
-                bgcolor: orange[500],
-                borderRadius: "5px",
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
               }}
             >
-              <RedeemIcon sx={{ color: "text.white" }} />
+              <LoyaltyIcon sx={{ color: "inherit" }} />
             </Avatar>
           }
         />
       </Box>
       <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-        margin={3}
-        borderRadius={1}
         padding={2}
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
+        sx={{
+          padding: "20px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
+        marginX={3}
+        marginY={1}
+        gap={2}
+        marginTop={0}
       >
         <PromotionOption
-          name="Total Referals"
-          count={data?.refer_count}
+          name="Promotional Bonus"
+          count={bonus}
           icon={
-            <Avatar sx={{ bgcolor: deepPurple[500], borderRadius: "5px" }}>
-              <AccountCircleIcon sx={{ color: "text.white" }} />
+            <Avatar
+              sx={{
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
+              }}
+            >
+              <CardGiftcard sx={{ color: "inherit" }} />
             </Avatar>
           }
         />
       </Box>
       <Box
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
-        margin={3}
-        borderRadius={1}
         padding={2}
         display="flex"
         flexDirection="column"
         justifyContent="flex-start"
+        sx={{
+          padding: "20px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
+        marginX={3}
+        marginY={1}
         gap={2}
+        marginTop={0}
+      >
+        <PromotionOption
+          name="Total Referrals"
+          count={data?.refer_count}
+          icon={
+            <Avatar
+              sx={{
+                bgcolor: "transparent",
+                width: 40,
+                height: 40,
+                marginRight: 2,
+                transition: "color 0.3s",
+                "& .MuiSvgIcon-root": {
+                  color: iconColor,
+                },
+                "&:hover .MuiSvgIcon-root": {
+                  color: hoverColor,
+                },
+              }}
+            >
+              <GroupAddIcon sx={{ color: "inherit" }} />
+            </Avatar>
+          }
+        />
+      </Box>
+      <Box
+        padding={2}
+        display="flex"
+        flexDirection="column"
+        justifyContent="flex-start"
+        sx={{
+          padding: "20px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
+        margin={3}
+        gap={2}
+        marginTop={0}
       >
         <Box display="flex" justifyContent="flex-start" gap={2}>
           <Avatar
             sx={{
-              bgcolor: blue[100],
-              width: 72,
-              height: 72,
+              bgcolor: "transparent",
+              width: 40,
+              height: 40,
+              marginRight: 2,
+              transition: "color 0.3s",
+              "& .MuiSvgIcon-root": {
+                color: iconColor,
+              },
+              "&:hover .MuiSvgIcon-root": {
+                color: hoverColor,
+              },
             }}
-            variant="rounded"
           >
-            <PersonAddIcon sx={{ color: blue[500], fontSize: 40 }} />
+            <PersonAddAlt1Icon sx={{ color: "inherit" }} />
           </Avatar>
           <Box gap={1} display="flex" flexDirection="column">
             <Typography variant="body2" fontWeight="600">
               Refer Friends
             </Typography>
-            <Typography color="text.grey" variant="body2">
+            <Typography color="text.secondary" variant="body2">
               <Button
                 variant="outlined"
                 startIcon={<ContentCopyIcon />}
@@ -131,9 +245,9 @@ export default function Promotion() {
             </Typography>
           </Box>
         </Box>
-        <Divider />
+        <Divider sx={{ my: 2 }} />
         <Box>
-          <Typography color="text.grey" variant="body2">
+          <Typography color="text.secondary" variant="body2">
             Your Referral Code
           </Typography>
           <Box
@@ -154,20 +268,49 @@ export default function Promotion() {
           </Box>
         </Box>
       </Box>
-      <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
-        <Grid item xs={12} my={1}>
-          <Tabs
-            value={activeTab}
-            onChange={handleTabChange}
-            aria-label="simple tabs example"
-            variant="fullWidth"
-            visibleScrollbar={false}
-          >
-            <Tab label="Level 1" />
-            <Tab label="Level 2" />
-          </Tabs>
-        </Grid>
+      <Grid item xs={4} marginX={1} borderRadius={1} paddingX={2} height="40vh">
         <Grid item xs={12}>
+          <Paper
+            elevation={3}
+            sx={{
+              marginTop: 1,
+              paddingY: 1,
+              paddingX: 3,
+              background: "rgba(255, 255, 255, 0.1)",
+              boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+              backdropFilter: "blur(16px) saturate(180%)",
+              WebkitBackdropFilter: "blur(16px) saturate(180%)",
+              backgroundColor: "rgba(255, 255, 255, 0.5)",
+              borderRadius: "16px",
+              border: "1px solid rgba(209, 213, 219, 0.3)",
+            }}
+          >
+            <Tabs
+              value={activeTab}
+              onChange={handleTabChange}
+              aria-label="simple tabs example"
+              variant="fullWidth"
+              sx={{
+                "& .MuiTabs-indicator": {
+                  backgroundColor: "#fc211d",
+                },
+                "& .MuiTab-root.Mui-selected": {
+                  color: "#fc211d",
+                },
+                "& .MuiTab-root": {
+                  transition: "color 0.3s, background-color 0.3s",
+                  textTransform: "none",
+                  fontWeight: "bold",
+                  fontSize: "1rem",
+                },
+              }}
+            >
+              <Tab label="Level 1" />
+              <Tab label="Level 2" />
+            </Tabs>
+          </Paper>
+        </Grid>
+        <Grid item xs={12} mt={1}>
           {activeTab === 0 && <Level1Table data={data?.refer_result_level1} />}
           {activeTab === 1 && <Level2Table data={data?.refer_result_level2} />}
         </Grid>

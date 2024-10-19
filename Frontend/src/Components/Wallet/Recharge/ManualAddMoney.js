@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
-  TextField,
-  InputAdornment,
-  Avatar,
   FormHelperText,
   Typography,
-  Button,
-  Divider,
-  Chip,
   ImageList,
   ImageListItem,
+  Divider,
+  Chip,
+  Button,
 } from "@mui/material";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
-import LoadingButton from "../../UI/LoadingButton";
-import { blue, green, grey, red } from "@mui/material/colors";
-import ReceiptIcon from "@mui/icons-material/Receipt";
+import { green, grey } from "@mui/material/colors";
 import { selectPaymentQrData } from "../../../Feature/Payment/paymentSlice";
 import API from "../../../Api/ApiCall";
 import RechargeSuccessDialogue from "../../UI/RechargeSuccessDialogue";
 import { toast } from "react-toastify";
+import AuthButton from "../../Auth/AuthButton";
+import AuthTextField from "../../Auth/AuthTextField";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
+import CredIcon from "../../UI/CredIcon";
 
 const ManualAddMoney = () => {
   let { amount } = useParams();
@@ -38,6 +37,15 @@ const ManualAddMoney = () => {
       utr: "",
     },
   });
+
+  const handleCopy = async (data) => {
+    try {
+      await navigator.clipboard.writeText(data);
+      alert("Code copied to clipboard!");
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
   useEffect(() => {
     const handleBeforeUnload = (event) => {
@@ -82,12 +90,25 @@ const ManualAddMoney = () => {
     }
   };
 
+  const handleCredPayment = () => {
+    window.open(qrData?.upi_link, "_blank");
+  };
+
   return (
     <Box>
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         marginTop={1}
         borderRadius={1}
@@ -118,53 +139,87 @@ const ManualAddMoney = () => {
             </ImageListItem>
           </ImageList>
         </Box>
-
-        <Typography
-          variant="body2"
-          color="error"
-          align="center"
-          sx={{ marginTop: 2, marginBottom: 2 }}
-        >
-          Important: Do not refresh or reload this page before entering the UTR.
-          In case of any error, please contact us for assistance.
-        </Typography>
-        {/* <Divider>
+        <Divider sx={{ width: "100%", my: 2 }}>
+          <Chip label="Or" size="small" />
+        </Divider>
+        <Box display="flex" justifyContent="space-between">
+          <Box display="flex" flexDirection="column" ml={1}>
+            <Typography color={grey["500"]} variant="caption">
+              Upi Id
+            </Typography>
+            <Typography color="text.primary" variant="caption">
+              {qrData?.upi_id}
+            </Typography>
+          </Box>
+          <Button
+            variant="outlined"
+            startIcon={<ContentCopyIcon />}
+            onClick={() => handleCopy(qrData?.upi_id)}
+          >
+            Copy
+          </Button>
+        </Box>
+        <Divider sx={{ width: "100%", my: 2 }}>
           <Chip label="Or" size="small" />
         </Divider>
         <Button
           variant="contained"
+          color="primary"
           fullWidth
+          startIcon={<CredIcon />}
+          onClick={handleCredPayment}
           sx={{
-            bgcolor: green[500],
-            borderRadius: 10,
-            padding: "10px 24px",
-            margin: "16px 0",
-            minWidth: "auto",
-          }}
-          onClick={() => {
-            window.open(
-              `phonepe://pay?pa=${qrData?.upi_id}&am=${qrData?.amount}&cu=INR`,
-              "_blank"
-            );
+            backgroundColor: "black", // Base color
+            color: "white",
+            padding: "8px 24px",
+            textTransform: "none",
+            fontSize: "1rem",
+            fontWeight: "bold",
+            letterSpacing: "0.05rem",
+            boxShadow:
+              "0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12)",
+            transition: "background-color 0.3s ease-in-out",
+            "&:hover": {
+              backgroundColor: "black", // Hover color
+              boxShadow:
+                "0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12)",
+              transform: "translateY(-2px)", // Slight lift effect
+            },
+            "& .MuiButton-startIcon": {
+              color: "inherit",
+              marginRight: "8px",
+              transition: "transform 0.3s ease-in-out",
+              "&:hover": {
+                transform: "scale(1.1)", // Enlarges the icon slightly on hover
+              },
+            },
           }}
         >
-          Pay
+          Pay with CRED
         </Button>
-        <Typography
+        {/* <Typography
           variant="body2"
           color="error"
           align="center"
           sx={{ marginTop: 2 }}
         >
-          Important: By clicking the pay button, you will be prompted to choose
-          a UPI app for completing the transaction. Once the payment is made,
-          please copy the UTR number and enter it in the designated field below.
+          Important: Do not refresh or reload this page before entering the UTR.
+          In case of any error, please contact us for assistance.
         </Typography> */}
       </Box>
       <Box
         component="form"
         onSubmit={handleSubmit(onFormSubmit)}
-        sx={{ backgroundColor: "background.main", boxShadow: 0 }}
+        sx={{
+          padding: "40px",
+          background: "rgba(255, 255, 255, 0.1)",
+          boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
+          borderRadius: "12px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+        }}
         margin={3}
         marginTop={1}
         borderRadius={1}
@@ -177,7 +232,7 @@ const ManualAddMoney = () => {
             required: "UTR is required",
           }}
           render={({ field }) => (
-            <TextField
+            <AuthTextField
               {...field}
               sx={{ borderColor: grey[500] }}
               error={!!errors.amount}
@@ -185,41 +240,27 @@ const ManualAddMoney = () => {
               fullWidth
               margin="normal"
               placeholder="Enter UTR"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Avatar
-                      sx={{
-                        bgcolor: red[500],
-                      }}
-                    >
-                      <ReceiptIcon sx={{ color: "text.white" }} />
-                    </Avatar>
-                  </InputAdornment>
-                ),
-              }}
             />
           )}
         />
         <FormHelperText
           error={!!errors.utr}
-          sx={{ visibility: errors ? "visible" : "hidden", height: "20px" }}
+          sx={{
+            visibility: errors ? "visible" : "hidden",
+            height: "10px",
+            m: 1,
+          }}
         >
           {errors ? errors?.utr?.message : " "}
         </FormHelperText>
-        <LoadingButton
+        <AuthButton
           type="submit"
           variant="contained"
           fullWidth
           loading={loading}
-          sx={{
-            bgcolor: blue[500],
-            borderRadius: 10,
-            padding: [2, 0],
-          }}
         >
           Submit
-        </LoadingButton>
+        </AuthButton>
       </Box>
       <RechargeSuccessDialogue open={open} onClose={onClose} amount={amount} />
     </Box>

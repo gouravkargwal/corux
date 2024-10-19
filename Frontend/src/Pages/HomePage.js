@@ -1,21 +1,19 @@
 import { Grid } from "@mui/material";
 import Hero from "../Components/Home/Hero";
 import { Link } from "react-router-dom";
-import Info from "../Components/Profile/Info";
-import { useSelector } from "react-redux";
-import { selectAuthToken } from "../Feature/Auth/authSlice";
 import GameCard from "../Components/Home/GameCard";
-import ColorPredictionImg from "../Assets/Images/wingo.jpeg";
-// import MontyHallImg from "../Assets/Images/montyhall.jpeg";
+import ColorPredictionImg from "../Assets/Images/wingo.webp";
 import ComingSoonImg from "../Assets/Images/comingsoon.webp";
+import CongratsDialogue from "../Components/Home/CongratsDialog";
+import { useDispatch, useSelector } from "react-redux";
+import { closeDialog, selectDialogOpen } from "../Feature/Dialog/dialogSlice";
 
 function GridExample() {
-  const token = useSelector(selectAuthToken);
-
+  const dispatch = useDispatch();
+  const open = useSelector(selectDialogOpen);
   return (
     <>
       <Hero />
-      {token && <Info />}
       <Grid container spacing={2} p={3}>
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <Link to="color-prediction">
@@ -23,20 +21,15 @@ function GridExample() {
           </Link>
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
-          {/* <Link to="monty-hall"> */}
           <GameCard title="Monty Hall" time="30sec" img={ComingSoonImg} />
-          {/* <GameCard title="Coming Soon" time="30sec" /> */}
-          {/* </Link> */}
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          {/* <Link to="virtual-slot"> */}
-          <GameCard title="Aviator" time="2min" img={ComingSoonImg} />
-          {/* </Link> */}
-        </Grid>
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GameCard title="Casino" time="1min" img={ComingSoonImg} />
         </Grid>
       </Grid>
+      <CongratsDialogue
+        open={open}
+        onClose={() => {
+          dispatch(closeDialog());
+        }}
+      />
     </>
   );
 }

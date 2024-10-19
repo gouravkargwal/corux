@@ -16,7 +16,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     if 'runserver' in sys.argv and len(sys.argv) == 2:
-        sys.argv.append('8080')  # Default to port 8080
+        sys.argv.append('1002')  # Default to port 8080
     execute_from_command_line(sys.argv)
 
 

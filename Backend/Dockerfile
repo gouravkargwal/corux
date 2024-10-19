@@ -5,7 +5,7 @@ FROM python:3.8-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
 
 # Set working directory
-WORKDIR /Backend
+WORKDIR /app
 
 # Install system dependencies needed for mysqlclient and curl
 RUN apt-get update && apt-get install -y \
@@ -25,7 +25,7 @@ RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Expose the port for the application
-EXPOSE 8000
+EXPOSE 1001
 
 # Start the application using Uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "1001"]

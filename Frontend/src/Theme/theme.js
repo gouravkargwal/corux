@@ -1,10 +1,10 @@
-import { blue, grey } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#556cd6",
+      main: "#fc211d",
+      light: "#fc4642",
     },
     secondary: {
       main: "#19857b",
@@ -37,35 +37,13 @@ const theme = createTheme({
     },
   },
   components: {
-    MuiOutlinedInput: {
+    MuiInputBase: {
       styleOverrides: {
-        root: {
-          borderRadius: "30px",
-        },
-      },
-    },
-    MuiTabs: {
-      styleOverrides: {
-        root: {},
-        flexContainer: {
-          border: `1px solid ${grey[500]}`, // Encapsulates tabs with a border
-          borderRadius: "5px",
-          overflow: "hidden",
-        },
-        indicator: {
-          display: "none",
-        },
-      },
-    },
-    MuiTab: {
-      styleOverrides: {
-        root: {
-          "&:last-child": {
-            borderRight: "none",
-          },
-          "&.Mui-selected": {
-            color: "#fff",
-            backgroundColor: blue["A700"],
+        input: {
+          "&::placeholder": {
+            fontWeight: 500,
+            fontFamily: "Ubuntu,sans-serif",
+            fontSize: "12px",
           },
         },
       },

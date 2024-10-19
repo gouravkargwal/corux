@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable
+from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable
 
 
 class UserAdminSerializer(serializers.ModelSerializer):
@@ -62,3 +62,9 @@ class ValidationWithdrawApprovedSerializer(serializers.Serializer):
 class ValidationWithdrawDeniedSerializer(serializers.Serializer):
     ID = serializers.IntegerField(required=True)
     DENY_WITHDRAW = serializers.BooleanField(required=True)
+
+
+class ReferralTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReferralTable
+        fields = "__all__"
