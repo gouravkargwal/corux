@@ -31,9 +31,9 @@ export default function OnlineUsers() {
         Online
       </Typography>
       <BlinkingDot />
-      <Typography color="text.primary" variant="caption">
+      {/* <Typography color="text.primary" variant="caption">
         {onlineUsersCount}
-      </Typography>
+      </Typography> */}
     </Box>
   );
 }
