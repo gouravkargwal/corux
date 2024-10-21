@@ -21,10 +21,6 @@ from endpoints.wallet import router as Walletrouter
 logger = setup_logger()
 app = FastAPI(docs_url=None)
 
-def get_allowed_origins():
-    origins = os.getenv("ALLOWED_ORIGINS", "")
-    # Split the comma-separated origins into a list and strip any extra whitespace
-    return [origin.strip() for origin in origins.split(",") if origin.strip()]
 
 # Use the function to set the allowed origins
 # allowed_origins = get_allowed_origins()
