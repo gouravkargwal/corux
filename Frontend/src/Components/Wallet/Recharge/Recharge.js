@@ -28,7 +28,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import CustomLoadingIndicator from "../../UI/CustomLoadingIndicator";
 const VideoDialog = lazy(() => import("../../UI/VideoDialog"));
 
-const predefinedValues = [19, 49, 99, 199];
+const predefinedValues = [49, 99, 199, 499];
 
 const fadeIn = keyframes`
   from {

@@ -184,12 +184,10 @@ const ColorPrediction = () => {
 
   const getButtonColor = (number) => {
     const baseStyles = {
-      background: "transparent",
-      transition: "border-color 0.3s ease, background-color 0.3s ease", // Smooth transition for hover effects
-      borderWidth: "2px",
-      borderStyle: "solid",
+      transition: "background-color 0.3s ease, color 0.3s ease", // Smooth transition for hover effects
       borderRadius: "8px",
       fontWeight: "bold",
+      padding: "10px 16px",
     };
 
     switch (number) {
@@ -199,11 +197,10 @@ const ColorPrediction = () => {
       case 9:
         return {
           ...baseStyles,
-          color: "#28a745",
-          border: "2px solid #28a745",
+          color: "#fff", // White text color
+          backgroundColor: "#28a745", // Green background color
           "&:hover": {
-            borderColor: "#1e7e34", // Darker green on hover
-            backgroundColor: "rgba(40, 167, 69, 0.1)", // Light green background on hover
+            backgroundColor: "#218838", // Darker green on hover
           },
         };
       case 2:
@@ -212,59 +209,41 @@ const ColorPrediction = () => {
       case 8:
         return {
           ...baseStyles,
-          color: "#ff4c4c",
-          border: "2px solid #ff4c4c",
+          color: "#fff", // White text color
+          backgroundColor: "#ff4c4c", // Red background color
           "&:hover": {
-            borderColor: "#d43737", // Darker red on hover
-            backgroundColor: "rgba(255, 76, 76, 0.1)", // Light red background on hover
+            backgroundColor: "#e04343", // Darker red on hover
           },
         };
       case 0:
         return {
           ...baseStyles,
-          color: "#ff4c4c",
-          borderTopColor: "#ff4c4c", // Left-top in red
-          borderLeftColor: "#ff4c4c", // Left-top in red
-          borderRightColor: "#9b59b6", // Bottom-right in violet
-          borderBottomColor: "#9b59b6", // Bottom-right in violet
+          color: "#fff", // White text color
+          background: "linear-gradient(90deg, #ff4c4c 50%, #9b59b6 50%)", // Split red-violet background by default
           "&:hover": {
-            borderTopColor: "#d43737", // Darker red on hover
-            borderLeftColor: "#d43737",
-            borderRightColor: "#8e44ad", // Darker violet on hover
-            borderBottomColor: "#8e44ad",
-            backgroundColor: "rgba(255, 76, 76, 0.05)", // Subtle red background on hover
+            background: "linear-gradient(90deg, #e04343 50%, #8e44ad 50%)", // Darker split red-violet on hover
           },
         };
       case 5:
         return {
           ...baseStyles,
-          color: "#28a745",
-          borderTopColor: "#28a745", // Left-top in green
-          borderLeftColor: "#28a745", // Left-top in green
-          borderBottomColor: "#9b59b6", // Bottom-right in violet
-          borderRightColor: "#9b59b6", // Bottom-right in violet
+          color: "#fff", // White text color
+          background: "linear-gradient(90deg, #28a745 50%, #9b59b6 50%)", // Split green-violet background by default
           "&:hover": {
-            borderTopColor: "#1e7e34", // Darker green on hover
-            borderLeftColor: "#1e7e34",
-            borderBottomColor: "#8e44ad", // Darker violet on hover
-            borderRightColor: "#8e44ad",
-            backgroundColor: "rgba(40, 167, 69, 0.05)", // Subtle green background on hover
+            background: "linear-gradient(90deg, #218838 50%, #8e44ad 50%)", // Darker split green-violet on hover
           },
         };
       default:
         return {
           ...baseStyles,
-          color: "#333",
-          border: "2px solid #bdbdbd",
+          color: "#fff", // White text color
+          backgroundColor: "#bdbdbd", // Neutral gray background color
           "&:hover": {
-            borderColor: "#9e9e9e", // Darker gray on hover
-            backgroundColor: "rgba(189, 189, 189, 0.1)", // Light gray background on hover
+            backgroundColor: "#9e9e9e", // Darker gray on hover
           },
         };
     }
   };
-
-
 
   // General button styling with hover effects and shadows
   const buttonStyles = {
