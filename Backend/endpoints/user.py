@@ -238,7 +238,7 @@ async def create_bet(
             raise HTTPException(status_code=400, detail="Try to login Again")
 
         last_deposit = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==
-                                                            credentials.mobile_number, PaymentDepositTable.IS_PROMOTIONAL == False,PaymentDepositTable.APPROVE_DEPOSIT == 1).first()
+                                                            credentials.mobile_number).first()
         print(last_deposit)
         if not last_deposit:
             raise HTTPException(
