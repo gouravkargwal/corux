@@ -82,7 +82,7 @@ const Recharge = () => {
   const onFormSubmit = async (data) => {
     try {
       dispatch(generateQr({ amount: data.amount, navigate }));
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -133,7 +133,7 @@ const Recharge = () => {
           rules={{
             required: "Amount is required",
             validate: (value) =>
-              value >= 19 || "Please enter a value more than 19",
+              value >= 49 || "Please enter a value more than 49",
           }}
           render={({ field }) => (
             <AuthTextField

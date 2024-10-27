@@ -182,19 +182,105 @@ const ColorPrediction = () => {
     }
   }, [timer, colorBidDialog]);
 
+  const getButtonColor = (number) => {
+    const baseStyles = {
+      background: "transparent",
+      transition: "border-color 0.3s ease, background-color 0.3s ease", // Smooth transition for hover effects
+      borderWidth: "2px",
+      borderStyle: "solid",
+      borderRadius: "8px",
+      fontWeight: "bold",
+    };
+
+    switch (number) {
+      case 1:
+      case 3:
+      case 7:
+      case 9:
+        return {
+          ...baseStyles,
+          color: "#28a745",
+          border: "2px solid #28a745",
+          "&:hover": {
+            borderColor: "#1e7e34", // Darker green on hover
+            backgroundColor: "rgba(40, 167, 69, 0.1)", // Light green background on hover
+          },
+        };
+      case 2:
+      case 4:
+      case 6:
+      case 8:
+        return {
+          ...baseStyles,
+          color: "#ff4c4c",
+          border: "2px solid #ff4c4c",
+          "&:hover": {
+            borderColor: "#d43737", // Darker red on hover
+            backgroundColor: "rgba(255, 76, 76, 0.1)", // Light red background on hover
+          },
+        };
+      case 0:
+        return {
+          ...baseStyles,
+          color: "#ff4c4c",
+          borderTopColor: "#ff4c4c", // Left-top in red
+          borderLeftColor: "#ff4c4c", // Left-top in red
+          borderRightColor: "#9b59b6", // Bottom-right in violet
+          borderBottomColor: "#9b59b6", // Bottom-right in violet
+          "&:hover": {
+            borderTopColor: "#d43737", // Darker red on hover
+            borderLeftColor: "#d43737",
+            borderRightColor: "#8e44ad", // Darker violet on hover
+            borderBottomColor: "#8e44ad",
+            backgroundColor: "rgba(255, 76, 76, 0.05)", // Subtle red background on hover
+          },
+        };
+      case 5:
+        return {
+          ...baseStyles,
+          color: "#28a745",
+          borderTopColor: "#28a745", // Left-top in green
+          borderLeftColor: "#28a745", // Left-top in green
+          borderBottomColor: "#9b59b6", // Bottom-right in violet
+          borderRightColor: "#9b59b6", // Bottom-right in violet
+          "&:hover": {
+            borderTopColor: "#1e7e34", // Darker green on hover
+            borderLeftColor: "#1e7e34",
+            borderBottomColor: "#8e44ad", // Darker violet on hover
+            borderRightColor: "#8e44ad",
+            backgroundColor: "rgba(40, 167, 69, 0.05)", // Subtle green background on hover
+          },
+        };
+      default:
+        return {
+          ...baseStyles,
+          color: "#333",
+          border: "2px solid #bdbdbd",
+          "&:hover": {
+            borderColor: "#9e9e9e", // Darker gray on hover
+            backgroundColor: "rgba(189, 189, 189, 0.1)", // Light gray background on hover
+          },
+        };
+    }
+  };
+
+
+
+  // General button styling with hover effects and shadows
   const buttonStyles = {
-    height: "40px", // Larger height for better touch target
-    width: "40px", // Larger height for better touch target
-    borderRadius: "5px", // More rounded corners
+    height: "45px",
+    width: "45px",
+    borderRadius: "8px",
     fontWeight: "bold",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Add box shadow for depth
-    transition: "transform 0.2s", // Smooth transition for scaling
+    boxShadow: "0 6px 10px rgba(0, 0, 0, 0.15)",
+    transition: "transform 0.3s, box-shadow 0.3s, background 0.3s",
     "&:hover": {
-      transform: "scale(1.05)", // Slightly scale up on hover
-      boxShadow: "0 6px 10px rgba(0, 0, 0, 0.15)", // Enhance box shadow on hover
+      transform: "scale(1.1)",
+      boxShadow: "0 8px 14px rgba(0, 0, 0, 0.25)",
     },
     "&:disabled": {
-      opacity: 0.6, // Reduce opacity for disabled state
+      opacity: 0.5,
+      cursor: "not-allowed",
     },
   };
 
@@ -316,6 +402,7 @@ const ColorPrediction = () => {
                       disabled={!bettingAllowed || isBlock}
                       sx={{
                         ...buttonStyles,
+                        ...getButtonColor(index),
                         padding: 1,
                         minWidth: "55px",
                       }}
