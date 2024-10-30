@@ -132,8 +132,12 @@ const Recharge = () => {
           control={control}
           rules={{
             required: "Amount is required",
-            validate: (value) =>
-              value >= 49 || "Please enter a value more than 49",
+            validate: (value) => {
+              if (value < 49) return "Please enter a value more than 49";
+              if (value > 100000)
+                return "Please enter a value less than or equal to 1 lakh";
+              return true;
+            },
           }}
           render={({ field }) => (
             <AuthTextField
