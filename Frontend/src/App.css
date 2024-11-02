@@ -1,14 +1,35 @@
+/* Glass effect for the container */
+.glass-container {
+  background-color: #fdf4f4;
+  background-image: radial-gradient(
+      at 47% 33%,
+      hsl(0, 0%, 100%) 0,
+      transparent 59%
+    ),
+    radial-gradient(at 82% 65%, hsl(244.5, 69%, 89%) 0, transparent 55%);
+}
+
 a {
   text-decoration: none;
 }
-/* styles.css or your main CSS file */
-.blur {
-  filter: blur(5px);
-  transition: filter 0.3s ease;
+
+/* Glass effect and animations for AG Grid */
+.ag-theme-quartz {
+  background: rgba(255, 255, 255, 0.2); /* Increased transparency */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 12px;
+  border: 1px solid rgba(209, 213, 219, 0.3);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+.ag-theme-quartz:hover {
+  background: rgba(255, 255, 255, 0.3); /* Increased transparency */
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+}
 
-/* ---------------------------------table--------------------------------- */
+/* Table Header Styling */
 .ag-header-cell-sortable .ag-header-cell-label {
   color: black !important;
   font-size: 11px !important;
@@ -17,9 +38,18 @@ a {
 }
 
 .ag-header-container {
-  background-color: white !important;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.4
+  ) !important; /* Increased transparency */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s ease;
 }
 
+/* Table Cell Styling */
 .ag-cell-label-container {
   padding: 0px !important;
 }
@@ -27,13 +57,29 @@ a {
 .ag-ltr .ag-cell {
   font-size: 10px !important;
   font-weight: 600 !important;
-  text-align: center !important; /* Center align cell values horizontally */
-  display: flex; /* Enable flexbox */
-  align-items: center; /* Vertically align content */
+  text-align: center !important;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
-.ag-row:hover {
-  background-color: #f2f2f2 !important;
+.ag-row:hover .ag-ltr .ag-cell {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.3
+  ) !important; /* Increased transparency */
+  color: #000 !important;
+}
+
+/* Row Styling */
+.ag-row-even {
+  background-color: rgba(244, 247, 252, 0.5) !important;
+}
+
+.ag-row-odd {
+  background-color: rgba(255, 255, 255, 0.5) !important;
 }
 
 .ag-header-group-cell {
@@ -64,21 +110,11 @@ a {
   border: none !important;
 }
 
-.ag-row-even {
-  background-color: #f4f7fc !important;
-  border: none !important;
-}
-
-.ag-row-odd {
-  background-color: #fff !important;
-  background-color: var(--ag-odd-row-background-color, #fcfcfc);
-  border: none !important;
-}
-
+/* Root Wrapper and Header Adjustments */
 .ag-root-wrapper {
   border-top: none !important;
   border-bottom: none !important;
-  border-radius: 0px !important;
+  border-radius: 12px !important;
 }
 
 .ag-header.ag-header-allow-overflow .ag-header-row {
@@ -100,9 +136,10 @@ a {
   border-bottom: none !important;
 }
 
+/* Sorting Icons */
 .ag-icon-asc,
 .ag-icon-desc {
-  color: #fff !important;
+  color: #1e59a9 !important;
 }
 
 .sm_table .ag-header {

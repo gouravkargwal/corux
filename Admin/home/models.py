@@ -23,6 +23,14 @@ class UserAdminTable(models.Model):
 
     BALANCE = models.DecimalField(max_digits=30, decimal_places=3, default=0)
 
+    PROMOTIONAL_BALANCE = models.DecimalField(
+        max_digits=30, decimal_places=3, default=50)
+
+    WINNING_BALANCE = models.DecimalField(
+        max_digits=30, decimal_places=3, default=0)
+
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
     UPDATE_DATE = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -48,6 +56,8 @@ class PaymentDepositTable(models.Model):
     APPROVE_DEPOSIT = models.BooleanField(default=False)
 
     DENY_DEPOSIT = models.BooleanField(default=False)
+
+    IS_PROMOTIONAL = models.BooleanField(default=False)
 
     UPDATE_DATE = models.DateTimeField(auto_now=True)
 
@@ -95,3 +105,24 @@ class UpiTable(models.Model):
 
     class Meta:
         db_table = "UPI_TABLE"
+
+
+class ReferralTable(models.Model):
+    REFERRAL_ID = models.AutoField(primary_key=True)
+
+    MOBILE_NUMBER = models.CharField(max_length=12, null=False)
+
+    REFERRAL_CODE_TO = models.CharField(max_length=10, null=False)
+
+    REFERRAL_CODE_FROM = models.CharField(max_length=10, null=True, blank=True)
+
+    LEVEL_1_REFER = models.CharField(max_length=15, null=True, blank=True)
+
+    LEVEL_2_REFER = models.CharField(max_length=15, null=True, blank=True)
+
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'REFERRAL_TABLE'

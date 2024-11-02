@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -12,17 +11,44 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import {
-  CheckCircleOutline,
-  RemoveCircleOutline,
-  ErrorOutline,
-  Close as CloseIcon,
-} from "@mui/icons-material";
+import { Close as CloseIcon } from "@mui/icons-material";
 import _ from "lodash";
 import { green, red } from "@mui/material/colors";
+import ShareIcon from "@mui/icons-material/Share";
+import HappyEmoji from "../../Assets/Images/3d-casual-life-money-and-phone.png";
+import SadEmoji from "../../Assets/Images/3d-casual-life-sad-and-confused-chatgpt-robot.png";
 
 const ResultDialogue = ({ open, onClose, data }) => {
   const theme = useTheme();
+  const generateShareText = () => {
+    const header = "🎉 Bet Results! 🎉";
+    const results = data
+      ?.map((item) =>
+        item.amount > 0
+          ? `🥳 You won ₹${item.amount} on ${item.bet_on}!`
+          : `😔 You lost on ${item.bet_on}.`
+      )
+      .join("\n");
+    const footer = `Check out more at Vega Gaming: ${process.env.REACT_APP_BASE_URL}`;
+
+    return `${header}\n\n${results}\n\n${footer}`;
+  };
+
+  const handleShare = () => {
+    const shareData = {
+      title: "Bet Results",
+      text: generateShareText(),
+    };
+
+    if (navigator.share) {
+      navigator
+        .share(shareData)
+        .then(() => console.log("Share successful"))
+        .catch((error) => console.error("Error sharing", error));
+    } else {
+      alert("Share not supported on this browser.");
+    }
+  };
 
   return (
     <Dialog
@@ -31,13 +57,26 @@ const ResultDialogue = ({ open, onClose, data }) => {
       TransitionProps={{ timeout: 500 }}
       fullWidth={true}
       maxWidth="md"
-      sx={{ width: "80%", maxWidth: 600, mx: "auto" }}
+      sx={{
+        "& .MuiDialog-paper": {
+          padding: 4,
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "16px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          mx: "auto",
+          width: "80%",
+          maxWidth: 600,
+        },
+      }}
     >
       <DialogTitle
         sx={{
-          backgroundColor: theme.palette.primary.main,
-          color: theme.palette.primary.contrastText,
           padding: theme.spacing(2),
+          position: "relative",
         }}
       >
         <Typography variant="h6">Results</Typography>
@@ -58,40 +97,17 @@ const ResultDialogue = ({ open, onClose, data }) => {
       <DialogContent
         sx={{
           padding: theme.spacing(2),
-          backgroundColor: theme.palette.background.default,
         }}
       >
         <List>
           {_.map(data, (item, index) => (
             <ListItem key={index}>
               <ListItemIcon>
-                {item.amount > 0 ? (
-                  <picture>
-                    <source
-                      srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.webp"
-                      type="image/webp"
-                    />
-                    <img
-                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f973/512.gif"
-                      alt="🥳"
-                      width="32"
-                      height="32"
-                    />
-                  </picture>
-                ) : (
-                  <picture>
-                    <source
-                      srcset="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.webp"
-                      type="image/webp"
-                    />
-                    <img
-                      src="https://fonts.gstatic.com/s/e/notoemoji/latest/1f614/512.gif"
-                      alt="😔"
-                      width="32"
-                      height="32"
-                    />
-                  </picture>
-                )}
+                <img
+                  src={item.amount > 0 ? HappyEmoji : SadEmoji}
+                  alt={item.amount > 0 ? "Win" : "Lose"}
+                  style={{ width: 70, height: "auto" }}
+                />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -113,6 +129,25 @@ const ResultDialogue = ({ open, onClose, data }) => {
             </ListItem>
           ))}
         </List>
+
+        <IconButton
+          sx={{
+            backgroundColor: "#fc4642",
+            color: "white",
+            padding: "5px 5px",
+            borderRadius: "100%",
+            boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+            "&:hover": {
+              backgroundColor: "#fc211d",
+              boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+            },
+            textTransform: "none",
+            fontSize: "10px",
+          }}
+          onClick={handleShare}
+        >
+          <ShareIcon fontSize="small" />
+        </IconButton>
       </DialogContent>
     </Dialog>
   );

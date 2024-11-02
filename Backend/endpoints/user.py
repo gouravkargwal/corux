@@ -14,6 +14,7 @@ from models.user import (
     Result,
     Referral_table,
     All_Referral_Winning,
+    PaymentDepositTable
 )
 
 from schema.user import betdetails, user_info, password_detail, result_detail
@@ -64,6 +65,8 @@ async def get_profile(
             "mobile_number": user.mobile_number,
             "balance": round(user.balance, 2),
             "refer_code": user_refer.referral_code_to,
+            "promotional_balance": user.promotional_balance,
+            "winning_balance": user.winning_balance,
             'is_blocked': user.is_blocked
         }
     except ValidationError as e:
@@ -234,13 +237,42 @@ async def create_bet(
         if not user:
             raise HTTPException(status_code=400, detail="Try to login Again")
 
+        last_deposit = db.query(PaymentDepositTable).filter(PaymentDepositTable.MOBILE_NUMBER ==
+                                                            credentials.mobile_number).first()
+        print(last_deposit)
+        if not last_deposit:
+            raise HTTPException(
+                status_code=400, detail="Promotional balance can be used after 1st deposit only")
+
         if user.is_blocked:
             raise HTTPException(status_code=400, detail="User Blocked")
 
-        if user.balance < betdetails.bet_amount:
+        if betdetails.bet_amount < 25:
+            raise HTTPException(
+                status_code=400, detail="Minimum Bet Amount is 50")
+
+        user_balance = user.balance + 1 * \
+            (user.promotional_balance) + user.winning_balance
+        if user_balance < betdetails.bet_amount:
             raise HTTPException(status_code=400, detail="Insufficient Balance")
 
-        user.balance = user.balance - betdetails.bet_amount
+        amount = betdetails.bet_amount
+        if amount >= 1*(user.promotional_balance):
+            amount = amount - 1*(user.promotional_balance)
+            user.promotional_balance = user.promotional_balance - \
+                1*(user.promotional_balance)
+        else:
+            user.promotional_balance = user.promotional_balance - amount
+            amount = 0
+
+        if amount >= user.balance:
+            amount = amount - user.balance
+            user.balance = 0
+        else:
+            user.balance = user.balance - amount
+            amount = 0
+
+        user.winning_balance = user.winning_balance - amount
 
         if is_convertible_to_number(betdetails.bet_on):
             new_bet = Bet_Number(

@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Typography,
+  useTheme,
 } from "@mui/material";
 import React from "react";
 import { green, grey } from "@mui/material/colors";
@@ -13,9 +14,36 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import CheckIcon from "@mui/icons-material/Check";
 
 const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
+  const theme = useTheme();
   return (
-    <Dialog onClose={onClose} open={open}>
-      <DialogTitle>
+    <Dialog
+      onClose={onClose}
+      open={open}
+      TransitionProps={{ timeout: 500 }}
+      fullWidth={true}
+      maxWidth="md"
+      sx={{
+        "& .MuiDialog-paper": {
+          padding: 3,
+          background: "rgba(255, 255, 255, 0.6)",
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+          backdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          WebkitBackdropFilter: "blur(20px) saturate(180%) brightness(1.2)",
+          backgroundColor: "rgba(255, 255, 255, 0.8)",
+          borderRadius: "16px",
+          border: "1px solid rgba(209, 213, 219, 0.3)",
+          mx: "auto",
+          width: "80%",
+          maxWidth: 600,
+        },
+      }}
+    >
+      <DialogTitle
+        sx={{
+          padding: theme.spacing(2),
+          position: "relative",
+        }}
+      >
         <Badge
           badgeContent={<CheckIcon sx={{ height: 8, width: 9 }} />}
           color="success"
@@ -35,7 +63,9 @@ const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
         >
           <Typography
             fontWeight="bold"
-            sx={{ fontSize: { xs: "0.875rem", sm: "1rem" } }}
+            sx={{
+              fontFamily: "Ubuntu, sans-serif",
+            }}
           >
             Successfully Processed
           </Typography>
@@ -49,10 +79,18 @@ const RechargeSuccessDialogue = ({ open, onClose, amount }) => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: green[800],
-              borderRadius: 1,
-              padding: { xs: 0.5, sm: 1 },
-              my: 1,
+              backgroundColor: green[700],
+              color: "white",
+              padding: "10px 15px",
+              borderRadius: "20px",
+              boxShadow: "0 3px 5px 2px rgba(0, 0, 0, 0.1)",
+              "&:hover": {
+                backgroundColor: green[800],
+                boxShadow: "0 5px 8px 2px rgba(0, 0, 0, 0.15)",
+              },
+              textTransform: "none",
+              fontSize: "16px",
+              marginTop: "10px",
             }}
             onClick={onClose}
           >

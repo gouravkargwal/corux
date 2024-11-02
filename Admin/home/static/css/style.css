@@ -1081,6 +1081,7 @@ button.close {
 }
 
 .xx {
+    margin-top: 30px !important;
     display: flex;
     justify-content: center;
     gap: 10px;

@@ -20,6 +20,7 @@ import referReducer from "../Feature/Refer/referSlice";
 import resultReducer from "../Feature/Result/resultSlice";
 import userReducer from "../Feature/User/userSlice";
 import walletReducer from "../Feature/Wallet/walletSlice";
+import dialogReducer from "../Feature/Dialog/dialogSlice";
 
 const persistConfig = {
   key: "root",
@@ -37,6 +38,7 @@ const appReducer = combineReducers({
   result: resultReducer,
   user: userReducer,
   wallet: walletReducer,
+  dialog: dialogReducer,
 });
 
 const rootReducer = (state, action) => {

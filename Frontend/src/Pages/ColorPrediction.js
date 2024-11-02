@@ -3,11 +3,12 @@ import {
   Button,
   Grid,
   IconButton,
+  Paper,
   Tab,
   Tabs,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import "../../node_modules/ag-grid-community/styles/ag-grid.css";
 import "../../node_modules/ag-grid-community/styles/ag-theme-alpine.css";
 import { useForm } from "react-hook-form";
@@ -41,11 +42,16 @@ import { grey } from "@mui/material/colors";
 import GameRulesDialog from "../Components/ColorPrediction/GamesRulesDialogue";
 import AuthDialogue from "../Components/UI/AuthDialogue";
 import BettingDialogue from "../Components/ColorPrediction/BettingDialogue";
-import InfoWithButton from "../Components/Wallet/InfoWithButton";
 import { getBalance } from "../Feature/Balance/balanceSlice";
 import ResultDialogue from "../Components/ColorPrediction/ResultDialogue";
 import { getResultList } from "../Feature/Result/resultSlice";
 import { getUserGameList } from "../Feature/User/userSlice";
+import ProfileColor from "../Components/ColorPrediction/ProfileColor";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import VideoDialog from "../Components/UI/VideoDialog";
+import CustomLoadingIndicator from "../Components/UI/CustomLoadingIndicator";
+import OnlineUsers from "../Components/ColorPrediction/OnlineUsers";
 
 const ColorPrediction = () => {
   const dispatch = useDispatch();
@@ -64,6 +70,7 @@ const ColorPrediction = () => {
   const [loginDialog, setLoginDialog] = useState(false);
   const [rulesDialog, setRulesDialog] = useState(false);
   const [colorBidDialog, setColorBidDialog] = useState(false);
+  const [videoDialog, setVideoDialog] = useState(false);
 
   const [resultDialogue, setResultDialogue] = useState(false);
   const [result, setResult] = useState(null);
@@ -105,6 +112,7 @@ const ColorPrediction = () => {
   }, [timer, dispatch]);
 
   const handleOpenBidDialog = (type, value) => {
+    reset();
     if (type === "color") {
       setSelectedColor(value);
       setSelectedNumber(null);
@@ -174,19 +182,84 @@ const ColorPrediction = () => {
     }
   }, [timer, colorBidDialog]);
 
+  const getButtonColor = (number) => {
+    const baseStyles = {
+      transition: "background-color 0.3s ease, color 0.3s ease", // Smooth transition for hover effects
+      borderRadius: "8px",
+      fontWeight: "bold",
+      padding: "10px 16px",
+    };
+
+    switch (number) {
+      case 1:
+      case 3:
+      case 7:
+      case 9:
+        return {
+          ...baseStyles,
+          color: "#fff", // White text color
+          backgroundColor: "#28a745", // Green background color
+          "&:hover": {
+            backgroundColor: "#218838", // Darker green on hover
+          },
+        };
+      case 2:
+      case 4:
+      case 6:
+      case 8:
+        return {
+          ...baseStyles,
+          color: "#fff", // White text color
+          backgroundColor: "#ff4c4c", // Red background color
+          "&:hover": {
+            backgroundColor: "#e04343", // Darker red on hover
+          },
+        };
+      case 0:
+        return {
+          ...baseStyles,
+          color: "#fff", // White text color
+          background: "linear-gradient(90deg, #ff4c4c 50%, #9b59b6 50%)", // Split red-violet background by default
+          "&:hover": {
+            background: "linear-gradient(90deg, #e04343 50%, #8e44ad 50%)", // Darker split red-violet on hover
+          },
+        };
+      case 5:
+        return {
+          ...baseStyles,
+          color: "#fff", // White text color
+          background: "linear-gradient(90deg, #28a745 50%, #9b59b6 50%)", // Split green-violet background by default
+          "&:hover": {
+            background: "linear-gradient(90deg, #218838 50%, #8e44ad 50%)", // Darker split green-violet on hover
+          },
+        };
+      default:
+        return {
+          ...baseStyles,
+          color: "#fff", // White text color
+          backgroundColor: "#bdbdbd", // Neutral gray background color
+          "&:hover": {
+            backgroundColor: "#9e9e9e", // Darker gray on hover
+          },
+        };
+    }
+  };
+
+  // General button styling with hover effects and shadows
   const buttonStyles = {
-    height: "60px", // Larger height for better touch target
-    width: "80px", // Larger height for better touch target
-    borderRadius: "5px", // More rounded corners
+    height: "45px",
+    width: "45px",
+    borderRadius: "8px",
     fontWeight: "bold",
-    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)", // Add box shadow for depth
-    transition: "transform 0.2s", // Smooth transition for scaling
+    boxShadow: "0 6px 10px rgba(0, 0, 0, 0.15)",
+    transition: "transform 0.3s, box-shadow 0.3s, background 0.3s",
     "&:hover": {
-      transform: "scale(1.05)", // Slightly scale up on hover
-      boxShadow: "0 6px 10px rgba(0, 0, 0, 0.15)", // Enhance box shadow on hover
+      transform: "scale(1.1)",
+      boxShadow: "0 8px 14px rgba(0, 0, 0, 0.25)",
     },
     "&:disabled": {
-      opacity: 0.6, // Reduce opacity for disabled state
+      opacity: 0.5,
+      cursor: "not-allowed",
     },
   };
 
@@ -197,34 +270,63 @@ const ColorPrediction = () => {
         direction="column"
         className={resultDialogue || colorBidDialog ? "blur" : ""}
       >
-        {token && <InfoWithButton />}
-
+        {token && <ProfileColor timer={timer} />}
         <Grid
           item
           xs={4}
-          sx={{ backgroundColor: theme.palette.background.main, boxShadow: 0 }}
-          margin={3}
+          sx={{
+            background: "rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(16px) saturate(180%)",
+            "-webkit-backdrop-filter": "blur(16px) saturate(180%)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            borderRadius: "12px",
+            border: "1px solid rgba(209, 213, 219, 0.3)",
+          }}
+          marginY={1}
+          marginX={3}
           borderRadius={1}
           padding={2}
-          display="flex"
-          justifyContent="space-between"
         >
-          <Grid item xs={6}>
-            <Typography color={theme.palette.text.grey}>GameId</Typography>
-            <Typography>{gameId}</Typography>
-          </Grid>
-          <Grid item xs={6} textAlign="right">
-            <Typography color={theme.palette.text.grey}>Count Down</Typography>
-            <ColorPredictionTimer timer={timer} />
-          </Grid>
+          <OnlineUsers />
+          <Box display="flex">
+            <Grid item xs={6}>
+              <Typography
+                color={theme.palette.text.grey}
+                gutterBottom
+                display="flex"
+                alignItems="center"
+              >
+                <EmojiEventsIcon sx={{ height: 18 }} />
+                GameId
+              </Typography>
+              <Typography>{gameId}</Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="right">
+              <Typography color={theme.palette.text.grey} gutterBottom>
+                Count Down
+              </Typography>
+              <ColorPredictionTimer timer={timer} />
+            </Grid>
+          </Box>
         </Grid>
         <Grid
           item
           xs={4}
-          sx={{ backgroundColor: theme.palette.background.main, boxShadow: 0 }}
-          margin={3}
+          sx={{
+            marginTop: 1,
+            padding: 1,
+            background: "rgba(255, 255, 255, 0.1)",
+            boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(16px) saturate(180%)",
+            WebkitBackdropFilter: "blur(16px) saturate(180%)",
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            borderRadius: "16px",
+            border: "1px solid rgba(209, 213, 219, 0.3)",
+          }}
+          marginX={3}
+          marginY={1}
           borderRadius={1}
-          padding={2}
         >
           {isBlock && (
             <Typography
@@ -238,7 +340,7 @@ const ColorPrediction = () => {
             </Typography>
           )}
           <Grid container direction="column" display="flex">
-            <Grid item container xs={12} justifyContent="space-between" mb={2}>
+            <Grid item container xs={12} justifyContent="space-evenly" mb={2}>
               <RedButton
                 onClick={() => handleOpenBidDialog("color", "red")}
                 disabled={!bettingAllowed || isBlock}
@@ -261,35 +363,87 @@ const ColorPrediction = () => {
                 Green
               </GreenButton>
             </Grid>
-            <Grid container item xs={12} justifyContent="space-between" gap={2}>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <Grid item key={index}>
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    onClick={() => handleOpenBidDialog("number", index)}
-                    disabled={!bettingAllowed || isBlock}
-                    sx={{ ...buttonStyles }}
-                  >
-                    {index}
-                  </Button>
-                </Grid>
-              ))}
+            <Grid
+              container
+              item
+              xs={12}
+              sm={10}
+              justifyContent="space-evenly"
+              gap={1}
+            >
+              {Array.from({ length: 10 }).map((_, index) => {
+                return (
+                  <Grid item key={index} xs={2} sm={1}>
+                    <Button
+                      variant="outlined"
+                      fullWidth
+                      onClick={() => handleOpenBidDialog("number", index)}
+                      disabled={!bettingAllowed || isBlock}
+                      sx={{
+                        ...buttonStyles,
+                        ...getButtonColor(index),
+                        padding: 1,
+                        minWidth: "55px",
+                      }}
+                    >
+                      {index}
+                    </Button>
+                  </Grid>
+                );
+              })}
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={4} margin={1} borderRadius={1} padding={2} height="40vh">
-          <Grid item xs={12} my={1}>
-            <Tabs
-              value={activeTab}
-              onChange={handleTabChange}
-              aria-label="simple tabs example"
-              variant="fullWidth"
-              visibleScrollbar={false}
+        <Grid
+          item
+          xs={4}
+          marginX={1}
+          marginY={0}
+          borderRadius={1}
+          paddingX={2}
+          height="40vh"
+        >
+          <Grid item xs={12}>
+            <Paper
+              elevation={3}
+              sx={{
+                marginTop: 1,
+                paddingY: 1,
+                paddingX: 3,
+                background: "rgba(255, 255, 255, 0.1)",
+                boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)",
+                backdropFilter: "blur(16px) saturate(180%)",
+                WebkitBackdropFilter: "blur(16px) saturate(180%)",
+                backgroundColor: "rgba(255, 255, 255, 0.5)",
+                borderRadius: "16px",
+                border: "1px solid rgba(209, 213, 219, 0.3)",
+              }}
             >
-              <Tab label="Winner" />
-              {token && <Tab label="My Record" />}
-            </Tabs>
+              <Tabs
+                value={activeTab}
+                onChange={handleTabChange}
+                aria-label="simple tabs example"
+                variant="fullWidth"
+                visibleScrollbar={false}
+                sx={{
+                  "& .MuiTabs-indicator": {
+                    backgroundColor: "#fc211d",
+                  },
+                  "& .MuiTab-root.Mui-selected": {
+                    color: "#fc211d",
+                  },
+                  "& .MuiTab-root": {
+                    transition: "color 0.3s, background-color 0.3s",
+                    textTransform: "none",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                  },
+                }}
+              >
+                <Tab label="Winner" />
+                {token && <Tab label="My Record" />}
+              </Tabs>
+            </Paper>
           </Grid>
           <Grid item xs={12} my={1}>
             <Box
@@ -297,14 +451,21 @@ const ColorPrediction = () => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography variant="body1" fontWeight="500">
-                {activeTab === 0 ? "Winner" : "My Record"}
-              </Typography>
               <Typography variant="body2" fontWeight="500" color={grey[500]}>
                 <IconButton onClick={handleOpenRulesDialog}>
                   <NotListedLocationIcon />
                 </IconButton>
                 Rules
+              </Typography>
+              <Typography variant="body2" fontWeight="500" color={grey[500]}>
+                <IconButton
+                  onClick={() => {
+                    setVideoDialog(true);
+                  }}
+                >
+                  <YouTubeIcon />
+                </IconButton>
+                Guide
               </Typography>
             </Box>
           </Grid>
@@ -317,31 +478,42 @@ const ColorPrediction = () => {
         </Grid>
       </Grid>
 
-      <GameRulesDialog open={rulesDialog} onClose={handleCloseRulesDialog} />
+      <Suspense fallback={<CustomLoadingIndicator />}>
+        <GameRulesDialog open={rulesDialog} onClose={handleCloseRulesDialog} />
 
-      <BettingDialogue
-        open={colorBidDialog}
-        onClose={handleCloseBidDialog}
-        handleSubmit={handleSubmit}
-        onSubmit={onSubmit}
-        register={register}
-        errors={errors}
-        loading={loading}
-        dialogType={dialogType}
-        selectedColor={selectedColor}
-        selectedNumber={selectedNumber}
-      />
+        <BettingDialogue
+          open={colorBidDialog}
+          onClose={handleCloseBidDialog}
+          handleSubmit={handleSubmit}
+          onSubmit={onSubmit}
+          register={register}
+          errors={errors}
+          loading={loading}
+          dialogType={dialogType}
+          selectedColor={selectedColor}
+          selectedNumber={selectedNumber}
+        />
 
-      <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
+        <AuthDialogue open={loginDialog} onClose={handleCloseLoginDialog} />
 
-      <ResultDialogue
-        open={resultDialogue}
-        onClose={() => {
-          setResult(null);
-          setResultDialogue(false);
-        }}
-        data={result}
-      />
+        <ResultDialogue
+          open={resultDialogue}
+          onClose={() => {
+            setResult(null);
+            setResultDialogue(false);
+          }}
+          data={result}
+        />
+
+        <VideoDialog
+          open={videoDialog}
+          onClose={() => {
+            setVideoDialog(false);
+          }}
+          title="How to play"
+          videoId="fRuOeAusQQA?si=RavJmLPcyvPqxmiR"
+        />
+      </Suspense>
     </>
   );
 };

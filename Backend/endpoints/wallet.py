@@ -48,14 +48,16 @@ async def generate_qr(
 
         if user.is_blocked:
             raise HTTPException(status_code=400, detail="User Blocked")
-        if amount.amount < 100:
+        if amount.amount < 19:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 100 or More")
+                status_code=400, detail="Enter Amount 19 or More")
 
         upi_query_list = db.query(Upi_Table).all()
         upi_list = [row.upi_id for row in upi_query_list]
 
         x = random.randint(0, len(upi_list) - 1)
+
+        upi_id = upi_list[x]
 
         upi_link = f"upi://pay?pa={urllib.parse.quote(upi_list[x])}&am={urllib.parse.quote(str(amount.amount))}&cu=INR"
 
@@ -65,6 +67,7 @@ async def generate_qr(
             box_size=10,
             border=4,
         )
+
         qr.add_data(upi_link)
         qr.make(fit=True)
         img = qr.make_image(fill_color="black", back_color="white")
@@ -87,6 +90,7 @@ async def generate_qr(
         response_data = {
             "qr_code": img_base64,
             "transaction_id": str(transaction_id),
+            "upi_id": upi_id,
             "upi_link": upi_link
         }
 
@@ -146,15 +150,15 @@ async def winthdraw(
     db: Session = Depends(get_sql_db),
 ):
     try:
-        user = db.query(User).filter(User.mobile_number ==
-                                     credentials.mobile_number).first()
+        # user = db.query(User).filter(User.mobile_number ==
+        #                              credentials.mobile_number).first()
 
-        if not user:
-            raise HTTPException(status_code=400, detail="User Not Found")
+        # if not user:
+        #     raise HTTPException(status_code=400, detail="User Not Found")
 
-        if withdraw_schema.amount < 100:
+        if withdraw_schema.amount < 200:
             raise HTTPException(
-                status_code=400, detail="Enter Amount 100 or More")
+                status_code=400, detail="Enter Amount 200 or More")
 
         user = (
             db.query(User)
@@ -167,16 +171,20 @@ async def winthdraw(
                 status_code=400, detail="Cannot Found User!!Login Again"
             )
 
-        if user.balance < withdraw_schema.amount:
-            raise HTTPException(status_code=400, detail="Insufficient Balance")
+        if user.winning_balance < withdraw_schema.amount:
+            raise HTTPException(
+                status_code=400, detail="Insufficient Withdrawable Balance")
 
         lastest_deposit = (
             db.query(PaymentDepositTable)
-            .filter(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number)
+            .filter(and_(PaymentDepositTable.MOBILE_NUMBER == credentials.mobile_number, PaymentDepositTable.APPROVE_DEPOSIT == True, PaymentDepositTable.IS_PROMOTIONAL == False))
             .order_by(desc(PaymentDepositTable.CREATE_DATE))
             .first()
         )
         # logger.info([row._asdict() for row in lastest_deposit])
+        if not lastest_deposit:
+            raise HTTPException(
+                status_code=400, detail="Please Make Atleast One Deposit Transaction Before Withdrawal")
         if lastest_deposit:
             latest_bet_color = (
                 db.query(Bet_Color)
@@ -203,7 +211,7 @@ async def winthdraw(
                         status_code=400,
                         detail="Please play a game before using your latest deposit.",
                     )
-        user.balance = user.balance - withdraw_schema.amount
+        user.winning_balance = user.winning_balance - withdraw_schema.amount
         new_withdraw_request = PaymentWithdrawTable(
             MOBILE_NUMBER=credentials.mobile_number,
             USER_UPI_ID=withdraw_schema.user_upi,
@@ -236,7 +244,7 @@ async def recharge_transaction(
         if not recharge_trans:
             return []
 
-        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_DEPOSIT, "denied": row.DENY_DEPOSIT} for row in recharge_trans]
+        return [{"date": row.CREATE_DATE, "amount": row.AMOUNT, "approved": row.APPROVE_DEPOSIT, "denied": row.DENY_DEPOSIT, "is_promotional": row.IS_PROMOTIONAL} for row in recharge_trans]
     except HTTPException as e:
         logger.error(str(e))
         raise HTTPException(status_code=e.status_code, detail=e.detail)

@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
-import { blue, red, green } from "@mui/material/colors";
+import { blue, red, green, purple, grey } from "@mui/material/colors";
 import AgGridPagination from "../UI/AgGridPagination";
 import TableSkeleton from "../UI/TableSkeleton";
 import {
@@ -41,17 +41,27 @@ const MyRecordTable = ({ activeTab }) => {
   };
 
   const defaultColDef = {
-    sortable: false,
-    checkboxSelection: false,
-    autoHeight: true,
-    filter: false,
+    sortable: true,
+    resizable: true,
     flex: 1,
-    suppressMovable: false,
-    resizable: false,
+    minWidth: 100,
+    filter: true,
+    headerClass: "header-cell",
+    cellClass: "cell",
   };
 
   const columnDefs = [
-    { headerName: "Period", field: "game_id" },
+    {
+      headerName: "Period",
+      field: "game_id",
+      cellRenderer: ({ value }) => {
+        return (
+          <Typography color={grey[800]} variant="caption" fontSize="10px">
+            {value}
+          </Typography>
+        );
+      },
+    },
     {
       headerName: "Color/Number",
       field: "bet_on",
@@ -63,13 +73,13 @@ const MyRecordTable = ({ activeTab }) => {
         } else {
           switch (value.toLowerCase()) {
             case "red":
-              color = red[500];
+              color = red[600];
               break;
             case "green":
-              color = green[500];
+              color = green[600];
               break;
             case "violet":
-              color = "#b651a2";
+              color = purple[600];
               break;
             default:
               color = "-";
@@ -85,22 +95,43 @@ const MyRecordTable = ({ activeTab }) => {
               backgroundColor: color,
               display: "inline-block",
               marginRight: 5,
+              color: [1, 3, 5, 7, 9].includes(displayValue)
+                ? green[600]
+                : red[600],
             }}
           >
-            <span>{displayValue}</span>
+            {displayValue}
           </Box>
         );
       },
     },
-    { headerName: "Bet Amount", field: "bet_amount" },
+    {
+      headerName: "Bet Amount",
+      field: "bet_amount",
+      cellRenderer: ({ value }) => {
+        return (
+          <Typography color={grey[800]} variant="caption" fontSize="10px">
+            {value}
+          </Typography>
+        );
+      },
+    },
     {
       headerName: "Winning",
       field: "winning",
-      cellRenderer: ({ data }) => {
+      cellRenderer: ({ data, value }) => {
         if (data.game_id === gameId) {
           return ""; // Hide the winning field for the current game
         }
-        return data.winning;
+        return (
+          <Typography
+            color={value > 0 ? green[600] : red[600]}
+            variant="caption"
+            fontSize="10px"
+          >
+            {value}
+          </Typography>
+        );
       },
     },
   ];
@@ -116,7 +147,7 @@ const MyRecordTable = ({ activeTab }) => {
   const noRowsMessage = `<div style="text-align: center; padding: 10px; font-size: 16px;">No data available</div>`;
 
   return (
-    <Box>
+    <Box sx={{ width: "100%", maxWidth: "100%", overflowX: "auto" }}>
       {loading ? (
         <TableSkeleton />
       ) : (
@@ -133,6 +164,10 @@ const MyRecordTable = ({ activeTab }) => {
               getRowStyle={getRowStyle}
               defaultColDef={defaultColDef}
               overlayNoRowsTemplate={noRowsMessage}
+              gridOptions={{
+                suppressDragLeaveHidesColumns: true,
+                suppressMovableColumns: true,
+              }}
             />
           </Box>
           <Box>

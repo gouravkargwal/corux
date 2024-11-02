@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import API from "../../Api/ApiCall";
-import { toast } from "react-toastify";
 
 const initialState = {
   loading: null,
@@ -10,6 +9,8 @@ const initialState = {
   username: null,
   referCode: null,
   isBlock: false,
+  promotionalBalance: null,
+  winning: null,
 };
 
 export const getBalance = createAsyncThunk(
@@ -19,13 +20,9 @@ export const getBalance = createAsyncThunk(
       const response = await API.getBalanceAPI();
       return response.data;
     } catch (error) {
-      if (error.response) {
-        return rejectWithValue(error.response?.data?.detail);
-      } else if (error.request) {
-        return rejectWithValue("No response received");
-      } else {
-        return rejectWithValue(error.message);
-      }
+      return rejectWithValue(
+        error.response?.data?.message || "An error occurred"
+      );
     }
   }
 );
@@ -46,12 +43,13 @@ const balanceSlice = createSlice({
         state.mobile = action.payload.mobile_number;
         state.username = action.payload.username;
         state.referCode = action.payload.refer_code;
-        state.isBlock = action.payload.is_blocked
+        state.isBlock = action.payload.is_blocked;
+        state.promotionalBalance = action.payload.promotional_balance;
+        state.winning = action.payload.winning_balance;
       })
       .addCase(getBalance.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-        toast.error(action.payload);
       });
   },
 });
@@ -63,5 +61,8 @@ export const selectBalanceUsername = (state) => state.balance.username;
 export const selectBalanceMobile = (state) => state.balance.mobile;
 export const selectBalanceReferCode = (state) => state.balance.referCode;
 export const selectIsBlocked = (state) => state.balance.isBlock;
+export const selectPromotionalBalance = (state) =>
+  state.balance.promotionalBalance;
+export const selectBalanceWinning = (state) => state.balance.winning;
 
 export default balanceSlice.reducer;

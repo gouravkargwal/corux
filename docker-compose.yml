@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.8" # Make sure to specify the version
 
 services:
   admin:
@@ -6,18 +6,32 @@ services:
       context: ./Admin
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "1002:1002"
     env_file:
-      - .env
+      - ./Admin/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput || true &&
+             python manage.py runserver 0.0.0.0:1002"
+    networks:
+      - my_network # Specify the network
 
   backend:
     build:
       context: ./Backend
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - "1001:1001"
     env_file:
-      - .env
+      - ./Backend/.env
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - my_network # Specify the network
 
   react:
     build:
@@ -27,10 +41,36 @@ services:
         - REACT_APP_BASE_URL=${REACT_APP_BASE_URL}
         - REACT_APP_URL=${REACT_APP_URL}
     ports:
-      - "3000:3000"
+      - "1000:1000"
     env_file:
-      - .env
+      - ./Frontend/.env
+    networks:
+      - my_network # Specify the network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql # Mount local mysql-data folder
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my_network # Specify the network
+
+volumes:
+  mysql-data: # This will still be used for the MySQL database
 
 networks:
-  default:
-    driver: bridge
+  my_network: # Define the custom network
+    driver: bridge # Use bridge driver

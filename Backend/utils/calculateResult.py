@@ -292,7 +292,7 @@ async def get_result(game_id):
             db.execute(
                 User.__table__.update()
                 .where(User.mobile_number == Winner_Table.mobile_number)
-                .values(balance=Winner_Table.amount_won + User.balance)
+                .values(winning_balance=Winner_Table.amount_won + User.winning_balance)
             )
 
             for i in result_list:
@@ -337,8 +337,9 @@ async def get_result(game_id):
                         .first()
                     )
                     if user_win:
-                        user_won_amount = user_win.balance + i["amount"]
-                        user_win.balance = round(user_won_amount, 2)
+                        user_won_amount = user_win.winning_balance + \
+                            i["amount"]
+                        user_win.winning_balance = round(user_won_amount, 2)
                     user_refer_by_level1 = (
                         db.query(Referral_table)
                         .filter(Referral_table.level_1_refer == i["mobile_number"])
@@ -357,7 +358,7 @@ async def get_result(game_id):
                         if user_level1:
                             user_level1_win_commission = 0.03 * actual_amount_won
 
-                            user_level1.balance = user_level1.balance + round(
+                            user_level1.promotional_balance = user_level1.promotional_balance + round(
                                 user_level1_win_commission, 2
                             )
                             new_refer_win = All_Referral_Winning(
@@ -388,7 +389,7 @@ async def get_result(game_id):
 
                             if user_level2:
                                 user_level2_win_commission = 0.015 * actual_amount_won
-                                user_level2.balance = user_level2.balance + round(
+                                user_level2.promotional_balance = user_level2.promotional_balance + round(
                                     user_level2_win_commission, 2
                                 )
                                 new_refer_win_2 = All_Referral_Winning(

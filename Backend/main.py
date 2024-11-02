@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, Request, Depends, Query
 from db_module.session import get_sql_db
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi_socketio import SocketManager
+from schema.user import onlineUserSchema
 from utils.calculateResult import get_result
 from utils.logger import setup_logger
 from game_logic import Game
@@ -9,6 +10,7 @@ from datetime import datetime
 import asyncio
 import traceback
 import os
+import random
 
 # Import routers for your application
 from endpoints.auth import router as Authrouter
@@ -18,12 +20,12 @@ from endpoints.wallet import router as Walletrouter
 
 logger = setup_logger()
 app = FastAPI(docs_url=None)
-# app = FastAPI()
 
-allowed_origins = ["https://vegagaming.site",
-                   "https://vega-admin-wsltptu5dq-uc.a.run.app", "https://vega-fe-wsltptu5dq-uc.a.run.app"]
-# allowed_origins = ["http://localhost:3000", "http://192.168.1.2:3000"]
 
+# Use the function to set the allowed origins
+# allowed_origins = get_allowed_origins()
+
+allowed_origins = ["https://vegagaming.site","https://admin.vegagaming.site"]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=allowed_origins,
@@ -48,13 +50,20 @@ app.include_router(Walletrouter, tags=["Wallet"], prefix="/wallet")
 
 
 sio_manager = SocketManager(
-    app=app, cors_allowed_origins=allowed_origins, mount_location='/ws', socketio_path='/')
+    app=app,
+    cors_allowed_origins=allowed_origins,
+    mount_location="/ws",
+    socketio_path="/",
+)
 
 game = Game()
 task_running = False
 connected_clients = set()
 game_inprocess = False
 game_finishing = False
+user_count = 0
+factor = 0
+show_user_count = False
 
 
 # @app.on_event("startup")
@@ -90,7 +99,7 @@ async def handle_connect(sid, environ=None, auth=None):
         logger.info(f"Client connected: SID={sid}, Game State={game_state}")
     except Exception as e:
         logger.error(f"Connection error on connect: {str(e)}", exc_info=True)
-        await sio_manager.emit('error', {'error': 'Connection failed'}, room=sid)
+        await sio_manager.emit("error", {"error": "Connection failed"}, room=sid)
 
 
 @sio_manager.on("disconnect")
@@ -98,9 +107,34 @@ async def handle_disconnect(sid):
     try:
         connected_clients.remove(sid)
         logger.info(f"Client disconnected: SID={sid}")
+
     except Exception as e:
         logger.error(
             f"Connection error on disconnect: {str(e)}", exc_info=True)
+
+
+async def online_user_count():
+    global user_count, factor, show_user_count
+    user = user_count
+
+    while show_user_count:
+        digit = random.randint(0, 1)
+        factor_range = random.randint(0, factor)
+        if digit:
+            await asyncio.sleep(3)
+            await sio_manager.emit("online_user", user+factor_range)
+        else:
+            await asyncio.sleep(3)
+            await sio_manager.emit("online_user", user-factor_range)
+
+    if not show_user_count:
+        while user_count > 10:
+            await asyncio.sleep(2)
+            await sio_manager.emit("online_user", user_count)
+            minus_by = random.randint(7, 10)
+            user_count = user_count - minus_by
+        await sio_manager.emit("online_user", 10)
+    return
 
 
 async def notify_timer():
@@ -175,9 +209,14 @@ async def notify_timer():
 
 
 @app.post("/control/timer/start")
-async def start_timer():
-    global task_running
+async def start_timer(onlineUserSchema: onlineUserSchema):
+    global task_running, user_count, factor, show_user_count
+    user_count = onlineUserSchema.user_count
+    factor = onlineUserSchema.factor
     try:
+        if not show_user_count:
+            show_user_count = True
+            sio_manager.start_background_task(online_user_count)
         if not task_running:
             task_running = True
             game.start_game()
@@ -193,12 +232,13 @@ async def start_timer():
 @app.post("/control/timer/stop")
 async def stop_timer():
     try:
-        global task_running, game_inprocess, game_finishing
+        global task_running, game_inprocess, game_finishing, show_user_count
         if task_running:
             while game_inprocess and not game_finishing:
                 await asyncio.sleep(1)
             task_running = False
             game_inprocess = False
+            show_user_count = False
             # sio_manager.disconnect()
             # connected_clients.clear()
             # game.update_state()
