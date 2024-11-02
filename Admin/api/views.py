@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import now
-from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer, ReferralTableSerializer
-from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable
+from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer, ReferralTableSerializer, BetColorTableSerializer, BetNumberTableSerializer
+from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable, BetNumber, BetColor
 from home.custom_logging import adminlogger
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -23,9 +23,20 @@ class UserAdminView(APIView):
             adminlogger.info("UserAdmin get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
-            totalCount = UserAdminTable.objects.all().count()
-            users = UserAdminTable.objects.all().order_by(
-                '-CREATE_DATE')[start:start+length]
+            searchValue = request.GET.get('search[value]', '')
+            if searchValue:
+                totalCount = UserAdminTable.objects.filter(
+                    MOBILE_NUMBER__icontains=searchValue).count()
+                users = UserAdminTable.objects.filter(
+                    MOBILE_NUMBER__icontains=searchValue).order_by(
+                    '-CREATE_DATE')[start:start+length]
+                # totalCount = UserAdminTable.objects.all().count()
+                # users = UserAdminTable.objects.all().order_by(
+                #     '-CREATE_DATE')[start:start+length]
+            else:
+                totalCount = UserAdminTable.objects.all().count()
+                users = UserAdminTable.objects.all().order_by(
+                    '-CREATE_DATE')[start:start+length]
             serializedUsers = UserAdminSerializer(users, many=True)
             return Response({
                 "data": serializedUsers.data,
@@ -150,9 +161,279 @@ class deposit(APIView):
                     ADMIN_UPI_ID=upiId, UTR__icontains=searchValue, IS_PROMOTIONAL=False)[start:start+length]
             else:
                 totalCount = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False).count()
+                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False, UTR__isnull=False).exclude(UTR='').count()
                 payments = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False).order_by('-CREATE_DATE')[start:start+length]
+                    ADMIN_UPI_ID=upiId, IS_PROMOTIONAL=False, UTR__isnull=False).exclude(UTR='').order_by('-CREATE_DATE')[start:start + length]
+            serializedpayments = PaymentDepositSerializer(payments, many=True)
+            return Response(
+                {
+                    "data": serializedpayments.data,
+                    "recordsTotal": totalCount,
+                    "recordsFiltered": totalCount
+                }
+            )
+
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            with transaction.atomic():
+                print("123")
+                adminlogger.info("deposit patch")
+                data = request.data.copy()
+                if not data.get('ID'):
+                    return Response({"status": 400, "message": "ID is required"})
+                payment = PaymentDepositTable.objects.get(
+                    ID=request.data.get('ID'))
+                adminlogger.info(payment)
+                paymentGetSerializer = UpdateDepositSerializer(payment)
+                adminlogger.info(paymentGetSerializer.data)
+
+                if data.get("APPROVE_DEPOSIT"):
+                    notExist = PaymentDepositTable.objects.filter(
+                        APPROVE_DEPOSIT=True, IS_PROMOTIONAL=False, MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"]).exists()
+                    if not notExist:
+                        adminlogger.info("not exist")
+                        refer_l1 = ReferralTable.objects.filter(
+                            LEVEL_1_REFER=paymentGetSerializer.data["MOBILE_NUMBER"]).first()
+                        if refer_l1:
+                            adminlogger.info(refer_l1)
+                            mobile_number_l1 = refer_l1.MOBILE_NUMBER
+                            user_l1 = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=mobile_number_l1)
+                            promotional_amount_new_l1 = (Decimal(user_l1.PROMOTIONAL_BALANCE) + 25).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance_l1 = {
+                                "PROMOTIONAL_BALANCE": promotional_amount_new_l1}
+
+                            serializedUserL1 = UserAdminSerializer(
+                                user_l1, data=new_balance_l1, partial=True)
+
+                            new_deposit_data_l1 = {
+                                "AMOUNT": 25,
+                                "MOBILE_NUMBER": mobile_number_l1,
+                                "IS_PROMOTIONAL": 1,
+                                "APPROVE_DEPOSIT": 1
+                            }
+                            new_deposit_serializer_l1 = PaymentDepositSerializer(
+                                data=new_deposit_data_l1)
+
+                            if serializedUserL1.is_valid():
+                                if new_deposit_serializer_l1.is_valid():
+                                    new_deposit_serializer_l1.save()
+                                    serializedUserL1.save()
+                                else:
+                                    first_field = next(
+                                        iter(new_deposit_serializer_l1.errors))
+                                    first_error = new_deposit_serializer_l1.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedUserL1.errors))
+                                first_error = serializedUserL1.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                        refer_l2 = ReferralTable.objects.filter(
+                            LEVEL_2_REFER=paymentGetSerializer.data["MOBILE_NUMBER"]).first()
+                        if refer_l2:
+                            adminlogger.info(refer_l2)
+                            mobile_number_l2 = refer_l2.MOBILE_NUMBER
+                            user_l2 = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=mobile_number_l2)
+                            promotional_amount_new_l2 = (Decimal(user_l2.PROMOTIONAL_BALANCE) + 10).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance_l2 = {
+                                "PROMOTIONAL_BALANCE": promotional_amount_new_l2}
+
+                            serializedUserL2 = UserAdminSerializer(
+                                user_l2, data=new_balance_l2, partial=True)
+
+                            new_deposit_data_l2 = {
+                                "AMOUNT": 10,
+                                "MOBILE_NUMBER": mobile_number_l2,
+                                "IS_PROMOTIONAL": 1,
+                                "APPROVE_DEPOSIT": 1
+                            }
+                            new_deposit_serializer_l2 = PaymentDepositSerializer(
+                                data=new_deposit_data_l2)
+
+                            if serializedUserL2.is_valid():
+                                if new_deposit_serializer_l2.is_valid():
+                                    new_deposit_serializer_l2.save()
+                                    serializedUserL2.save()
+                                else:
+                                    first_field = next(
+                                        iter(new_deposit_serializer_l2.errors))
+                                    first_error = new_deposit_serializer_l2.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedUserL2.errors))
+                                first_error = serializedUserL2.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                        if float(paymentGetSerializer.data["AMOUNT"]) >= 99:
+                            adminlogger.info("above 99")
+                            promotional_amount = Decimal(
+                                paymentGetSerializer.data["AMOUNT"]) * Decimal('0.15')
+                            user = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+
+                            balance = (Decimal(user.BALANCE) +
+                                       Decimal(paymentGetSerializer.data["AMOUNT"])).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            promotional_amount_new = (Decimal(user.PROMOTIONAL_BALANCE) + promotional_amount).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance = {"BALANCE": balance,
+                                           "PROMOTIONAL_BALANCE": promotional_amount_new}
+
+                            serializedUser = UserAdminSerializer(
+                                user, data=new_balance, partial=True)
+                            serializedpayment = PaymentDepositSerializer(
+                                payment, data=data, partial=True)
+
+                            new_deposit_data = {
+                                "AMOUNT": promotional_amount.quantize(
+                                    Decimal('0.001'), rounding=ROUND_HALF_UP),
+                                "MOBILE_NUMBER": paymentGetSerializer.data["MOBILE_NUMBER"],
+                                "IS_PROMOTIONAL": 1,
+                                "APPROVE_DEPOSIT": 1
+                            }
+                            new_deposit_serializer = PaymentDepositSerializer(
+                                data=new_deposit_data)
+
+                            if serializedpayment.is_valid():
+                                if serializedUser.is_valid():
+                                    if new_deposit_serializer.is_valid():
+                                        new_deposit_serializer.save()
+                                        serializedpayment.save()
+                                        serializedUser.save()
+                                    else:
+                                        first_field = next(
+                                            iter(new_deposit_serializer.errors))
+                                        first_error = new_deposit_serializer.errors[first_field][0]
+                                        return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                                else:
+                                    first_field = next(
+                                        iter(serializedUser.errors))
+                                    first_error = serializedUser.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedpayment.errors))
+                                first_error = serializedpayment.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                        else:
+                            adminlogger.info("below 99")
+                            user = UserAdminTable.objects.get(
+                                MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+
+                            balance = (Decimal(user.BALANCE) +
+                                       Decimal(paymentGetSerializer.data["AMOUNT"])).quantize(
+                                Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                            new_balance = {"BALANCE": balance}
+
+                            serializedUser = UserAdminSerializer(
+                                user, data=new_balance, partial=True)
+                            serializedpayment = PaymentDepositSerializer(
+                                payment, data=data, partial=True)
+
+                            if serializedpayment.is_valid():
+                                if serializedUser.is_valid():
+                                    serializedpayment.save()
+                                    serializedUser.save()
+
+                                else:
+                                    first_field = next(
+                                        iter(serializedUser.errors))
+                                    first_error = serializedUser.errors[first_field][0]
+                                    return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                            else:
+                                first_field = next(
+                                    iter(serializedpayment.errors))
+                                first_error = serializedpayment.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                    else:
+                        adminlogger.info("exist")
+                        user = UserAdminTable.objects.get(
+                            MOBILE_NUMBER=paymentGetSerializer.data["MOBILE_NUMBER"])
+
+                        balance = (Decimal(user.BALANCE) +
+                                   Decimal(paymentGetSerializer.data["AMOUNT"])).quantize(
+                            Decimal('0.001'), rounding=ROUND_HALF_UP)
+
+                        new_balance = {"BALANCE": balance}
+
+                        serializedUser = UserAdminSerializer(
+                            user, data=new_balance, partial=True)
+                        serializedpayment = PaymentDepositSerializer(
+                            payment, data=data, partial=True)
+
+                        if serializedpayment.is_valid():
+                            if serializedUser.is_valid():
+                                serializedpayment.save()
+                                serializedUser.save()
+
+                            else:
+                                first_field = next(iter(serializedUser.errors))
+                                first_error = serializedUser.errors[first_field][0]
+                                return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+                        else:
+                            first_field = next(iter(serializedpayment.errors))
+                            first_error = serializedpayment.errors[first_field][0]
+                            return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                elif data.get("DENY_DEPOSIT"):
+                    serializedpayment = PaymentDepositSerializer(
+                        payment, data=data, partial=True)
+                    if serializedpayment.is_valid():
+                        serializedpayment.save()
+
+                    else:
+                        first_field = next(iter(serializedpayment.errors))
+                        first_error = serializedpayment.errors[first_field][0]
+                        return Response({"message": first_error}, status=status.HTTP_400_BAD_REQUEST)
+
+                return Response({'status': 200, "message": "success"})
+
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            print(str(e))
+            return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class depositWithoutUtr(APIView):
+    def get(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            user = request.user
+            adminlogger.info("deposit get")
+            start = int(request.GET.get('start', 0))
+            length = int(request.GET.get('length', start + 25))
+            searchValue = request.GET.get('search[value]', '')
+            adminlogger.info(searchValue)
+            upiId = UpiTable.objects.filter(
+                USER_NAME=user.username).first().UPI_ID
+            if searchValue:
+                totalCount = PaymentDepositTable.objects.filter(
+                    ADMIN_UPI_ID=upiId, MOBILE_NUMBER__icontains=searchValue, UTR='', IS_PROMOTIONAL=False).count()
+                payments = PaymentDepositTable.objects.filter(
+                    ADMIN_UPI_ID=upiId, MOBILE_NUMBER__icontains=searchValue, UTR='', IS_PROMOTIONAL=False)[start:start+length]
+            else:
+                totalCount = PaymentDepositTable.objects.filter(
+                    ADMIN_UPI_ID=upiId, UTR='', IS_PROMOTIONAL=False).count()
+                payments = PaymentDepositTable.objects.filter(
+                    ADMIN_UPI_ID=upiId, UTR='', IS_PROMOTIONAL=False).order_by('-CREATE_DATE')[start:start + length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
@@ -482,6 +763,44 @@ class transactions(APIView):
                 'withdraw': withdraw_sum,
                 'balance': profit
             })
+
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class userBets(APIView):
+    def get(self, request):
+        permission_classes = [IsAuthenticated]
+        
+        try:
+            adminlogger.info("UserbETS GET")
+            MOBILE_NUMBER = request.GET.get('number')
+            GAME_ID = request.GET.get('gameid')
+            
+            filters = {}
+            if MOBILE_NUMBER:
+                filters['MOBILE_NUMBER'] = MOBILE_NUMBER
+            if GAME_ID:
+                filters['GAME_ID'] = GAME_ID
+
+            if not filters:
+                return Response({"status": 400, "message": "Number or game id is required"}, status=status.HTTP_400_BAD_REQUEST)
+            
+            TOTAL_BET_ON_COLOR = BetColor.objects.filter(**filters)
+            TOTAL_BET_ON_NUMBER = BetNumber.objects.filter(**filters)
+            
+           
+            TOTAL_BET_ON_COLOR_SERIALIZED = BetColorTableSerializer(TOTAL_BET_ON_COLOR, many=True)
+            TOTAL_BET_ON_NUMBER_SERIALIZED = BetNumberTableSerializer(TOTAL_BET_ON_NUMBER, many=True)
+            adminlogger.info(TOTAL_BET_ON_COLOR_SERIALIZED.data)
+            adminlogger.info(TOTAL_BET_ON_NUMBER_SERIALIZED.data)
+            return Response(
+                    {
+                        "data": TOTAL_BET_ON_COLOR_SERIALIZED.data + TOTAL_BET_ON_NUMBER_SERIALIZED.data,
+                    }
+                )
 
         except Exception as e:
             adminlogger.error(f"Error: {str(e)}")

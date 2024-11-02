@@ -243,7 +243,7 @@
     const dataTable = $("#dashboard").DataTable({
       scrollY: "58vh",
       scrollCollapse: true,
-      bFilter: false,
+      bFilter: true,
       scrollX: true,
       bInfo: true,
       paging: true,
@@ -260,7 +260,7 @@
         type: "GET",
         data: function (data) {
           delete data.columns;
-          delete data.search;
+          // delete data.search;
           delete data.draw;
         },
         error: function (xhr, error, thrown) {

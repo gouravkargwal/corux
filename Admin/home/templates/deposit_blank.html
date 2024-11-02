@@ -13,7 +13,7 @@
           <div class="row">
             <div class="col-lg-12 col-md-12 col-sm-12">
               <div class="pt-3 pb-2">
-                <h6 class="wh">Deposit</h6>
+                <h6 class="wh">Deposit Without UTR</h6>
               </div>
             </div>
           </div>
@@ -216,9 +216,9 @@
       columnDefs: [{ orderable: false, targets: "_all" }],
       serverSide: true,
       processing: true,
-      stateSave: true,
+      //   stateSave: true,
       ajax: {
-        url: "/api/deposit",
+        url: "/api/depositWithoutUtr",
         type: "GET",
         data: function (data) {
           delete data.columns;
@@ -330,7 +330,7 @@
     var userId = $("#approveModal").data("user-id");
     showOverlay();
     $.ajax({
-      url: "/api/deposit/",
+      url: "/api/depositWithoutUtr/",
       type: "PATCH",
       data: { ID: userId, APPROVE_DEPOSIT: 1 },
       success: function (response) {
@@ -372,7 +372,7 @@
     var userId = $("#approveModal2").data("user-id");
     showOverlay();
     $.ajax({
-      url: "/api/deposit/",
+      url: "/api/depositWithoutUtr/",
       type: "PATCH",
       data: { ID: userId, DENY_DEPOSIT: 1 },
       success: function (response) {

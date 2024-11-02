@@ -54,6 +54,18 @@ def deposit(request):
 
 
 @login_required
+def depositWithoutUtr(request):
+    nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
+    return render(request, 'deposit_blank.html', {'nonceValue': nonce})
+
+
+@login_required
+def userBets(request):
+    nonce = base64.b64encode(os.urandom(16)).decode('utf-8')
+    return render(request, 'bets_user.html', {'nonceValue': nonce})
+
+
+@login_required
 def gameControl(request):
     try:
         nonce = base64.b64encode(os.urandom(16)).decode('utf-8')

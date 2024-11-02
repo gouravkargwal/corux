@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable
+from .models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable, BetColor, BetNumber
 
 
 class UserAdminSerializer(serializers.ModelSerializer):
@@ -67,4 +67,16 @@ class ValidationWithdrawDeniedSerializer(serializers.Serializer):
 class ReferralTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReferralTable
+        fields = "__all__"
+        
+
+class BetColorTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BetColor
+        fields = "__all__"
+        
+
+class BetNumberTableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BetNumber
         fields = "__all__"

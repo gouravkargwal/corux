@@ -1,0 +1,181 @@
+{% extends 'base2.html' %} {% block content %}
+<div id="loading-spinner" class="spinner"></div>
+<div id="overlay"></div>
+<div id="page-container">
+  <!-- --------------------------------Body Content-------------------------------- -->
+  <div id="content-wrap">
+    <!-- -----------------------------------header----------------------------------- -->
+    {% include 'header.html' %}
+    <!-- ---------------------------------------Main--------------------------------------- -->
+    <div class="info sticky-top">
+      <div class="container-fluid">
+        <div class="info_list">
+          <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <div class="pt-3 pb-2">
+                <h6 class="wh">Bets</h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="main">
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-4">
+            <div class="form-group mb-0">
+              <label for="usernumber">Enter Number:</label>
+              <input type="text" id="usernumber" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group mb-0">
+              <label for="gameid">Enter Game Id:</label>
+              <input type="text" id="gameid" class="form-control" />
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="form-group viewBtn">
+              <button class="btn btn-primary" id="view-btn">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="result">
+      <!-- <section id="main"> -->
+      <div class="container-fluid">
+        <div class="whitebx">
+          <div class="table-responsive">
+            <table id="dashboard2" class="table">
+              <thead>
+                <tr>
+                  <th class="md dot">Mobile Number</th>
+                  <th class="lg dot">Game ID</th>
+                  <th class="sm dot">Bet On</th>
+                  <th class="md dot">Bet Amount</th>
+                  <th class="md dot">Date</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <!-- </section> -->
+    </section>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="errorModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="errorModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body bl c">
+        <div id="errorModalBody"></div>
+        <!-- Error messages will be displayed here -->
+        <div class="dig_btn modbtn">
+          <button type="button" class="btn svbtn c" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+<script
+  src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+  crossorigin="anonymous"
+></script>
+
+<!-- Data Table-->
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/select/1.6.2/js/dataTables.select.min.js"></script>
+
+<script nonce="{{ nonceValue }}">
+  const loadingSpinner = document.getElementById("loading-spinner");
+  const overlay = document.getElementById("overlay");
+  window.addEventListener("unload", function (event) {
+    hideOverlay();
+  });
+</script>
+
+<script nonce="{{ nonceValue }}">
+  $(document).ready(function () {
+    const table = $("#dashboard2").DataTable({
+      paging: false, // Disable pagination
+      searching: false, // Disable searching
+      info: false, // Disable the information text
+      scrollY: "35vh", // Set the height of the DataTable
+      scrollCollapse: true, // Allow the table to reduce height if less data
+      scrollX: true,
+      columns: [
+        { data: "MOBILE_NUMBER" },
+        { data: "GAME_ID" },
+        { data: "BET_ON" },
+        { data: "BET_AMOUNT" },
+        { data: "CREATE_DATE" },
+      ],
+      data: [], // Initialize with empty data, will be filled later
+    });
+
+    $("#view-btn").click(function () {
+      var number = $("#usernumber").val();
+      var gameid = $("#gameid").val();
+
+      var data = {};
+      if (number) {
+        data.number = number; // Add number if provided
+      }
+      if (gameid) {
+        data.gameid = gameid; // Add gameId if provided
+      }
+
+      // Check if at least one parameter is provided
+      if (Object.keys(data).length === 0) {
+        $("#errorModalBody").text(
+          "Please provide either a number or a game ID"
+        );
+        $("#errorModal").modal("show");
+        return;
+      }
+
+      showOverlay();
+      $.ajax({
+        url: "/api/userbets",
+        type: "GET",
+        data: data,
+        success: function (response) {
+          console.log(response);
+          table.clear().draw();
+          // Add new data from the API response
+          table.rows.add(response.data).draw();
+        },
+        error: function (error) {
+          $("#errorModalBody").text("Failed to fetch data!");
+          $("#errorModal").modal("show");
+        },
+      }).always(function () {
+        hideOverlay();
+      });
+    });
+  });
+</script>
+{% endblock %}

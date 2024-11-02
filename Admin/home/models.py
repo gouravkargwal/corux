@@ -126,3 +126,28 @@ class ReferralTable(models.Model):
 
     class Meta:
         db_table = 'REFERRAL_TABLE'
+        
+class BetColor(models.Model):
+    MOBILE_NUMBER = models.CharField(max_length=12)
+    GAME_ID = models.CharField(max_length=14)
+    BET_ID = models.BigAutoField(primary_key=True)  # Auto-incrementing primary key
+    BET_ON = models.CharField(max_length=10, blank=True, null=True)  # Nullable field
+    BET_AMOUNT = models.FloatField(default=0.0, null=True)  # Float field for amounts
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'BET_COLOR'  # Specify the database table name
+        
+class BetNumber(models.Model):
+    MOBILE_NUMBER = models.CharField(max_length=12)
+    GAME_ID = models.CharField(max_length=14)
+    BET_ID = models.BigAutoField(primary_key=True)  # Auto-incrementing primary key
+    BET_ON = models.BigIntegerField(blank=True, null=True)  # Nullable field
+    BET_AMOUNT = models.FloatField(default=0.0, null=True)  # Float field for amounts
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
+
+    class Meta:
+        db_table = 'BET_NUMBER'  # Specify the database table name
