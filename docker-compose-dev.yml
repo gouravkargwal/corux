@@ -1,0 +1,77 @@
+services:
+  admin:
+    build:
+      context: ./Admin
+      dockerfile: Dockerfile.dev
+    ports:
+      - "1002:1002"
+    env_file:
+      - ./Admin/.env.dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py createsuperuser --noinput || true &&
+             python manage.py runserver 0.0.0.0:1002"
+    volumes:
+      - ./Admin:/app # Mount the Admin code directory
+    networks:
+      - my_network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile.dev
+    ports:
+      - "1001:1001"
+    env_file:
+      - ./Backend/.env.dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - ./Backend:/app # Mount the Backend code directory
+    networks:
+      - my_network
+
+  react:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile.dev
+      args:
+        - REACT_APP_BASE_URL=${REACT_APP_BASE_URL}
+        - REACT_APP_URL=${REACT_APP_URL}
+    ports:
+      - "1000:1000"
+    env_file:
+      - ./Frontend/.env
+    volumes:
+      - ./Frontend:/app # Mount the Frontend code directory for live updates
+    networks:
+      - my_network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    env_file:
+      - .env.dev
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql # Mount local mysql-data folder
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - my_network
+
+volumes:
+  mysql-data:
+
+networks:
+  my_network:
+    driver: bridge
