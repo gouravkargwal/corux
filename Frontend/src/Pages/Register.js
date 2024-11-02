@@ -142,7 +142,17 @@ export default function Register() {
                   <AuthTextField
                     fullWidth
                     placeholder="Enter name"
-                    {...register("name", { required: "Name is required" })}
+                    {...register("name", {
+                      required: "Name is required", maxLength: {
+                        value: 30,
+                        message: "Name must be at most 30 characters",
+                      },
+                    })}
+                    InputProps={{
+                      inputProps: {
+                        maxLength: 30,
+                      },
+                    }}
                     error={!!errors.name}
                     inputRef={register("name").ref}
                   />
@@ -166,6 +176,10 @@ export default function Register() {
                       pattern: {
                         value: /^[1-9][0-9]{9}$/,
                         message: "Invalid mobile number",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Mobile number must be 10 digits",
                       },
                     })}
                     placeholder="Mobile Number"
@@ -279,6 +293,11 @@ export default function Register() {
                     {...register("referCode")}
                     error={!!errors.referCode}
                     inputRef={register("referCode").ref}
+                    InputProps={{
+                      inputProps: {
+                        maxLength: 10,
+                      },
+                    }}
                   />
                   <FormHelperText
                     error={!!errors.referCode}
