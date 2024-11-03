@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from django.utils.timezone import now
 from home.serializers import UserAdminSerializer, PaymentDepositSerializer, PaymentWithdrawSerializer, UpdateDepositSerializer, UpdateWithdrawSerializer, ValidationWithdrawApprovedSerializer, UpiTableSerializer, ReferralTableSerializer, BetColorTableSerializer, BetNumberTableSerializer
-from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable, BetNumber, BetColor
+from home.models import UserAdminTable, PaymentDepositTable, PaymentWithdrawTable, UpiTable, ReferralTable, BetNumber, BetColor, AllTimeWinner
 from home.custom_logging import adminlogger
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -14,6 +14,7 @@ from django.db.models import Sum
 from django.utils import timezone
 from decimal import Decimal, ROUND_HALF_UP
 import datetime
+from django.db.models import OuterRef, Subquery
 
 
 class UserAdminView(APIView):
@@ -788,17 +789,37 @@ class userBets(APIView):
             if not filters:
                 return Response({"status": 400, "message": "Number or game id is required"}, status=status.HTTP_400_BAD_REQUEST)
             
-            TOTAL_BET_ON_COLOR = BetColor.objects.filter(**filters)
-            TOTAL_BET_ON_NUMBER = BetNumber.objects.filter(**filters)
+            # TOTAL_BET_ON_COLOR = BetColor.objects.filter(**filters)
+            # TOTAL_BET_ON_NUMBER = BetNumber.objects.filter(**filters)
+            bet_color_queryset = BetColor.objects.filter(**filters).annotate(
+                AMOUNT_WON=Subquery(
+                    AllTimeWinner.objects.filter(BET_ID=OuterRef('BET_ID'), COLOR=OuterRef('BET_ON'))
+                    .values('AMOUNT_WON')[:1]  # Get the first matching amount_won
+                )
+            )
+
+            # Join with AllTimeWinner for BetNumber
+            bet_number_queryset = BetNumber.objects.filter(**filters).annotate(
+                AMOUNT_WON=Subquery(
+                    AllTimeWinner.objects.filter(BET_ID=OuterRef('BET_ID'), NUMBER=OuterRef('BET_ON'))
+                    .values('AMOUNT_WON')[:1]  # Get the first matching amount_won
+                )
+            )
+
+            # Prepare response data
+            bet_color_data = list(bet_color_queryset.values())
+            bet_number_data = list(bet_number_queryset.values())
+            adminlogger.info(bet_color_data)
+            adminlogger.info(bet_number_data)
             
            
-            TOTAL_BET_ON_COLOR_SERIALIZED = BetColorTableSerializer(TOTAL_BET_ON_COLOR, many=True)
-            TOTAL_BET_ON_NUMBER_SERIALIZED = BetNumberTableSerializer(TOTAL_BET_ON_NUMBER, many=True)
-            adminlogger.info(TOTAL_BET_ON_COLOR_SERIALIZED.data)
-            adminlogger.info(TOTAL_BET_ON_NUMBER_SERIALIZED.data)
+            # TOTAL_BET_ON_COLOR_SERIALIZED = BetColorTableSerializer(TOTAL_BET_ON_COLOR, many=True)
+            # TOTAL_BET_ON_NUMBER_SERIALIZED = BetNumberTableSerializer(TOTAL_BET_ON_NUMBER, many=True)
+            # adminlogger.info(TOTAL_BET_ON_COLOR_SERIALIZED.data)
+            # adminlogger.info(TOTAL_BET_ON_NUMBER_SERIALIZED.data)
             return Response(
                     {
-                        "data": TOTAL_BET_ON_COLOR_SERIALIZED.data + TOTAL_BET_ON_NUMBER_SERIALIZED.data,
+                        "data": bet_color_data + bet_number_data,
                     }
                 )
 

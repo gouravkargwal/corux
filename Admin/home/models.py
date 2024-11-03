@@ -151,3 +151,17 @@ class BetNumber(models.Model):
 
     class Meta:
         db_table = 'BET_NUMBER'  # Specify the database table name
+        
+class AllTimeWinner(models.Model):
+    RESULT_ID = models.AutoField(primary_key=True)  # AutoField automatically creates an integer primary key
+    BET_ID = models.BigIntegerField()
+    MOBILE_NUMBER = models.CharField(max_length=12)
+    GAME_ID = models.CharField(max_length=14)
+    COLOR = models.CharField(max_length=10, default='grey', null=True, blank=True)
+    NUMBER = models.BigIntegerField(default=-1, null=True, blank=True)
+    AMOUNT_WON = models.FloatField(default=0, null=True, blank=True)
+    CREATE_DATE = models.DateTimeField(auto_now_add=True)
+    UPDATE_DATE = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = "ALL_TIME_WINNER_TABLE"  # Define the table name in the database

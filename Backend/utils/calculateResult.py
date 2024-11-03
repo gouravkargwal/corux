@@ -358,7 +358,7 @@ async def get_result(game_id):
                         if user_level1:
                             user_level1_win_commission = 0.03 * actual_amount_won
 
-                            user_level1.promotional_balance = user_level1.promotional_balance + round(
+                            user_level1.winning_balance = user_level1.winning_balance + round(
                                 user_level1_win_commission, 2
                             )
                             new_refer_win = All_Referral_Winning(
@@ -389,7 +389,7 @@ async def get_result(game_id):
 
                             if user_level2:
                                 user_level2_win_commission = 0.015 * actual_amount_won
-                                user_level2.promotional_balance = user_level2.promotional_balance + round(
+                                user_level2.winning_balance = user_level2.winning_balance + round(
                                     user_level2_win_commission, 2
                                 )
                                 new_refer_win_2 = All_Referral_Winning(
