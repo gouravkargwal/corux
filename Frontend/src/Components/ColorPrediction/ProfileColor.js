@@ -12,6 +12,7 @@ import {
 } from "../../Feature/Balance/balanceSlice";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import formatCurrency from "../../Util/formatCurrency";
 
 export default function ProfileColor() {
   const bonus = useSelector(selectPromotionalBalance);
@@ -67,7 +68,7 @@ export default function ProfileColor() {
                   Deposit
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  ₹ {balance}
+                  {formatCurrency(balance)}
                 </Typography>
               </Box>
             </Box>
@@ -98,7 +99,7 @@ export default function ProfileColor() {
                   Winnings
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  ₹ {winning}
+                  {formatCurrency(winning)}
                 </Typography>
               </Box>
             </Box>
@@ -127,7 +128,7 @@ export default function ProfileColor() {
                   Promotional
                 </Typography>
                 <Typography color="text.primary" variant="caption">
-                  ₹ {bonus}
+                  {formatCurrency(bonus)}
                 </Typography>
               </Box>
             </Box>

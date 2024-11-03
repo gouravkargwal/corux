@@ -79,7 +79,7 @@ export default function Promotion() {
       >
         <PromotionOption
           name="Refer Bonus"
-          count={data?.total_winning}
+          count={data?.total_winning?.toFixed(2)}
           icon={
             <Avatar
               sx={{
@@ -123,7 +123,7 @@ export default function Promotion() {
       >
         <PromotionOption
           name="Promotional Bonus"
-          count={bonus}
+          count={bonus?.toFixed(2)}
           icon={
             <Avatar
               sx={{

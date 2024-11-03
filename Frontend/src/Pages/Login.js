@@ -18,7 +18,7 @@ import LoadingButton from "../Components/UI/LoadingButton";
 import { loginUser, selectAuthLoading } from "../Feature/Auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { blue, grey } from "@mui/material/colors";
+import { blue, green, grey } from "@mui/material/colors";
 import AuthTextField from "../Components/Auth/AuthTextField";
 import AuthButton from "../Components/Auth/AuthButton";
 
@@ -194,16 +194,16 @@ export default function Login() {
                     sx={{
                       textAlign: "right",
                       my: 1,
-                      color: grey[500],
+                      color: green[600],
                       cursor: "pointer",
                       transition: "color 0.3s ease",
-                      "&:hover": { color: grey[800] },
+                      "&:hover": { color: green[800] },
                     }}
                     onClick={() => {
                       navigate("/auth/forgot-password");
                     }}
                   >
-                    Recovery password
+                    Forgot password?
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>
