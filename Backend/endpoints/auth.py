@@ -280,7 +280,7 @@ async def login(user_detail: user_detail, db: Session = Depends(get_sql_db)):
 
         if not verify_password(user_detail.password, user.password):
             raise HTTPException(
-                status_code=400, detail="Incorrect Credentials. Please try again."
+                status_code=400, detail=" Incorrect Email or Password. Please try again."
             )
         payload = {"mobile_number": user.mobile_number}
         access_token = authhandler.encode_token(payload)
