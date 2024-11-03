@@ -203,7 +203,7 @@ export default function Login() {
                       navigate("/auth/forgot-password");
                     }}
                   >
-                    Recovery password
+                    Forgot password?
                   </Typography>
                 </Grid>
                 <Grid item xs={12}>

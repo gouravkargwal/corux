@@ -15,6 +15,7 @@ import {
 import customCapitalize from "../../Util/stringFunc";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import formatCurrency from "../../Util/formatCurrency";
 
 export default function InfoWithButton() {
   const bonus = useSelector(selectPromotionalBalance);
@@ -81,7 +82,7 @@ export default function InfoWithButton() {
                   Deposit
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  ₹ {balance}
+                  {formatCurrency(balance)}
                 </Typography>
               </Box>
             </Box>
@@ -92,7 +93,7 @@ export default function InfoWithButton() {
                   Winning
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  ₹ {winning}
+                  {formatCurrency(winning)}
                 </Typography>
               </Box>
             </Box>
@@ -103,7 +104,7 @@ export default function InfoWithButton() {
                   Promotional
                 </Typography>
                 <Typography color="text.primary" variant="body1">
-                  ₹ {bonus}
+                  {formatCurrency(bonus)}
                 </Typography>
               </Box>
             </Box>
