@@ -432,9 +432,9 @@ class depositWithoutUtr(APIView):
                     ADMIN_UPI_ID=upiId, MOBILE_NUMBER__icontains=searchValue, UTR__isnull=True, IS_PROMOTIONAL=False)[start:start+length]
             else:
                 totalCount = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, UTR_isnull=True, IS_PROMOTIONAL=False).count()
+                    ADMIN_UPI_ID=upiId, UTR__isnull=True, IS_PROMOTIONAL=False).count()
                 payments = PaymentDepositTable.objects.filter(
-                    ADMIN_UPI_ID=upiId, UTR_isnull=True, IS_PROMOTIONAL=False).order_by('-CREATE_DATE')[start:start + length]
+                    ADMIN_UPI_ID=upiId, UTR__isnull=True, IS_PROMOTIONAL=False).order_by('-CREATE_DATE')[start:start + length]
             serializedpayments = PaymentDepositSerializer(payments, many=True)
             return Response(
                 {
