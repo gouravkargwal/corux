@@ -78,9 +78,16 @@ class withdraw(APIView):
             adminlogger.info("withdraw get")
             start = int(request.GET.get('start', 0))
             length = int(request.GET.get('length', start + 25))
-            totalCount = PaymentWithdrawTable.objects.all().count()
-            payments = PaymentWithdrawTable.objects.all().order_by(
-                '-CREATE_DATE')[start:start+length]
+            searchValue = request.GET.get('search[value]', '')
+            if searchValue:
+                totalCount = PaymentWithdrawTable.objects.filter(
+                    MOBILE_NUMBER__icontains=searchValue).count()
+                payments = PaymentWithdrawTable.objects.filter(
+                    MOBILE_NUMBER__icontains=searchValue)[start:start+length]
+            else:
+                totalCount = PaymentWithdrawTable.objects.all().count()
+                payments = PaymentWithdrawTable.objects.all().order_by(
+                    '-CREATE_DATE')[start:start+length]
             serializedpayments = PaymentWithdrawSerializer(payments, many=True)
             return Response(
                 {
@@ -769,6 +776,72 @@ class transactions(APIView):
             adminlogger.error(f"Error: {str(e)}")
             return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
 
+class withdrawByUser(APIView):
+    def get(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            adminlogger.info("withdraw by user get")
+            searchValue = request.GET.get('number')
+            if searchValue:
+                totalCount = PaymentWithdrawTable.objects.filter(
+                    MOBILE_NUMBER=searchValue).count()
+                payments = PaymentWithdrawTable.objects.filter(
+                    MOBILE_NUMBER=searchValue)
+                serializedpayments = PaymentWithdrawSerializer(payments, many=True)
+                return Response(
+                    {
+                        "data": serializedpayments.data,
+                        "recordsTotal": totalCount,
+                        "recordsFiltered": totalCount
+                    }
+                )
+            else:
+                return Response(
+                        {
+                        "data": [],
+                        "recordsTotal": 0,
+                        "recordsFiltered": 0
+                    }
+                )
+                
+
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class depositByUser(APIView):
+    def get(self, request):
+        permission_classes = [IsAuthenticated]
+        try:
+            adminlogger.info("deposit by user get")
+            searchValue = request.GET.get('number')
+            if searchValue:
+                totalCount = PaymentDepositTable.objects.filter(
+                    MOBILE_NUMBER=searchValue).count()
+                payments = PaymentDepositTable.objects.filter(
+                    MOBILE_NUMBER=searchValue)
+                serializedpayments = PaymentDepositSerializer(payments, many=True)
+                return Response(
+                    {
+                        "data": serializedpayments.data,
+                        "recordsTotal": totalCount,
+                        "recordsFiltered": totalCount
+                    }
+                )
+            else:
+                return Response(
+                        {
+                        "data": [],
+                        "recordsTotal": 0,
+                        "recordsFiltered": 0
+                    }
+                )
+                
+
+        except Exception as e:
+            adminlogger.error(f"Error: {str(e)}")
+            return Response({"status": 400, "message": "Something went wrong. Please try again later"}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class userBets(APIView):
@@ -776,6 +849,8 @@ class userBets(APIView):
         permission_classes = [IsAuthenticated]
         
         try:
+            totalL1 = 0
+            totalL2 = 0
             adminlogger.info("UserbETS GET")
             MOBILE_NUMBER = request.GET.get('number')
             GAME_ID = request.GET.get('gameid')
@@ -789,8 +864,6 @@ class userBets(APIView):
             if not filters:
                 return Response({"status": 400, "message": "Number or game id is required"}, status=status.HTTP_400_BAD_REQUEST)
             
-            # TOTAL_BET_ON_COLOR = BetColor.objects.filter(**filters)
-            # TOTAL_BET_ON_NUMBER = BetNumber.objects.filter(**filters)
             bet_color_queryset = BetColor.objects.filter(**filters).annotate(
                 AMOUNT_WON=Subquery(
                     AllTimeWinner.objects.filter(BET_ID=OuterRef('BET_ID'), COLOR=OuterRef('BET_ON'))
@@ -812,14 +885,15 @@ class userBets(APIView):
             adminlogger.info(bet_color_data)
             adminlogger.info(bet_number_data)
             
-           
-            # TOTAL_BET_ON_COLOR_SERIALIZED = BetColorTableSerializer(TOTAL_BET_ON_COLOR, many=True)
-            # TOTAL_BET_ON_NUMBER_SERIALIZED = BetNumberTableSerializer(TOTAL_BET_ON_NUMBER, many=True)
-            # adminlogger.info(TOTAL_BET_ON_COLOR_SERIALIZED.data)
-            # adminlogger.info(TOTAL_BET_ON_NUMBER_SERIALIZED.data)
+            if MOBILE_NUMBER:
+                totalL1 = ReferralTable.objects.filter(MOBILE_NUMBER=MOBILE_NUMBER, LEVEL_1_REFER__isnull=False).exclude(LEVEL_1_REFER='').count()
+                totalL2 = ReferralTable.objects.filter(MOBILE_NUMBER=MOBILE_NUMBER, LEVEL_2_REFER__isnull=False).exclude(LEVEL_2_REFER='').count()
+            
             return Response(
                     {
                         "data": bet_color_data + bet_number_data,
+                        "totalL1": totalL1,
+                        "totalL2": totalL2
                     }
                 )
 

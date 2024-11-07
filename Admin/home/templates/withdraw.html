@@ -213,7 +213,7 @@
     const dataTable = $("#dashboard2").DataTable({
       scrollY: "58vh",
       scrollCollapse: true,
-      bFilter: false,
+      bFilter: true,
       scrollX: true,
       bInfo: true,
       paging: true,
@@ -224,13 +224,13 @@
       columnDefs: [{ orderable: false, targets: "_all" }],
       serverSide: true,
       processing: true,
-      // "stateSave": true,
+      stateSave: true,
       ajax: {
         url: "/api/withdraw",
         type: "GET",
         data: function (data) {
           delete data.columns;
-          delete data.search;
+          // delete data.search;
           delete data.draw;
         },
         error: function (xhr, error, thrown) {
