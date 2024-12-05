@@ -40,7 +40,7 @@ const ContactUs = () => {
             <Button
               variant="contained"
               size="large"
-              href="https://t.me/vegagaminghelp"
+              href="https://t.me/vegagaminggroup"
               target="_blank"
               startIcon={<TelegramIcon />}
               sx={{
