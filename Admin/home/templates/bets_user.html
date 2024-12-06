@@ -275,23 +275,61 @@
       footerCallback: function (row, data, start, end, display) {
         // Calculate the sum of AMOUNT_WON column
         var api = this.api();
+        // Initialize sums for each color
+        var totalRedBet = 0;
+        var totalGreenBet = 0;
+        var totalVioletBet = 0;
+
         var totalAmountWon = 0;
         var totalAmountBet = 0;
+        // for (var i = 0; i < data.length; i++) {
+        //   // If AMOUNT_WON is missing or not a valid number, treat it as 0
+        //   var amountWon = parseFloat(data[i].AMOUNT_WON) || 0;
+        //   totalAmountWon += amountWon;
+        // }
+        // var formattedTotal = totalAmountWon.toFixed(3);
+
+        // for (var i = 0; i < data.length; i++) {
+        //   // If AMOUNT_WON is missing or not a valid number, treat it as 0
+        //   var amountBet = parseFloat(data[i].BET_AMOUNT) || 0;
+        //   totalAmountBet += amountBet;
+        // }
+        // var formattedTotalBet = totalAmountBet.toFixed(3);
+
         for (var i = 0; i < data.length; i++) {
-          // If AMOUNT_WON is missing or not a valid number, treat it as 0
           var amountWon = parseFloat(data[i].AMOUNT_WON) || 0;
           totalAmountWon += amountWon;
-        }
-        var formattedTotal = totalAmountWon.toFixed(3);
 
-        for (var i = 0; i < data.length; i++) {
-          // If AMOUNT_WON is missing or not a valid number, treat it as 0
           var amountBet = parseFloat(data[i].BET_AMOUNT) || 0;
           totalAmountBet += amountBet;
+
+          // Add bet amount to specific color categories (Red, Green, Violet)
+          var betOn = data[i].BET_ON ? data[i].BET_ON.toLowerCase() : ""; // Convert to lowercase to handle case insensitivity
+
+          // Check if the bet is for a known color
+          if (betOn === "red") {
+            totalRedBet += amountBet;
+          } else if (betOn === "green") {
+            totalGreenBet += amountBet;
+          } else if (betOn === "violet") {
+            totalVioletBet += amountBet;
+          }
+          // If BET_ON is neither "red", "green", nor "violet", treat the bet as 0 (skip adding to color sums)
+          // No action needed because totalRedBet, totalGreenBet, and totalVioletBet are initialized to 0
         }
-        var formattedTotalBet = totalAmountBet.toFixed(3);
+
+        // Format the totals to 3 decimal places
+        var formattedTotal = totalAmountWon.toFixed(2);
+        var formattedTotalBet = totalAmountBet.toFixed(2);
+
+        var formattedRedBet = totalRedBet.toFixed(2);
+        var formattedGreenBet = totalGreenBet.toFixed(2);
+        var formattedVioletBet = totalVioletBet.toFixed(2);
 
         // Update the footer with the sum
+        $(api.column(0).footer()).html("red: " + formattedRedBet);
+        $(api.column(1).footer()).html("green: " + formattedGreenBet);
+        $(api.column(2).footer()).html("violet: " + formattedVioletBet);
         $(api.column(3).footer()).html("Total: " + formattedTotalBet);
         $(api.column(4).footer()).html("Total: " + formattedTotal);
       },
