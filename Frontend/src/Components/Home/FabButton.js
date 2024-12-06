@@ -19,7 +19,7 @@ const FloatingButton = () => {
       }}
       size="small"
       title="Contact Us"
-      href="https://t.me/vegagaminghelp"
+      href="https://t.me/helpvegagaming"
       target="_blank"
     >
       <SupportAgentIcon fontSize="small" />

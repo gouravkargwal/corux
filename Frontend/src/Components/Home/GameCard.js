@@ -35,7 +35,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
   animation: `${fadeIn} 0.5s ease`,
 }));
 
-const GameCard = ({ title, time, img }) => {
+const GameCard = ({ title, img, time }) => {
   return (
     <StyledCard variant="outlined">
       <CardActionArea>
@@ -49,7 +49,7 @@ const GameCard = ({ title, time, img }) => {
         <CardContent sx={{ p: 2 }}>
           <Box
             display="flex"
-            justifyContent="center"
+            justifyContent="space-between"
             alignItems="center"
             gap={1}
             mt={1}
@@ -57,10 +57,15 @@ const GameCard = ({ title, time, img }) => {
             p={1}
             borderRadius={2}
           >
-            <AvTimerIcon sx={{ color: blue[900] }} />
             <Typography fontWeight="600" color={blue[900]}>
-              {time}
+              {title}
             </Typography>
+            <Box display="flex" alignItems="center" gap={1} justifyContent="center">
+              <AvTimerIcon sx={{ color: blue[900] }} />
+              <Typography fontWeight="600" color={blue[900]}>
+                {time}
+              </Typography>
+            </Box>
           </Box>
         </CardContent>
       </CardActionArea>

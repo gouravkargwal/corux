@@ -39,7 +39,7 @@ export default function ControlledAccordions() {
     {
       name: "Telegram Group",
       icon: TelegramIcon,
-      url: "https://t.me/vegagamingfunavelable",
+      url: "https://t.me/vegagaminggroup",
     },
     { name: "Settings", icon: SettingsIcon, url: "/profile/settings" },
   ];
