@@ -304,7 +304,7 @@
           totalAmountBet += amountBet;
 
           // Add bet amount to specific color categories (Red, Green, Violet)
-          var betOn = data[i].BET_ON ? data[i].BET_ON.toLowerCase() : ""; // Convert to lowercase to handle case insensitivity
+          var betOn = data[i].BET_ON ? data[i].BET_ON : ""; // Convert to lowercase to handle case insensitivity
 
           // Check if the bet is for a known color
           if (betOn === "red") {
